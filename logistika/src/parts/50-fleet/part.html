@@ -1,0 +1,147 @@
+<section id="park" class="section flt" data-part="fleet" aria-labelledby="flt-title">
+  <div class="flt-stage">
+    <div class="flt-bg" aria-hidden="true">
+      <div class="flt-bg__glow flt-bg__glow--a"></div>
+      <div class="flt-bg__glow flt-bg__glow--b"></div>
+      <div class="flt-bg__glow flt-bg__glow--c"></div>
+      <svg class="flt-bg__dial" viewBox="0 0 600 600">
+        <circle cx="300" cy="300" r="296" class="flt-bg__ring"/>
+        <circle cx="300" cy="300" r="250" class="flt-bg__ring flt-bg__ring--dash"/>
+        <circle cx="300" cy="300" r="180" class="flt-bg__ring"/>
+        <g class="flt-bg__ticks"></g>
+      </svg>
+    </div>
+
+    <canvas class="flt-canvas" aria-hidden="true"></canvas>
+    <div class="flt-fallback" aria-hidden="true"></div>
+
+    <div class="flt-callouts" aria-hidden="true">
+      <svg class="flt-leaders">
+        <path class="flt-leader" pathLength="1"/>
+        <path class="flt-leader" pathLength="1"/>
+        <path class="flt-leader" pathLength="1"/>
+        <path class="flt-leader" pathLength="1"/>
+      </svg>
+      <div class="flt-co flt-co--gps">
+        <span class="flt-co__dot"></span>
+        <div class="flt-co__card">
+          <span class="flt-co__ico">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/></svg>
+          </span>
+          <span class="flt-co__body">
+            <span class="flt-co__k">GPS · <b>har 30 soniyada</b></span>
+            <span class="flt-co__v flt-co__v--sm" data-flt="gps">41,3111° N · 69,2797° E</span>
+          </span>
+          <svg class="flt-co__timer" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" class="flt-co__timer-bg"/><circle cx="18" cy="18" r="15" class="flt-co__timer-fg" pathLength="1"/></svg>
+        </div>
+      </div>
+      <div class="flt-co flt-co--temp">
+        <span class="flt-co__dot"></span>
+        <div class="flt-co__card">
+          <span class="flt-co__ico">
+            <svg viewBox="0 0 24 24"><path d="M10 13.5V5a2 2 0 1 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></svg>
+          </span>
+          <span class="flt-co__body">
+            <span class="flt-co__k">Harorat</span>
+            <span class="flt-co__v" data-flt="temp">+4,0 °C</span>
+          </span>
+          <svg class="flt-co__spark" viewBox="0 0 60 24"><polyline data-flt="spark" points=""/></svg>
+        </div>
+      </div>
+      <div class="flt-co flt-co--hum">
+        <span class="flt-co__dot"></span>
+        <div class="flt-co__card">
+          <span class="flt-co__ico">
+            <svg viewBox="0 0 24 24"><path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/><path d="M9 15a3 3 0 0 0 3 3"/></svg>
+          </span>
+          <span class="flt-co__body">
+            <span class="flt-co__k">Namlik</span>
+            <span class="flt-co__v" data-flt="hum">45 %</span>
+          </span>
+          <span class="flt-co__meter"><i data-flt="humbar"></i></span>
+        </div>
+      </div>
+      <div class="flt-co flt-co--seal">
+        <span class="flt-co__dot"></span>
+        <div class="flt-co__card">
+          <span class="flt-co__ico">
+            <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"/></svg>
+          </span>
+          <span class="flt-co__body">
+            <span class="flt-co__k">Elektron muhr</span>
+            <span class="flt-co__v flt-co__v--ok">Butun
+              <svg class="flt-co__check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flt-ui">
+      <header class="flt-head">
+        <span class="eyebrow" data-scramble><span class="idx">06</span>&nbsp;— Aqlli park</span>
+        <h2 class="h2 flt-title" id="flt-title" data-split="lines">Temir quti emas —<br><span class="accent-turq">raqamli egizak.</span></h2>
+      </header>
+
+      <div class="flt-hud mono" aria-hidden="true">
+        <div class="flt-hud__row"><span class="dot-live"></span><span>Raqamli egizak · onlayn</span></div>
+        <div class="flt-hud__code">ULBU 142907 9</div>
+        <div class="flt-hud__meta"><span>40' HC</span><span>Toshkent → Duisburg</span></div>
+        <div class="flt-hud__bar"><i></i></div>
+        <div class="flt-hud__meta"><span>Sinxron</span><span data-flt="clock">00:00:00</span></div>
+      </div>
+
+      <div class="flt-story">
+        <ol class="flt-steps" aria-label="Konteyner bosqichlari">
+          <li class="flt-step is-active"><span class="flt-step__n mono">01</span><span class="flt-step__t">Korpus</span></li>
+          <li class="flt-step"><span class="flt-step__n mono">02</span><span class="flt-step__t">Muhr</span></li>
+          <li class="flt-step"><span class="flt-step__n mono">03</span><span class="flt-step__t">Yuk</span></li>
+          <li class="flt-step"><span class="flt-step__n mono">04</span><span class="flt-step__t">Sensorlar</span></li>
+          <li class="flt-step"><span class="flt-step__n mono">05</span><span class="flt-step__t">Park</span></li>
+        </ol>
+        <div class="flt-panes">
+          <article class="flt-pane">
+            <h3 class="flt-pane__t">40 futlik konteyner.</h3>
+            <p class="flt-pane__p">Corten poʻlat korpus, 76 m³ hajm va 28 750 kg gacha yuk. Har biri raqamli pasportga ega.</p>
+          </article>
+          <article class="flt-pane">
+            <h3 class="flt-pane__t">Eshik — faqat manzilda.</h3>
+            <p class="flt-pane__p">Elektron muhr har bir ochilishni vaqt va koordinata bilan qayd etadi.</p>
+          </article>
+          <article class="flt-pane">
+            <h3 class="flt-pane__t">Har bir palleta — raqamlangan.</h3>
+            <p class="flt-pane__p">Yuk 3D rejalashtiriladi: boʻsh joy 4 % dan kam, har bir quti skanerdan oʻtadi.</p>
+          </article>
+          <article class="flt-pane">
+            <h3 class="flt-pane__t">Sensorlar 24/7 soʻzlaydi.</h3>
+            <p class="flt-pane__p">GPS, harorat, namlik va muhr holati dispetcherlik markaziga uzluksiz uzatiladi.</p>
+          </article>
+          <article class="flt-pane">
+            <h3 class="flt-pane__t">Bitta tizim — butun park.</h3>
+            <p class="flt-pane__p">Euro-6 dvigatellar, telematika va har bir reys real vaqtda nazoratda.</p>
+          </article>
+        </div>
+        <div class="flt-progress" aria-hidden="true"><i></i></div>
+      </div>
+
+      <ul class="flt-fleet" aria-label="Park tarkibi">
+        <li class="flt-chip">
+          <svg class="flt-chip__ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 9h15v12H3zM18 13h6l4 4v4h-10z"/><circle cx="8" cy="23" r="2.4"/><circle cx="23" cy="23" r="2.4"/></svg>
+          <span class="flt-chip__n tabular" data-flt-count="1240">1 240</span><span class="flt-chip__l">fura</span>
+        </li>
+        <li class="flt-chip">
+          <svg class="flt-chip__ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4v24M5.6 10l20.8 12M5.6 22l20.8-12M13 5.5l3 2.5 3-2.5M13 26.5l3-2.5 3 2.5"/></svg>
+          <span class="flt-chip__n tabular" data-flt-count="320">320</span><span class="flt-chip__l">refrijerator</span>
+        </li>
+        <li class="flt-chip">
+          <svg class="flt-chip__ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 18h26M5 18v-7h22v7M9 11v7M14 11v7M19 11v7M24 11v7"/><circle cx="8" cy="22" r="2.2"/><circle cx="14" cy="22" r="2.2"/><circle cx="24" cy="22" r="2.2"/></svg>
+          <span class="flt-chip__n tabular" data-flt-count="86">86</span><span class="flt-chip__l">platforma</span>
+        </li>
+        <li class="flt-chip flt-chip--eco">
+          <svg class="flt-chip__ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 25C7 13 15 7 27 6c0 12-6 19-17 19zM7 25l10-10"/></svg>
+          <span class="flt-chip__n">Euro-6</span><span class="flt-chip__l">standart</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,243 @@
+<section id="kalkulyator" class="section clc" data-part="calculator" aria-labelledby="clc-title">
+  <div class="clc-bg" aria-hidden="true">
+    <div class="clc-orb clc-orb--a"></div>
+    <div class="clc-orb clc-orb--b"></div>
+    <div class="clc-orb clc-orb--c"></div>
+    <svg class="clc-dial" viewBox="0 0 800 800">
+      <defs>
+        <linearGradient id="clc-dial-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffc861"/><stop offset="1" stop-color="#ff5a36"/>
+        </linearGradient>
+      </defs>
+      <circle cx="400" cy="400" r="396" class="clc-dial__ring"/>
+      <circle cx="400" cy="400" r="352" class="clc-dial__ring clc-dial__ring--gold"/>
+      <g class="clc-dial__ticks"></g>
+      <g class="clc-dial__inner">
+        <circle cx="400" cy="400" r="250" class="clc-dial__ring clc-dial__ring--dash"/>
+        <circle cx="400" cy="400" r="190" class="clc-dial__ring"/>
+        <path class="clc-dial__star" d="M400 250l26 63 63-26-26 63 63 26-63 26 26 63-63-26-26 63-26-63-63 26 26-63-63-26 63-26-26-63 63 26z"/>
+      </g>
+      <g class="clc-dial__labels">
+        <text x="400" y="30" text-anchor="middle">AVTO</text>
+        <text x="776" y="405" text-anchor="middle" transform="rotate(90 776 400)">TEMIR YOʻL</text>
+        <text x="400" y="782" text-anchor="middle" transform="rotate(180 400 776)">DENGIZ</text>
+        <text x="24" y="405" text-anchor="middle" transform="rotate(-90 24 400)">AVIA</text>
+      </g>
+      <g class="clc-dial__needle">
+        <path class="clc-dial__arc" d="M325.6 49.5 A 358 358 0 0 1 474.4 49.5"/>
+        <path d="M400 62 L412 40 L388 40 Z" fill="url(#clc-dial-g)"/>
+        <path class="clc-dial__ray" d="M400 70 L400 250"/>
+        <circle cx="400" cy="400" r="8" class="clc-dial__hub"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="container clc-wrap">
+    <div class="clc-headrow">
+      <div class="sec-head clc-head">
+        <span class="eyebrow eyebrow--gold" data-scramble><span class="idx">09</span>&nbsp;— Narx kalkulyatori</span>
+        <h2 class="h2" id="clc-title" data-split="lines">Narxni bilish — <span class="accent-gold">bir necha soniya.</span></h2>
+      </div>
+      <p class="lead clc-lead" data-reveal="blur">Yoʻnalish, transport va yukni tanlang — tizim tarif, muddat va CO₂ izini shu zahoti hisoblaydi.</p>
+    </div>
+
+    <div class="clc-panel" data-spotlight>
+      <div class="clc-panel__fx" aria-hidden="true"></div>
+
+      <form class="clc-form" novalidate aria-label="Narx kalkulyatori">
+        <div class="clc-row clc-route">
+          <div class="clc-dd" data-dd="from">
+            <span class="clc-label" id="clc-from-l">Qayerdan</span>
+            <button type="button" class="clc-dd__btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="clc-from-l clc-from-v">
+              <span class="clc-dd__code mono" data-clc="code">TAS</span>
+              <span class="clc-dd__val" id="clc-from-v"><span class="clc-dd__city" data-clc="city">Toshkent</span><span class="clc-dd__country" data-clc="country">Oʻzbekiston</span></span>
+              <svg class="clc-dd__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <ul class="clc-dd__list" role="listbox" tabindex="-1" aria-labelledby="clc-from-l" data-lenis-prevent></ul>
+          </div>
+          <button type="button" class="clc-swap" aria-label="Yoʻnalishni almashtirish" data-cursor="Almashtirish">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v14M3.5 14.5L7 18l3.5-3.5M17 20V6M13.5 9.5L17 6l3.5 3.5"/></svg>
+          </button>
+          <div class="clc-dd" data-dd="to">
+            <span class="clc-label" id="clc-to-l">Qayerga</span>
+            <button type="button" class="clc-dd__btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="clc-to-l clc-to-v">
+              <span class="clc-dd__code mono" data-clc="code">MOW</span>
+              <span class="clc-dd__val" id="clc-to-v"><span class="clc-dd__city" data-clc="city">Moskva</span><span class="clc-dd__country" data-clc="country">Rossiya</span></span>
+              <svg class="clc-dd__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <ul class="clc-dd__list" role="listbox" tabindex="-1" aria-labelledby="clc-to-l" data-lenis-prevent></ul>
+          </div>
+        </div>
+
+        <div class="clc-row">
+          <span class="clc-label" id="clc-mode-l">Transport turi</span>
+          <div class="clc-seg" role="radiogroup" aria-labelledby="clc-mode-l">
+            <span class="clc-seg__ind" aria-hidden="true"></span>
+            <button type="button" class="clc-seg__btn" role="radio" aria-checked="true" data-mode="avto">
+              <svg class="clc-ico clc-ico--avto" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 9h15v11H3zM18 13h6l4 4v3H18z"/><circle class="clc-wheel" cx="8.5" cy="22.5" r="2.5"/><circle class="clc-wheel" cx="23.5" cy="22.5" r="2.5"/></svg>
+              <span>Avto</span>
+            </button>
+            <button type="button" class="clc-seg__btn" role="radio" aria-checked="false" data-mode="rail">
+              <svg class="clc-ico clc-ico--rail" viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="4" width="18" height="18" rx="4"/><path d="M7 14h18M12 26l-3 3M20 26l3 3M11 22v4h10v-4"/><circle cx="11.5" cy="18" r="1"/><circle cx="20.5" cy="18" r="1"/></svg>
+              <span>Temir yoʻl</span>
+            </button>
+            <button type="button" class="clc-seg__btn" role="radio" aria-checked="false" data-mode="sea">
+              <svg class="clc-ico clc-ico--sea" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 19h22l-3 6H8zM9 19v-5h8v5M17 15h6v4M12 14V9h3"/><path class="clc-wave" d="M3 28c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5"/></svg>
+              <span>Dengiz</span>
+            </button>
+            <button type="button" class="clc-seg__btn" role="radio" aria-checked="false" data-mode="avia">
+              <svg class="clc-ico clc-ico--avia" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 17l8-1 6-10h3l-3 10 7-.5 3-3.5h2l-1.5 5.5L29 23h-2l-3-3.5-7-.5 3 10h-3l-6-10-8-1z"/></svg>
+              <span>Avia</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="clc-row clc-range" data-range="weight">
+          <div class="clc-range__head">
+            <label class="clc-label" for="clc-weight">Ogʻirlik</label>
+            <span class="clc-range__meta mono" data-clc="trucks">≈ 1 fura</span>
+          </div>
+          <div class="clc-range__track">
+            <span class="clc-range__rail" aria-hidden="true"><span class="clc-range__fill"></span></span>
+            <input class="clc-range__input" type="range" id="clc-weight" min="0" max="1000" step="1" value="799" aria-valuetext="12 000 kg">
+            <span class="clc-range__bubble mono" aria-hidden="true"><span data-clc="wval">12 000</span> kg</span>
+          </div>
+          <div class="clc-range__ticks mono" aria-hidden="true"><span>100 kg</span><span>1 t</span><span>10 t</span><span>40 t</span></div>
+        </div>
+
+        <div class="clc-row clc-range" data-range="volume">
+          <div class="clc-range__head">
+            <label class="clc-label" for="clc-volume">Hajm</label>
+            <span class="clc-range__meta mono">
+              <svg class="clc-cont" viewBox="0 0 64 22" aria-hidden="true"><rect x="1" y="1" width="62" height="20" rx="2" class="clc-cont__box"/><rect x="2.5" y="2.5" width="59" height="17" rx="1" class="clc-cont__fill"/><path class="clc-cont__ribs" d="M9 3v16M16 3v16M23 3v16M30 3v16M37 3v16M44 3v16M51 3v16M58 3v16"/></svg>
+              <span data-clc="teu">≈ 0,5 × 40ft</span>
+            </span>
+          </div>
+          <div class="clc-range__track">
+            <span class="clc-range__rail" aria-hidden="true"><span class="clc-range__fill"></span></span>
+            <input class="clc-range__input" type="range" id="clc-volume" min="1" max="80" step="1" value="38" aria-valuetext="38 m³">
+            <span class="clc-range__bubble mono" aria-hidden="true"><span data-clc="vval">38</span> m³</span>
+          </div>
+          <div class="clc-range__ticks mono" aria-hidden="true"><span>1 m³</span><span>20</span><span>40</span><span>60</span><span>80 m³</span></div>
+        </div>
+
+        <fieldset class="clc-row clc-extras">
+          <legend class="clc-label">Qoʻshimcha xizmatlar</legend>
+          <div class="clc-extras__grid">
+            <button type="button" class="clc-tog" role="switch" aria-checked="false" data-extra="ins">
+              <svg class="clc-tog__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>
+              <span class="clc-tog__txt"><span class="clc-tog__name">Sugʻurta</span><span class="clc-tog__sub mono">+3 %</span></span>
+              <span class="clc-tog__sw" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="clc-tog" role="switch" aria-checked="true" data-extra="customs">
+              <svg class="clc-tog__ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+              <span class="clc-tog__txt"><span class="clc-tog__name">Bojxona</span><span class="clc-tog__sub mono">$190 · 2 soat</span></span>
+              <span class="clc-tog__sw" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="clc-tog" role="switch" aria-checked="false" data-extra="temp">
+              <svg class="clc-tog__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5L12 6.5l2.5-2M9.5 19.5l2.5-2 2.5 2"/></svg>
+              <span class="clc-tog__txt"><span class="clc-tog__name">Harorat nazorati</span><span class="clc-tog__sub mono">+22 % · −25…+25 °C</span></span>
+              <span class="clc-tog__sw" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="clc-tog" role="switch" aria-checked="false" data-extra="express">
+              <svg class="clc-tog__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L5 13.5h6L10 22l9-12h-6z"/></svg>
+              <span class="clc-tog__txt"><span class="clc-tog__name">Ekspress</span><span class="clc-tog__sub mono">+30 % · −30 % vaqt</span></span>
+              <span class="clc-tog__sw" aria-hidden="true"><i></i></span>
+            </button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div class="clc-out">
+        <div class="clc-out__scan" aria-hidden="true"></div>
+        <div class="clc-out__top">
+          <span class="clc-label">Taxminiy narx</span>
+          <span class="chip clc-chip"><span class="dot-live"></span>Tarif · 2026</span>
+        </div>
+        <div class="clc-price" aria-hidden="true">
+          <span class="clc-price__cur">$</span>
+          <span class="clc-odo"></span>
+          <span class="clc-delta mono" data-clc="delta"></span>
+        </div>
+        <p class="sr-only" aria-live="polite" data-clc="sr"></p>
+        <p class="clc-price__sub mono" aria-hidden="true">Tashish <b data-clc="freight">$0</b><span class="clc-dot">·</span>Xizmatlar <b data-clc="extras">$0</b></p>
+
+        <div class="clc-stats" aria-hidden="true">
+          <div class="clc-stat">
+            <span class="clc-stat__k">Muddat</span>
+            <span class="clc-stat__v"><b data-clc="days">6</b> kun</span>
+          </div>
+          <div class="clc-stat">
+            <span class="clc-stat__k">Masofa</span>
+            <span class="clc-stat__v"><b data-clc="km">3 348</b> km</span>
+          </div>
+          <div class="clc-stat">
+            <span class="clc-stat__k">CO₂ izi</span>
+            <span class="clc-stat__v"><b data-clc="co2">2 626</b> kg</span>
+          </div>
+        </div>
+
+        <div class="clc-map" aria-hidden="true">
+          <svg class="clc-map__svg" viewBox="0 12 440 146">
+            <defs>
+              <pattern id="clc-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="7" cy="7" r="1.1" fill="#96b4ff" fill-opacity=".22"/>
+              </pattern>
+              <radialGradient id="clc-fade-g" cx=".5" cy=".55" r=".62">
+                <stop offset=".35" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="clc-fade"><rect x="0" y="12" width="440" height="142" fill="url(#clc-fade-g)"/></mask>
+              <linearGradient id="clc-route-g" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#2ee6d6"/><stop offset=".6" stop-color="#3d8bff"/><stop offset="1" stop-color="#ffc861"/>
+              </linearGradient>
+            </defs>
+            <rect class="clc-map__grid" x="0" y="12" width="440" height="142" fill="url(#clc-dots)" mask="url(#clc-fade)"/>
+            <path class="clc-map__meridian" d="M110 14v124M220 14v124M330 14v124"/>
+            <path class="clc-map__base" d="M36 104 C 120 104, 130 74, 220 80 S 330 108, 404 104"/>
+            <path class="clc-map__prog" pathLength="1" d="M36 104 C 120 104, 130 74, 220 80 S 330 108, 404 104"/>
+            <g class="clc-map__node clc-map__node--a">
+              <circle class="clc-map__ping" cx="36" cy="104" r="7"/>
+              <circle class="clc-map__dot" cx="36" cy="104" r="6"/>
+            </g>
+            <g class="clc-map__node clc-map__node--b">
+              <circle class="clc-map__ping" cx="404" cy="104" r="7"/>
+              <circle class="clc-map__dot clc-map__dot--b" cx="404" cy="104" r="6"/>
+            </g>
+            <text class="clc-map__code" x="24" y="132" text-anchor="start" data-clc="codeA">TAS</text>
+            <text class="clc-map__code" x="416" y="132" text-anchor="end" data-clc="codeB">MOW</text>
+            <g class="clc-map__pill">
+              <rect x="160" y="126" width="120" height="24" rx="12"/>
+              <text x="220" y="142" text-anchor="middle" data-clc="leg">3 350 km · 6 kun</text>
+            </g>
+            <text class="clc-map__city" x="24" y="150" text-anchor="start" data-clc="cityA">Toshkent</text>
+            <text class="clc-map__city" x="416" y="150" text-anchor="end" data-clc="cityB">Moskva</text>
+            <g class="clc-veh">
+              <g class="clc-veh__i" data-veh="avto"><path d="M-13 -7h15v11h-15zM2 -3h6l4 4v3H2z"/><circle cx="-7.5" cy="6" r="2.4"/><circle cx="7" cy="6" r="2.4"/></g>
+              <g class="clc-veh__i" data-veh="rail"><rect x="-14" y="-7" width="12" height="11" rx="2"/><rect x="0" y="-7" width="12" height="11" rx="2"/><path d="M-16 7h32"/></g>
+              <g class="clc-veh__i" data-veh="sea"><path d="M-14 1h28l-4 7h-20zM-9 1v-6h9v6M1 -3h7v4"/></g>
+              <g class="clc-veh__i" data-veh="avia"><path d="M-14 1l7-1 6-9h3l-3 9 7-.5 3-3h2l-1.5 4.5L11 5h-2l-3-3-7-.5 3 9h-3l-6-9-7-1z"/></g>
+            </g>
+          </svg>
+        </div>
+
+        <div class="clc-cmp">
+          <div class="clc-cmp__head"><span class="clc-label">CO₂ taqqoslash</span><span class="clc-cmp__unit mono">kg · shu yuk uchun</span></div>
+          <ul class="clc-cmp__list">
+            <li><button type="button" class="clc-cmp__row" data-mode="avto"><span class="clc-cmp__name">Avto</span><span class="clc-cmp__bar"><i></i></span><span class="clc-cmp__v mono">0</span></button></li>
+            <li><button type="button" class="clc-cmp__row" data-mode="rail"><span class="clc-cmp__name">Temir yoʻl</span><span class="clc-cmp__bar"><i></i></span><span class="clc-cmp__v mono">0</span></button></li>
+            <li><button type="button" class="clc-cmp__row" data-mode="sea"><span class="clc-cmp__name">Dengiz</span><span class="clc-cmp__bar"><i></i></span><span class="clc-cmp__v mono">0</span></button></li>
+            <li><button type="button" class="clc-cmp__row" data-mode="avia"><span class="clc-cmp__name">Avia</span><span class="clc-cmp__bar"><i></i></span><span class="clc-cmp__v mono">0</span></button></li>
+          </ul>
+        </div>
+
+        <div class="clc-cta">
+          <a class="btn btn--primary clc-cta__btn" data-magnetic href="#footer">
+            <span class="btn__label" data-text="Buyurtma berish"><span>Buyurtma berish</span></span>
+            <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <p class="clc-note">*taxminiy narx. Yakuniy tarif yuk turi va sanaga qarab menejer tomonidan tasdiqlanadi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

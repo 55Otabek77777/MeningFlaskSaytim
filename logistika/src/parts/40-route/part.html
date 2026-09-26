@@ -1,0 +1,153 @@
+<section id="marshrut" class="rt" data-part="route" aria-labelledby="rt-title">
+  <div class="rt-stage">
+    <!-- map layers (WebGL land dots · SVG vectors · HTML labels) -->
+    <div class="rt-map" aria-hidden="true">
+      <canvas class="rt-gl"></canvas>
+      <canvas class="rt-lines"></canvas>
+      <div class="rt-vec">
+      <svg class="rt-svg" focusable="false">
+        <defs>
+          <radialGradient id="rt-g-halo">
+            <stop offset="0" stop-color="#2ee6d6" stop-opacity=".55"/>
+            <stop offset=".45" stop-color="#2ee6d6" stop-opacity=".16"/>
+            <stop offset="1" stop-color="#2ee6d6" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="rt-g-cone" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#bafff8" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#2ee6d6" stop-opacity="0"/>
+          </linearGradient>
+          <mask id="rt-m-car" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="12000" height="12000">
+            <path class="rt-caravan-mask" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round"/>
+          </mask>
+          <linearGradient id="rt-g-disc" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#b8fff7"/>
+            <stop offset=".45" stop-color="#2ee6d6"/>
+            <stop offset="1" stop-color="#3d8bff"/>
+          </linearGradient>
+          <radialGradient id="rt-g-hq">
+            <stop offset="0" stop-color="#ffc861" stop-opacity=".5"/>
+            <stop offset="1" stop-color="#ffc861" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g class="rt-cam">
+          <path class="rt-uzb-fill"/>
+          <path class="rt-uzb-glow"/>
+          <path class="rt-uzb"/>
+          <path class="rt-caravan" id="rt-caravan-path" mask="url(#rt-m-car)"/>
+          <text class="rt-caravan-txt"><textPath href="#rt-caravan-path" startOffset="57%">BUYUK IPAK YOʻLI · MIL. AVV. II ASR</textPath></text>
+          <path class="rt-plan"/>
+          <path class="rt-trail rt-trail--wide"/>
+          <path class="rt-trail rt-trail--mid"/>
+          <path class="rt-trail rt-trail--core"/>
+          <g class="rt-nodes"></g>
+          <g class="rt-veh">
+            <g class="rt-veh__s">
+              <circle class="rt-veh__halo" r="64" fill="url(#rt-g-halo)"/>
+              <g class="rt-veh__head">
+                <path class="rt-veh__cone" d="M0 0L78-24A82 82 0 0 1 78 24Z" fill="url(#rt-g-cone)"/>
+                <path class="rt-veh__arrow" d="M31 0l-8-5.5v11z"/>
+              </g>
+              <circle class="rt-veh__ring" r="22"/>
+              <circle class="rt-veh__disc" r="15.5" fill="url(#rt-g-disc)"/>
+              <circle class="rt-veh__gloss" r="13.5"/>
+              <g class="rt-veh__icons">
+                <g class="rt-veh__ico is-on" data-mode="0"><g transform="translate(-9 -9) scale(.75)">
+                  <rect x="5" y="2.5" width="14" height="14.5" rx="3.5"/><path d="M5 10h14M9 17l-2.5 4.5M15 17l2.5 4.5M8.5 13.6h.01M15.5 13.6h.01M9.5 5.5h5"/>
+                </g></g>
+                <g class="rt-veh__ico" data-mode="1"><g transform="translate(-9 -9) scale(.75)">
+                  <path d="M1.5 5.5h12v10.5h-12zM13.5 9h4.3l4.2 4.3V16h-8.5z"/><circle cx="5.5" cy="17.8" r="2.1"/><circle cx="17.5" cy="17.8" r="2.1"/>
+                </g></g>
+                <g class="rt-veh__ico" data-mode="2"><g transform="translate(-9 -9) scale(.75)">
+                  <path d="M2.5 14h19l-2.6 5H5.1z M6 14V9h11v5 M9 9V5.5h4.5V9"/><path d="M2 21.5c1.7 0 1.7-.9 3.3-.9s1.7.9 3.3.9 1.7-.9 3.4-.9 1.7.9 3.3.9 1.7-.9 3.3-.9 1.7.9 3.4.9"/>
+                </g></g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <div class="rt-labels"></div>
+      </div>
+    </div>
+
+    <!-- interface -->
+    <div class="rt-ui">
+      <div class="container rt-ui__in">
+        <header class="rt-head">
+          <span class="eyebrow" data-scramble><span class="idx">04</span>&nbsp;— Yangi Ipak yoʻli</span>
+          <div class="rt-head__body">
+            <h2 class="h2 rt-title" id="rt-title" data-split="lines">Sharqdan Gʻarbga — <span class="accent-turq">18 kunda.</span></h2>
+            <p class="lead rt-lead" data-reveal="blur" data-delay=".25">Qadimgi karvonlar oylab yurgan yoʻlni biz poyezd, fura va parom bilan bitta shartnomada bogʻlaymiz — har bir kilometr nazoratda.</p>
+            <div class="rt-hint" data-reveal="fade" data-delay=".6">
+              <span class="rt-hint__mouse" aria-hidden="true"><i></i></span>
+              <span class="mono">Aylantiring — yuk yoʻlga chiqadi</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="rt-final" aria-hidden="true">
+          <span class="rt-final__stamp mono">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>
+            Yetkazildi · Duisburg
+          </span>
+          <p class="rt-final__big"><span class="rt-final__n">11&#8201;000</span>&nbsp;km. <span class="rt-final__n accent-turq">18</span>&nbsp;kun.<span class="rt-final__muted">Bitta shartnoma.</span></p>
+          <div class="rt-final__row">
+          <ul class="rt-final__chips">
+            <li class="chip"><b>12</b>&nbsp;davlat</li>
+            <li class="chip"><b>3</b>&nbsp;transport turi</li>
+            <li class="chip"><b>24/7</b>&nbsp;dispetcher</li>
+          </ul>
+          <a class="btn btn--primary btn--sm rt-final__cta" data-magnetic href="#kalkulyator" tabindex="-1">
+            <span class="btn__label" data-text="Marshrutni hisoblash"><span>Marshrutni hisoblash</span></span>
+            <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          </div>
+        </div>
+
+        <aside class="rt-hud" aria-label="Joriy bosqich">
+          <div class="rt-hud__top">
+            <div class="rt-hud__mode">
+              <span class="rt-hud__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="is-on" data-mode="0"><rect x="5" y="2.5" width="14" height="14.5" rx="3.5"/><path d="M5 10h14M9 17l-2.5 4.5M15 17l2.5 4.5M8.5 13.6h.01M15.5 13.6h.01M9.5 5.5h5"/></svg>
+                <svg viewBox="0 0 24 24" data-mode="1"><path d="M1.5 5.5h12v10.5h-12zM13.5 9h4.3l4.2 4.3V16h-8.5z"/><circle cx="5.5" cy="17.8" r="2.1"/><circle cx="17.5" cy="17.8" r="2.1"/></svg>
+                <svg viewBox="0 0 24 24" data-mode="2"><path d="M2.5 14h19l-2.6 5H5.1z M6 14V9h11v5 M9 9V5.5h4.5V9"/><path d="M2 21.5c1.7 0 1.7-.9 3.3-.9s1.7.9 3.3.9 1.7-.9 3.4-.9 1.7.9 3.3.9 1.7-.9 3.3-.9 1.7.9 3.4.9"/></svg>
+              </span>
+              <span class="rt-hud__modetxt">
+                <span class="rt-hud__k">Transport</span>
+                <span class="rt-hud__modename">Temir yoʻl</span>
+              </span>
+            </div>
+            <span class="rt-hud__live mono"><i class="dot-live"></i><span class="rt-hud__status">Jonli</span></span>
+          </div>
+          <div class="rt-hud__leg">
+            <span class="rt-hud__from">Shanghai</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M14 7l5 5-5 5"/></svg>
+            <span class="rt-hud__to">Sian</span>
+          </div>
+          <div class="rt-hud__bar"><i class="rt-hud__fill"></i><span class="rt-hud__ticks"></span></div>
+          <dl class="rt-hud__stats">
+            <div><dt>Masofa</dt><dd><b class="rt-hud__km">0</b><small>km</small></dd></div>
+            <div><dt>Kun</dt><dd><b class="rt-hud__day">1</b><small>/ 18</small></dd></div>
+            <div class="rt-hud__cty"><dt>Davlat</dt><dd class="rt-hud__country">Xitoy</dd></div>
+          </dl>
+          <div class="rt-hud__coords mono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="rt-hud__compass"><circle cx="12" cy="12" r="9.5"/><path class="rt-hud__needle" d="M12 5.5l2.4 6.5L12 18.5 9.6 12z"/></svg>
+            <span class="rt-hud__geo">N 31°13′ · E 121°28′</span>
+          </div>
+        </aside>
+
+        <nav class="rt-stops" aria-label="Marshrut bekatlari">
+          <span class="rt-stops__line" aria-hidden="true"><i></i></span>
+          <ol class="rt-stops__list"></ol>
+        </nav>
+
+        <div class="rt-legend" aria-hidden="true">
+          <span><i class="rt-legend__new"></i>Yangi Ipak yoʻli · 2026</span>
+          <span><i class="rt-legend__old"></i>Tarixiy karvon yoʻli</span>
+          <span><i class="rt-legend__uz"></i>Oʻzbekiston</span>
+          <span class="rt-scale"><i class="rt-scale__bar"></i><b class="rt-scale__txt">500 km</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sr-only">Marshrut: Shanghai (1-kun) → Sian → Urumchi → Qorgʻos → Olmaota → Toshkent (7-kun) → Samarqand → Buxoro → Turkmanboshi → parom orqali Boku → Tbilisi → Istanbul (14-kun) → Duisburg (18-kun). Jami taxminan 11 000 km, 12 davlat.</p>
+</section>

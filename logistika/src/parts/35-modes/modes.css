@@ -1,0 +1,508 @@
+/* ==========================================================================
+   03 · TRANSPORT TURLARI (modes) — owner D
+   Pinned horizontal scroll through 4 living SVG scenes.
+   Scene units: cqh / cqw of .mod-scene (container-type: size).
+   ========================================================================== */
+@property --mod-acc { syntax: '<color>'; inherits: true; initial-value: #ffc861; }
+
+#transport { padding-bottom: 0; --mod-acc: #ffc861; transition: --mod-acc .9s var(--ease-out); }
+
+/* ------------------------------------------------------------ intro head */
+#transport .mod-intro {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+#transport .mod-intro .sec-head { margin-bottom: 0; }
+#transport .mod-intro__cue { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-bottom: 6px; }
+#transport .mod-intro__mouse { position: relative; width: 26px; height: 42px; border-radius: 14px; border: 1.5px solid var(--line-3); }
+#transport .mod-intro__mouse i {
+  position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: var(--turq);
+  animation: mod-wheel-cue 1.8s var(--ease-in-out) infinite; animation-play-state: paused;
+}
+#transport.mod-near .mod-intro__mouse i { animation-play-state: running; }
+#transport .mod-intro__cue-t { font-size: .68rem; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); }
+#transport .mod-intro__modes { display: flex; gap: 10px; }
+#transport .mod-intro__modes svg {
+  width: 30px; height: 30px; padding: 6px; border-radius: 50%; border: 1px solid var(--line-2);
+  fill: none; stroke: var(--turq); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------------ pin / frame / track */
+#transport .mod-pin { position: relative; height: 100vh; height: 100svh; }
+#transport .mod-frame { position: absolute; inset: 0; overflow: hidden; background: var(--ink-950); isolation: isolate; }
+#transport .mod-track { position: absolute; top: 0; left: 0; height: 100%; width: 400%; display: flex; will-change: transform; }
+#transport .mod-panel { position: relative; flex: 0 0 25%; height: 100%; overflow: hidden; contain: layout paint style; }
+/* only the panels in view are rendered at all (keeps the compositor lean) */
+#transport .mod-panel.mod-cv, #transport.mod-cv-all .mod-track { content-visibility: hidden; }
+#transport .mod-scene { position: absolute; inset: 0; container-type: size; overflow: hidden; pointer-events: none; }
+#transport .mod-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* layers */
+#transport .mod-l {
+  position: absolute;
+  translate: calc(var(--px, 0) * var(--d, 0) * .45cqh) calc(var(--py, 0) * var(--d, 0) * .22cqh);
+}
+#transport .mod-panel.is-live .mod-px { will-change: transform; }
+#transport .mod-l .mod-l { translate: none; }
+#transport .mod-l > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+#transport .mod-l--full { inset: 0; }
+#transport .mod-l--c {
+  left: 50%; bottom: var(--b); height: var(--h);
+  width: max(100cqw + 6px, var(--h) * var(--ar));
+  margin-left: calc(max(100cqw + 6px, var(--h) * var(--ar)) / -2);
+}
+#transport .mod-l--strip { left: 0; right: 0; bottom: var(--b); height: var(--h); }
+#transport .mod-strip {
+  position: absolute; top: 0; bottom: 0; left: calc(var(--t) * -1 - 32cqw); width: calc(100% + var(--t) * 2 + 32cqw);
+  background-repeat: repeat-x; background-size: var(--t) 100%; background-position: 0 0;
+  animation: mod-slide 2s linear infinite; will-change: transform;
+}
+#transport .mod-strip--r { animation-name: mod-slide-r; }
+#transport .mod-act { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#transport .mod-act__in { position: absolute; inset: 0; }
+#transport .mod-truck__beam > svg, #transport .mod-train__beam > svg, #transport .mod-lh__beam > svg { display: block; width: 100%; height: 100%; }
+
+/* shared scene bits */
+#transport .mod-stars { position: absolute; inset: 0; }
+#transport .mod-stars > svg { width: 100%; height: 100%; display: block; }
+#transport .mod-tw {
+  position: absolute; width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 6px 2px rgba(200, 225, 255, .8), 0 0 0 1px rgba(255, 255, 255, .3);
+  animation: mod-twinkle 3s ease-in-out infinite alternate;
+}
+#transport .mod-tw::before, #transport .mod-tw::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 22px; height: 1px; margin: -.5px 0 0 -11px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .85), transparent);
+}
+#transport .mod-tw::after { transform: rotate(90deg); }
+#transport .mod-word {
+  left: 37cqw; top: 33cqh; margin: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: min(21cqh, 13cqw); line-height: .9; letter-spacing: -.05em;
+  text-transform: uppercase; white-space: nowrap; user-select: none;
+}
+#transport .mod-word__i {
+  position: absolute; left: .04em; bottom: 100%; margin-bottom: .02em;
+  font-style: normal; font-size: .42em; line-height: 1; letter-spacing: -.02em;
+  color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--acc) 80%, transparent);
+}
+#transport .mod-word span {
+  display: block; color: transparent;
+  background: linear-gradient(180deg, rgba(244, 247, 255, .92) 8%, color-mix(in srgb, var(--acc) 70%, transparent) 55%, rgba(244, 247, 255, 0) 97%);
+  -webkit-background-clip: text; background-clip: text;
+}
+#transport .mod-moon { left: 77cqw; top: 10cqh; width: 11cqh; aspect-ratio: 1; }
+#transport .mod-moon__glow {
+  position: absolute; inset: -140%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 222, 160, .3), rgba(255, 200, 97, .08) 32%, transparent 62%);
+}
+#transport .mod-moon--sea { left: 60cqw; top: 9cqh; width: 9cqh; }
+#transport .mod-moon--sea .mod-moon__glow { background: radial-gradient(circle, rgba(190, 240, 255, .3), rgba(46, 230, 214, .07) 32%, transparent 62%); }
+
+#transport .mod-tag {
+  position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px 6px 10px; border-radius: 999px; white-space: nowrap;
+  background: rgba(3, 5, 12, .72); border: 1px solid rgba(var(--turq-rgb), .38);
+  font-family: var(--font-mono); font-size: 11px; line-height: 1.2; letter-spacing: .06em; color: var(--text);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .7);
+}
+#transport .mod-tag i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--turq); flex: none;
+  animation: mod-ping 1.8s ease-out infinite;
+}
+#transport .mod-tag::after {
+  content: ''; position: absolute; left: 18px; top: 100%; width: 1px; height: var(--lead, 22px);
+  background: linear-gradient(rgba(var(--turq-rgb), .7), rgba(var(--turq-rgb), 0));
+}
+#transport .mod-tag--gold { border-color: rgba(var(--gold-rgb), .45); color: #ffe7b8; }
+#transport .mod-tag--gold i { background: var(--gold); animation-name: mod-ping-gold; }
+#transport .mod-tag--gold::after { background: linear-gradient(rgba(var(--gold-rgb), .7), rgba(var(--gold-rgb), 0)); }
+
+#transport .mod-ring {
+  position: absolute; width: 20cqh; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  border: 2px solid var(--acc); translate: -50% -50%; box-shadow: 0 0 24px var(--acc);
+}
+
+/* ------------------------------------------------------------ 01 · AVTO */
+#transport .mod-scene--auto {
+  background:
+    radial-gradient(60% 34% at 66% 73%, rgba(61, 139, 255, .3), transparent 70%),
+    radial-gradient(34% 22% at 22% 74%, rgba(139, 108, 255, .22), transparent 70%),
+    linear-gradient(180deg, #03050c 0%, #060a1d 34%, #0e1744 58%, #24245e 69%, #3a2d6e 72.5%, #0a1030 73.5%, #05070f 100%);
+}
+#transport .mod-reg { left: 47cqw; bottom: 26.3cqh; height: 20cqh; aspect-ratio: 600 / 232; }
+#transport .mod-a-plain {
+  left: -10cqw; right: -10cqw; bottom: 0; height: 27cqh;
+  background: linear-gradient(180deg, #0b1233 0%, #070b1f 45%, #04060f 100%);
+}
+#transport .mod-a-plain > svg { height: 7cqh; }
+#transport .mod-a-road {
+  left: 0; right: 0; bottom: 3.5cqh; height: 13.5cqh; overflow: hidden;
+  background:
+    radial-gradient(40% 70% at 82% 40%, rgba(255, 220, 160, .13), transparent 70%),
+    linear-gradient(180deg, #1b2144 0%, #11152e 10%, #0b0e20 100%);
+}
+#transport .mod-a-road__edge {
+  position: absolute; left: 0; right: 0; top: 0; height: .5cqh;
+  background: linear-gradient(90deg, rgba(255, 200, 97, .25), rgba(255, 200, 97, .75) 55%, rgba(255, 200, 97, .3));
+}
+#transport .mod-a-road__edge--b { top: auto; bottom: 10%; height: .35cqh; background: rgba(234, 241, 255, .28); }
+#transport .mod-a-road__dash {
+  --t: 18cqh;
+  position: absolute; left: 0; top: 48%; height: .8cqh; width: calc(100% + 36cqh);
+  background: repeating-linear-gradient(90deg, rgba(255, 236, 200, .9) 0 7cqh, transparent 7cqh 18cqh);
+  animation: mod-slide .52s linear infinite; will-change: transform;
+}
+#transport .mod-sign { left: 77cqw; bottom: 15.8cqh; height: 38cqh; aspect-ratio: 300 / 360; }
+#transport .mod-truck { left: 39cqw; bottom: 6cqh; width: min(68cqh, 48cqw); aspect-ratio: 680 / 230; }
+#transport .mod-truck__body { position: absolute; inset: 0; animation: mod-bounce .4s ease-in-out infinite alternate; }
+#transport .mod-truck__body > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+#transport .mod-wheel { position: absolute; aspect-ratio: 1; animation: mod-spin .46s linear infinite; }
+#transport .mod-wheel > svg { width: 100%; height: 100%; display: block; }
+#transport .mod-truck__beam {
+  position: absolute; left: 98.6%; top: 60.4%; width: 110%; height: 78%; translate: 0 -50%;
+  animation: mod-flicker 3.2s ease-in-out infinite;
+}
+#transport .mod-truck__pool {
+  position: absolute; left: 100%; bottom: -5%; width: 90%; height: 16%;
+  background: radial-gradient(closest-side, rgba(255, 224, 170, .34), transparent);
+}
+#transport .mod-truck__tail {
+  position: absolute; left: -3%; top: 58%; width: 9%; aspect-ratio: 1; translate: 0 -50%;
+  background: radial-gradient(circle, rgba(255, 59, 46, .6), transparent 65%);
+}
+#transport .mod-truck__tag { left: 71%; bottom: calc(100% + 22px); }
+#transport .mod-winds { overflow: hidden; }
+#transport .mod-wind {
+  position: absolute; left: 100%; top: var(--y); width: var(--w); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200, 220, 255, .55), transparent);
+  animation: mod-wind 1.25s linear infinite;
+}
+
+/* ------------------------------------------------------------ 02 · TEMIR YO'L */
+#transport .mod-scene--rail {
+  background:
+    radial-gradient(40% 30% at 70% 52%, rgba(255, 170, 90, .35), transparent 70%),
+    linear-gradient(180deg, #06050f 0%, #130c2a 20%, #331640 35%, #6c2845 44%, #b8463a 50%, #f08a45 54%, #ffc46a 57%, #ffd58a 58.5%, #6a2a3a 62%, #1a0c1e 100%);
+}
+#transport .mod-scene--rail .mod-word { top: 16cqh; font-size: min(14.5cqh, 9.5cqw); }
+#transport .mod-sun { left: 62cqw; top: 36cqh; width: 26cqh; aspect-ratio: 1; }
+#transport .mod-sun__glow {
+  position: absolute; inset: -90%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 97, .35), rgba(255, 90, 54, .1) 35%, transparent 62%);
+}
+#transport .mod-caravan { position: absolute; left: 0; right: 0; bottom: 75.6%; height: 29%; }
+#transport .mod-caravan__walk {
+  position: absolute; left: 50%; bottom: 0; height: 100%; aspect-ratio: 880 / 112;
+  animation: mod-caravan 64s linear infinite; animation-delay: -30s;
+}
+#transport .mod-caravan__walk > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+#transport .mod-camel {
+  fill: rgba(255, 200, 97, .09); stroke: rgba(255, 214, 140, .75); stroke-width: 1.3; stroke-linejoin: round;
+  animation: mod-camel .8s ease-in-out infinite alternate;
+}
+#transport .mod-camel__pack { fill: rgba(255, 90, 54, .22); stroke: rgba(255, 150, 110, .7); }
+#transport .mod-leg { transform-box: fill-box; transform-origin: 50% 0; animation: mod-leg 1.6s ease-in-out infinite alternate; }
+#transport .mod-leg--b { animation-delay: -1.6s; }
+#transport .mod-car__trail { stroke: rgba(255, 200, 97, .35); stroke-width: 1.4; stroke-dasharray: 2 8; fill: none; }
+#transport .mod-car__rope { stroke: rgba(255, 214, 140, .5); stroke-width: 1; }
+#transport .mod-caravan__tag { left: 26%; bottom: calc(100% + 18px); --lead: 16px; }
+#transport .mod-r-ground {
+  left: 0; right: 0; bottom: 0; height: 15cqh;
+  background: linear-gradient(180deg, #2c1526 0%, #160a18 45%, #09040b 100%);
+}
+#transport .mod-train { right: 3cqw; bottom: 21cqh; height: 16cqh; aspect-ratio: 2160 / 150; }
+#transport .mod-train__body { position: absolute; inset: 0; animation: mod-rattle .16s steps(2, jump-none) infinite; }
+#transport .mod-train__body > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+#transport .mod-train__beam {
+  position: absolute; left: 99.4%; top: 66%; width: 46cqh; height: 14cqh; translate: 0 -50%;
+  animation: mod-flicker 2.6s ease-in-out infinite;
+}
+#transport .mod-train__spark {
+  position: absolute; right: 9.3%; top: 1.5%; width: 3cqh; aspect-ratio: 1; translate: 50% -50%; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgba(160, 220, 255, .9) 18%, rgba(61, 139, 255, .35) 40%, transparent 70%);
+  opacity: 0; animation: mod-spark 3.4s linear infinite;
+}
+#transport .mod-train__tag { right: 7%; bottom: calc(100% + 18px); --lead: 16px; }
+
+/* ------------------------------------------------------------ 03 · DENGIZ */
+#transport .mod-scene--sea {
+  background:
+    radial-gradient(50% 26% at 50% 64%, rgba(46, 230, 214, .16), transparent 70%),
+    linear-gradient(180deg, #02040b 0%, #041029 34%, #0a2446 52%, #114e6b 61%, #1d7b8a 64.4%, #0a2238 65%, #04101f 100%);
+}
+#transport .mod-scene--sea .mod-word { font-size: min(15cqh, 9.6cqw); top: 27cqh; }
+#transport .mod-lh { left: 34.5cqw; bottom: 33.5cqh; height: 30cqh; aspect-ratio: 140 / 300; }
+#transport .mod-lh__beam {
+  position: absolute; left: 50%; top: 24.6%; width: 120cqh; height: 16cqh; margin-top: -8cqh; transform-origin: 0 50%;
+  animation: mod-beam 9s ease-in-out infinite;
+}
+#transport .mod-lh__flare {
+  position: absolute; left: 50%; top: 24.6%; width: 16cqh; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 250, 230, 1), rgba(255, 200, 97, .4) 28%, transparent 66%);
+  animation: mod-flare 9s ease-in-out infinite;
+}
+#transport .mod-s-water { left: 0; right: 0; bottom: 0; height: 35.4cqh; background: linear-gradient(180deg, #0f3558 0%, #0a2442 32%, #051226 100%); }
+#transport .mod-glitter { left: calc(60cqw + 4.5cqh); bottom: 6cqh; height: 29cqh; width: 16cqh; margin-left: -8cqh; }
+#transport .mod-glitter i {
+  position: absolute; left: 50%; top: var(--gy); width: var(--gw); height: .4cqh; translate: -50% 0; border-radius: 3px;
+  background: linear-gradient(90deg, transparent, rgba(220, 248, 255, .85), transparent);
+  animation: mod-glit 1.7s ease-in-out infinite alternate; animation-delay: var(--gd);
+}
+#transport .mod-quay {
+  right: 0; width: 34cqw; bottom: 14cqh; height: 8.5cqh;
+  background: linear-gradient(180deg, #1a2a52 0%, #0d1734 30%, #070d20 100%);
+  border-top: 2px solid rgba(var(--turq-rgb), .45);
+}
+#transport .mod-crane { bottom: 22cqh; aspect-ratio: 290 / 360; }
+#transport .mod-crane--a { right: 1cqw; height: 58cqh; }
+#transport .mod-crane--b { right: 25cqw; height: 44cqh; opacity: .6; }
+#transport .mod-crane__warn { animation: mod-blink 1.6s steps(1) infinite; }
+#transport .mod-ship { left: 38cqw; bottom: 10.5cqh; width: min(86cqh, 56cqw); aspect-ratio: 640 / 220; }
+#transport .mod-ship__bob { position: absolute; inset: 0; transform-origin: 50% 85%; animation: mod-ship 5.6s ease-in-out infinite; }
+#transport .mod-ship__bob > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+#transport .mod-ship__foam {
+  position: absolute; right: -2%; bottom: 10%; width: 14%; height: 14%;
+  background: radial-gradient(ellipse at 60% 60%, rgba(220, 248, 255, .55), transparent 62%);
+  animation: mod-foam 1.3s ease-in-out infinite alternate;
+}
+#transport .mod-ship__tag { left: 13%; bottom: calc(100% + 16px); --lead: 20px; }
+#transport .mod-gull { position: absolute; left: 58cqw; top: 22cqh; width: calc(4.4cqh * var(--gs)); translate: var(--gx) var(--gy); animation: mod-gull 16s linear infinite; }
+#transport .mod-gull svg { width: 100%; height: auto; display: block; overflow: visible; animation: mod-flap .42s ease-in-out infinite alternate; transform-origin: 50% 70%; }
+
+/* ------------------------------------------------------------ 04 · AVIA */
+#transport .mod-scene--air {
+  background:
+    radial-gradient(60% 30% at 50% 78%, rgba(255, 140, 80, .28), transparent 70%),
+    linear-gradient(180deg, #02030a 0%, #070a24 24%, #15144a 42%, #34236a 54%, #72335e 64%, #d86a42 71%, #ffc861 74.5%, #ffe2a6 75.5%, #5a3a70 77%, #1a1640 100%);
+}
+#transport .mod-scene--air .mod-word { top: 16cqh; font-size: min(23cqh, 14cqw); left: 40cqw; }
+#transport .mod-shoot {
+  position: absolute; left: 76cqw; top: 12cqh; width: 16cqh; height: 1.5px; rotate: -24deg;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0));
+  opacity: 0; animation: mod-shoot 7s ease-in infinite;
+}
+#transport .mod-plane { left: 39cqw; bottom: 33cqh; width: min(74cqh, 48cqw); aspect-ratio: 720 / 260; }
+#transport .mod-plane__fly { position: absolute; inset: 0; transform: rotate(-9deg); animation: mod-fly 6s ease-in-out infinite; }
+#transport .mod-plane__fly > svg { position: relative; width: 100%; height: 100%; display: block; overflow: visible; }
+#transport .mod-trail {
+  position: absolute; right: 63.4%; top: 61.9%; width: 170%; height: 1.3cqh; margin-top: -.65cqh; border-radius: 99px;
+  background: linear-gradient(270deg, rgba(255, 255, 255, .8), rgba(232, 226, 255, .32) 22%, rgba(200, 190, 255, 0) 100%);
+  transform-origin: 100% 50%; animation: mod-trail 2.4s ease-in-out infinite alternate;
+}
+#transport .mod-trail--b { right: 70.2%; top: 72.7%; width: 150%; animation-delay: -1.2s; }
+#transport .mod-nav { position: absolute; width: 1.1cqh; aspect-ratio: 1; border-radius: 50%; translate: -50% -50%; }
+#transport .mod-nav--beacon { left: 52.8%; top: 37.4%; background: #ff3b2e; box-shadow: 0 0 1.4cqh .5cqh rgba(255, 59, 46, .75); animation: mod-blink 1.3s steps(1) infinite; }
+#transport .mod-nav--belly { left: 52.8%; top: 56.6%; background: #ff3b2e; box-shadow: 0 0 1.4cqh .5cqh rgba(255, 59, 46, .75); animation: mod-blink 1.3s steps(1) infinite; animation-delay: -.65s; }
+#transport .mod-nav--wing { left: 26.8%; top: 82.4%; background: #ff5a5a; box-shadow: 0 0 1.6cqh .6cqh rgba(255, 70, 70, .6); }
+#transport .mod-nav--tail { left: 8.4%; top: 46.4%; background: #fff; box-shadow: 0 0 2cqh .8cqh rgba(255, 255, 255, .85); opacity: 0; animation: mod-strobe 1.6s linear infinite; }
+#transport .mod-plane__tag { left: 40%; bottom: calc(100% + 2px); --lead: 20px; rotate: 9deg; }
+
+/* ------------------------------------------------------------ panel UI */
+#transport .mod-scrim {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 46%; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, rgba(3, 5, 12, .8) 0%, rgba(3, 5, 12, .55) 52%, rgba(3, 5, 12, 0) 100%);
+}
+#transport .mod-seam {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 9vw; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, rgba(3, 5, 12, .8), rgba(3, 5, 12, 0));
+}
+#transport .mod-seam::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg, transparent 4%, var(--acc) 30%, var(--acc) 70%, transparent 96%);
+  box-shadow: 0 0 18px var(--acc);
+}
+#transport .mod-seam::after {
+  content: ''; position: absolute; left: 0; top: 10%; bottom: 10%; width: 9px;
+  background: repeating-linear-gradient(180deg, rgba(234, 241, 255, .45) 0 1px, transparent 1px 22px);
+  -webkit-mask: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+  mask: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+}
+#transport .mod-seam span {
+  position: absolute; left: 16px; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg);
+  font-size: .66rem; letter-spacing: .32em; text-transform: uppercase; color: var(--acc); white-space: nowrap;
+}
+
+#transport .mod-info {
+  position: absolute; z-index: 3;
+  left: max(var(--gutter), calc((100% - var(--container)) / 2));
+  top: clamp(96px, 14vh, 150px); bottom: clamp(96px, 14vh, 136px);
+  width: min(440px, 34%);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 22px;
+}
+#transport .mod-info__top, #transport .mod-info__bot { display: flex; flex-direction: column; gap: 16px; }
+#transport .mod-kicker { display: flex; align-items: baseline; gap: 10px; font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-2); }
+#transport .mod-kicker__n { color: var(--acc); font-weight: 600; }
+#transport .mod-kicker__s { color: var(--text-3); }
+#transport .mod-kicker__t { padding-left: 12px; border-left: 1px solid var(--line-3); }
+#transport .mod-h3 {
+  font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 2.3vw, 2.4rem);
+  line-height: 1.12; letter-spacing: -.025em; text-wrap: balance;
+}
+#transport .mod-h3 em { font-style: normal; color: var(--acc); }
+#transport .mod-lead { color: var(--text-2); font-size: 1rem; line-height: 1.6; max-width: 38ch; }
+#transport .mod-metric { display: grid; grid-template-columns: auto 1fr; align-items: end; column-gap: 12px; }
+#transport .mod-metric__v {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(2.8rem, 5.2vw, 5.2rem); line-height: .9; letter-spacing: -.04em;
+  background: linear-gradient(180deg, #fff 20%, var(--acc)); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+#transport .mod-metric__u { font-family: var(--font-display); font-weight: 500; font-size: clamp(1rem, 1.4vw, 1.35rem); color: var(--acc); padding-bottom: .3em; }
+#transport .mod-metric__s { grid-column: 1 / -1; margin-top: 8px; font-size: .86rem; color: var(--text-2); }
+#transport .mod-facts { display: grid; gap: 8px; }
+#transport .mod-facts li { position: relative; padding-left: 24px; font-size: .95rem; color: var(--text); line-height: 1.45; }
+#transport .mod-facts li::before {
+  content: ''; position: absolute; left: 0; top: .32em; width: 12px; height: 12px; background: var(--acc);
+  clip-path: polygon(50% 0, 61% 30%, 85% 15%, 70% 39%, 100% 50%, 70% 61%, 85% 85%, 61% 70%, 50% 100%, 39% 70%, 15% 85%, 30% 61%, 0 50%, 30% 39%, 15% 15%, 39% 30%);
+}
+#transport .mod-route {
+  display: flex; align-items: center; gap: 12px; align-self: flex-start; max-width: 100%;
+  padding: 10px 16px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: rgba(3, 5, 12, .55);
+  font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-2); white-space: nowrap;
+}
+#transport .mod-route b { color: var(--acc); font-weight: 600; padding-left: 12px; border-left: 1px solid var(--line-2); }
+#transport .mod-route__line { position: relative; width: 56px; height: 1px; background: repeating-linear-gradient(90deg, var(--line-3) 0 4px, transparent 4px 8px); flex: none; }
+#transport .mod-route__line i {
+  position: absolute; top: -3px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 10px var(--acc);
+  animation: mod-route 2.4s var(--ease-in-out) infinite; animation-play-state: paused;
+}
+#transport.mod-on .mod-panel.is-live .mod-route__line i { animation-play-state: running; }
+
+#transport .mod-vignette { position: absolute; left: 0; right: 0; top: 0; height: 18%; z-index: 4; pointer-events: none; background: linear-gradient(180deg, rgba(3, 5, 12, .55), rgba(3, 5, 12, 0)); }
+#transport .mod-vignette--b { top: auto; bottom: 0; height: 24%; background: linear-gradient(0deg, rgba(3, 5, 12, .8), rgba(3, 5, 12, 0)); }
+
+/* HUD */
+#transport .mod-hud {
+  position: absolute; z-index: 5;
+  left: max(var(--gutter), calc((100% - var(--container)) / 2)); right: max(var(--gutter), calc((100% - var(--container)) / 2));
+  bottom: clamp(16px, 3vh, 30px);
+  display: grid; grid-template-columns: 1fr minmax(0, 560px) 1fr; align-items: center; gap: 24px;
+}
+#transport .mod-hud__l { display: flex; flex-direction: column; gap: 4px; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); }
+#transport .mod-hud__mode { color: var(--mod-acc); font-size: .82rem; letter-spacing: .16em; min-height: 1.2em; }
+#transport .mod-hud__nav { position: relative; height: 46px; }
+#transport .mod-hud__bar { position: absolute; left: 6px; right: 6px; top: 12px; height: 2px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
+#transport .mod-hud__fill { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--turq), var(--mod-acc)); }
+#transport .mod-hud__dot {
+  position: absolute; top: 0; left: calc(6px + (100% - 12px) * var(--i, 0) / 3); translate: -50% 0;
+  display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0 4px; border-radius: 10px;
+}
+#transport .mod-hud__pip {
+  width: 12px; height: 12px; margin-top: 7px; border-radius: 50%; background: var(--ink-950); border: 2px solid var(--line-3);
+  transition: background-color .5s var(--ease-out), border-color .5s var(--ease-out), box-shadow .5s var(--ease-out), transform .5s var(--ease-out);
+}
+#transport .mod-hud__lbl { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); white-space: nowrap; transition: color .4s; }
+#transport .mod-hud__dot.is-past .mod-hud__pip { background: var(--mod-acc); border-color: var(--mod-acc); }
+#transport .mod-hud__dot.is-active .mod-hud__pip { background: var(--mod-acc); border-color: var(--mod-acc); box-shadow: 0 0 0 5px rgba(255, 255, 255, .06), 0 0 16px var(--mod-acc); transform: scale(1.25); }
+#transport .mod-hud__dot.is-active .mod-hud__lbl { color: var(--text); }
+@media (hover: hover) { #transport .mod-hud__dot:hover .mod-hud__lbl { color: var(--text); } #transport .mod-hud__dot:hover .mod-hud__pip { border-color: var(--text); } }
+#transport .mod-hud__r { justify-self: end; display: flex; align-items: baseline; gap: 8px; }
+#transport .mod-hud__spd { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.02em; color: var(--text); min-width: 3ch; text-align: right; }
+#transport .mod-hud__unit { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); }
+
+/* ------------------------------------------------------------ play state (offscreen = paused) */
+#transport:not(.mod-near) .eyebrow::before { animation-play-state: paused; }
+#transport .mod-scene *, #transport .mod-scene *::before, #transport .mod-scene *::after { animation-play-state: paused !important; }
+#transport.mod-on .mod-panel.is-live .mod-scene *,
+#transport.mod-on .mod-panel.is-live .mod-scene *::before,
+#transport.mod-on .mod-panel.is-live .mod-scene *::after { animation-play-state: running !important; }
+
+/* ------------------------------------------------------------ keyframes */
+@keyframes mod-slide { to { transform: translate3d(calc(var(--t) * -1), 0, 0); } }
+@keyframes mod-slide-r { from { transform: translate3d(calc(var(--t) * -1), 0, 0); } to { transform: translate3d(0, 0, 0); } }
+@keyframes mod-twinkle { from { opacity: .1; transform: scale(.5); } to { opacity: 1; transform: scale(1.15); } }
+@keyframes mod-spin { to { transform: rotate(360deg); } }
+@keyframes mod-bounce { from { transform: translateY(0); } to { transform: translateY(-.3cqh); } }
+@keyframes mod-rattle { from { transform: translateY(0); } to { transform: translateY(-.12cqh); } }
+@keyframes mod-flicker { 0%, 100% { opacity: .92; } 40% { opacity: .78; } 43% { opacity: .95; } 70% { opacity: .85; } }
+@keyframes mod-wind { from { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } to { transform: translateX(calc(-100cqw - 100%)); opacity: .6; } }
+@keyframes mod-caravan { 0% { transform: translateX(14cqw); opacity: 0; } 7% { opacity: 1; } 93% { opacity: 1; } 100% { transform: translateX(-88cqw); opacity: 0; } }
+@keyframes mod-camel { from { transform: translateY(0); } to { transform: translateY(-1px); } }
+@keyframes mod-leg { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+@keyframes mod-spark { 0%, 61%, 66%, 71%, 100% { opacity: 0; transform: scale(.4); } 62%, 64% { opacity: 1; transform: scale(1.2); } 69% { opacity: .8; transform: scale(.8); } }
+@keyframes mod-beam {
+  0% { transform: scaleX(1); } 25% { transform: scaleX(.015); } 50% { transform: scaleX(-1); } 75% { transform: scaleX(-.015); } 100% { transform: scaleX(1); }
+}
+@keyframes mod-flare { 0%, 12%, 38%, 100% { opacity: .35; transform: scale(.7); } 25% { opacity: 1; transform: scale(1.7); } 62%, 88% { opacity: .22; transform: scale(.6); } }
+@keyframes mod-glit { from { opacity: .12; transform: scaleX(.55); } to { opacity: .95; transform: scaleX(1.15); } }
+@keyframes mod-ship { 0%, 100% { transform: translateY(0) rotate(-.55deg); } 50% { transform: translateY(-.6cqh) rotate(.55deg); } }
+@keyframes mod-foam { from { opacity: .5; transform: scaleX(.85); } to { opacity: 1; transform: scaleX(1.1); } }
+@keyframes mod-gull { 0% { transform: translate(0, 0); } 50% { transform: translate(-9cqw, -2cqh); } 100% { transform: translate(-18cqw, 0); } }
+@keyframes mod-flap { from { transform: scaleY(1); } to { transform: scaleY(-.35); } }
+@keyframes mod-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: .08; } }
+@keyframes mod-strobe { 0%, 4% { opacity: 1; } 5%, 11% { opacity: 0; } 12%, 16% { opacity: 1; } 17%, 100% { opacity: 0; } }
+@keyframes mod-fly { 0%, 100% { transform: rotate(-9deg) translateY(0); } 50% { transform: rotate(-7.6deg) translateY(-1.3cqh); } }
+@keyframes mod-trail { from { transform: scaleY(.75); opacity: .75; } to { transform: scaleY(1.15); opacity: 1; } }
+@keyframes mod-shoot { 0%, 86% { opacity: 0; transform: translateX(0); } 88% { opacity: 1; } 100% { opacity: 0; transform: translateX(-34cqh); } }
+@keyframes mod-ping { 0% { box-shadow: 0 0 0 0 rgba(46, 230, 214, .7); } 100% { box-shadow: 0 0 0 9px rgba(46, 230, 214, 0); } }
+@keyframes mod-ping-gold { 0% { box-shadow: 0 0 0 0 rgba(255, 200, 97, .7); } 100% { box-shadow: 0 0 0 9px rgba(255, 200, 97, 0); } }
+@keyframes mod-route { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: calc(100% - 7px); opacity: 0; } }
+@keyframes mod-wheel-cue { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }
+
+/* ------------------------------------------------------------ tablet / mobile */
+@media (max-width: 1024px) {
+  #transport .mod-info { width: min(400px, 40%); }
+  #transport .mod-scrim { width: 58%; background: linear-gradient(90deg, rgba(3, 5, 12, .85) 0%, rgba(3, 5, 12, .6) 50%, rgba(3, 5, 12, 0) 100%); }
+}
+@media (max-width: 768px), (max-aspect-ratio: 3/4) {
+  #transport .mod-intro { grid-template-columns: 1fr; gap: 26px; }
+  #transport .mod-intro__cue { flex-direction: row; justify-content: flex-start; gap: 14px; }
+  #transport .mod-intro__mouse { display: none; }
+  #transport .mod-scene { bottom: 30%; }
+  #transport .mod-scrim {
+    width: auto; right: 0;
+    background:
+      linear-gradient(0deg, var(--ink-950) 0%, var(--ink-950) 29%, rgba(3, 5, 12, .75) 36%, rgba(3, 5, 12, 0) 50%),
+      linear-gradient(180deg, rgba(3, 5, 12, .8) 0%, rgba(3, 5, 12, 0) 26%);
+  }
+  #transport .mod-seam { width: 14vw; }
+  #transport .mod-seam span { display: none; }
+  #transport .mod-info { left: var(--gutter); right: var(--gutter); width: auto; top: 76px; bottom: 76px; gap: 12px; }
+  #transport .mod-info__top { gap: 10px; }
+  #transport .mod-info__bot { gap: 12px; }
+  #transport .mod-kicker { font-size: .66rem; }
+  #transport .mod-h3 { font-size: 1.35rem; max-width: 22ch; }
+  #transport .mod-lead { display: none; }
+  #transport .mod-metric__v { font-size: 2.7rem; }
+  #transport .mod-metric__s { margin-top: 4px; font-size: .8rem; }
+  #transport .mod-facts { gap: 5px; }
+  #transport .mod-facts li { font-size: .86rem; }
+  #transport .mod-route { font-size: .68rem; padding: 8px 14px; gap: 10px; }
+  #transport .mod-route__line { width: 36px; }
+  #transport .mod-hud { grid-template-columns: 1fr; bottom: 12px; }
+  #transport .mod-hud__l, #transport .mod-hud__r { display: none; }
+  #transport .mod-hud__lbl { font-size: .58rem; letter-spacing: .08em; }
+  #transport .mod-tag { font-size: 10px; padding: 5px 10px 5px 8px; }
+
+  #transport .mod-word { left: 6cqw; top: 34cqh; font-size: min(13cqh, 19cqw); }
+  #transport .mod-scene--rail .mod-word { top: 31cqh; font-size: min(8.2cqh, 13.5cqw); }
+  #transport .mod-caravan__tag { display: none; }
+  #transport .mod-scene--sea .mod-word { top: 35cqh; font-size: min(9.5cqh, 13.5cqw); }
+  #transport .mod-scene--air .mod-word { left: 6cqw; top: 34cqh; font-size: min(13cqh, 19cqw); }
+  #transport .mod-moon { left: 74cqw; top: 22cqh; width: 8cqh; }
+  #transport .mod-moon--sea { left: 76cqw; top: 22cqh; width: 7cqh; }
+  #transport .mod-reg { left: -4cqw; height: 13cqh; }
+  #transport .mod-truck { left: 3cqw; width: min(94cqw, 72cqh); bottom: 6.5cqh; }
+  #transport .mod-truck__tag { left: 3%; }
+  #transport .mod-sign { left: calc(98cqw - 23.3cqh); height: 28cqh; }
+  #transport .mod-sun { left: 50cqw; top: 36cqh; width: 24cqh; }
+  #transport .mod-train { right: -6cqw; }
+  #transport .mod-train__tag { right: 12%; }
+  #transport .mod-lh { left: 2cqw; height: 20cqh; }
+  #transport .mod-glitter { left: calc(76cqw + 3.5cqh); }
+  #transport .mod-ship { width: min(128cqw, 96cqh); left: calc(50cqw - min(128cqw, 96cqh) * .55); }
+  #transport .mod-ship__tag { left: 46%; }
+  #transport .mod-crane--a { right: -24cqw; height: 50cqh; }
+  #transport .mod-crane--b { display: none; }
+  #transport .mod-quay { width: 40cqw; }
+  #transport .mod-gull { left: 60cqw; top: 30cqh; }
+  #transport .mod-plane { left: 3cqw; width: min(94cqw, 80cqh); bottom: 30cqh; }
+  #transport .mod-plane__tag { left: 34%; bottom: auto; top: 84%; }
+  #transport .mod-plane__tag::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #transport .mod-scene *, #transport .mod-scene *::before, #transport .mod-scene *::after,
+  #transport .mod-route__line i, #transport .mod-intro__mouse i { animation: none !important; }
+  #transport .mod-nav--tail, #transport .mod-train__spark { opacity: 0; }
+  #transport .mod-shoot { display: none; }
+}

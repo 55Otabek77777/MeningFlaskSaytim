@@ -1,0 +1,245 @@
+/* ==========================================================================
+   20-heritage · Ulugʻbek merosi
+   ========================================================================== */
+#meros { position: relative; }
+#meros .her-stage {
+  position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden;
+  isolation: isolate;
+}
+#meros .her-gl, #meros .her-vec {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; max-width: none;
+}
+#meros .her-gl { z-index: 1; }
+#meros .her-vec { z-index: 2; }
+
+/* soft coloured glow behind each formed shape (no dark vignette → no seams) */
+#meros .her-glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+#meros .her-glow::before, #meros .her-glow::after, #meros .her-glow {
+  --her-r: min(46vw, 62vh);
+}
+#meros .her-glow::before, #meros .her-glow::after {
+  content: ''; position: absolute; left: var(--her-cx, 65%); top: var(--her-cy, 50%);
+  width: calc(var(--her-r) * 2); height: calc(var(--her-r) * 2); margin: calc(var(--her-r) * -1) 0 0 calc(var(--her-r) * -1);
+  border-radius: 50%;
+}
+#meros .her-glow::before {
+  background: radial-gradient(closest-side, rgba(var(--gold-rgb), .16), rgba(var(--coral-rgb), .05) 55%, transparent);
+  opacity: calc(var(--her-g1, 0) + var(--her-g3, 0) * .7);
+}
+#meros .her-glow::after {
+  background: radial-gradient(closest-side, rgba(var(--turq-rgb), .12), rgba(var(--azure-rgb), .07) 50%, transparent);
+  opacity: calc(var(--her-g2, 0) + var(--her-g3, 0) * .8);
+}
+
+/* ------------------------------------------------------------------ HUD */
+#meros .her-hud {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  max-width: calc(var(--container) + var(--gutter) * 2); margin-inline: auto;
+  padding: clamp(88px, 12vh, 118px) var(--gutter) clamp(22px, 4vh, 40px);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+#meros .her-hud__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+#meros .her-coord { display: grid; justify-items: end; gap: 4px; text-align: right; opacity: 0; }
+#meros .her-coord__v { font-size: .8rem; color: var(--text); letter-spacing: .08em; }
+#meros .her-coord__l { font-size: .68rem; color: var(--text-3); letter-spacing: .18em; text-transform: uppercase; }
+
+#meros .her-hud__bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; opacity: 0; }
+#meros .her-phases { display: flex; gap: clamp(10px, 1.6vw, 22px); align-items: center; }
+#meros .her-phase { display: flex; align-items: center; gap: 10px; color: var(--text-3); transition: color .6s var(--ease-out); }
+#meros .her-phase__n {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line-2); font-family: var(--font-display); font-size: .7rem; font-weight: 600; letter-spacing: .02em;
+  transition: border-color .6s var(--ease-out), color .6s var(--ease-out), box-shadow .6s var(--ease-out), background-color .6s;
+}
+#meros .her-phase__t { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+#meros .her-phase__bar { position: relative; width: clamp(28px, 4vw, 64px); height: 1px; background: var(--line-2); overflow: hidden; }
+#meros .her-phase__bar i { position: absolute; inset: 0; background: var(--grad-warm); transform-origin: 0 50%; transform: scaleX(0); }
+#meros .her-phase.is-active, #meros .her-phase.is-done { color: var(--text); }
+#meros .her-phase.is-active .her-phase__n {
+  border-color: var(--gold); color: var(--gold); background: rgba(var(--gold-rgb), .08);
+  box-shadow: 0 0 0 4px rgba(var(--gold-rgb), .08), 0 0 22px rgba(var(--gold-rgb), .35);
+}
+#meros .her-phase.is-done .her-phase__n { border-color: rgba(var(--gold-rgb), .45); color: rgba(var(--gold-rgb), .8); }
+
+#meros .her-meta { display: flex; align-items: flex-end; gap: clamp(18px, 2.4vw, 36px); }
+#meros .her-year { display: grid; gap: 2px; justify-items: end; }
+#meros .her-year__l, #meros .her-count__l { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text-3); }
+#meros .her-year__v {
+  display: flex; font-family: var(--font-display); font-weight: 700; line-height: 1;
+  font-size: clamp(2.4rem, 4.4vw, 4.4rem); letter-spacing: -.02em; color: var(--gold);
+  filter: drop-shadow(0 0 22px rgba(var(--gold-rgb), .35));
+}
+#meros .her-odo { display: inline-block; height: 1.12em; overflow: hidden; font-variant-numeric: tabular-nums; }
+#meros .her-odo__s { display: flex; flex-direction: column; will-change: transform; }
+#meros .her-odo__s span { display: block; height: 1.12em; line-height: 1.12; text-align: center; }
+#meros .her-count { display: grid; gap: 6px; padding-left: clamp(18px, 2.4vw, 36px); border-left: 1px solid var(--line-2); }
+#meros .her-count__v { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1; color: var(--text); }
+#meros .her-count__l { position: relative; display: block; height: 1.2em; overflow: hidden; }
+#meros .her-count__a, #meros .her-count__b { display: block; transition: transform .7s var(--ease-out), opacity .7s var(--ease-out); }
+#meros .her-count__b { position: absolute; left: 0; top: 0; transform: translateY(110%); opacity: 0; color: var(--turq); }
+#meros .her-count.is-b .her-count__a { transform: translateY(-110%); opacity: 0; }
+#meros .her-count.is-b .her-count__b { transform: translateY(0); opacity: 1; }
+
+/* sextant-like progress ruler on the right edge */
+#meros .her-ruler {
+  position: absolute; right: var(--gutter); top: 50%; height: min(38vh, 320px); width: 14px; transform: translateY(-50%); opacity: 0;
+}
+#meros .her-ruler__ticks {
+  position: absolute; inset: 0 0 0 auto; width: 10px;
+  background:
+    repeating-linear-gradient(180deg, var(--line-3) 0 1px, transparent 1px 10%) right top / 10px 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--line-2) 0 1px, transparent 1px 2%) right top / 5px 100% no-repeat;
+}
+#meros .her-ruler__mark { position: absolute; left: 0; right: 0; top: 0; height: 100%; }
+#meros .her-ruler__mark i {
+  position: absolute; right: 0; top: 0; width: 18px; height: 2px; margin-top: -1px; background: var(--gold);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb), .8);
+}
+#meros .her-ruler__mark b {
+  position: absolute; right: 26px; top: 0; transform: translateY(-50%); font-size: .66rem; font-weight: 600; color: var(--gold); letter-spacing: .06em;
+}
+#meros .her-hint {
+  position: absolute; left: var(--gutter); top: calc(clamp(88px, 12vh, 118px) + 30px);
+  display: flex; align-items: center; gap: 10px; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3);
+  white-space: nowrap; opacity: 0;
+}
+#meros .her-hint span { width: 6px; height: 6px; border-radius: 50%; background: var(--turq); box-shadow: 0 0 10px var(--turq); }
+#meros.her--touch .her-hint { display: none; }
+
+/* ------------------------------------------------------------------ intro */
+#meros .her-intro {
+  position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; justify-items: center; text-align: center;
+  padding: 90px var(--gutter) 60px; pointer-events: none; will-change: transform, opacity, filter;
+}
+#meros .her-intro__title {
+  font-size: clamp(2.2rem, 8.2vw, 7.6rem); line-height: .98; letter-spacing: -.04em; font-weight: 800;
+  text-shadow: 0 10px 60px rgba(3, 5, 12, .7);
+}
+#meros .her-intro__lead {
+  margin-top: clamp(18px, 3vh, 30px); max-width: 40ch; font-size: var(--fs-lead); color: var(--text-2); line-height: 1.6;
+}
+#meros .her-cue { margin-top: clamp(28px, 6vh, 64px); display: grid; justify-items: center; gap: 14px; }
+#meros .her-cue .mono { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); }
+#meros .her-cue__line { position: relative; width: 1px; height: 54px; background: var(--line-2); overflow: hidden; }
+#meros .her-cue__line i {
+  position: absolute; left: -1px; top: 0; width: 3px; height: 18px; border-radius: 3px;
+  background: linear-gradient(transparent, var(--gold)); animation: her-cue 2s var(--ease-in-out) infinite; animation-play-state: paused;
+}
+#meros.is-inview .her-cue__line i { animation-play-state: running; }
+@keyframes her-cue { from { transform: translateY(-20px); } to { transform: translateY(60px); } }
+
+/* ------------------------------------------------------------------ panels */
+#meros .her-panels {
+  position: absolute; z-index: 4; display: grid;
+  left: max(var(--gutter), calc((100% - var(--container)) / 2));
+  top: 50%; transform: translateY(-46%); width: min(470px, 34vw);
+}
+#meros .her-panel { grid-area: 1 / 1; align-self: center; pointer-events: none; }
+#meros .her-panel.is-active { pointer-events: auto; }
+#meros .her-panel__k {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold);
+}
+#meros .her-panel__k span {
+  display: grid; place-items: center; min-width: 30px; height: 30px; padding: 0 6px; border-radius: 99px;
+  border: 1px solid rgba(var(--gold-rgb), .45); font-family: var(--font-display); font-size: .66rem; letter-spacing: 0;
+}
+#meros .her-panel__t {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 2.9vw, 3rem); line-height: 1.06; letter-spacing: -.03em;
+  text-wrap: balance;
+}
+#meros .her-pw { display: inline-block; will-change: transform, opacity, filter; }
+#meros .her-panel__p { margin-top: 20px; color: var(--text-2); font-size: clamp(.98rem, 1.1vw, 1.08rem); line-height: 1.65; max-width: 42ch; }
+#meros .her-panel__f { display: flex; gap: 0; margin-top: 26px; }
+#meros .her-panel__f li { display: grid; gap: 4px; padding-right: 26px; margin-right: 26px; border-right: 1px solid var(--line-2); }
+#meros .her-panel__f li:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+#meros .her-panel__f b { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.25rem, 1.8vw, 1.7rem); line-height: 1.1; color: var(--text); }
+#meros .her-panel__f span { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+
+/* ------------------------------------------------------------------ after the pin */
+#meros .her-after { position: relative; padding-top: clamp(80px, 13vh, 170px); padding-bottom: clamp(90px, 14vh, 180px); }
+#meros .her-statement {
+  position: relative; max-width: 24em; margin-inline: auto;
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(1.45rem, 3.15vw, 3.2rem); line-height: 1.22; letter-spacing: -.025em;
+  color: var(--text); text-wrap: pretty;
+}
+#meros .her-w { --her-glow: 0; }
+#meros .her-hl--gold { color: var(--gold); }
+#meros .her-hl--turq { color: var(--turq); }
+#meros .her-hl .her-w { text-shadow: 0 0 calc(var(--her-glow) * 30px) rgba(var(--gold-rgb), calc(var(--her-glow) * .5)); }
+#meros .her-hl--turq .her-w { text-shadow: 0 0 calc(var(--her-glow) * 30px) rgba(var(--turq-rgb), calc(var(--her-glow) * .5)); }
+#meros .her-pen {
+  position: absolute; left: 0; top: 0; width: 18px; height: 18px; margin: -9px 0 0 -9px; pointer-events: none; opacity: 0;
+  transition: opacity .4s; filter: drop-shadow(0 0 8px rgba(var(--gold-rgb), .9));
+}
+#meros .her-pen svg { width: 100%; height: 100%; fill: #ffe7b0; animation: her-spin 6s linear infinite; animation-play-state: paused; }
+#meros.is-inview .her-pen svg { animation-play-state: running; }
+
+#meros .her-sign { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: clamp(40px, 6vh, 72px); }
+#meros .her-sign__star { width: 46px; height: 46px; flex: none; animation: her-spin 24s linear infinite; animation-play-state: paused; }
+#meros.is-inview .her-sign__star { animation-play-state: running; }
+#meros .her-sign__star path:first-child { fill: none; stroke: var(--turq); stroke-width: 2.4; stroke-linejoin: round; }
+#meros .her-sign__star path:nth-child(2) { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linejoin: round; opacity: .8; }
+#meros .her-sign__star circle { fill: var(--gold); }
+#meros .her-sign__txt { display: grid; gap: 4px; }
+#meros .her-sign__name { font-family: var(--font-display); font-weight: 600; font-size: .95rem; letter-spacing: .01em; }
+#meros .her-sign__route { display: flex; align-items: center; gap: 10px; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+#meros .her-sign__route i { width: 34px; height: 1px; background: linear-gradient(90deg, var(--gold), var(--turq)); }
+@keyframes her-spin { to { transform: rotate(360deg); } }
+
+/* ------------------------------------------------------------------ portrait / mobile */
+@media (max-width: 899px), (max-aspect-ratio: 21/20) {
+  #meros .her-hud { padding-top: 84px; padding-bottom: 18px; }
+  #meros .her-coord { display: none; }
+  #meros .her-ruler { display: none; }
+  #meros .her-hud__bottom { gap: 12px; }
+  #meros .her-phase { gap: 6px; }
+  #meros .her-phase__t { display: none; }
+  #meros .her-phase__n { font-size: .62rem; }
+  #meros .her-phase:last-child .her-phase__bar { display: none; }
+  #meros .her-meta { gap: 14px; }
+  #meros .her-year__l { display: none; }
+  #meros .her-count { padding-left: 14px; gap: 4px; }
+  #meros .her-count__l { font-size: .58rem; }
+  #meros .her-panels {
+    left: var(--gutter); right: var(--gutter); width: auto; top: auto; transform: none;
+    bottom: 78px; min-height: 0;
+  }
+  #meros .her-panel { align-self: end; }
+  #meros .her-panel__k { margin-bottom: 12px; font-size: .64rem; }
+  #meros .her-panel__k span { min-width: 26px; height: 26px; }
+  #meros .her-panel__t { font-size: clamp(1.35rem, 5.6vw, 2.3rem); }
+  #meros .her-panel__p { margin-top: 12px; font-size: .92rem; line-height: 1.55; max-width: 52ch; }
+  #meros .her-panel__f { margin-top: 14px; }
+  #meros .her-panel__f li { padding-right: 18px; margin-right: 18px; }
+  #meros .her-panel__f b { font-size: 1.1rem; }
+  #meros .her-panel__f span { font-size: .58rem; }
+  #meros .her-intro { padding-top: 70px; }
+  #meros .her-intro__title { font-size: clamp(2.2rem, 12.4vw, 5.6rem); }
+  #meros .her-phases { gap: 6px; }
+  #meros .her-phase__n { width: 28px; height: 28px; }
+  #meros .her-phase__bar { width: 12px; }
+  #meros .her-year__v { font-size: 1.7rem; }
+  #meros .her-count__v { font-size: .95rem; }
+}
+@media (max-width: 380px) {
+  #meros .her-panel__p { font-size: .88rem; }
+  #meros .her-panel__f { display: none; }
+}
+@media (max-height: 700px) and (max-width: 899px) {
+  #meros .her-panel__f { display: none; }
+}
+
+/* ------------------------------------------------------------------ reduced motion: static, readable */
+#meros.her--static .her-stage { height: auto; min-height: 0; padding: 120px 0 40px; overflow: visible; }
+#meros.her--static .her-hud { position: relative; inset: auto; padding-top: 0; padding-bottom: 0; }
+#meros.her--static .her-hud__bottom, #meros.her--static .her-ruler, #meros.her--static .her-hint, #meros.her--static .her-coord { display: none; }
+#meros.her--static .her-intro { position: relative; inset: auto; place-content: start; justify-items: start; text-align: left; padding: 32px var(--gutter) 0; max-width: calc(var(--container) + var(--gutter) * 2); margin-inline: auto; }
+#meros.her--static .her-intro__title { font-size: clamp(2.2rem, 6vw, 5.6rem); }
+#meros.her--static .her-cue { display: none; }
+#meros.her--static .her-panels {
+  position: relative; left: auto; top: auto; transform: none; width: auto; bottom: auto;
+  max-width: calc(var(--container) + var(--gutter) * 2); margin: 56px auto 0; padding-inline: var(--gutter);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;
+}
+#meros.her--static .her-panel { grid-area: auto; }

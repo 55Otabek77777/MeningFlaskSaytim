@@ -1,0 +1,384 @@
+/* ==========================================================================
+   09 — Narx kalkulyatori (calculator)
+   ========================================================================== */
+#kalkulyator.clc { overflow-x: clip; }
+
+/* ------------------------------------------------------------------ backdrop */
+#kalkulyator .clc-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#kalkulyator .clc-orb {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; will-change: transform;
+  animation: clc-drift 22s ease-in-out infinite alternate; animation-play-state: paused;
+}
+#kalkulyator.is-inview .clc-orb { animation-play-state: running; }
+#kalkulyator .clc-orb--a { width: 42vw; height: 42vw; left: -10vw; top: 22%; background: radial-gradient(circle, rgba(var(--violet-rgb), .34), rgba(var(--violet-rgb), 0) 70%); }
+#kalkulyator .clc-orb--b { width: 36vw; height: 36vw; right: -6vw; top: 40%; background: radial-gradient(circle, rgba(var(--turq-rgb), .26), rgba(var(--turq-rgb), 0) 70%); animation-duration: 26s; animation-delay: -8s; }
+#kalkulyator .clc-orb--c { width: 30vw; height: 30vw; left: 38%; bottom: -4%; background: radial-gradient(circle, rgba(var(--gold-rgb), .16), rgba(var(--gold-rgb), 0) 70%); animation-duration: 30s; animation-delay: -14s; }
+@keyframes clc-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6vw, -4vh, 0) scale(1.12); }
+  100% { transform: translate3d(-4vw, 5vh, 0) scale(.94); }
+}
+#kalkulyator .clc-dial {
+  position: absolute; width: min(62vw, 820px); height: auto; aspect-ratio: 1;
+  right: -14vw; top: -4%; opacity: .5; overflow: visible;
+}
+#kalkulyator .clc-dial__ring { fill: none; stroke: rgba(150, 180, 255, .12); stroke-width: 1; }
+#kalkulyator .clc-dial__ring--gold { stroke: rgba(var(--gold-rgb), .22); }
+#kalkulyator .clc-dial__ring--dash { stroke: rgba(var(--turq-rgb), .22); stroke-dasharray: 2 9; }
+#kalkulyator .clc-dial__ticks line { stroke: rgba(150, 180, 255, .2); stroke-width: 1; }
+#kalkulyator .clc-dial__ticks line.is-major { stroke: rgba(var(--gold-rgb), .5); stroke-width: 1.5; }
+#kalkulyator .clc-dial__star { fill: none; stroke: rgba(var(--turq-rgb), .25); stroke-width: 1.2; }
+#kalkulyator .clc-dial__labels text { font-family: var(--font-mono); font-size: 15px; letter-spacing: .3em; fill: rgba(169, 180, 214, .55); }
+#kalkulyator .clc-dial__hub { fill: var(--ink-900); stroke: rgba(var(--gold-rgb), .7); stroke-width: 2; }
+#kalkulyator .clc-dial__arc { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(var(--gold-rgb), .8)); }
+#kalkulyator .clc-dial__ray { fill: none; stroke: rgba(var(--gold-rgb), .35); stroke-width: 1; stroke-dasharray: 3 5; }
+
+/* ------------------------------------------------------------------ head */
+#kalkulyator .clc-wrap { position: relative; }
+#kalkulyator .clc-headrow {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: end;
+  gap: 32px; margin-bottom: clamp(40px, 5vw, 72px);
+}
+#kalkulyator .clc-head { margin-bottom: 0; }
+#kalkulyator .clc-lead { justify-self: end; max-width: 40ch; }
+
+/* ------------------------------------------------------------------ panel */
+#kalkulyator .clc-panel {
+  --mx: 70%; --my: 0%;
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 44px);
+  padding: clamp(16px, 2.8vw, 40px);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(900px circle at var(--mx) var(--my), rgba(var(--turq-rgb), .07), transparent 45%),
+    linear-gradient(160deg, rgba(24, 34, 78, .78), rgba(8, 12, 28, .9) 60%, rgba(7, 10, 22, .92));
+  border: 1px solid var(--line-2);
+  box-shadow: 0 80px 140px -70px rgba(0, 0, 0, .95), 0 0 0 1px rgba(255, 255, 255, .02) inset, inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+#kalkulyator .clc-panel__fx {
+  position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; padding: 1px;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(var(--turq-rgb), .75), rgba(var(--azure-rgb), .25) 35%, transparent 65%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: .8;
+}
+
+/* ------------------------------------------------------------------ form */
+#kalkulyator .clc-form { position: relative; z-index: 2; display: grid; gap: clamp(22px, 2.4vw, 30px); align-content: start; }
+#kalkulyator .clc-row { position: relative; display: grid; gap: 12px; min-width: 0; }
+#kalkulyator .clc-label {
+  font-family: var(--font-mono); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text-2);
+}
+#kalkulyator .clc-route { z-index: 6; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 10px; }
+
+/* dropdown */
+#kalkulyator .clc-dd { position: relative; display: grid; gap: 10px; min-width: 0; }
+#kalkulyator .clc-dd.is-open { z-index: 40; }
+#kalkulyator .clc-dd__btn {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0; height: 66px;
+  padding: 0 14px 0 10px; border-radius: 18px; text-align: left;
+  background: rgba(255, 255, 255, .035); border: 1px solid var(--line-2);
+  transition: border-color .4s var(--ease-out), background-color .4s var(--ease-out), box-shadow .4s var(--ease-out);
+}
+#kalkulyator .clc-dd__btn:focus-visible { outline-offset: 2px; }
+#kalkulyator .clc-dd.is-open .clc-dd__btn,
+#kalkulyator .clc-dd__btn:focus-visible { border-color: rgba(var(--turq-rgb), .6); box-shadow: 0 0 0 4px rgba(var(--turq-rgb), .1); }
+@media (hover: hover) { #kalkulyator .clc-dd__btn:hover { border-color: var(--line-3); background: rgba(255, 255, 255, .06); } }
+#kalkulyator .clc-dd__code {
+  flex: none; padding: 7px 8px; border-radius: 10px; font-size: .74rem; letter-spacing: .06em;
+  color: var(--turq); background: rgba(var(--turq-rgb), .1); border: 1px solid rgba(var(--turq-rgb), .25);
+}
+#kalkulyator .clc-dd[data-dd="to"] .clc-dd__code { color: var(--gold); background: rgba(var(--gold-rgb), .1); border-color: rgba(var(--gold-rgb), .28); }
+#kalkulyator .clc-dd__val { display: grid; min-width: 0; flex: 1; line-height: 1.25; overflow: hidden; }
+#kalkulyator .clc-dd__city { font-weight: 700; font-size: 1rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#kalkulyator .clc-dd__country { font-size: .76rem; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#kalkulyator .clc-dd__chev {
+  flex: none; width: 18px; height: 18px; fill: none; stroke: var(--text-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform .5s var(--ease-out);
+}
+#kalkulyator .clc-dd.is-open .clc-dd__chev { transform: rotate(180deg); }
+#kalkulyator .clc-dd__list {
+  position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 50;
+  max-height: 324px; overflow-y: auto; overscroll-behavior: contain;
+  padding: 6px; border-radius: 18px;
+  background: linear-gradient(180deg, #111a3a, #0a1022);
+  border: 1px solid var(--line-3);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .95), 0 0 0 1px rgba(0, 0, 0, .4);
+  visibility: hidden; opacity: 0;
+  scrollbar-width: thin; scrollbar-color: var(--ink-600) transparent;
+}
+#kalkulyator .clc-dd__list:focus { outline: none; }
+#kalkulyator .clc-dd__list:focus-visible { outline: 2px solid rgba(var(--turq-rgb), .6); outline-offset: 2px; }
+#kalkulyator .clc-opt {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 12px; cursor: pointer;
+  color: var(--text-2); transition: background-color .25s, color .25s;
+}
+#kalkulyator .clc-opt.is-active { background: rgba(var(--turq-rgb), .1); color: var(--text); }
+#kalkulyator .clc-opt.is-sel .clc-opt__city { color: var(--turq); }
+#kalkulyator .clc-opt[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
+#kalkulyator .clc-opt__code { flex: none; width: 38px; font-size: .7rem; color: var(--text-3); }
+#kalkulyator .clc-opt__txt { display: grid; flex: 1; min-width: 0; line-height: 1.25; }
+#kalkulyator .clc-opt__city { font-weight: 700; font-size: .9rem; color: var(--text); }
+#kalkulyator .clc-opt__country { font-size: .72rem; color: var(--text-3); }
+#kalkulyator .clc-opt__km { flex: none; font-size: .68rem; color: var(--text-3); }
+
+#kalkulyator .clc-swap {
+  width: 48px; height: 48px; margin-bottom: 9px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(var(--gold-rgb), .08); border: 1px solid rgba(var(--gold-rgb), .35);
+  transition: background-color .4s, border-color .4s, box-shadow .4s;
+}
+#kalkulyator .clc-swap svg { width: 20px; height: 20px; fill: none; stroke: var(--gold); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { #kalkulyator .clc-swap:hover { background: rgba(var(--gold-rgb), .16); box-shadow: 0 0 24px rgba(var(--gold-rgb), .3); } }
+
+/* segmented control */
+#kalkulyator .clc-seg {
+  position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 5px; border-radius: 20px;
+  background: rgba(255, 255, 255, .03); border: 1px solid var(--line-2);
+}
+#kalkulyator .clc-seg__ind {
+  position: absolute; left: 0; top: 5px; bottom: 5px; width: 25%;
+  border-radius: 15px; background: var(--grad-cool);
+  box-shadow: 0 10px 30px -8px rgba(var(--turq-rgb), .6), inset 0 1px 0 rgba(255, 255, 255, .4);
+}
+#kalkulyator .clc-seg__btn {
+  position: relative; z-index: 1; height: 58px; border-radius: 15px;
+  display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0;
+  font-weight: 700; font-size: .88rem; color: var(--text-2); white-space: nowrap;
+  transition: color .45s var(--ease-out);
+}
+#kalkulyator .clc-seg__btn[aria-checked="true"] { color: var(--ink-950); }
+@media (hover: hover) { #kalkulyator .clc-seg__btn:not([aria-checked="true"]):hover { color: var(--text); } }
+#kalkulyator .clc-ico { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+
+/* range sliders */
+#kalkulyator .clc-range { gap: 6px; }
+#kalkulyator .clc-range__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#kalkulyator .clc-range__meta { display: inline-flex; align-items: center; gap: 10px; font-size: .74rem; color: var(--text-2); }
+#kalkulyator .clc-range__track { --p: .5; position: relative; height: 72px; }
+#kalkulyator .clc-range__rail {
+  position: absolute; left: 0; right: 0; bottom: 18px; height: 6px; border-radius: 6px;
+  background: rgba(150, 180, 255, .14); overflow: hidden;
+}
+#kalkulyator .clc-range__fill {
+  position: absolute; inset: 0; border-radius: inherit; background: var(--grad-cool);
+  transform-origin: 0 50%; transform: scaleX(var(--p));
+}
+#kalkulyator .clc-range__input {
+  position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 42px; margin: 0; padding: 0;
+  -webkit-appearance: none; appearance: none; background: transparent; cursor: grab;
+}
+#kalkulyator .clc-range__input:active { cursor: grabbing; }
+#kalkulyator .clc-range__input:focus { outline: none; }
+#kalkulyator .clc-range__input::-webkit-slider-runnable-track { height: 42px; background: transparent; }
+#kalkulyator .clc-range__input::-moz-range-track { height: 42px; background: transparent; }
+#kalkulyator .clc-range__input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 26px; height: 26px; margin-top: 8px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #d9fffb 60%, #9ff3ea);
+  border: 3px solid var(--ink-900);
+  box-shadow: 0 0 0 2px var(--turq), 0 6px 18px rgba(var(--turq-rgb), .55);
+  transition: box-shadow .3s;
+}
+#kalkulyator .clc-range__input::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #d9fffb 60%, #9ff3ea);
+  border: 3px solid var(--ink-900);
+  box-shadow: 0 0 0 2px var(--turq), 0 6px 18px rgba(var(--turq-rgb), .55);
+}
+#kalkulyator .clc-range__input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 2px var(--turq), 0 0 0 8px rgba(var(--turq-rgb), .25); }
+#kalkulyator .clc-range__input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 2px var(--turq), 0 0 0 8px rgba(var(--turq-rgb), .25); }
+#kalkulyator .clc-range__bubble {
+  position: absolute; top: 0; left: calc(13px + var(--p) * (100% - 26px));
+  padding: 6px 11px; border-radius: 10px; white-space: nowrap;
+  font-size: .8rem; font-weight: 600; color: var(--ink-950);
+  background: linear-gradient(120deg, #eafffd, #bff7f1);
+  box-shadow: 0 10px 24px -8px rgba(var(--turq-rgb), .6);
+  transform-origin: 50% 130%;
+  pointer-events: none;
+}
+#kalkulyator .clc-range__bubble::after {
+  content: ''; position: absolute; left: calc(18% + 64% * var(--p)); bottom: -5px; width: 10px; height: 10px; margin-left: -5px;
+  background: #c9f8f3; transform: rotate(45deg); border-radius: 2px;
+}
+#kalkulyator .clc-range__ticks { position: relative; height: 16px; font-size: .66rem; color: var(--text-3); }
+#kalkulyator .clc-range__ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+#kalkulyator .clc-range__ticks span:first-child { transform: none; }
+#kalkulyator .clc-range__ticks span:last-child { transform: translateX(-100%); }
+#kalkulyator .clc-cont { width: 58px; height: 20px; overflow: visible; }
+#kalkulyator .clc-cont__box { fill: none; stroke: var(--line-3); stroke-width: 1.4; }
+#kalkulyator .clc-cont__fill { fill: rgba(var(--turq-rgb), .55); transform-origin: 2.5px 50%; transform-box: view-box; }
+#kalkulyator .clc-cont__ribs { stroke: rgba(3, 5, 12, .5); stroke-width: 1; }
+
+/* extras */
+#kalkulyator .clc-extras { margin: 0; padding: 0; border: 0; min-width: 0; }
+#kalkulyator .clc-extras legend { padding: 0; margin-bottom: 12px; }
+#kalkulyator .clc-extras__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+#kalkulyator .clc-tog {
+  position: relative; display: flex; align-items: center; gap: 12px; min-width: 0;
+  padding: 12px 12px 12px 12px; border-radius: 16px; text-align: left;
+  background: rgba(255, 255, 255, .03); border: 1px solid var(--line-2);
+  transition: border-color .45s var(--ease-out), background-color .45s var(--ease-out), transform .45s var(--ease-out);
+}
+@media (hover: hover) { #kalkulyator .clc-tog:hover { border-color: var(--line-3); transform: translateY(-2px); } }
+#kalkulyator .clc-tog[aria-checked="true"] { border-color: rgba(var(--turq-rgb), .5); background: rgba(var(--turq-rgb), .07); }
+#kalkulyator .clc-tog__ico {
+  flex: none; width: 36px; height: 36px; padding: 8px; border-radius: 11px;
+  fill: none; stroke: var(--text-2); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  background: rgba(255, 255, 255, .04); border: 1px solid var(--line);
+  transition: stroke .4s, background-color .4s, border-color .4s;
+}
+#kalkulyator .clc-tog[aria-checked="true"] .clc-tog__ico { stroke: var(--turq); background: rgba(var(--turq-rgb), .12); border-color: rgba(var(--turq-rgb), .3); }
+#kalkulyator .clc-tog__txt { display: grid; flex: 1; min-width: 0; line-height: 1.3; }
+#kalkulyator .clc-tog__name { font-weight: 700; font-size: .9rem; color: var(--text); }
+#kalkulyator .clc-tog__sub { font-size: .66rem; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#kalkulyator .clc-tog__sw {
+  position: relative; flex: none; width: 40px; height: 24px; border-radius: 24px;
+  background: rgba(150, 180, 255, .16); border: 1px solid var(--line-2);
+  transition: background-color .45s var(--ease-out), border-color .45s;
+}
+#kalkulyator .clc-tog[aria-checked="true"] .clc-tog__sw { background: var(--turq); border-color: var(--turq); }
+#kalkulyator .clc-tog__sw i {
+  position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+}
+
+/* ------------------------------------------------------------------ output */
+#kalkulyator .clc-out {
+  position: relative; z-index: 1; overflow: hidden; min-width: 0;
+  display: grid; gap: 20px; align-content: start;
+  padding: clamp(18px, 2.3vw, 32px);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, rgba(3, 5, 12, .66), rgba(3, 5, 12, .38));
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+#kalkulyator .clc-out__scan {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 60%; pointer-events: none; opacity: 0;
+  background: linear-gradient(100deg, transparent, rgba(var(--turq-rgb), .1) 40%, rgba(255, 255, 255, .14) 50%, rgba(var(--turq-rgb), .1) 60%, transparent);
+}
+#kalkulyator .clc-out__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#kalkulyator .clc-chip { padding: 5px 12px; font-size: .72rem; }
+#kalkulyator .clc-price {
+  display: flex; align-items: flex-start; gap: .08em; min-width: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(2.7rem, 5.4vw, 5.4rem);
+  line-height: 1; letter-spacing: -.02em; color: var(--text);
+}
+#kalkulyator .clc-price { position: relative; }
+#kalkulyator .clc-delta {
+  position: absolute; right: 0; top: -.2em; padding: 4px 9px; border-radius: 999px;
+  font-size: .78rem; font-weight: 600; letter-spacing: 0; line-height: 1.2;
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+#kalkulyator .clc-delta.is-up { color: var(--coral); background: rgba(var(--coral-rgb), .12); border: 1px solid rgba(var(--coral-rgb), .35); }
+#kalkulyator .clc-delta.is-down { color: var(--green); background: rgba(57, 229, 140, .1); border: 1px solid rgba(57, 229, 140, .35); }
+#kalkulyator .clc-price__cur { font-size: .48em; line-height: 1; margin-top: .14em; color: var(--gold); }
+#kalkulyator .clc-odo { display: inline-flex; align-items: flex-start; font-variant-numeric: tabular-nums; filter: drop-shadow(0 0 28px rgba(var(--gold-rgb), .16)); }
+#kalkulyator .clc-odo__col { display: inline-block; height: 1.08em; width: .74em; overflow: hidden; text-align: center; }
+#kalkulyator .clc-odo__strip { display: block; will-change: transform; }
+#kalkulyator .clc-odo__strip span { display: block; height: 1.08em; line-height: 1.08; }
+#kalkulyator .clc-odo__sep { display: inline-block; width: .22em; }
+#kalkulyator .clc-price__sub { font-size: .76rem; color: var(--text-3); margin-top: -8px; }
+#kalkulyator .clc-price__sub b { color: var(--text-2); font-weight: 600; }
+#kalkulyator .clc-dot { margin: 0 .7em; }
+
+#kalkulyator .clc-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+#kalkulyator .clc-stat {
+  display: grid; gap: 4px; padding: 13px 14px; border-radius: 16px; min-width: 0;
+  background: rgba(255, 255, 255, .025); border: 1px solid var(--line);
+}
+#kalkulyator .clc-stat__k { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+#kalkulyator .clc-stat__v { font-size: .82rem; color: var(--text-2); white-space: nowrap; }
+#kalkulyator .clc-stat__v b { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+#kalkulyator .clc-map { margin: -4px -4px; }
+#kalkulyator .clc-map__meridian { fill: none; stroke: rgba(150, 180, 255, .07); stroke-width: 1; stroke-dasharray: 2 4; }
+#kalkulyator .clc-map__pill rect { fill: rgba(10, 16, 34, .9); stroke: var(--line-2); }
+#kalkulyator .clc-map__pill text { font-family: var(--font-mono); font-size: 11px; fill: var(--text-2); }
+#kalkulyator .clc-map__svg { width: 100%; height: auto; overflow: visible; }
+#kalkulyator .clc-map__base { fill: none; stroke: rgba(150, 180, 255, .28); stroke-width: 1.5; stroke-dasharray: 2 6; stroke-linecap: round; }
+#kalkulyator .clc-map__prog { fill: none; stroke: url(#clc-route-g); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 1; filter: drop-shadow(0 0 5px rgba(var(--turq-rgb), .6)); }
+#kalkulyator .clc-map__dot { fill: var(--turq); stroke: var(--ink-950); stroke-width: 3; }
+#kalkulyator .clc-map__dot--b { fill: var(--gold); }
+#kalkulyator .clc-map__ping {
+  fill: none; stroke: var(--turq); stroke-width: 1.5; transform-box: fill-box; transform-origin: center;
+  animation: clc-ping 2.4s var(--ease-out) infinite; animation-play-state: paused;
+}
+#kalkulyator .clc-map__node--b .clc-map__ping { stroke: var(--gold); animation-delay: -1.2s; }
+#kalkulyator.is-inview .clc-map__ping { animation-play-state: running; }
+@keyframes clc-ping { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
+#kalkulyator .clc-map__code { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; fill: var(--text); }
+#kalkulyator .clc-map__city { font-family: var(--font-body); font-size: 12px; font-weight: 600; fill: var(--text-2); }
+#kalkulyator .clc-veh__i { fill: rgba(3, 5, 12, .85); stroke: #fff; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; opacity: 0; }
+#kalkulyator .clc-veh { filter: drop-shadow(0 0 6px rgba(var(--turq-rgb), .8)); }
+
+#kalkulyator .clc-cmp { display: grid; gap: 8px; }
+#kalkulyator .clc-cmp__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+#kalkulyator .clc-cmp__unit { font-size: .66rem; color: var(--text-3); }
+#kalkulyator .clc-cmp__list { display: grid; gap: 2px; }
+#kalkulyator .clc-cmp__row {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr) 92px; align-items: center; gap: 12px;
+  width: 100%; padding: 6px 10px; border-radius: 10px; text-align: left;
+  font-size: .84rem; color: var(--text-2);
+  transition: background-color .4s var(--ease-out), color .4s;
+}
+@media (hover: hover) { #kalkulyator .clc-cmp__row:hover { background: rgba(255, 255, 255, .04); color: var(--text); } }
+#kalkulyator .clc-cmp__row.is-active { background: rgba(var(--turq-rgb), .08); color: var(--text); }
+#kalkulyator .clc-cmp__name { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 600; }
+#kalkulyator .clc-cmp__leaf { width: 14px; height: 14px; fill: none; stroke: var(--green); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#kalkulyator .clc-cmp__bar { position: relative; height: 8px; border-radius: 8px; background: rgba(150, 180, 255, .09); overflow: hidden; }
+#kalkulyator .clc-cmp__bar i {
+  position: absolute; inset: 0; border-radius: inherit; transform-origin: 0 50%; transform: scaleX(0);
+  background: rgba(150, 180, 255, .42);
+}
+#kalkulyator .clc-cmp__row.is-active .clc-cmp__bar i { background: var(--grad-cool); box-shadow: 0 0 12px rgba(var(--turq-rgb), .6); }
+#kalkulyator .clc-cmp__row[data-mode="avia"] .clc-cmp__bar i { background: rgba(var(--coral-rgb), .55); }
+#kalkulyator .clc-cmp__row[data-mode="avia"].is-active .clc-cmp__bar i { background: var(--grad-warm); }
+#kalkulyator .clc-cmp__v { text-align: right; font-size: .76rem; font-variant-numeric: tabular-nums; }
+
+#kalkulyator .clc-cta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding-top: 4px; }
+#kalkulyator .clc-note { flex: 1 1 200px; font-size: .74rem; line-height: 1.5; color: var(--text-3); }
+
+/* ------------------------------------------------------------------ responsive */
+@media (max-width: 1100px) {
+  #kalkulyator .clc-panel { grid-template-columns: 1fr; }
+  #kalkulyator .clc-headrow { grid-template-columns: 1fr; }
+  #kalkulyator .clc-lead { justify-self: start; }
+}
+@media (max-width: 768px) {
+  #kalkulyator .clc-panel { border-radius: var(--r-lg); gap: 18px; }
+  #kalkulyator .clc-dial { width: 150vw; right: -75vw; top: 2%; opacity: .35; }
+  #kalkulyator .clc-orb--a { width: 90vw; height: 90vw; }
+  #kalkulyator .clc-orb--b { width: 80vw; height: 80vw; }
+  #kalkulyator .clc-route { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #kalkulyator .clc-swap {
+    position: absolute; right: 18px; top: 50%; z-index: 3; margin: 0; width: 42px; height: 42px;
+    transform: translateY(-50%); background: #1a2244;
+  }
+  #kalkulyator .clc-swap svg { transform: rotate(0deg); }
+  #kalkulyator .clc-dd__btn { height: 60px; padding-right: 64px; }
+  #kalkulyator .clc-dd__chev { display: none; }
+  #kalkulyator .clc-seg__btn { flex-direction: column; gap: 3px; height: 62px; font-size: .68rem; }
+  #kalkulyator .clc-ico { width: 22px; height: 22px; }
+  #kalkulyator .clc-extras__grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  #kalkulyator .clc-tog { flex-wrap: wrap; gap: 8px; padding: 10px; }
+  #kalkulyator .clc-tog__ico { width: 32px; height: 32px; padding: 7px; }
+  #kalkulyator .clc-tog__sw { position: absolute; right: 10px; top: 14px; }
+  #kalkulyator .clc-tog__txt { flex-basis: 100%; }
+  #kalkulyator .clc-tog__name { font-size: .84rem; }
+  #kalkulyator .clc-tog__sub { white-space: normal; }
+  #kalkulyator .clc-stats { gap: 6px; }
+  #kalkulyator .clc-stat { padding: 10px; }
+  #kalkulyator .clc-stat__v { font-size: .7rem; }
+  #kalkulyator .clc-stat__v b { font-size: 1rem; }
+  #kalkulyator .clc-cmp__row { grid-template-columns: 78px minmax(0, 1fr) 70px; gap: 8px; padding: 6px 6px; font-size: .78rem; }
+  #kalkulyator .clc-cmp__v { font-size: .68rem; }
+  #kalkulyator .clc-cta .btn { width: 100%; }
+  #kalkulyator .clc-map__code { font-size: 16px; }
+  #kalkulyator .clc-map__pill text { font-size: 14px; }
+  #kalkulyator .clc-map__pill rect { height: 28px; y: 123px; rx: 14px; }
+  #kalkulyator .clc-map__city { font-size: 15px; }
+}

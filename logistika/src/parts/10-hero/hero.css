@@ -1,0 +1,410 @@
+/* ==========================================================================
+   10-hero — globe stage + monumental headline
+   Layout tokens (--g-*) are read by JS to place the WebGL globe, so CSS and
+   the 3D scene always agree on where the globe sits.
+   ========================================================================== */
+#bosh {
+  --g-cx: .71;           /* globe centre x (fraction of stage width) */
+  --g-cy: .56;           /* globe centre y (fraction of stage height) */
+  --g-rh: .58;           /* radius as a fraction of stage height ...  */
+  --g-rw: 1;             /* ... capped by this fraction of width      */
+  --hero-top: clamp(100px, 13vh, 132px);
+  position: relative;
+  isolation: isolate;
+  min-height: max(100svh, 680px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--hero-top) 0 clamp(48px, 7vh, 84px);
+  overflow: clip;
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------------ stage */
+#bosh .hero-stage {
+  position: absolute; inset: 0; z-index: 0;
+  touch-action: pan-y;
+}
+#bosh .hero-gl {
+  display: block; width: 100%; height: 100%;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0, 0, 0, .62) 76%, rgba(0, 0, 0, .22) 90%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0, 0, 0, .62) 76%, rgba(0, 0, 0, .22) 90%, transparent 100%);
+}
+html.is-reduced #bosh .hero-gl { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  #bosh .hero-stage { cursor: grab; }
+  #bosh .hero-stage.is-dragging { cursor: grabbing; }
+}
+
+#bosh .hero-fallback { display: none; }
+#bosh.hero--nogl .hero-fallback {
+  display: block; position: absolute; inset: 0;
+}
+#bosh.hero--nogl .hero-fallback span {
+  position: absolute;
+  left: calc(var(--g-cx) * 100%); top: calc(var(--g-cy) * 100%);
+  width: min(calc(var(--g-rh) * 200svh), calc(var(--g-rw) * 200vw)); aspect-ratio: 1;
+  transform: translate(-50%, -50%); border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(var(--turq-rgb), .28), transparent 55%),
+    radial-gradient(circle at 50% 50%, var(--ink-800), var(--ink-950) 70%);
+  box-shadow: 0 0 120px rgba(var(--azure-rgb), .35), inset -30px -40px 90px rgba(0, 0, 0, .6);
+}
+
+/* legibility scrim: keeps the copy readable over the globe's limb + stars */
+#bosh .hero-scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(3, 5, 12, .82) 0%, rgba(3, 5, 12, .6) 26%, rgba(3, 5, 12, .18) 46%, rgba(3, 5, 12, 0) 58%);
+}
+
+/* ------------------------------------------------------------------ globe labels (projected from 3D) */
+#bosh .hero-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#bosh .hero-lbl {
+  position: absolute; left: 0; top: 0;
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 500 10px/1 var(--font-mono);
+  letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+  color: var(--text-2);
+  text-shadow: 0 0 8px var(--ink-950), 0 0 3px var(--ink-950);
+  opacity: 0; will-change: transform, opacity;
+  transition: color .6s var(--ease-out);
+}
+#bosh .hero-lbl::before {
+  content: ''; width: 14px; height: 1px; flex: none;
+  background: currentColor; opacity: .55;
+  transition: width .6s var(--ease-out);
+}
+#bosh .hero-lbl.is-hot { color: var(--lbl-c, var(--turq)); }
+#bosh .hero-lbl.is-hot::before { width: 22px; opacity: 1; }
+#bosh .hero-lbl--tash {
+  flex-direction: column; align-items: flex-start; gap: 5px;
+  color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: .22em;
+  padding: 7px 10px 7px 12px;
+  border-left: 1px solid rgba(var(--gold-rgb), .7);
+  background: linear-gradient(90deg, rgba(var(--gold-rgb), .16), rgba(3, 5, 12, .5));
+}
+#bosh .hero-lbl--tash::before { display: none; }
+#bosh .hero-lbl--tash.is-flip {
+  align-items: flex-end; padding: 7px 12px 7px 10px;
+  border-left: 0; border-right: 1px solid rgba(var(--gold-rgb), .7);
+  background: linear-gradient(270deg, rgba(var(--gold-rgb), .16), rgba(3, 5, 12, .5));
+}
+#bosh .hero-lbl--tash small { font-size: 9px; font-weight: 400; letter-spacing: .14em; color: var(--text); opacity: .8; }
+
+/* ------------------------------------------------------------------ right edge rail (coords · live clock · hint) */
+#bosh .hero-rail {
+  position: absolute; z-index: 3; top: 0; bottom: 0; right: clamp(12px, 1.6vw, 26px);
+  display: flex; align-items: center;
+  pointer-events: none;
+}
+#bosh .hero-rail__in {
+  display: flex; align-items: center; gap: 16px;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font: 400 .64rem/1 var(--font-mono); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text-2);
+  text-shadow: 0 0 10px var(--ink-950), 0 0 3px var(--ink-950);
+}
+#bosh .hero-rail__item { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+#bosh .hero-rail__tick {
+  width: 7px; height: 7px; border: 1px solid var(--gold);
+  animation: hero-hud-tick 2.4s var(--ease-in-out) infinite;
+}
+#bosh .hero-rail__clock { color: var(--gold); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .1em; }
+#bosh .hero-rail__sep { inline-size: 34px; block-size: 1px; background: linear-gradient(180deg, transparent, var(--line-3), transparent); }
+#bosh .hero-rail__hint { color: var(--turq); }
+#bosh .hero-rail__hint svg {
+  width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+  animation: hero-spin 6s linear infinite;
+}
+#bosh.is-dragged .hero-rail__hint { opacity: .35; transition: opacity .6s; }
+
+/* ------------------------------------------------------------------ copy */
+#bosh .hero-inner { position: relative; z-index: 2; pointer-events: none; }
+#bosh .hero-copy { position: relative; max-width: 780px; will-change: transform; }
+#bosh .hero-copy > *, #bosh .hero-card-wrap { pointer-events: auto; }
+#bosh .hero-eyebrow { margin-bottom: clamp(18px, 3vh, 30px); }
+
+#bosh .hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.55rem, min(6.3vw, 10.2vh), 7.4rem);
+  line-height: 1;
+  letter-spacing: -.045em;
+  margin: 0;
+}
+#bosh .hero-title__vis { display: block; }
+#bosh .hero-title__line { display: block; white-space: nowrap; }
+#bosh .hero-title__txt { display: inline-block; }
+#bosh .hero-title__l1 { position: relative; }
+@media (hover: hover) and (pointer: fine) {
+  #bosh .hero-title .mu-char { transition: translate .6s var(--ease-out), color .6s var(--ease-out); }
+  #bosh .hero-title .mu-char:hover { translate: 0 -.07em; color: var(--gold); transition-duration: .18s; }
+}
+#bosh .hero-title__star {
+  display: inline-block; vertical-align: top;
+  width: .3em; height: .3em; margin: .1em 0 0 .12em;
+  fill: var(--gold); overflow: visible;
+  filter: drop-shadow(0 0 .12em rgba(var(--gold-rgb), .8));
+  animation: hero-spin 16s linear infinite;
+}
+#bosh .hero-title__star circle { fill: var(--ink-950); }
+
+/* rotating slot word */
+#bosh .hero-slot {
+  position: relative; display: block;
+  height: 1.12em; margin-top: -.02em;
+  overflow: hidden;
+  font-weight: 600;
+  letter-spacing: -.04em;
+}
+#bosh .hero-slot__word {
+  position: absolute; left: 0; top: 0;
+  padding: .02em .08em .12em 0;
+  white-space: nowrap;
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  animation: hero-shimmer 7s linear infinite;
+}
+#bosh .hero-slot__word + .hero-slot__word { visibility: hidden; }
+#bosh .hero-slot__word--0 { background-image: linear-gradient(100deg, var(--gold) 0%, var(--amber) 30%, #ffe3a8 50%, var(--gold) 70%, var(--amber) 100%); }
+#bosh .hero-slot__word--1 { background-image: linear-gradient(100deg, var(--turq) 0%, #9ff7ef 30%, var(--azure) 55%, var(--turq) 80%, #9ff7ef 100%); }
+#bosh .hero-slot__word--2 { background-image: linear-gradient(100deg, var(--azure) 0%, #9cc3ff 28%, var(--violet) 55%, var(--azure) 80%, #9cc3ff 100%); }
+#bosh .hero-slot__word--3 { background-image: linear-gradient(100deg, var(--coral) 0%, var(--rose) 28%, var(--gold) 55%, var(--coral) 80%, var(--rose) 100%); }
+
+/* mode switch (drives slot word + highlighted globe routes) */
+#bosh .hero-modes {
+  --pill: var(--gold);
+  position: relative; display: inline-flex; gap: 2px;
+  margin-top: clamp(16px, 2.6vh, 26px);
+  padding: 4px; border-radius: var(--r-pill);
+  border: 1px solid var(--line-2);
+  background: rgba(7, 11, 24, .55);
+}
+#bosh .hero-modes__item {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 14px 0 11px; border-radius: var(--r-pill);
+  font: 600 .72rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-2);
+  transition: color .45s var(--ease-out);
+}
+#bosh .hero-modes__item svg {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (hover: hover) { #bosh .hero-modes__item:hover { color: var(--text); } }
+#bosh .hero-modes__item.is-on { color: var(--ink-950); }
+#bosh .hero-modes__pill {
+  position: absolute; z-index: 0; left: 0; top: 4px; bottom: 4px; width: 80px;
+  border-radius: var(--r-pill);
+  background: var(--pill);
+  box-shadow: 0 0 24px -2px var(--pill);
+  transition: background-color .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+
+#bosh .hero-lead { margin-top: clamp(16px, 2.6vh, 26px); max-width: 38rem; }
+#bosh .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(22px, 3.6vh, 36px); }
+
+#bosh .hero-stats {
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin-top: clamp(24px, 4vh, 42px);
+}
+#bosh .hero-stat {
+  display: grid; gap: 6px;
+  padding: 0 clamp(16px, 2.2vw, 34px);
+  border-left: 1px solid var(--line-2);
+}
+#bosh .hero-stat:first-child { padding-left: 0; border-left: 0; }
+#bosh .hero-stat__v {
+  font: 700 clamp(1.3rem, 2vw, 1.85rem)/1 var(--font-display);
+  letter-spacing: -.03em; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+#bosh .hero-stat__k {
+  font: 400 .68rem/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--text-2);
+}
+
+/* ------------------------------------------------------------------ live shipment card */
+#bosh .hero-card-wrap {
+  position: absolute; right: var(--gutter); bottom: 0;
+  width: 352px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+#bosh .hero-card {
+  position: relative; overflow: hidden;
+  padding: 20px 22px 20px;
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--turq-rgb), .12), transparent 55%),
+    linear-gradient(165deg, rgba(22, 32, 74, .62), rgba(7, 11, 24, .72));
+  border-color: rgba(150, 180, 255, .22);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+#bosh .hero-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: conic-gradient(from var(--hero-ang, 0deg), rgba(var(--turq-rgb), .9), transparent 18%, transparent 50%, rgba(var(--gold-rgb), .7) 60%, transparent 78%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: hero-ang 6s linear infinite;
+  opacity: .75;
+}
+#bosh .hero-card__glare {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, .14), transparent 48%);
+  opacity: 0; transition: opacity .5s var(--ease-out);
+}
+#bosh .hero-card-wrap.is-tilting .hero-card__glare { opacity: 1; }
+#bosh .hero-card__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+#bosh .hero-card__live, #bosh .hero-card__mode {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 500 .66rem/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase;
+}
+#bosh .hero-card__live { color: var(--green); }
+#bosh .hero-card__mode {
+  color: var(--turq); padding: 6px 10px 6px 8px; border-radius: var(--r-pill);
+  border: 1px solid rgba(var(--turq-rgb), .3); background: rgba(var(--turq-rgb), .08);
+}
+#bosh .hero-card__mode svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#bosh .hero-card__code {
+  margin: 16px 0 14px;
+  font: 600 1.12rem/1 var(--font-mono); letter-spacing: .06em; color: var(--text);
+}
+#bosh .hero-card__route { display: flex; align-items: center; gap: 10px; }
+#bosh .hero-card__city {
+  display: grid; gap: 3px; flex: none;
+  font: 500 .74rem/1 var(--font-body); color: var(--text-2);
+}
+#bosh .hero-card__city b { font: 700 1rem/1 var(--font-display); color: var(--text); letter-spacing: .02em; }
+#bosh .hero-card__city--to { text-align: right; }
+#bosh .hero-card__city--to b { color: var(--gold); }
+#bosh .hero-card__path { flex: 1; min-width: 0; height: 24px; overflow: visible; }
+#bosh .hero-card__path path { fill: none; stroke-width: 1.6; stroke-linecap: round; }
+#bosh .hero-card__path-bg { stroke: var(--line-3); stroke-dasharray: 2 5; }
+#bosh .hero-card__path-fg { stroke: var(--turq); stroke-dasharray: 100 100; stroke-dashoffset: 32; filter: drop-shadow(0 0 4px rgba(var(--turq-rgb), .8)); }
+#bosh .hero-card__bar {
+  position: relative; height: 6px; margin: 16px 0 10px;
+  border-radius: 6px; background: rgba(255, 255, 255, .07);
+}
+#bosh .hero-card__fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 68%;
+  border-radius: inherit; overflow: visible;
+  background: linear-gradient(90deg, rgba(var(--turq-rgb), .35), var(--turq) 60%, var(--azure));
+  box-shadow: 0 0 16px rgba(var(--turq-rgb), .45);
+}
+#bosh .hero-card__fill::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .75) 50%, transparent 100%) no-repeat;
+  background-size: 30% 100%;
+  animation: hero-bar 2.4s var(--ease-in-out) infinite;
+}
+#bosh .hero-card__head {
+  position: absolute; right: -6px; top: 50%; width: 12px; height: 12px; margin-top: -6px;
+  border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 3px rgba(var(--turq-rgb), .35), 0 0 18px var(--turq);
+  animation: hero-head 1.8s ease-out infinite;
+}
+#bosh .hero-card__row { display: flex; justify-content: space-between; gap: 12px; font: 500 .78rem/1.3 var(--font-body); color: var(--text-2); }
+#bosh .hero-card__pct b { color: var(--turq); font-weight: 700; font-variant-numeric: tabular-nums; }
+#bosh .hero-card__loc { text-align: right; }
+#bosh .hero-card__eta {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line-2);
+}
+#bosh .hero-card__eta-k { font: 400 .66rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); white-space: nowrap; }
+#bosh .hero-card__eta-v {
+  font: 600 1.18rem/1 var(--font-display); letter-spacing: -.01em; color: var(--text);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+#bosh .hero-card__eta-v .hero-sec { display: inline-block; color: var(--gold); }
+
+/* ------------------------------------------------------------------ scroll cue */
+#bosh .hero-cue {
+  position: absolute; z-index: 3; left: 50%; bottom: clamp(18px, 3.4vh, 34px);
+  display: grid; justify-items: center; gap: 10px;
+  transform: translateX(-50%);
+  font: 400 .64rem/1 var(--font-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--text-2);
+  opacity: 0;
+}
+#bosh .hero-cue__mouse {
+  position: relative; width: 22px; height: 34px; border-radius: 12px;
+  border: 1.5px solid var(--line-3);
+}
+#bosh .hero-cue__mouse i {
+  position: absolute; left: 50%; top: 7px; width: 3px; height: 7px; margin-left: -1.5px;
+  border-radius: 3px; background: var(--turq); box-shadow: 0 0 8px var(--turq);
+  animation: hero-wheel 1.9s var(--ease-in-out) infinite;
+}
+@media (hover: hover) {
+  #bosh .hero-cue:hover { color: var(--text); }
+  #bosh .hero-cue:hover .hero-cue__mouse { border-color: var(--turq); }
+}
+
+/* ------------------------------------------------------------------ keyframes */
+@keyframes hero-spin { to { transform: rotate(360deg); } }
+@keyframes hero-shimmer { from { background-position: 0% 50%; } to { background-position: -220% 50%; } }
+@keyframes hero-bar { 0% { background-position: -40% 0; } 100% { background-position: 140% 0; } }
+@keyframes hero-head { 0% { box-shadow: 0 0 0 0 rgba(var(--turq-rgb), .6), 0 0 18px var(--turq); } 100% { box-shadow: 0 0 0 12px rgba(var(--turq-rgb), 0), 0 0 18px var(--turq); } }
+@keyframes hero-wheel { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(11px); opacity: 0; } 100% { opacity: 0; } }
+@keyframes hero-hud-tick { 0%, 100% { transform: rotate(45deg) scale(1); } 50% { transform: rotate(225deg) scale(.7); } }
+@property --hero-ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes hero-ang { to { --hero-ang: 360deg; } }
+
+/* every CSS loop in the hero pauses once it scrolls away */
+#bosh:not(.is-inview) *, #bosh:not(.is-inview) *::before, #bosh:not(.is-inview) *::after { animation-play-state: paused !important; }
+
+/* ------------------------------------------------------------------ laptop / short screens */
+@media (min-width: 901px) and (max-height: 820px) {
+  #bosh { --hero-top: 96px; padding-bottom: 40px; }
+  #bosh .hero-lead { max-width: 32rem; font-size: 1.02rem; }
+  #bosh .hero-card-wrap { width: 330px; }
+  #bosh .hero-card__eta-v { font-size: 1.05rem; }
+}
+@media (min-width: 1700px) {
+  #bosh { --g-cx: .73; }
+}
+@media (min-width: 901px) and (max-width: 1180px) {
+  #bosh { --g-cx: .76; --g-rh: .52; }
+  #bosh .hero-card-wrap { width: 312px; }
+  #bosh .hero-copy { max-width: 620px; }
+}
+
+/* ------------------------------------------------------------------ stacked (phones + portrait tablets) */
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
+  #bosh {
+    --g-cx: .5; --g-cy: .3; --g-rh: .3; --g-rw: .44;
+    min-height: 100svh;
+    justify-content: flex-start;
+    padding: 50svh 0 64px;
+  }
+  #bosh .hero-stage { bottom: auto; height: 100svh; }
+  #bosh .hero-gl {
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0, 0, 0, .5) 75%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0, 0, 0, .5) 75%, transparent 100%);
+  }
+  #bosh .hero-scrim {
+    height: 100svh; bottom: auto;
+    background: linear-gradient(180deg, rgba(3, 5, 12, 0) 0%, rgba(3, 5, 12, 0) 34%, rgba(3, 5, 12, .72) 50%, rgba(3, 5, 12, .9) 62%, rgba(3, 5, 12, 0) 100%);
+  }
+  #bosh .hero-rail { display: none; }
+  #bosh .hero-card-wrap { position: relative; right: auto; bottom: auto; width: 100%; max-width: 440px; margin-top: 34px; }
+  #bosh .hero-cue { display: none; }
+}
+@media (max-width: 600px) {
+  #bosh { --g-rh: .29; --g-rw: .6; padding-top: 43svh; }
+  #bosh .hero-title { font-size: clamp(2.2rem, 10.6vw, 3.2rem); }
+  #bosh .hero-modes { display: flex; width: 100%; }
+  #bosh .hero-modes__item { flex: 1 1 auto; justify-content: center; padding: 0 6px; gap: 5px; font-size: .58rem; letter-spacing: .03em; white-space: nowrap; }
+  #bosh .hero-modes__item svg { width: 14px; height: 14px; }
+  #bosh .hero-lead { font-size: 1rem; }
+  #bosh .hero-ctas { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  #bosh .hero-ctas .btn { --h: 54px; width: 100%; }
+  #bosh .hero-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; }
+  #bosh .hero-stat:nth-child(3) { padding-left: 0; border-left: 0; }
+  #bosh .hero-card { padding: 18px; }
+  #bosh .hero-lbl { font-size: 9px; letter-spacing: .12em; }
+  #bosh .hero-lbl::before { width: 8px; }
+}

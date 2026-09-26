@@ -1,0 +1,342 @@
+/* ==========================================================================
+   45-stats · Raqamlarda — bento of living numbers
+   ========================================================================== */
+#raqamlar { position: relative; }
+
+/* ------------------------------------------------------------------ background */
+#raqamlar .sts-bg {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+}
+#raqamlar .sts-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(150, 180, 255, .045) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, rgba(150, 180, 255, .045) 0 1px, transparent 1px 88px);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 55%, #000 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 55%, #000 10%, transparent 75%);
+}
+#raqamlar .sts-orb {
+  position: absolute; border-radius: 50%; will-change: transform;
+  animation: sts-drift 26s ease-in-out infinite alternate; animation-play-state: paused;
+}
+#raqamlar.is-live .sts-orb { animation-play-state: running; }
+#raqamlar .sts-orb--a { width: 58vw; height: 58vw; left: -16vw; top: 4%; background: radial-gradient(closest-side, rgba(var(--turq-rgb), .13), transparent); }
+#raqamlar .sts-orb--b { width: 52vw; height: 52vw; right: -14vw; top: 30%; background: radial-gradient(closest-side, rgba(var(--violet-rgb), .15), transparent); animation-duration: 31s; animation-delay: -9s; }
+#raqamlar .sts-orb--c { width: 44vw; height: 44vw; left: 30%; bottom: -6%; background: radial-gradient(closest-side, rgba(var(--gold-rgb), .08), transparent); animation-duration: 23s; animation-delay: -4s; }
+@keyframes sts-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6vw, -4vw, 0) scale(1.12); }
+  100% { transform: translate3d(-4vw, 3vw, 0) scale(.94); }
+}
+#raqamlar .sts-bg__chart { position: absolute; left: 0; right: 0; top: 18%; width: 100%; height: 70%; }
+#raqamlar .sts-bg__line { fill: none; stroke: rgba(var(--turq-rgb), .16); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-dasharray: 4 7; }
+
+#raqamlar .sts-wrap { position: relative; z-index: 1; }
+
+/* ------------------------------------------------------------------ head */
+#raqamlar .sts-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: clamp(40px, 5.5vw, 76px); }
+#raqamlar .sts-head .sec-head { margin-bottom: 0; }
+#raqamlar .sts-live {
+  flex: none; display: inline-flex; align-items: center; gap: 12px; padding: 11px 18px; border-radius: var(--r-pill);
+  border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+}
+#raqamlar .sts-live__l { color: var(--text); }
+#raqamlar .sts-live__t { color: var(--text-3); padding-left: 12px; border-left: 1px solid var(--line-2); }
+#raqamlar .sts-clock { color: var(--turq); }
+
+/* ------------------------------------------------------------------ bento */
+#raqamlar .sts-bento {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.4vw, 20px);
+  grid-template-areas:
+    "ring ring geo   fleet"
+    "ring ring today clients"
+    "odo  odo  odo   wh"
+    "vol  vol  vol   wh";
+}
+#raqamlar .sts-card--ring { grid-area: ring; }
+#raqamlar .sts-card--geo { grid-area: geo; }
+#raqamlar .sts-card--fleet { grid-area: fleet; }
+#raqamlar .sts-card--today { grid-area: today; }
+#raqamlar .sts-card--clients { grid-area: clients; }
+#raqamlar .sts-card--odo { grid-area: odo; }
+#raqamlar .sts-card--vol { grid-area: vol; }
+#raqamlar .sts-card--wh { grid-area: wh; }
+
+#raqamlar .sts-card {
+  --mx: 50%; --my: 0%;
+  position: relative; isolation: isolate; overflow: hidden; min-width: 0;
+  display: flex; flex-direction: column; gap: 18px;
+  padding: clamp(20px, 2vw, 30px); border-radius: var(--r-lg); min-height: 250px;
+  background: linear-gradient(180deg, rgba(22, 32, 74, .40), rgba(7, 11, 24, .62));
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 30px 60px -40px rgba(0, 0, 0, .8);
+  transition: border-color .5s var(--ease-out);
+}
+#raqamlar .sts-card::before, #raqamlar .sts-card::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  transition: opacity .5s var(--ease-out);
+}
+#raqamlar .sts-card::before { z-index: -1; background: radial-gradient(420px circle at var(--mx) var(--my), rgba(var(--turq-rgb), .10), transparent 62%); }
+#raqamlar .sts-card::after {
+  padding: 1px; z-index: 2;
+  background: radial-gradient(300px circle at var(--mx) var(--my), rgba(var(--turq-rgb), .75), rgba(var(--azure-rgb), .25) 40%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+@media (hover: hover) {
+  #raqamlar .sts-card:hover::before, #raqamlar .sts-card:hover::after { opacity: 1; }
+  #raqamlar .sts-card:hover { border-color: var(--line-2); }
+}
+
+#raqamlar .sts-card__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 26px; }
+#raqamlar .sts-tag { display: inline-flex; align-items: center; gap: 10px; font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text-2); }
+#raqamlar .sts-tag i { font-style: normal; color: var(--turq); }
+#raqamlar .sts-pill {
+  display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: var(--r-pill);
+  border: 1px solid var(--line-2); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); white-space: nowrap;
+}
+#raqamlar .sts-pill .dot-live { width: 6px; height: 6px; }
+#raqamlar .sts-pill svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#raqamlar .sts-pill--ok { color: var(--green); border-color: rgba(57, 229, 140, .35); background: rgba(57, 229, 140, .06); }
+#raqamlar .sts-pill--up { color: var(--gold); border-color: rgba(var(--gold-rgb), .35); background: rgba(var(--gold-rgb), .06); }
+
+#raqamlar .sts-card__num { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: auto; }
+#raqamlar .sts-num {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 3.3vw, 3.4rem); line-height: 1;
+  letter-spacing: -.035em; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+#raqamlar .sts-unit { font-weight: 600; font-size: .95rem; color: var(--text-2); }
+#raqamlar .sts-card__txt { font-size: .9rem; line-height: 1.5; color: var(--text-2); }
+
+/* ------------------------------------------------------------------ 01 ring */
+#raqamlar .sts-card--ring { gap: 10px; }
+#raqamlar .sts-ring { position: relative; width: min(100%, 400px); aspect-ratio: 1; margin: 0 auto; flex: none; }
+#raqamlar .sts-ring__svg { width: 100%; height: 100%; overflow: visible; }
+#raqamlar .sts-ring__core { fill: url(#sts-g-core); }
+#raqamlar .sts-ring__ticks line { stroke: rgba(150, 180, 255, .2); stroke-width: 1.4; transition: stroke .35s; }
+#raqamlar .sts-ring__ticks line.is-major { stroke-width: 2; stroke: rgba(150, 180, 255, .32); }
+#raqamlar .sts-ring__ticks line.is-on { stroke: var(--turq); }
+#raqamlar .sts-ring__ticks line.is-major.is-on { stroke: #bafff8; }
+#raqamlar .sts-ring__dial { transform-box: fill-box; transform-origin: 50% 50%; animation: sts-spin 60s linear infinite; animation-play-state: paused; }
+#raqamlar .sts-ring__dash { fill: none; stroke: rgba(var(--gold-rgb), .35); stroke-width: 1; stroke-dasharray: 1.5 9; }
+#raqamlar .sts-ring__track { fill: none; stroke: rgba(150, 180, 255, .09); stroke-width: 12; }
+#raqamlar .sts-ring__prog { fill: none; stroke: url(#sts-g-ring); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 0 100; filter: drop-shadow(0 0 10px rgba(var(--turq-rgb), .45)); }
+#raqamlar .sts-ring__comet {
+  fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4 96; opacity: 0;
+  transform-box: fill-box; transform-origin: 50% 50%; animation: sts-spin 3.6s linear infinite; animation-play-state: paused;
+}
+#raqamlar .sts-ring.is-done .sts-ring__comet { opacity: .8; transition: opacity 1s; }
+#raqamlar .sts-ring__inner { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 5; }
+#raqamlar .sts-ring__tip circle { fill: #eaffff; }
+#raqamlar .sts-ring__tip .sts-ring__tipglow { fill: rgba(var(--turq-rgb), .28); animation: sts-glow 1.8s ease-in-out infinite; animation-play-state: paused; transform-box: fill-box; transform-origin: 50% 50%; }
+#raqamlar.is-live .sts-ring__dial, #raqamlar.is-live .sts-ring__comet, #raqamlar.is-live .sts-ring__tipglow { animation-play-state: running; }
+@media (hover: hover) { #raqamlar .sts-card--ring:hover .sts-ring__dial { animation-duration: 12s; } }
+#raqamlar .sts-ring__val { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center; }
+#raqamlar .sts-num--xl { font-size: clamp(3rem, 5.6vw, 5.4rem); letter-spacing: -.045em; }
+#raqamlar .sts-num small { font-size: .42em; margin-left: .1em; color: var(--turq); letter-spacing: 0; vertical-align: .9em; }
+#raqamlar .sts-ring__l { max-width: 17ch; font-size: .86rem; line-height: 1.4; color: var(--text-2); }
+#raqamlar .sts-mini { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: auto; border-top: 1px solid var(--line); padding-top: 18px; }
+#raqamlar .sts-mini li { display: grid; gap: 4px; padding-inline: 14px; border-left: 1px solid var(--line); }
+#raqamlar .sts-mini li:first-child { border-left: 0; padding-left: 0; }
+#raqamlar .sts-mini b { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.05rem, 1.5vw, 1.4rem); color: var(--text); white-space: nowrap; }
+#raqamlar .sts-mini span { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+@keyframes sts-spin { to { transform: rotate(360deg); } }
+@keyframes sts-glow { 0%, 100% { transform: scale(.7); opacity: .5; } 50% { transform: scale(1.25); opacity: 1; } }
+
+/* ------------------------------------------------------------------ 02 orbit */
+#raqamlar .sts-orbit { flex: 1; min-height: 96px; display: grid; place-items: center; margin: -6px -8px; }
+#raqamlar .sts-orbit svg { width: 100%; height: 100%; max-height: 150px; overflow: visible; }
+#raqamlar .sts-orbit__rings ellipse { fill: none; stroke: rgba(150, 180, 255, .16); stroke-width: .7; stroke-dasharray: 2 3; }
+#raqamlar .sts-orbit__front circle { fill: #bafff8; }
+#raqamlar .sts-orbit__back circle { fill: rgba(var(--azure-rgb), .8); }
+#raqamlar .sts-orbit__core { fill: var(--gold); filter: drop-shadow(0 0 5px rgba(var(--gold-rgb), .9)); }
+#raqamlar .sts-orbit__halo {
+  fill: none; stroke: rgba(var(--gold-rgb), .5); stroke-width: 1; transform-box: fill-box; transform-origin: 50% 50%;
+  animation: sts-halo 2.4s var(--ease-out) infinite; animation-play-state: paused;
+}
+#raqamlar.is-live .sts-orbit__halo { animation-play-state: running; }
+@keyframes sts-halo { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+
+/* ------------------------------------------------------------------ 03 fleet */
+#raqamlar .sts-card--fleet .sts-card__num { margin-top: auto; }
+#raqamlar .sts-fbar { display: flex; gap: 3px; height: 10px; }
+#raqamlar .sts-fbar i { height: 100%; border-radius: 99px; transform-origin: 0 50%; }
+#raqamlar .sts-fbar__a { flex: 1240 1 0; background: linear-gradient(90deg, var(--turq), #7af3e9); box-shadow: 0 0 14px rgba(var(--turq-rgb), .4); }
+#raqamlar .sts-fbar__b { flex: 320 1 0; background: var(--azure); }
+#raqamlar .sts-fbar__c { flex: 86 1 0; min-width: 8px; background: var(--gold); }
+#raqamlar .sts-legend { display: grid; gap: 7px; }
+#raqamlar .sts-legend li { display: flex; align-items: center; gap: 10px; font-size: .84rem; color: var(--text-2); }
+#raqamlar .sts-legend b { margin-left: auto; font-weight: 700; color: var(--text); }
+#raqamlar .sts-legend__d { width: 8px; height: 8px; border-radius: 3px; flex: none; }
+#raqamlar .sts-legend__d--a { background: var(--turq); }
+#raqamlar .sts-legend__d--b { background: var(--azure); }
+#raqamlar .sts-legend__d--c { background: var(--gold); }
+
+/* ------------------------------------------------------------------ 04 today · split-flap */
+#raqamlar .sts-card--today .sts-tag { color: var(--text); }
+#raqamlar .sts-flap { display: flex; gap: 6px; margin-top: auto; }
+#raqamlar .sts-fc {
+  --fh: clamp(58px, 4.8vw, 72px);
+  position: relative; width: calc(var(--fh) * .72); height: var(--fh); perspective: 260px;
+  font-family: var(--font-display); font-weight: 700; font-size: calc(var(--fh) * .56); line-height: var(--fh); color: var(--text); text-align: center;
+}
+#raqamlar .sts-fc > span {
+  position: absolute; left: 0; right: 0; height: 50%; overflow: hidden; backface-visibility: hidden;
+  background: linear-gradient(180deg, #18214a, #0f1633);
+}
+#raqamlar .sts-fc > span b { display: block; height: var(--fh); font-weight: inherit; }
+#raqamlar .sts-fc__t, #raqamlar .sts-fc__ft { top: 0; border-radius: 10px 10px 0 0; transform-origin: 50% 100%; }
+#raqamlar .sts-fc__b, #raqamlar .sts-fc__fb { bottom: 0; border-radius: 0 0 10px 10px; transform-origin: 50% 0; background: linear-gradient(180deg, #121a3c, #0b1129) !important; }
+#raqamlar .sts-fc__b b, #raqamlar .sts-fc__fb b { margin-top: calc(var(--fh) * -.5); }
+#raqamlar .sts-fc__ft { z-index: 2; }
+#raqamlar .sts-fc__fb { z-index: 2; transform: rotateX(90deg); }
+#raqamlar .sts-fc::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; margin-top: -.5px; z-index: 3;
+  background: rgba(3, 5, 12, .9); box-shadow: 0 1px 0 rgba(255, 255, 255, .05);
+}
+#raqamlar .sts-fc::before {
+  content: ''; position: absolute; inset: 0; border-radius: 10px; border: 1px solid var(--line-2); z-index: 4; pointer-events: none;
+}
+#raqamlar .sts-fc--sep { width: 8px; }
+#raqamlar .sts-fc--sep::before, #raqamlar .sts-fc--sep::after { display: none; }
+#raqamlar .sts-last { display: flex; gap: 8px; align-items: baseline; min-height: 1.5em; white-space: nowrap; overflow: hidden; }
+#raqamlar .sts-last .mono { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+#raqamlar .sts-last__r { color: var(--text); font-weight: 600; font-size: .86rem; }
+#raqamlar .sts-hours { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
+#raqamlar .sts-hours i { flex: 1; height: var(--h); min-height: 2px; border-radius: 2px; background: rgba(150, 180, 255, .14); transform-origin: 50% 100%; }
+#raqamlar .sts-hours i.is-past { background: rgba(var(--turq-rgb), .45); }
+#raqamlar .sts-hours i.is-now { background: var(--turq); box-shadow: 0 0 10px rgba(var(--turq-rgb), .8); }
+
+/* ------------------------------------------------------------------ 05 clients */
+#raqamlar .sts-avatars { display: flex; align-items: center; padding-left: 10px; }
+#raqamlar .sts-avatars span {
+  display: grid; place-items: center; width: 44px; height: 44px; margin-left: -10px; border-radius: 50%;
+  border: 2px solid transparent; font-family: var(--font-display); font-weight: 600; font-size: .68rem; color: var(--text);
+  background: linear-gradient(var(--ink-850), var(--ink-850)) padding-box, linear-gradient(135deg, var(--c1), var(--c2)) border-box;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .8); transition: margin .6s var(--ease-out), transform .6s var(--ease-out);
+}
+#raqamlar .sts-avatars .sts-avatars__more {
+  width: auto; padding: 0 12px; border-radius: 99px; margin-left: 6px; font-size: .64rem; color: var(--turq);
+  background: rgba(var(--turq-rgb), .08); border: 1px solid rgba(var(--turq-rgb), .35);
+}
+@media (hover: hover) {
+  #raqamlar .sts-card--clients:hover .sts-avatars span { margin-left: 2px; }
+  #raqamlar .sts-card--clients:hover .sts-avatars span:nth-child(odd) { transform: translateY(-4px); }
+}
+
+/* ------------------------------------------------------------------ 06 odometer */
+#raqamlar .sts-odo-row { position: relative; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 6px 14px; margin-top: auto; }
+#raqamlar .sts-odo {
+  display: flex; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 5vw, 5rem); line-height: 1; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+#raqamlar .sts-od {
+  display: inline-block; height: 1.12em; overflow: hidden; color: var(--text);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+}
+#raqamlar .sts-od.is-hot { color: var(--turq); }
+#raqamlar .sts-od.is-gap { margin-left: .2em; }
+#raqamlar .sts-od__s { display: flex; flex-direction: column; will-change: transform; }
+#raqamlar .sts-od__s i { display: block; height: 1.12em; line-height: 1.12; font-style: normal; text-align: center; }
+#raqamlar .sts-odo__u { font-family: var(--font-display); font-weight: 600; font-size: clamp(1rem, 1.6vw, 1.5rem); color: var(--text-2); padding-bottom: .4em; }
+#raqamlar .sts-odo__plus {
+  position: absolute; right: 0; top: -8px; font-size: .78rem; color: var(--turq); opacity: 0; pointer-events: none;
+}
+#raqamlar .sts-au { display: flex; align-items: center; gap: 12px; }
+#raqamlar .sts-au__b { flex: none; border-radius: 50%; }
+#raqamlar .sts-au__b--earth { width: 12px; height: 12px; background: radial-gradient(circle at 35% 35%, #9fd0ff, var(--azure) 55%, #16347a); box-shadow: 0 0 12px rgba(var(--azure-rgb), .7); }
+#raqamlar .sts-au__b--sun { width: 20px; height: 20px; background: radial-gradient(circle at 40% 40%, #fff3c9, var(--gold) 45%, var(--amber)); box-shadow: 0 0 22px rgba(var(--gold-rgb), .85), 0 0 50px rgba(255, 157, 61, .35); }
+#raqamlar .sts-au__track { position: relative; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(var(--azure-rgb), .5), rgba(var(--gold-rgb), .5)); }
+#raqamlar .sts-au__marks { position: absolute; inset: -4px 0; background: repeating-linear-gradient(90deg, rgba(234, 241, 255, .35) 0 1px, transparent 1px calc(100% / 12)); }
+#raqamlar .sts-au__pulse {
+  position: absolute; left: 0; top: -3px; width: 36px; height: 7px; margin-left: -36px; border-radius: 99px;
+  background: linear-gradient(90deg, transparent, #fff); box-shadow: 0 0 10px rgba(255, 255, 255, .6);
+  animation: sts-au 3.2s var(--ease-in-out) infinite; animation-play-state: paused;
+}
+#raqamlar.is-live .sts-au__pulse { animation-play-state: running; }
+@keyframes sts-au { from { left: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } to { left: 100%; opacity: 0; } }
+
+/* ------------------------------------------------------------------ 07 volume chart */
+#raqamlar .sts-vol { flex: 1; display: grid; grid-template-columns: minmax(170px, .62fr) 2fr; gap: clamp(20px, 3vw, 48px); align-items: end; }
+#raqamlar .sts-vol .sts-card__num { flex-direction: column; align-items: flex-start; gap: 8px; }
+#raqamlar .sts-vol .sts-num { font-size: clamp(2.6rem, 4.6vw, 4.6rem); }
+#raqamlar .sts-chart { position: relative; height: clamp(190px, 18vw, 250px); }
+#raqamlar .sts-chart__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 2; }
+#raqamlar .sts-chart__line { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(var(--gold-rgb), .6)); }
+#raqamlar .sts-chart__area { fill: url(#sts-g-area); opacity: 0; }
+#raqamlar .sts-chart__dots circle { fill: var(--ink-950); stroke: var(--gold); stroke-width: 1.6; }
+#raqamlar .sts-bars {
+  position: absolute; inset: 0; display: flex; align-items: stretch; gap: clamp(6px, 1vw, 16px);
+  background: repeating-linear-gradient(0deg, rgba(150, 180, 255, .07) 0 1px, transparent 1px 25%) 0 0 / 100% calc(100% - 26px) no-repeat;
+}
+#raqamlar .sts-bars li { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
+#raqamlar .sts-bars b { order: 0; font-family: var(--font-mono); font-size: .7rem; font-weight: 600; color: var(--text-2); }
+#raqamlar .sts-bar {
+  order: 1; position: relative; display: block; width: 100%; max-width: 46px; height: calc(var(--v) * 28%);
+  border-radius: 9px 9px 3px 3px; overflow: hidden; transform-origin: 50% 100%;
+  background: linear-gradient(180deg, rgba(var(--turq-rgb), .55), rgba(var(--azure-rgb), .12));
+  border: 1px solid rgba(var(--turq-rgb), .35); border-bottom: 0;
+  transition: filter .4s, border-color .4s;
+}
+#raqamlar .sts-bar i {
+  position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0 40%, rgba(255, 255, 255, .5) 50%, transparent 60% 100%);
+  background-size: 100% 300%; background-position: 0 100%; opacity: .5;
+  animation: sts-shine 3.4s linear infinite; animation-play-state: paused;
+}
+#raqamlar.is-live .sts-bar i { animation-play-state: running; }
+@keyframes sts-shine { from { background-position: 0 120%; } to { background-position: 0 -120%; } }
+#raqamlar .sts-bars em { order: 2; font-style: normal; font-family: var(--font-mono); font-size: .66rem; letter-spacing: .08em; color: var(--text-3); height: 20px; line-height: 20px; }
+#raqamlar .sts-bars li.is-now .sts-bar { background: var(--grad-warm); border-color: rgba(var(--gold-rgb), .7); box-shadow: 0 0 30px rgba(var(--gold-rgb), .35); }
+#raqamlar .sts-bars li.is-now b { color: var(--gold); }
+#raqamlar .sts-bars li.is-now em { color: var(--gold); }
+@media (hover: hover) {
+  #raqamlar .sts-bars li:hover .sts-bar { filter: brightness(1.35); border-color: var(--turq); }
+  #raqamlar .sts-bars li:hover b { color: var(--text); }
+}
+
+/* ------------------------------------------------------------------ 08 warehouses */
+#raqamlar .sts-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; }
+#raqamlar .sts-grid i {
+  aspect-ratio: 1; border-radius: 6px; background: rgba(150, 180, 255, .06); border: 1px solid var(--line);
+  transition: background-color .5s, border-color .5s, box-shadow .5s;
+}
+#raqamlar .sts-grid i.is-on { background: linear-gradient(135deg, rgba(var(--turq-rgb), .5), rgba(var(--azure-rgb), .22)); border-color: rgba(var(--turq-rgb), .45); }
+#raqamlar .sts-grid i.is-hq { background: linear-gradient(135deg, rgba(var(--gold-rgb), .75), rgba(var(--coral-rgb), .35)); border-color: rgba(var(--gold-rgb), .7); box-shadow: 0 0 14px rgba(var(--gold-rgb), .45); }
+#raqamlar .sts-grid i.is-ping { animation: sts-ping 1.3s var(--ease-out); }
+@keyframes sts-ping { 0% { box-shadow: 0 0 0 0 rgba(var(--turq-rgb), .9); background-color: rgba(186, 255, 248, .6); } 100% { box-shadow: 0 0 0 10px rgba(var(--turq-rgb), 0); } }
+@media (hover: hover) { #raqamlar .sts-grid i:hover { background: rgba(var(--turq-rgb), .8); border-color: #bafff8; } }
+#raqamlar .sts-wh__nums { display: grid; gap: 12px; margin-top: auto; }
+#raqamlar .sts-card__num--sm .sts-num { font-size: clamp(1.5rem, 2vw, 2rem); }
+
+/* ------------------------------------------------------------------ responsive */
+@media (max-width: 1100px) {
+  #raqamlar .sts-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: "ring ring" "geo fleet" "today clients" "odo odo" "vol vol" "wh wh";
+  }
+  #raqamlar .sts-card--wh { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: 28px; }
+  #raqamlar .sts-card--wh .sts-card__top { grid-column: 1 / -1; }
+  #raqamlar .sts-card--wh .sts-grid { grid-row: 2 / 4; }
+  #raqamlar .sts-card--wh .sts-wh__nums { align-self: end; }
+  #raqamlar .sts-ring { width: min(100%, 360px); }
+}
+@media (max-width: 760px) {
+  #raqamlar .sts-head { flex-direction: column; align-items: flex-start; gap: 22px; }
+  #raqamlar .sts-vol { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  #raqamlar .sts-bento { grid-template-columns: minmax(0, 1fr); grid-template-areas: "ring" "geo" "fleet" "today" "clients" "odo" "vol" "wh"; }
+  #raqamlar .sts-card { min-height: 0; border-radius: var(--r-md); }
+  #raqamlar .sts-card--wh { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 18px; }
+  #raqamlar .sts-mini li { padding-inline: 10px; }
+  #raqamlar .sts-mini span { font-size: .56rem; letter-spacing: .08em; }
+  #raqamlar .sts-live { flex-wrap: wrap; }
+  #raqamlar .sts-chart { height: 180px; }
+  #raqamlar .sts-bars { gap: 5px; }
+  #raqamlar .sts-bars b { font-size: .6rem; }
+  #raqamlar .sts-bars em { font-size: .56rem; letter-spacing: 0; }
+  #raqamlar .sts-orbit { min-height: 120px; }
+}

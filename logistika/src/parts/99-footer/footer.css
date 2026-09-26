@@ -1,0 +1,11 @@
+#footer { position: relative; padding: var(--section-y) 0 32px; overflow: hidden; background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(var(--coral-rgb), .14), transparent 70%); }
+.ft-cta { display: grid; gap: 22px; max-width: 1000px; }
+.ft-contacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.ft-card { display: grid; gap: 6px; padding: 22px 24px; border-radius: var(--r-md); transition: border-color .4s; }
+.ft-card:hover { border-color: rgba(var(--gold-rgb), .6); }
+.ft-card span { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; }
+.ft-card b { font-size: 1.05rem; word-break: break-word; }
+.ft-mega { margin-top: clamp(60px, 10vw, 140px); font-family: var(--font-display); font-weight: 900; font-size: clamp(2.6rem, 13.5vw, 13rem); line-height: .85; letter-spacing: -.05em; text-align: center;
+  background: linear-gradient(90deg, var(--turq), var(--azure), var(--violet), var(--gold), var(--turq)); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: mu-shimmer 8s linear infinite; opacity: .9; }
+.ft-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: .8rem; }
+@media (max-width: 768px) { .ft-contacts { grid-template-columns: 1fr; } }
