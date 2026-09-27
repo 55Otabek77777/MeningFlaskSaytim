@@ -1,0 +1,22 @@
+#faq .fq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+#faq .fq-side { position: sticky; top: 110px; display: grid; gap: 20px; }
+#faq .fq-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+#faq .fq-list { display: grid; gap: 10px; }
+#faq .fq-item { border-radius: var(--r-md); background: rgba(255, 255, 255, .85); border: 1px solid #fff; box-shadow: var(--shadow-card); overflow: hidden; transition: box-shadow .4s; }
+#faq .fq-item.is-open { box-shadow: var(--shadow-lift); }
+#faq .fq-item h3 { margin: 0; font: inherit; }
+#faq .fq-q { width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 18px 20px; text-align: left; font-weight: 800; font-size: 1.05rem; color: var(--mu-ink); }
+#faq .fq-q:hover .fq-t { color: var(--mu-primary-2); }
+#faq .fq-n { font-family: var(--font-mono); font-weight: 600; font-size: .9375rem; color: var(--mu-gold); }
+#faq .fq-t { transition: color .3s; }
+#faq .fq-ico { position: relative; width: 34px; height: 34px; border-radius: 50%; background: rgba(59, 91, 219, .1); transition: background .4s, transform .5s var(--ease-out); }
+#faq .fq-ico::before, #faq .fq-ico::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2.4px; margin: -1.2px 0 0 -7px; border-radius: 2px; background: var(--mu-primary); transition: transform .5s var(--ease-out), background .4s; }
+#faq .fq-ico::after { transform: rotate(90deg); }
+#faq .fq-item.is-open .fq-ico { background: var(--mu-accent); transform: rotate(180deg); }
+#faq .fq-item.is-open .fq-ico::before, #faq .fq-item.is-open .fq-ico::after { background: #fff; }
+#faq .fq-item.is-open .fq-ico::after { transform: rotate(0); }
+#faq .fq-a { overflow: hidden; }
+#faq .fq-a p { padding: 0 20px 20px 62px; color: var(--text-2); line-height: 1.65; }
+#faq .fq-a a { color: var(--mu-accent); font-weight: 800; }
+@media (max-width: 900px) { #faq .fq-grid { grid-template-columns: 1fr; } #faq .fq-side { position: relative; top: 0; } }
+@media (max-width: 560px) { #faq .fq-a p { padding-left: 20px; } #faq .fq-q { gap: 12px; padding: 16px; } }

@@ -1,0 +1,33 @@
+#yutuqlar .yt-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+#yutuqlar .yt-copy { display: grid; gap: 22px; justify-items: start; }
+#yutuqlar .yt-big { display: grid; gap: 6px; padding: 18px 22px; border-radius: var(--r-lg); background: rgba(255, 255, 255, .85); box-shadow: var(--shadow-card); }
+#yutuqlar .yt-big b { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.4rem, 4.4vw, 3.8rem); line-height: 1; color: var(--mu-primary); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+#yutuqlar .yt-big > span { color: var(--text-2); font-weight: 600; max-width: 48ch; }
+#yutuqlar .yt-subjects { display: flex; flex-wrap: wrap; gap: 8px; }
+#yutuqlar .yt-deck-wrap { display: grid; justify-items: center; gap: 18px; }
+#yutuqlar .yt-deck { position: relative; width: min(400px, 78vw); aspect-ratio: 4 / 3; perspective: 1400px; }
+#yutuqlar .yt-card { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; cursor: grab; }
+#yutuqlar .yt-card__in { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto auto; padding: 22px 24px; border-radius: 22px; overflow: hidden;
+  background: linear-gradient(150deg, #ffffff 0%, #f5f8ff 60%, #eef3ff 100%); border: 1px solid rgba(30, 58, 138, .12);
+  box-shadow: 0 30px 60px -30px rgba(30, 58, 138, .5), inset 0 0 0 8px #fff, inset 0 0 0 9.5px rgba(201, 138, 27, .45); }
+#yutuqlar .yt-card--gold .yt-card__in { background: linear-gradient(150deg, #fffdf6, #fdf3dc); }
+#yutuqlar .yt-card__top { display: flex; justify-content: space-between; align-items: center; }
+#yutuqlar .yt-kind { font-family: var(--font-mono); font-weight: 600; font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mu-primary-2); }
+#yutuqlar .yt-seal { width: 52px; height: 52px; }
+#yutuqlar .yt-seal path:first-child { fill: rgba(201, 138, 27, .9); }
+#yutuqlar .yt-seal circle { fill: #fff; }
+#yutuqlar .yt-seal path:last-child { fill: none; stroke: var(--mu-accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+#yutuqlar .yt-subj { align-self: end; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.45rem); color: var(--mu-ink); letter-spacing: -.02em; }
+#yutuqlar .yt-grade { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em;
+  background: linear-gradient(120deg, #1e3a8a, #3b5bdb 50%, #c98a1b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#yutuqlar .yt-lines { display: flex; gap: 18px; margin-top: 10px; }
+#yutuqlar .yt-lines i { flex: 1; height: 2px; background: rgba(30, 58, 138, .15); }
+#yutuqlar .yt-shine { position: absolute; inset: -50% -30%; background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .85) 50%, transparent 60%); transform: translateX(-60%); pointer-events: none; }
+#yutuqlar .yt-nav { display: flex; gap: 10px; }
+#yutuqlar .yt-btn { width: 52px; height: 52px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-card); display: grid; place-items: center; transition: background .3s, transform .3s var(--ease-out); }
+#yutuqlar .yt-btn:hover { background: var(--mu-primary); transform: scale(1.06); }
+#yutuqlar .yt-btn svg { width: 22px; height: 22px; fill: none; stroke: var(--mu-primary); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+#yutuqlar .yt-btn:hover svg { stroke: #fff; }
+#yutuqlar .yt-note { font-size: .9375rem; color: var(--text-3); text-align: center; }
+@media (max-width: 900px) { #yutuqlar .yt-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { #yutuqlar .yt-kind { font-size: .9375rem; letter-spacing: .06em; } }

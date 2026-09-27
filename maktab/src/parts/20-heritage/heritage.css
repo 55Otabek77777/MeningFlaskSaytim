@@ -41,6 +41,8 @@
   #meros .mr-stage { top: 72px; z-index: 2; margin: 0 auto 8px; width: min(240px, 62vw); }
   #meros .mr-stage__in { box-shadow: 0 20px 40px -24px rgba(30, 58, 138, .5); }
   #meros .mr-year { left: 16px; bottom: 12px; }
+  #meros .mr-year__val { font-size: 1.45rem; }
+  #meros .mr-year__cap { font-size: .8rem; }
   #meros .mr-dots { right: 14px; bottom: 16px; gap: 5px; }
   #meros .mr-dots li { width: 7px; height: 7px; }
   #meros .mr-dots li.is-on { width: 18px; }
