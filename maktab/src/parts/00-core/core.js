@@ -92,24 +92,32 @@ MU.part('core', {
     let scrollY = 0;
     const draw = t => {
       ctx.clearRect(0, 0, W, H);
+      const groups = [[], [], [], [], [], []];
       for (const s of stars) {
         const y = ((s.y - scrollY * 0.05 * s.z) % H + H) % H;
-        const a = MU.reduced ? s.a : s.a * (0.6 + 0.4 * Math.sin(t * s.s + s.p));
-        ctx.fillStyle = s.gold ? `rgba(201,138,27,${a * 1.4})` : `rgba(30,58,138,${a})`;
-        if (s.r > 1.5) {
-          ctx.beginPath();
-          ctx.moveTo(s.x, y - s.r * 2.2); ctx.lineTo(s.x + s.r * .5, y); ctx.lineTo(s.x, y + s.r * 2.2); ctx.lineTo(s.x - s.r * .5, y); ctx.closePath();
-          ctx.moveTo(s.x - s.r * 2.2, y); ctx.lineTo(s.x, y + s.r * .5); ctx.lineTo(s.x + s.r * 2.2, y); ctx.lineTo(s.x, y - s.r * .5); ctx.closePath();
-          ctx.fill();
-        } else {
-          ctx.beginPath(); ctx.arc(s.x, y, s.r, 0, 6.283); ctx.fill();
-        }
+        const k = MU.reduced ? 1 : Math.min(2, Math.floor((0.5 + 0.5 * Math.sin(t * s.s + s.p)) * 3));
+        groups[(s.gold ? 3 : 0) + k].push([s.x, y, s.r]);
       }
+      groups.forEach((g, i) => {
+        if (!g.length) return;
+        const a = (0.05 + 0.035 * (i % 3)) * (i >= 3 ? 1.5 : 1);
+        ctx.fillStyle = i >= 3 ? `rgba(201,138,27,${a})` : `rgba(30,58,138,${a})`;
+        ctx.beginPath();
+        for (const [x, y, r] of g) {
+          if (r > 1.5) {
+            ctx.moveTo(x, y - r * 2.2); ctx.lineTo(x + r * .5, y); ctx.lineTo(x, y + r * 2.2); ctx.lineTo(x - r * .5, y); ctx.closePath();
+            ctx.moveTo(x - r * 2.2, y); ctx.lineTo(x, y + r * .5); ctx.lineTo(x + r * 2.2, y); ctx.lineTo(x, y - r * .5); ctx.closePath();
+          } else { ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, 6.283); }
+        }
+        ctx.fill();
+      });
     };
     if (MU.reduced) draw(0);
     else {
       ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => { scrollY = s.scroll(); } });
-      MU.renderLoop(document.body, t => draw(t), { margin: '0px' });
+      /* yulduzlar sekin miltillaydi — ~15 kadr/s yetarli; scroll bo’lsa darhol */
+      let last = -1, lastY = -1;
+      MU.renderLoop(document.body, t => { if (t - last > 0.066 || scrollY !== lastY) { last = t; lastY = scrollY; draw(t); } }, { margin: '0px' });
     }
 
     if (!MU.reduced) gsap.from(nav, { y: -90, autoAlpha: 0, duration: 1.2, delay: 0.2, ease: 'mu.out' });

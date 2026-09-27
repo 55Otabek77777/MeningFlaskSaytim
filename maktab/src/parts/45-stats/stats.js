@@ -45,12 +45,17 @@ MU.part('stats', {
       cells = Float32Array.from({ length: cols * rows }, () => Math.random() * 0.3);
     };
     new ResizeObserver(size).observe(cv); size();
+    const LV = 6;
     const drawGrid = () => {
       ctx.clearRect(0, 0, cv.width, cv.height);
-      for (let i = 0; i < cells.length; i++) {
-        const x = (i % cols) * (SZ + GAP), y = Math.floor(i / cols) * (SZ + GAP), a = cells[i];
-        ctx.fillStyle = i % 17 === 0 ? `rgba(201,138,27,${a})` : `rgba(59,91,219,${a})`;
-        ctx.fillRect(x * d, y * d, SZ * d, SZ * d);
+      for (let pass = 0; pass < 2; pass++) for (let l = 1; l < LV; l++) {
+        ctx.fillStyle = pass ? `rgba(201,138,27,${(l / LV * 0.34).toFixed(3)})` : `rgba(59,91,219,${(l / LV * 0.34).toFixed(3)})`;
+        ctx.beginPath();
+        for (let i = 0; i < cells.length; i++) {
+          if ((i % 17 === 0) !== !!pass || Math.min(LV - 1, Math.floor(cells[i] / 0.34 * LV)) !== l) continue;
+          ctx.rect((i % cols) * (SZ + GAP) * d, Math.floor(i / cols) * (SZ + GAP) * d, SZ * d, SZ * d);
+        }
+        ctx.fill();
       }
     };
     if (MU.reduced) drawGrid();
