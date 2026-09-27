@@ -1,0 +1,88 @@
+#raqamlar .st-grid { display: grid; gap: 18px; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-areas: "a a b d" "c c b e" "c c f f"; }
+#raqamlar .st-a { grid-area: a; } #raqamlar .st-b { grid-area: b; } #raqamlar .st-c { grid-area: c; }
+#raqamlar .st-d { grid-area: d; } #raqamlar .st-e { grid-area: e; } #raqamlar .st-f { grid-area: f; }
+
+#raqamlar .st-card {
+  position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
+  min-height: 230px; padding: 26px; border-radius: var(--r-lg); background: rgba(255, 255, 255, .86);
+  border: 1px solid rgba(255, 255, 255, .95); box-shadow: var(--shadow-card);
+  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+/* magic-card: kursor ortidan yuruvchi yorug’lik va chegara */
+#raqamlar .st-card::before { content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 91, 219, .12), transparent 60%); }
+#raqamlar .st-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 91, 219, .8), rgba(201, 138, 27, .5) 40%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+@media (hover: hover) {
+  #raqamlar .st-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  #raqamlar .st-card:hover::before, #raqamlar .st-card:hover::after { opacity: 1; }
+}
+#raqamlar .st-num { display: flex; align-items: baseline; font-family: var(--font-display); font-weight: 800; font-size: clamp(2.6rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -.04em; color: var(--mu-primary); font-variant-numeric: tabular-nums; }
+#raqamlar .st-num i { font-style: normal; color: var(--mu-accent); margin-left: 2px; }
+#raqamlar .st-num--xl { font-size: clamp(3.2rem, 7vw, 6.6rem); }
+#raqamlar .st-label { color: var(--text-2); font-weight: 600; font-size: 1rem; line-height: 1.5; max-width: 42ch; }
+
+/* A — tajriba chizig’i */
+#raqamlar .st-line { width: 100%; height: auto; margin-bottom: 4px; overflow: visible; }
+#raqamlar .st-line__path { fill: none; stroke: var(--mu-primary-2); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 0; }
+#raqamlar .st-line__dots circle { fill: #fff; stroke: var(--mu-primary); stroke-width: 3; }
+#raqamlar .st-line__dots circle:last-child { fill: var(--mu-accent); stroke: #fff; }
+#raqamlar .st-line-labels { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: .9375rem; font-weight: 600; color: var(--text-2); margin-top: -6px; }
+#raqamlar .st-line__star { fill: var(--mu-gold); filter: drop-shadow(0 0 6px rgba(201, 138, 27, .9)); }
+
+/* B — Ilk minglik (sparkles text) */
+#raqamlar .st-b { justify-content: center; background: linear-gradient(160deg, #fff 0%, #fdf6e7 100%); }
+#raqamlar .st-word { display: grid; font-family: var(--font-display); font-weight: 800; font-size: clamp(2.6rem, 4.2vw, 4rem); line-height: .95; letter-spacing: -.04em; }
+#raqamlar .st-word span { background: linear-gradient(120deg, #1e3a8a, #3b5bdb 45%, #c98a1b 70%, #1e3a8a); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: st-shine 6s linear infinite; animation-play-state: var(--st-play, paused); }
+@keyframes st-shine { to { background-position: -220% 0; } }
+#raqamlar .st-sparkle { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+#raqamlar .st-sparkle svg { position: absolute; width: 18px; height: 18px; fill: var(--mu-gold); }
+
+/* C — flickering grid + 1560+ */
+#raqamlar .st-c { background: linear-gradient(170deg, #fff 30%, #eef3fd); }
+#raqamlar .st-flicker { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; -webkit-mask-image: linear-gradient(to bottom, #000, transparent 75%); mask-image: linear-gradient(to bottom, #000, transparent 75%); }
+#raqamlar .st-c__body { display: grid; gap: 14px; }
+#raqamlar .st-c__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* D — IELTS o’lchagichi (8.0 / 9) */
+#raqamlar .st-d { align-items: flex-start; }
+#raqamlar .st-gauge { position: relative; width: 128px; height: 128px; margin-bottom: auto; }
+#raqamlar .st-gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+#raqamlar .st-gauge__bg { fill: none; stroke: rgba(30, 58, 138, .1); stroke-width: 10; }
+#raqamlar .st-gauge__fg { fill: none; stroke: var(--mu-primary-2); stroke-width: 10; stroke-linecap: round; }
+#raqamlar .st-gauge__val { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+#raqamlar .st-gauge__val small { font-family: var(--font-mono); font-weight: 600; font-size: .9375rem; letter-spacing: .14em; color: var(--text-2); }
+#raqamlar .st-gauge__val b { font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--mu-primary); line-height: 1; }
+
+/* E — orbiting circles */
+#raqamlar .st-orbit { position: absolute; right: -40px; top: -40px; width: 230px; height: 230px; display: grid; place-items: center; z-index: -1; }
+#raqamlar .st-orbit__core { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: .95rem; color: #fff; background: var(--mu-primary); box-shadow: 0 10px 30px -10px rgba(30, 58, 138, .8); opacity: .12; }
+#raqamlar .st-orbit__ring { position: absolute; inset: 0; margin: auto; border-radius: 50%; border: 1px dashed rgba(30, 58, 138, .22); animation: mu-spin 22s linear infinite; animation-play-state: var(--st-play, paused); }
+#raqamlar .st-orbit__ring--1 { width: 130px; height: 130px; }
+#raqamlar .st-orbit__ring--2 { width: 210px; height: 210px; animation-duration: 34s; animation-direction: reverse; }
+#raqamlar .st-orbit__ring b { position: absolute; left: 50%; top: 0; transform: translate(-50%, -50%); animation: st-counter 22s linear infinite; animation-play-state: var(--st-play, paused); padding: 3px 9px; border-radius: 99px; background: #fff; border: 1px solid var(--line-2); font-size: .72rem; font-weight: 700; color: var(--mu-primary); white-space: nowrap; }
+#raqamlar .st-orbit__ring--2 b { animation-duration: 34s; animation-direction: reverse; }
+@keyframes st-counter { to { transform: translate(-50%, -50%) rotate(-360deg); } }
+#raqamlar .st-orbit__ring b:nth-child(2) { top: 100%; }
+#raqamlar .st-orbit__ring b:nth-child(3) { top: 50%; left: 0; }
+
+/* F — 64 kamera, 8×8 */
+#raqamlar .st-f { flex-direction: row; align-items: center; gap: 28px; justify-content: flex-start; }
+#raqamlar .st-cams { flex: none; display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; width: 176px; }
+#raqamlar .st-cams i { aspect-ratio: 1; border-radius: 50%; background: rgba(30, 58, 138, .12); transition: background .3s, box-shadow .3s; }
+#raqamlar .st-cams i.is-on { background: var(--mu-primary-2); box-shadow: 0 0 0 3px rgba(59, 91, 219, .18); }
+#raqamlar .st-cams i.is-hot { background: var(--mu-accent); box-shadow: 0 0 0 4px rgba(220, 38, 38, .2); }
+#raqamlar .st-f__body { display: grid; gap: 8px; }
+
+#raqamlar.is-inview { --st-play: running; }
+
+@media (max-width: 1000px) {
+  #raqamlar .st-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "b d" "c c" "e e" "f f"; }
+}
+@media (max-width: 600px) {
+  #raqamlar .st-grid { grid-template-columns: 1fr; grid-template-areas: "a" "b" "c" "d" "e" "f"; }
+  #raqamlar .st-card { min-height: 0; padding: 22px; }
+  #raqamlar .st-f { flex-direction: column; align-items: flex-start; }
+  #raqamlar .st-orbit { opacity: .8; }
+}

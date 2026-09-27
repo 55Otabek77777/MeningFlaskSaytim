@@ -1,0 +1,259 @@
+/* ==========================================================================
+   «Mirzo Ulug’bek» xususiy maktabi — design tokens + base + shared components
+   ========================================================================== */
+:root {
+  color-scheme: light;
+  /* «Mirzo Ulug’bek» — kun osmoni (yorug‘ mavzu). Logistika token nomlari saqlangan, qiymatlar yorug‘. */
+  --mu-bg: #f6f8fc;
+  --mu-bg-2: #eaf0fb;
+  --mu-card: #ffffff;
+  --mu-ink: #0f172a;
+  --mu-muted: #475569;
+  --mu-primary: #1e3a8a;
+  --mu-primary-2: #3b5bdb;
+  --mu-accent: #dc2626;
+  --mu-gold: #c98a1b;
+  --mu-line: rgba(30, 58, 138, .14);
+  --mu-glow: rgba(59, 91, 219, .18);
+  /* surfaces (eski «ink» nomlari → yorug‘ qatlamlar) */
+  --ink-950: #f6f8fc;
+  --ink-900: #eef3fb;
+  --ink-850: #e7eefa;
+  --ink-800: #dde6f6;
+  --ink-700: #c9d5ee;
+  --ink-600: #a7b7dc;
+  /* lines */
+  --line: rgba(30, 58, 138, .10);
+  --line-2: rgba(30, 58, 138, .16);
+  --line-3: rgba(30, 58, 138, .30);
+  /* text */
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #5b6b82;
+  /* accents */
+  --turq: #3b5bdb;
+  --azure: #1e3a8a;
+  --lapis: #1e3a8a;
+  --violet: #6d5bd0;
+  --gold: #c98a1b;
+  --amber: #e0a526;
+  --coral: #dc2626;
+  --rose: #e11d48;
+  --green: #16a34a;
+  --turq-rgb: 59, 91, 219;
+  --azure-rgb: 30, 58, 138;
+  --violet-rgb: 109, 91, 208;
+  --gold-rgb: 201, 138, 27;
+  --coral-rgb: 220, 38, 38;
+  /* gradients */
+  --grad-cool: linear-gradient(120deg, #3b5bdb 0%, #1e3a8a 100%);
+  --grad-warm: linear-gradient(120deg, #ef4444 0%, #dc2626 55%, #b91c1c 100%);
+  --grad-gold: linear-gradient(120deg, #e0a526 0%, #c98a1b 100%);
+  --grad-aurora: linear-gradient(120deg, #3b5bdb, #1e3a8a, #6d5bd0, #c98a1b);
+  --grad-surface: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .74));
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 18px 44px -24px rgba(30, 58, 138, .28);
+  --shadow-lift: 0 30px 70px -30px rgba(30, 58, 138, .38);
+  /* type */
+  --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fs-mega: clamp(3rem, 10vw, 11rem);
+  --fs-hero: clamp(2.1rem, 5.6vw, 6rem);
+  --fs-h2: clamp(1.9rem, 4.2vw, 4rem);
+  --fs-h3: clamp(1.2rem, 1.9vw, 1.7rem);
+  --fs-lead: clamp(1.02rem, 1.25vw, 1.22rem);
+  --fs-body: 1rem;
+  --fs-small: .9375rem;
+  --fs-micro: .8125rem;
+  /* layout */
+  --container: 1280px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(84px, 12vh, 160px);
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --r-xl: 36px;
+  --r-pill: 999px;
+  /* motion */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.76, 0, .24, 1);
+  /* z-index scale */
+  --z-grain: 700;
+  --z-nav: 800;
+  --z-progress: 850;
+  --z-menu: 900;
+  --z-cursor: 990;
+  --z-preloader: 1000;
+}
+
+/* ------------------------------------------------------------------ reset */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--ink-950); }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--mu-bg) 0%, var(--mu-bg-2) 38%, var(--mu-bg) 70%, var(--mu-bg-2) 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+img, svg, canvas, video { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4, h5, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+::selection { background: var(--mu-primary); color: #fff; }
+:focus-visible { outline: 3px solid var(--mu-primary-2); outline-offset: 3px; border-radius: 6px; }
+html { scrollbar-color: var(--ink-600) var(--ink-950); scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--ink-950); }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--mu-primary-2), var(--mu-primary)); border-radius: 10px; border: 3px solid var(--ink-950); }
+
+/* ------------------------------------------------------------------ layout */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { position: relative; padding-block: var(--section-y); }
+.sec-head { display: grid; gap: 22px; margin-bottom: clamp(48px, 7vw, 96px); max-width: 920px; }
+.sec-head--center { margin-inline: auto; text-align: center; justify-items: center; }
+
+/* ------------------------------------------------------------------ type */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: .8125rem; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--mu-primary-2);
+}
+.eyebrow::before {
+  content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor; box-shadow: 0 0 10px rgba(var(--turq-rgb), .5);
+  animation: mu-pulse 2.2s ease-in-out infinite;
+}
+.eyebrow .idx { color: var(--text-3); }
+.eyebrow--gold { color: var(--gold); }
+.h-mega, .h-hero, .h2, .h3 { font-family: var(--font-display); font-weight: 700; text-wrap: balance; }
+.h-mega { font-size: var(--fs-mega); font-weight: 800; line-height: .9; letter-spacing: -.045em; }
+.h-hero { font-size: var(--fs-hero); line-height: .96; letter-spacing: -.04em; }
+.h2 { font-size: var(--fs-h2); line-height: 1.02; letter-spacing: -.03em; }
+.h3 { font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -.015em; font-weight: 600; }
+.lead { font-size: var(--fs-lead); color: var(--text-2); line-height: 1.6; max-width: 62ch; }
+.mono { font-family: var(--font-mono); }
+.muted { color: var(--text-2); }
+.dim { color: var(--text-3); }
+.tabular, [data-count] { font-variant-numeric: tabular-nums; }
+.grad-text { background: linear-gradient(120deg, #3b5bdb, #1e3a8a 60%, #6d5bd0); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.grad-text--warm { background-image: linear-gradient(120deg, #dc2626, #c98a1b); }
+.grad-text--gold { background-image: linear-gradient(120deg, #e0a526, #b7791a); }
+.accent-turq { color: var(--turq); }
+.accent-gold { color: var(--gold); }
+.accent-coral { color: var(--coral); }
+.accent-azure { color: var(--azure); }
+/* SplitText masks: keep descenders + Uzbek ʻ visible */
+.mu-line { padding-bottom: .06em; }
+.mu-line-mask { padding-bottom: .02em; margin-bottom: -.02em; }
+.mu-char, .mu-word { will-change: transform; }
+
+/* ------------------------------------------------------------------ surfaces */
+.glass {
+  background: var(--grad-surface);
+  border: 1px solid rgba(255, 255, 255, .9);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--line-2); background: rgba(255, 255, 255, .8);
+  font-size: .8125rem; font-weight: 600; color: var(--mu-primary); white-space: nowrap;
+}
+.dot-live {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, .5); animation: mu-ping 1.8s infinite;
+}
+
+/* ------------------------------------------------------------------ buttons
+   <a class="btn btn--primary" data-magnetic href="#x">
+     <span class="btn__label" data-text="Matn"><span>Matn</span></span>
+     <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+   </a> */
+.btn {
+  --h: 56px;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  height: var(--h); padding: 0 30px; border-radius: var(--r-pill);
+  font-family: var(--font-body); font-weight: 700; font-size: .95rem; letter-spacing: .01em;
+  white-space: nowrap; cursor: pointer;
+  transition: color .45s var(--ease-out), border-color .45s var(--ease-out), box-shadow .45s var(--ease-out);
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  transform: translateY(101%); transition: transform .6s var(--ease-out);
+}
+.btn:hover::before, .btn:focus-visible::before { transform: translateY(0); }
+.btn__label { position: relative; display: inline-block; overflow: hidden; line-height: 1.3; }
+.btn__label > span { display: block; transition: transform .55s var(--ease-out); }
+.btn__label::after {
+  content: attr(data-text); position: absolute; left: 0; top: 100%; width: 100%;
+  transition: transform .55s var(--ease-out);
+}
+.btn:hover .btn__label > span, .btn:hover .btn__label::after { transform: translateY(-100%); }
+.btn__icon {
+  width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; transition: transform .55s var(--ease-out);
+}
+.btn:hover .btn__icon { transform: translateX(4px) rotate(-45deg); }
+.btn--primary { color: #fff; background: var(--mu-accent); box-shadow: 0 14px 34px -14px rgba(var(--coral-rgb), .75); }
+.btn--primary::before { background: #b91c1c; }
+.btn--primary:hover { box-shadow: 0 20px 44px -14px rgba(var(--coral-rgb), .85); }
+.btn--cool { color: #fff; background: var(--mu-primary); box-shadow: 0 14px 34px -14px rgba(var(--azure-rgb), .7); }
+.btn--cool::before { background: var(--mu-primary-2); }
+.btn--ghost {
+  color: var(--mu-primary); border: 1.5px solid rgba(var(--azure-rgb), .32); background: rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.btn--ghost::before { background: var(--mu-primary); }
+.btn--ghost:hover { color: #fff; border-color: var(--mu-primary); }
+.btn--sm { --h: 44px; padding: 0 20px; font-size: .85rem; }
+.btn--lg { --h: 64px; padding: 0 38px; font-size: 1.02rem; }
+
+/* ------------------------------------------------------------------ a11y */
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ------------------------------------------------------------------ mobile legibility: 390px da 15px dan kichik matn yo‘q */
+@media (max-width: 560px) {
+  body { font-size: 1rem; }
+  .eyebrow { font-size: .9375rem; letter-spacing: .08em; }
+  .chip { font-size: .9375rem; }
+  .btn { font-size: 1rem; }
+}
+
+/* ------------------------------------------------------------------ keyframes */
+@keyframes mu-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.75); } }
+@keyframes mu-ping { 0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, .5); } 100% { box-shadow: 0 0 0 12px rgba(22, 163, 74, 0); } }
+@keyframes mu-spin { to { transform: rotate(360deg); } }
+@keyframes mu-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes mu-shimmer { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; scroll-behavior: auto !important;
+  }
+}

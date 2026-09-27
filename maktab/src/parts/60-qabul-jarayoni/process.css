@@ -1,0 +1,297 @@
+/* ==========================================================================
+   60-process · Qanday ishlaymiz
+   ========================================================================== */
+@property --prc-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+#jarayon { position: relative; }
+#jarayon .prc-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+#jarayon .prc-glow { position: absolute; border-radius: 50%; }
+#jarayon .prc-glow--a {
+  width: 70vmax; height: 70vmax; left: -22vmax; top: 18%;
+  background: radial-gradient(closest-side, rgba(var(--azure-rgb), .09), transparent 70%);
+}
+#jarayon .prc-glow--b {
+  width: 56vmax; height: 56vmax; right: -20vmax; bottom: 4%;
+  background: radial-gradient(closest-side, rgba(var(--violet-rgb), .08), transparent 70%);
+}
+#jarayon.is-inview .prc-glow--a { animation: prc-drift 18s ease-in-out infinite alternate; }
+#jarayon.is-inview .prc-glow--b { animation: prc-drift 22s ease-in-out infinite alternate-reverse; }
+
+#jarayon .prc-head { position: relative; }
+#jarayon .prc-grid {
+  position: relative; display: grid; align-items: start;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 110px);
+}
+
+/* ---------------------------------------------------------------- sticky dial */
+#jarayon .prc-side {
+  position: sticky; top: max(96px, calc(50vh - 270px));
+  display: grid; justify-items: center; gap: 22px;
+}
+#jarayon .prc-dial { position: relative; width: min(360px, 100%); aspect-ratio: 1; }
+#jarayon .prc-dial__in { position: absolute; inset: 0; display: grid; place-items: center; transform-style: preserve-3d; }
+#jarayon .prc-girih {
+  position: absolute; left: 50%; top: 50%; width: 178%; height: 178%; margin: -89% 0 0 -89%; max-width: none;
+  fill: none; stroke: rgba(var(--turq-rgb), .075); stroke-width: .7; pointer-events: none;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%); mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+}
+#jarayon .prc-girih__dash { stroke-dasharray: 2 6; stroke: rgba(var(--gold-rgb), .2); }
+#jarayon .prc-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#jarayon .prc-ticks line { stroke: rgba(150, 180, 255, .22); stroke-width: 1.2; stroke-linecap: round; }
+#jarayon .prc-ticks line.is-major { stroke: rgba(150, 180, 255, .45); stroke-width: 1.6; }
+#jarayon .prc-ring__track { fill: rgba(7, 11, 24, .55); stroke: none; }
+#jarayon .prc-seg-bg { fill: none; stroke: rgba(150, 180, 255, .1); stroke-width: 7; }
+#jarayon .prc-seg {
+  fill: none; stroke: url(#prc-g-arc); stroke-width: 7; stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(var(--turq-rgb), .55));
+}
+#jarayon .prc-ring__inner { fill: none; stroke: rgba(150, 180, 255, .16); stroke-width: 1; stroke-dasharray: 3 7; transform-origin: 160px 160px; }
+#jarayon.is-inview .prc-ring__inner { animation: prc-spin 26s linear infinite; }
+#jarayon .prc-orbit__dot { fill: #fff; }
+#jarayon .prc-orbit__halo { fill: rgba(var(--turq-rgb), .25); transform-box: fill-box; transform-origin: center; }
+#jarayon.is-inview .prc-orbit__halo { animation: prc-halo 2s ease-out infinite; }
+#jarayon .prc-num {
+  position: relative; display: flex; align-items: flex-start;
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(4.6rem, 7vw, 7.2rem); line-height: 1; letter-spacing: -.05em;
+  font-variant-numeric: tabular-nums; transform: translateZ(40px);
+}
+#jarayon .prc-num__zero { color: rgba(150, 180, 255, .28); }
+#jarayon .prc-num__mask { display: block; height: 1em; overflow: hidden; }
+#jarayon .prc-num__strip { display: block; will-change: transform; }
+#jarayon .prc-num__strip span {
+  display: block; height: 1em;
+  background: linear-gradient(180deg, #fff 30%, #a6fff6); -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+#jarayon .prc-dial__cap {
+  position: absolute; left: 50%; top: 73%; transform: translate(-50%, 0) translateZ(20px);
+  font-size: 10px; letter-spacing: .34em; text-transform: uppercase; color: var(--text-3); white-space: nowrap;
+}
+#jarayon .prc-side__titles { position: relative; width: 100%; height: 76px; overflow: hidden; text-align: center; }
+#jarayon .prc-side__strip { will-change: transform; }
+#jarayon .prc-side__item { height: 76px; display: grid; align-content: center; gap: 6px; }
+#jarayon .prc-side__item b { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.25rem, 1.9vw, 1.7rem); letter-spacing: -.02em; line-height: 1.1; }
+#jarayon .prc-side__item span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+#jarayon .prc-jump { display: flex; gap: 8px; }
+#jarayon .prc-jump__b { position: relative; width: 26px; height: 22px; display: grid; place-items: center; transition: width .5s var(--ease-out); }
+#jarayon .prc-jump__b i {
+  display: block; width: 100%; height: 4px; border-radius: 4px; background: rgba(150, 180, 255, .2);
+  transition: background .4s, box-shadow .4s;
+}
+#jarayon .prc-jump__b.is-done i { background: rgba(var(--turq-rgb), .55); }
+#jarayon .prc-jump__b.is-active { width: 48px; }
+#jarayon .prc-jump__b.is-active i { background: var(--turq); box-shadow: 0 0 12px rgba(var(--turq-rgb), .8); }
+@media (hover: hover) { #jarayon .prc-jump__b:hover i { background: rgba(var(--turq-rgb), .8); } }
+
+/* ---------------------------------------------------------------- track + cards */
+#jarayon .prc-track { position: relative; padding-left: 64px; }
+#jarayon .prc-line { position: absolute; left: 19px; width: 2px; top: 0; height: 0; border-radius: 2px; background: rgba(150, 180, 255, .12); }
+#jarayon .prc-line__fill {
+  position: absolute; inset: 0; border-radius: inherit; transform-origin: 50% 0; transform: scaleY(0);
+  background: linear-gradient(180deg, var(--turq), var(--azure) 55%, var(--violet));
+  box-shadow: 0 0 14px rgba(var(--turq-rgb), .45);
+}
+#jarayon .prc-line__head {
+  position: absolute; left: 50%; top: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 4px rgba(var(--turq-rgb), .25), 0 0 22px 4px rgba(var(--turq-rgb), .7);
+}
+#jarayon .prc-list { display: grid; gap: clamp(72px, 13vh, 150px); padding-bottom: clamp(40px, 16vh, 180px); }
+#jarayon .prc-step { position: relative; }
+#jarayon .prc-node {
+  position: absolute; left: -54px; top: 50%; width: 22px; height: 22px; margin-top: -11px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--ink-900); border: 1.5px solid rgba(150, 180, 255, .3);
+  transition: border-color .4s, box-shadow .5s, transform .6s var(--ease-out);
+}
+#jarayon .prc-node i { width: 8px; height: 8px; border-radius: 50%; background: rgba(150, 180, 255, .3); transition: background .4s, transform .5s var(--ease-out); }
+#jarayon .prc-node.is-on { border-color: var(--turq); }
+#jarayon .prc-node.is-on i { background: var(--turq); }
+#jarayon .prc-step.is-active .prc-node { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(var(--turq-rgb), .12), 0 0 24px rgba(var(--turq-rgb), .6); }
+#jarayon .prc-step.is-active .prc-node i { background: #fff; }
+
+#jarayon .prc-card {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(22px, 2.6vw, 36px); border-radius: var(--r-lg);
+  background: linear-gradient(160deg, rgba(22, 32, 74, .5), rgba(7, 11, 24, .72));
+  border: 1px solid var(--line-2);
+  opacity: .36; transform: scale(.955); transform-origin: 0 50%;
+  transition: opacity .7s var(--ease-out), transform .9s var(--ease-out), border-color .6s, box-shadow .8s;
+}
+#jarayon .prc-card::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1.5px; opacity: 0;
+  background: conic-gradient(from var(--prc-a), rgba(var(--turq-rgb), .9), rgba(var(--azure-rgb), .15) 25%, rgba(var(--violet-rgb), .8) 50%, rgba(var(--gold-rgb), .15) 75%, rgba(var(--turq-rgb), .9));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  transition: opacity .7s;
+}
+#jarayon .prc-card::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--turq-rgb), .10), transparent 60%);
+}
+#jarayon .prc-step.is-active .prc-card {
+  opacity: 1; transform: none; border-color: transparent;
+  box-shadow: 0 40px 90px -40px rgba(var(--turq-rgb), .35), 0 30px 60px -30px rgba(0, 0, 0, .7);
+}
+#jarayon .prc-step.is-active .prc-card::before { opacity: 1; }
+#jarayon.is-inview .prc-step.is-active .prc-card::before { animation: prc-angle 7s linear infinite; }
+@media (hover: hover) {
+  #jarayon .prc-card:hover { opacity: .8; }
+  #jarayon .prc-step.is-active .prc-card:hover, #jarayon .prc-card:hover { border-color: var(--line-3); }
+  #jarayon .prc-card:hover::after { opacity: 1; }
+}
+#jarayon .prc-card__wm {
+  position: absolute; right: -.06em; bottom: -.22em; z-index: -1; pointer-events: none;
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(7rem, 11vw, 10rem); line-height: 1; letter-spacing: -.06em;
+  color: transparent; -webkit-text-stroke: 1px rgba(150, 180, 255, .09);
+  transition: -webkit-text-stroke-color .6s, transform 1.2s var(--ease-out);
+  transform: translate3d(12px, 10px, 0);
+}
+#jarayon .prc-card__wm::before { content: attr(data-n); }
+#jarayon .prc-step.is-active .prc-card__wm { -webkit-text-stroke-color: rgba(var(--turq-rgb), .2); transform: none; }
+#jarayon .prc-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+#jarayon .prc-card__idx {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: .02em; color: var(--text-3);
+  transition: color .5s;
+}
+#jarayon .prc-step.is-active .prc-card__idx { color: var(--gold); }
+#jarayon .prc-card__meta {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: var(--r-pill);
+  font-size: 11px; letter-spacing: .1em; color: var(--text-2);
+  background: rgba(255, 255, 255, .03); border: 1px solid var(--line-2);
+}
+#jarayon .prc-card__meta svg, #jarayon .prc-card__out svg {
+  width: 14px; height: 14px; fill: none; stroke: var(--turq); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none;
+}
+#jarayon .prc-card__body { display: flex; gap: clamp(18px, 2vw, 28px); align-items: flex-start; }
+#jarayon .prc-card__txt { display: grid; gap: 10px; min-width: 0; }
+#jarayon .prc-card__title { font-size: clamp(1.3rem, 1.9vw, 1.75rem); }
+#jarayon .prc-card__txt p { color: var(--text-2); font-size: 1rem; line-height: 1.6; }
+#jarayon .prc-card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+#jarayon .prc-card__tags li {
+  padding: 5px 12px; border-radius: var(--r-pill); font-size: .8rem; color: var(--text-2);
+  border: 1px solid var(--line-2); background: rgba(255, 255, 255, .025); white-space: nowrap;
+}
+#jarayon .prc-card__out {
+  display: flex; align-items: center; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line-2);
+  font-size: .9rem; color: var(--text);
+}
+#jarayon .prc-card__out span { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
+
+/* ---------------------------------------------------------------- icons */
+#jarayon .prc-ico {
+  position: relative; flex: none; width: 88px; height: 88px; border-radius: 24px;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 30% 20%, rgba(var(--turq-rgb), .14), rgba(var(--turq-rgb), .03) 70%);
+  border: 1px solid rgba(var(--turq-rgb), .22);
+  transition: border-color .5s, box-shadow .6s;
+}
+#jarayon .prc-step.is-active .prc-ico { border-color: rgba(var(--turq-rgb), .55); box-shadow: inset 0 0 22px rgba(var(--turq-rgb), .14), 0 0 30px -6px rgba(var(--turq-rgb), .5); }
+#jarayon .prc-ico svg { width: 60px; height: 60px; overflow: visible; }
+#jarayon .prc-ico svg * { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#jarayon .prc-ico .pi-base { stroke: var(--text); }
+#jarayon .prc-ico .pi-dim { stroke: var(--text-3); }
+#jarayon .prc-ico .pi-line { stroke: var(--turq); stroke-dasharray: 1; stroke-dashoffset: 0; }
+#jarayon .prc-ico .pi-gold { stroke: var(--gold); }
+#jarayon .prc-ico .pi-fill { fill: var(--turq); stroke: none; }
+#jarayon .prc-ico .pi-box { stroke: var(--turq); }
+#jarayon .prc-ico .pi-bar { stroke: var(--turq); stroke-width: 4; transform-box: fill-box; transform-origin: 50% 100%; }
+#jarayon .prc-ico .pi-wave { stroke: var(--turq); }
+#jarayon .prc-ico .pi-road { stroke-dasharray: 3 5; }
+#jarayon .prc-ico .pi-pen, #jarayon .prc-ico .pi-needle, #jarayon .prc-ico .pi-spin, #jarayon .prc-ico .pi-door,
+#jarayon .prc-ico .pi-sat, #jarayon .prc-ico .pi-pinb { transform-box: view-box; }
+#jarayon .prc-ico .pi-needle { transform-origin: 32px 32px; transform: rotate(18deg); }
+#jarayon .prc-ico .pi-spin { transform-origin: 32px 32px; }
+#jarayon .prc-ico .pi-door { transform-origin: 46px 36px; }
+#jarayon .prc-ico .pi-sat { transform-origin: 32px 32px; }
+#jarayon .prc-ico .pi-pt, #jarayon .prc-ico .pi-stamp, #jarayon .prc-ico .pi-box { transform-box: fill-box; transform-origin: center; }
+
+/* loops run only for the active card while the section is on screen */
+#jarayon.is-inview .prc-step.is-active .prc-ico--1 .pi-l1 { animation: prc-i1-l1 3.8s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--1 .pi-l2 { animation: prc-i1-l2 3.8s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--1 .pi-l3 { animation: prc-i1-l3 3.8s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--1 .pi-tick { animation: prc-i1-tk 3.8s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--1 .pi-pen { animation: prc-i1-pen 3.8s var(--ease-in-out) infinite; }
+
+#jarayon.is-inview .prc-step.is-active .prc-ico--2 .pi-spin { animation: prc-spin 14s linear infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--2 .pi-needle { animation: prc-i2-needle 4s var(--ease-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--2 .pi-route { animation: prc-i2-route 4s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--2 .pi-pt1 { animation: prc-i2-pt1 4s var(--ease-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--2 .pi-pt2 { animation: prc-i2-pt2 4s var(--ease-out) infinite; }
+
+#jarayon.is-inview .prc-step.is-active .prc-ico--3 .pi-b1 { animation: prc-i3-b1 4s cubic-bezier(.3, 1.4, .5, 1) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--3 .pi-b2 { animation: prc-i3-b2 4s cubic-bezier(.3, 1.4, .5, 1) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--3 .pi-b3 { animation: prc-i3-b3 4s cubic-bezier(.3, 1.4, .5, 1) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--3 .pi-door { animation: prc-i3-door 4s var(--ease-in-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--3 .pi-seal { animation: prc-i3-seal 4s var(--ease-in-out) infinite; }
+
+#jarayon.is-inview .prc-step.is-active .prc-ico--4 .pi-road { animation: prc-dash 1.2s linear infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--4 .pi-pinb { animation: prc-i4-pin 1.6s var(--ease-in-out) infinite alternate; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--4 .pi-w1 { animation: prc-i4-wave 1.6s ease-out infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--4 .pi-w2 { animation: prc-i4-wave 1.6s ease-out .35s infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--4 .pi-sat { animation: prc-i4-sat 5s var(--ease-in-out) infinite alternate; }
+
+#jarayon.is-inview .prc-step.is-active .prc-ico--5 .pi-bar1 { animation: prc-i5-b1 4s var(--ease-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--5 .pi-bar2 { animation: prc-i5-b2 4s var(--ease-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--5 .pi-bar3 { animation: prc-i5-b3 4s var(--ease-out) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--5 .pi-stamp { animation: prc-i5-stamp 4s cubic-bezier(.3, 1.5, .5, 1) infinite; }
+#jarayon.is-inview .prc-step.is-active .prc-ico--5 .pi-check { animation: prc-i5-check 4s var(--ease-out) infinite; }
+
+/* ---------------------------------------------------------------- responsive */
+@media (max-width: 960px) {
+  #jarayon .prc-grid { grid-template-columns: minmax(0, 1fr); }
+  #jarayon .prc-side { display: none; }
+  #jarayon .prc-track { padding-left: 42px; }
+  #jarayon .prc-line { left: 11px; }
+  #jarayon .prc-node { left: -42px; width: 18px; height: 18px; margin-top: -9px; top: 38px; }
+  #jarayon .prc-node i { width: 6px; height: 6px; }
+  #jarayon .prc-list { gap: 28px; padding-bottom: 0; }
+  #jarayon .prc-card { opacity: .5; transform: none; padding: 20px 18px 18px; border-radius: var(--r-md); }
+  #jarayon .prc-card__top { margin-bottom: 16px; }
+  #jarayon .prc-card__idx { font-size: 1.5rem; letter-spacing: -.02em; }
+  #jarayon .prc-card__body { flex-direction: column; gap: 16px; }
+  #jarayon .prc-ico { width: 64px; height: 64px; border-radius: 18px; }
+  #jarayon .prc-ico svg { width: 46px; height: 46px; }
+  #jarayon .prc-card__txt p { font-size: .95rem; }
+  #jarayon .prc-card__tags { margin-top: 16px; gap: 6px; }
+  #jarayon .prc-card__tags li { font-size: .74rem; padding: 4px 10px; }
+  #jarayon .prc-card__wm { font-size: 5.5rem; bottom: -.18em; }
+}
+
+/* ---------------------------------------------------------------- keyframes */
+@keyframes prc-spin { to { transform: rotate(360deg); } }
+@keyframes prc-angle { to { --prc-a: 360deg; } }
+@keyframes prc-drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(6vmax, -4vmax, 0) scale(1.12); } }
+@keyframes prc-halo { 0% { transform: scale(.5); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes prc-dash { to { stroke-dashoffset: -16; } }
+/* 1 · ariza — pen writes three lines + tick */
+@keyframes prc-i1-l1 { 0% { stroke-dashoffset: 1; opacity: 1; } 18%, 86% { stroke-dashoffset: 0; opacity: 1; } 94% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes prc-i1-l2 { 0%, 21% { stroke-dashoffset: 1; opacity: 1; } 34%, 86% { stroke-dashoffset: 0; opacity: 1; } 94% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes prc-i1-l3 { 0%, 37% { stroke-dashoffset: 1; opacity: 1; } 50%, 86% { stroke-dashoffset: 0; opacity: 1; } 94% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes prc-i1-tk { 0%, 54% { stroke-dashoffset: 1; opacity: 1; } 64%, 86% { stroke-dashoffset: 0; opacity: 1; } 94% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes prc-i1-pen {
+  0% { transform: translate(-20.6px, -27.6px); } 18% { transform: translate(-2.6px, -27.6px); }
+  21% { transform: translate(-20.6px, -20.6px); } 34% { transform: translate(-7.6px, -20.6px); }
+  37% { transform: translate(-20.6px, -13.6px); } 50% { transform: translate(-4.6px, -13.6px); }
+  54% { transform: translate(-19px, -5px); } 64% { transform: translate(-14.5px, -6.5px); }
+  78%, 100% { transform: translate(0, 0); }
+}
+/* 2 · rejalashtirish — needle searches, route plots, pins pop */
+@keyframes prc-i2-needle { 0% { transform: rotate(-60deg); } 25% { transform: rotate(40deg); } 40% { transform: rotate(8deg); } 55%, 100% { transform: rotate(18deg); } }
+@keyframes prc-i2-route { 0%, 18% { stroke-dashoffset: 1; opacity: 1; } 58%, 88% { stroke-dashoffset: 0; opacity: 1; } 96% { opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes prc-i2-pt1 { 0%, 10% { transform: scale(0); } 20%, 90% { transform: scale(1); } 100% { transform: scale(0); } }
+@keyframes prc-i2-pt2 { 0%, 55% { transform: scale(0); } 66%, 90% { transform: scale(1); } 100% { transform: scale(0); } }
+/* 3 · yuklash — boxes drop in, door closes, seal */
+@keyframes prc-i3-b1 { 0% { transform: translateY(-30px); opacity: 0; } 16%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes prc-i3-b2 { 0%, 14% { transform: translateY(-30px); opacity: 0; } 30%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes prc-i3-b3 { 0%, 28% { transform: translateY(-34px); opacity: 0; } 44%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes prc-i3-door { 0%, 50% { transform: none; } 64%, 90% { transform: scaleX(.08); } 100% { transform: none; } }
+@keyframes prc-i3-seal { 0%, 62% { stroke-dashoffset: 1; opacity: 1; } 74%, 88% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+/* 4 · nazorat — pin hovers, signal waves, satellite drifts */
+@keyframes prc-i4-pin { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+@keyframes prc-i4-wave { 0% { opacity: 0; transform: translateY(4px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3px); } }
+@keyframes prc-i4-sat { from { transform: rotate(-26deg); } to { transform: rotate(14deg); } }
+/* 5 · hisobot — bars grow, stamp lands, check */
+@keyframes prc-i5-b1 { 0% { transform: scaleY(0); } 16%, 90% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@keyframes prc-i5-b2 { 0%, 8% { transform: scaleY(0); } 26%, 90% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@keyframes prc-i5-b3 { 0%, 16% { transform: scaleY(0); } 36%, 90% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@keyframes prc-i5-stamp { 0%, 40% { transform: scale(1.8) rotate(-20deg); opacity: 0; } 52%, 90% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes prc-i5-check { 0%, 52% { stroke-dashoffset: 1; } 64%, 100% { stroke-dashoffset: 0; } }
