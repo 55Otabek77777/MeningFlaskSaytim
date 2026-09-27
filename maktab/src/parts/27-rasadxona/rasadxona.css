@@ -1,0 +1,67 @@
+/* ===== Rasadxona — Samarqand osmoni (haqiqiy yulduzlar) + jez armillyar sfera, 5 bob scroll bilan ===== */
+#rasadxona { position: relative; height: 460vh; background: #040816; color: #fff; }
+#rasadxona .rx-sticky { position: sticky; top: 0; height: 100svh; min-height: 620px; overflow: hidden; isolation: isolate;
+  background: radial-gradient(120% 90% at 70% 110%, #1a2a5c 0%, #0a1330 42%, #040816 78%); }
+#rasadxona .rx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+#rasadxona .rx-shade { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(4, 8, 22, .88) 0%, rgba(4, 8, 22, .55) 34%, transparent 58%),
+    linear-gradient(0deg, rgba(201, 138, 27, .10) 0%, transparent 22%),
+    radial-gradient(120% 60% at 50% 120%, rgba(59, 91, 219, .25), transparent 60%); }
+#rasadxona .rx-ui { position: relative; z-index: 2; height: 100%; display: grid; grid-template-columns: minmax(0, 480px) 1fr; align-items: center; pointer-events: none; }
+#rasadxona .rx-copy { display: grid; gap: 22px; pointer-events: auto; }
+#rasadxona .rx-eyebrow { color: #f3c969; }
+#rasadxona .rx-eyebrow::before { box-shadow: 0 0 10px rgba(243, 201, 105, .7); }
+#rasadxona .rx-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 3.8vw, 3.5rem); line-height: 1.02; letter-spacing: -.035em; color: #fff; text-wrap: balance; }
+#rasadxona .rx-title span { background: linear-gradient(120deg, #f3c969, #c98a1b 60%, #f7e3b0); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+#rasadxona .rx-chapters { position: relative; min-height: 210px; }
+#rasadxona .rx-ch { position: absolute; inset: 0 0 auto 0; display: grid; gap: 10px; opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); pointer-events: none; }
+#rasadxona .rx-ch.is-on { opacity: 1; transform: none; pointer-events: auto; }
+#rasadxona .rx-ch p { color: rgba(255, 255, 255, .82); font-size: var(--fs-lead); line-height: 1.6; max-width: 46ch; }
+#rasadxona .rx-big { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.8rem, 6vw, 5.4rem); line-height: .95; letter-spacing: -.045em; font-variant-numeric: tabular-nums;
+  background: linear-gradient(120deg, #fff 10%, #f3c969 70%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+#rasadxona .rx-big--time { font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.08; }
+#rasadxona .rx-more { justify-self: start; font-weight: 800; color: #f3c969; border-bottom: 2px solid rgba(243, 201, 105, .4); padding-bottom: 2px; }
+#rasadxona .rx-steps { display: flex; gap: 8px; }
+#rasadxona .rx-steps li { width: 34px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .18); transition: background .5s, width .5s var(--ease-out); }
+#rasadxona .rx-steps li.is-on { background: #f3c969; }
+#rasadxona .rx-steps li.is-cur { width: 56px; }
+
+#rasadxona .rx-hud { justify-self: end; align-self: start; margin-top: max(104px, 13vh); display: grid; gap: 2px; min-width: 300px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(4, 8, 22, .55); border: 1px solid rgba(243, 201, 105, .22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-family: var(--font-mono); }
+#rasadxona .rx-hud__row { display: flex; justify-content: space-between; gap: 18px; padding: 5px 0; border-top: 1px solid rgba(255, 255, 255, .07); font-size: .8rem; }
+#rasadxona .rx-hud__row:first-child { border-top: 0; }
+#rasadxona .rx-hud__row span { color: rgba(255, 255, 255, .55); letter-spacing: .04em; }
+#rasadxona .rx-hud__row b { color: #f3c969; font-weight: 600; white-space: nowrap; }
+
+#rasadxona .rx-orbit { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+#rasadxona .rx-orbit li { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; }
+#rasadxona .rx-orbit a { pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px 7px 7px; border-radius: 99px; white-space: nowrap; transform: translate(-50%, -50%);
+  background: rgba(6, 12, 32, .72); border: 1px solid rgba(243, 201, 105, .45); color: #fff; font-weight: 700; font-size: .95rem; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .8); transition: background .3s, color .3s, border-color .3s; }
+#rasadxona .rx-orbit a:hover { background: #f3c969; color: #0a1330; border-color: #f3c969; }
+#rasadxona .rx-orbit i { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; font-style: normal; font-family: var(--font-mono); font-size: .75rem; font-weight: 600; color: #0a1330; background: linear-gradient(135deg, #f7e3b0, #c98a1b); }
+#rasadxona .rx-orbit a:hover i { background: #0a1330; color: #f3c969; }
+#rasadxona .rx-credit { position: absolute; right: var(--gutter); bottom: 12px; z-index: 2; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .06em; color: rgba(255, 255, 255, .35); }
+
+/* mobil: kanvas fonda, matn pastda, yo’nalishlar ro’yxat bo’lib chiqadi */
+@media (max-width: 900px) {
+  #rasadxona { height: 400vh; }
+  #rasadxona .rx-shade { background: linear-gradient(0deg, rgba(4, 8, 22, .96) 0%, rgba(4, 8, 22, .82) 40%, transparent 70%); }
+  #rasadxona .rx-ui { grid-template-columns: minmax(0, 1fr); align-items: end; padding-bottom: 5svh; }
+  #rasadxona .rx-hud { display: none; }
+  #rasadxona .rx-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
+  #rasadxona .rx-chapters { min-height: 190px; }
+  #rasadxona .rx-ch p { font-size: 1rem; }
+  #rasadxona .rx-big { font-size: clamp(2.4rem, 12vw, 3.4rem); }
+  #rasadxona .rx-big--time { font-size: clamp(1.5rem, 7vw, 2rem); }
+  #rasadxona .rx-orbit a { font-size: .9375rem; padding: 5px 12px 5px 5px; }
+  #rasadxona .rx-orbit i { width: 28px; height: 28px; font-size: .9375rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #rasadxona { height: auto; }
+  #rasadxona .rx-sticky { position: relative; height: auto; min-height: 100svh; padding-block: 12vh; }
+  #rasadxona .rx-chapters { min-height: 0; display: grid; gap: 22px; }
+  #rasadxona .rx-ch { position: static; opacity: 1; transform: none; }
+  #rasadxona .rx-orbit { display: none; }
+}

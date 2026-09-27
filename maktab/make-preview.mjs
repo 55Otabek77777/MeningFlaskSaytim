@@ -9,7 +9,7 @@ const MAP = { '/logo.png': 'logo.png', '/icon.png': 'icon.png', '/og-image.png':
   '/photos/founder.webp': 'asoschi.webp', '/photos/director.webp': 'direktor.webp', '/photos/history-1994.webp': 'bino-asosiy.webp' };
 const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg' };
 /* assets/ da yo‘q bo‘lsa — DIGITAL yuklagan jonli sayt fayllari (JONLI-SAYT/MEDIA/<yo‘l>); video URL o‘zgarmaydi (poster ko‘rinadi) */
-const fileFor = p => { const a = MAP[p] && path.join(ROOT, 'assets', MAP[p]); if (a && fs.existsSync(a)) return a; const b = path.join(ROOT, 'JONLI-SAYT/MEDIA', p); return fs.existsSync(b) ? b : null; };
+const fileFor = p => { const a = MAP[p] && path.join(ROOT, 'assets', MAP[p]); if (a && fs.existsSync(a)) return a; const b = path.join(ROOT, 'JONLI-SAYT/MEDIA', p.replace(/^\/media\//, '/')); return fs.existsSync(b) ? b : null; };
 let html = fs.readFileSync(path.join(ROOT, 'dist/index.html'), 'utf8');
 const cache = {};
 html = html.replace(/https:\/\/mirzoulugbek\.app(\/[\w\-./]+\.(?:png|webp|jpg))/g, (m, p) => {

@@ -141,3 +141,11 @@
   #yutuqlar .yt-cert { transition: opacity 520ms ease; }
   #yutuqlar .yt-hand--s { transition: none; }
 }
+/* ---- pauza / davom */
+#yutuqlar .yt-play { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; color: #1a2856; background: #fcd34d; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .6); transition: transform .3s var(--ease-out); }
+#yutuqlar .yt-play:hover { transform: scale(1.08); }
+#yutuqlar .yt-play svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+#yutuqlar .yt-play__go { fill: currentColor; display: none; }
+#yutuqlar .yt-play[aria-pressed="true"] .yt-play__go { display: block; }
+#yutuqlar .yt-play[aria-pressed="true"] .yt-play__pause { display: none; }
+#yutuqlar .yt-cert.is-center { cursor: zoom-in; }

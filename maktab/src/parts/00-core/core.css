@@ -36,6 +36,13 @@
 .nv-dd__list a:hover { background: rgba(var(--azure-rgb), .07); color: var(--mu-primary); }
 .nv-dd__list em { font-style: normal; font-size: .75rem; font-weight: 800; padding: 2px 8px; border-radius: 99px; background: var(--mu-accent); color: #fff; }
 .nv-actions { display: flex; align-items: center; gap: 8px; }
+/* alifbo tugmasi: Ö (yangi) / O‘ (joriy) */
+.nv-abc { position: relative; display: inline-flex; padding: 3px; border-radius: 99px; background: rgba(30, 58, 138, .08); border: 1px solid rgba(30, 58, 138, .12); }
+.nv-abc button { min-width: 38px; height: 34px; padding: 0 8px; border-radius: 99px; font-family: var(--font-display); font-weight: 700; font-size: .95rem; color: var(--text-2); transition: color .3s, background .3s, box-shadow .3s; }
+.nv-abc button:hover { color: var(--mu-primary); }
+.nv-abc button[aria-pressed="true"] { color: #fff; background: var(--mu-primary); box-shadow: 0 6px 14px -8px rgba(30, 58, 138, .8); }
+.nv-abc--lg button { min-width: 52px; height: 44px; font-size: 1.05rem; }
+.nv-menu__abc { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 700; color: var(--text-2); }
 .nv-burger { display: none; position: relative; width: 48px; height: 48px; border-radius: 50%; background: var(--mu-primary); }
 .nv-burger span { position: absolute; left: 14px; width: 20px; height: 2px; border-radius: 2px; background: #fff; transition: transform .5s var(--ease-out), top .5s var(--ease-out); }
 .nv-burger span:first-child { top: 19px; }
@@ -64,3 +71,24 @@
 .nv-menu__tel { font-weight: 800; font-size: 1.15rem; }
 .nv-menu__foot p { color: rgba(255, 255, 255, .75); font-size: .9375rem; }
 body.nv-locked { overflow: hidden; }
+@media (max-width: 560px) { .nv-actions > .nv-abc { display: none; } }
+
+/* ---- «Asosiy mazmunga o’tish» (klaviatura) */
+.skip-link { position: fixed; left: 16px; top: -80px; z-index: calc(var(--z-menu) + 10); padding: 12px 18px; border-radius: 12px; background: var(--mu-primary); color: #fff; font-weight: 800; transition: top .25s; }
+.skip-link:focus { top: 16px; }
+main:focus { outline: none; }
+section[id], footer[id] { scroll-margin-top: 96px; }
+
+/* ---- surat ko’rish oynasi (MU.lightbox) */
+.mu-lb { max-width: min(1100px, 94vw); max-height: 92vh; width: auto; padding: 0; border: 0; border-radius: 22px; background: #0b1020; color: #fff; overflow: visible; box-shadow: 0 40px 100px -30px rgba(0, 0, 0, .8); }
+.mu-lb::backdrop { background: rgba(4, 8, 22, .82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.mu-lb__fig { margin: 0; display: grid; }
+.mu-lb__img { display: block; max-width: min(1100px, 94vw); max-height: calc(92vh - 70px); width: auto; height: auto; margin: 0 auto; border-radius: 22px 22px 0 0; object-fit: contain; background: #111827; }
+.mu-lb__cap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 18px; padding: 14px 20px; font-weight: 700; }
+.mu-lb__link { color: #fcd34d; font-weight: 800; }
+.mu-lb__close { position: absolute; top: -14px; right: -14px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: #fff; color: var(--mu-ink); box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .6); }
+.mu-lb__close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.mu-lb[open] { animation: mu-lb-in .35s var(--ease-out); }
+@keyframes mu-lb-in { from { opacity: 0; transform: scale(.96); } }
+@media (max-width: 560px) { .mu-lb__close { top: 8px; right: 8px; } }
+@media (prefers-reduced-motion: reduce) { .mu-lb[open] { animation: none; } }

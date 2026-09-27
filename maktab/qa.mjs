@@ -51,7 +51,7 @@ export async function mockRoutes(context, { ariza } = {}) {
   await context.route('https://mirzoulugbek.app/**', route => {
     const p = new URL(route.request().url()).pathname;
     let f = IMG_MAP[p] && path.join(ROOT, 'assets', IMG_MAP[p]);
-    if (!f || !fs.existsSync(f)) f = path.join(ROOT, 'JONLI-SAYT/MEDIA', p);
+    if (!f || !fs.existsSync(f)) f = path.join(ROOT, 'JONLI-SAYT/MEDIA', p.replace(/^\/media\//, '/'));
     if (fs.existsSync(f)) route.fulfill({ path: f }); else route.fulfill({ status: 404, body: '' });
   });
   /* sertifikat (GCS) va Telegram rasmlari konteynerdan yopiq — QA uchun neytral placeholder */

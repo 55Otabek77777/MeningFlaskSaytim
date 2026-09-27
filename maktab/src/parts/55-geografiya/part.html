@@ -1,22 +1,38 @@
 <section id="geografiya" class="section gg" data-part="geografiya" aria-labelledby="gg-title">
-  <div class="container gg-grid">
-    <div class="gg-copy">
-      <span class="eyebrow" data-scramble>Geografiya</span>
-      <h2 id="gg-title" class="h2" data-split="lines">O’quvchilarimiz <span class="accent-azure">qayerdan keladi?</span></h2>
-      <p class="lead" data-reveal="blur">O’quvchilarimiz Farg’ona vodiysining uch viloyatidan va undan tashqaridan keladi.</p>
-      <ul class="gg-legend" data-reveal-children data-reveal="up" data-stagger="0.06">
-        <li data-id="fergana"><i></i>Farg’ona</li>
-        <li data-id="namangan"><i></i>Namangan</li>
-        <li data-id="andijan"><i></i>Andijon</li>
-        <li data-id="tashkent-region"><i></i>Toshkent viloyati</li>
-        <li data-id="tashkent-city"><i></i>Toshkent shahri</li>
-        <li data-id="jizzakh"><i></i>Jizzax</li>
-      </ul>
-      <p class="gg-note" data-reveal="fade">Maktab poyezd vokzaliga ~300 metr — boshqa viloyatlardan kelganlar poyezdda qulay qatnaydi.</p>
+  <div class="container">
+    <div class="gg-head">
+      <div class="gg-copy">
+        <span class="eyebrow" data-scramble>Geografiya</span>
+        <h2 id="gg-title" class="h2" data-split="lines">O’quvchilarimiz <span class="accent-azure">qayerdan keladi?</span></h2>
+        <p class="lead" data-reveal="blur">O’quvchilarimiz Farg’ona vodiysining uch viloyatidan va undan tashqaridan keladi. Maktab poyezd vokzaliga ~300 metr — boshqa viloyatlardan kelganlar poyezdda qulay qatnaydi.</p>
+      </div>
+      <div class="gg-side">
+        <ul class="gg-legend" data-reveal-children data-reveal="up" data-stagger="0.06">
+          <li data-id="fergana"><i></i>Farg’ona</li>
+          <li data-id="namangan"><i></i>Namangan</li>
+          <li data-id="andijan"><i></i>Andijon</li>
+          <li data-id="tashkent-region"><i></i>Toshkent viloyati</li>
+          <li data-id="tashkent-city"><i></i>Toshkent shahri</li>
+          <li data-id="jizzakh"><i></i>Jizzax</li>
+        </ul>
+        <div class="gg-years" role="tablist" aria-label="O’quv yili" hidden></div>
+        <div class="gg-tiers" hidden><span>O’quvchilar ulushi:</span><i data-t="1"></i>kam<i data-t="2"></i>o’rta<i data-t="3"></i>ko’p<i data-t="4"></i>juda ko’p</div>
+      </div>
     </div>
     <figure class="gg-map" data-reveal="scale">
-      <div class="gg-map__svg" role="img" aria-label="O’zbekiston xaritasi: Farg’ona, Namangan, Andijon, Toshkent viloyati, Toshkent shahri va Jizzax yoritilgan; Uchko’prikdagi maktab belgilangan"></div>
+      <div class="gg-map__svg" role="img" aria-label="O’zbekiston xaritasi: o’quvchilarimiz keladigan hududlar va Uchko’prikdagi maktab"></div>
       <figcaption class="gg-cap"><span class="gg-cap__dot"></span>Qayrog’och · Uchko’prik — maktabimiz</figcaption>
     </figure>
+    <div class="gg-valley" hidden>
+      <div class="gg-valley__head">
+        <h3 class="h3" data-split="words">Farg’ona vodiysi — tumanlar kesimida</h3>
+        <p>Rang — o’sha o’quv yilida tumandan kelgan o’quvchilar ulushi darajasi (koronavirus xaritalaridagi zonalar kabi). Raqamlar ko’rsatilmaydi.</p>
+      </div>
+      <figure class="gg-map gg-map--valley">
+        <div class="gg-valley__svg" role="img" aria-label="Farg’ona vodiysi tumanlari: o’quvchilarimiz ulushi darajalari bo’yicha bo’yalgan xarita"></div>
+        <p class="gg-valley__empty" hidden>Bu o’quv yili uchun tuman kesimidagi ma’lumot arxivda yo’q — viloyatlar xaritasiga qarang.</p>
+      </figure>
+    </div>
+    <p class="gg-src">Viloyat chegaralari: SVG Maps (CC BY 4.0) · tumanlar: <span data-raw>OCHA ROCCA</span> / geoBoundaries (CC BY 3.0 IGO) · ulushlar: maktab bazasi (2023–2024 o’quv yili arxivda yo’q)</p>
   </div>
 </section>

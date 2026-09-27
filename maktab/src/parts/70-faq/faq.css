@@ -20,3 +20,13 @@
 #faq .fq-a a { color: var(--mu-accent); font-weight: 800; }
 @media (max-width: 900px) { #faq .fq-grid { grid-template-columns: 1fr; } #faq .fq-side { position: relative; top: 0; } }
 @media (max-width: 560px) { #faq .fq-a p { padding-left: 20px; } #faq .fq-q { gap: 12px; padding: 16px; } }
+/* ---- qidiruv (ikkala alifbo) */
+#faq .fq-search { display: grid; gap: 8px; width: 100%; max-width: 420px; }
+#faq .fq-search__label { font-weight: 800; color: var(--mu-ink); }
+#faq .fq-search__box { position: relative; }
+#faq .fq-search__box svg { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; margin-top: -10px; fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; pointer-events: none; }
+#faq .fq-search__box input { width: 100%; height: 54px; padding: 0 18px 0 46px; border-radius: 16px; border: 1.5px solid var(--line-2); background: #fff; font: inherit; font-size: 1rem; color: var(--mu-ink); box-shadow: var(--shadow-card); transition: border-color .3s, box-shadow .3s; }
+#faq .fq-search__box input:focus { outline: none; border-color: var(--mu-primary-2); box-shadow: 0 0 0 4px rgba(var(--turq-rgb), .15); }
+#faq .fq-search__status { min-height: 1.4em; color: var(--text-2); font-weight: 600; font-size: .95rem; }
+#faq .fq-item[hidden] { display: none; }
+#faq .fq-hit { background: rgba(252, 211, 77, .55); border-radius: 4px; color: inherit; }

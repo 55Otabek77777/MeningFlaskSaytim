@@ -15,6 +15,26 @@ MU.nums = root => root.querySelectorAll('[data-num]').forEach(el => MU.countUp(e
 /* O’quv markazi tajribasi: 1999 asos → 2026 da 27 (site.ts experienceYears bilan bir xil) */
 MU.years = () => new Date().getFullYear() - 1999;
 
+/* surat ko’rish oynasi: MU.lightbox({ src, alt, caption, href, hrefText }) — native <dialog>, Esc/fon bosilsa yopiladi, fokus qaytadi */
+MU.lightbox = ({ src, alt = '', caption = '', href = '', hrefText = '' }) => {
+  const dlg = document.querySelector('.mu-lb');
+  if (!dlg || !src) return;
+  const back = document.activeElement;
+  const img = dlg.querySelector('.mu-lb__img'), link = dlg.querySelector('.mu-lb__link');
+  img.src = src; img.alt = alt;
+  dlg.querySelector('.mu-lb__txt').textContent = caption;
+  link.hidden = !href; if (href) { link.href = href; link.textContent = hrefText || href; }
+  if (MU.lenis) MU.lenis.stop();
+  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  const done = () => { if (MU.lenis) MU.lenis.start(); if (back && back.focus) back.focus({ preventScroll: true }); dlg.removeEventListener('close', done); };
+  dlg.addEventListener('close', done);
+  if (!dlg.dataset.wired) {
+    dlg.dataset.wired = '1';
+    dlg.querySelector('.mu-lb__close').addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  }
+};
+
 MU.part('core', {
   init() {
     const { gsap, ScrollTrigger } = MU;
@@ -63,13 +83,36 @@ MU.part('core', {
         gsap.killTweensOf([menu, links]);
         gsap.fromTo(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)' }, { clipPath: 'circle(150% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.9, ease: 'mu.inOut' });
         gsap.fromTo(links, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
+        setTimeout(() => { const f = menu.querySelector('a, button'); if (f) f.focus({ preventScroll: true }); }, MU.reduced ? 0 : 300);
       } else {
+        burger.focus({ preventScroll: true });
         gsap.to(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.6, ease: 'mu.inOut', onComplete: () => { if (!menuOpen) menu.hidden = true; } });
       }
     };
     burger.addEventListener('click', () => setMenu(!menuOpen));
+
+    /* alifbo tugmasi (src/base/alifbo.js) */
+    const A = window.MUAlifbo;
+    const abcBtns = Array.from(document.querySelectorAll('[data-abc]'));
+    const syncAbc = () => abcBtns.forEach(b => b.setAttribute('aria-pressed', String(!!A && b.dataset.abc === A.mode)));
+    abcBtns.forEach(b => b.addEventListener('click', () => {
+      if (!A || A.mode === b.dataset.abc) return;
+      A.set(b.dataset.abc); syncAbc();
+      if (!MU.reduced) gsap.fromTo('main, body > section, body > footer', { opacity: 0.55 }, { opacity: 1, duration: 0.5, ease: 'power2.out', clearProps: 'opacity' });
+      MU.ScrollTrigger.refresh();
+    }));
+    syncAbc();
     menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') setMenu(false);
+      /* menyu ochiq: Tab faqat menyu va burger ichida aylanadi */
+      if (e.key === 'Tab' && menuOpen) {
+        const f = [burger, ...menu.querySelectorAll('a[href], button:not([disabled])')].filter(x => x.offsetParent !== null);
+        const i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
 
     if (!MU.reduced) gsap.from(nav, { y: -90, autoAlpha: 0, duration: 1.2, delay: 0.2, ease: 'mu.out' });
   }

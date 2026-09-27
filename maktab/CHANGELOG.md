@@ -1,5 +1,37 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.0 (uchinchi versiya: yangi alifbo, Face ID + Nazoratchi bot, professional rasadxona, hududiy zona xaritasi)
+Manbalar: egasining izohlari; **bazaviy chat** (maktab bazasidan: hududiy ulushlar, bot imkoniyatlari va haqiqiy xabar matnlari, Face ID,
+qulayliklar, «19:30/19:45» xatosi); **DIGITAL** (`ff844d2`: sinfxona/bino suratlari, Face ID infografikalari, bot namunalari, alifbo qonuni holati);
+**ChatGPT (Astra 6)** `chatgpt/maktab-astra6` (`c2073f7`) — foydali yechimlari ko’chirildi (pastda). Agentlarsiz. `logistika/` o’zgarmagan.
+
+### Asosiy o’zgarishlar
+| Qism | Nima |
+|---|---|
+| **Yangi alifbo** (`src/base/alifbo.js`, `build.mjs`) | Senat 10.09.2026 da ma’qullagan shakl: Sh→**Ş**, Ch→**Ç**, O‘→**Ö**, G‘→**Ğ**, tutuq belgisi **’**. Build statik matnni o’giradi; MutationObserver dinamik matnni (yangiliklar, chat, forma, sertifikat) moslaydi. URL, @handle, email, #xeshteg va `[data-raw]` o’zgarmaydi; forma `value`lari API uchun joriy alifboda. Sarlavhada **«Ö / O‘»** tugmasi (joriy alifboga qaytish, localStorage). `<head>` (SEO) joriy alifboda. `--alifbo joriy` bilan eski alifboda build. Shriftlarga Ğ ğ Ş ş qo’shildi (`vendor/gen-fonts-uz.mjs`, ≈8 KB). Qonun Prezident imzosini kutmoqda (DIGITAL: 21-oktabrgacha) — tugma shuning uchun. |
+| **22-nazorat** (yangi) | «Farzandingiz qayerda — siz doim bilasiz»: Face ID terminali (yuz nuqtalari skaneri) → Telegram telefoni; xabarlar — maktab tizimining **haqiqiy shablonlari** (kirdi, tibbiy xona, uydan qaytdi) + maktabning namuna kartasi; 5 imkoniyat (surat bilan xabar, kechikish/o’tmadi, uyga javob va qaytish, tibbiy xona, bot menyusi); YASHIL/SARIQ/QIZIL apparat javoblari (maktab infografikasi); **ulanish — 3 qadam, bepul**; admin havolasi. |
+| **27-rasadxona** (yangi, professional) | Samarqand (39°40′ sh.k.) osmoni: **Yale BSC’dan 2769 ta haqiqiy yulduz** va yulduz turkumlari, hozirgi **mahalliy yulduz vaqti** bo’yicha aylanadi; jez **armillyar sfera** (PBR metall, ufq/meridian, ekvator, ekliptika 23°30′17″, kolurlar, tropiklar) osmon bilan sinxron; 5 bob: rasadxona → 1018 yulduz («Ziji Ko’ragoniy») → yil uzunligi → ekliptika og’ishi/Faxriy sekstanti → yo’nalishlar orbitasi. |
+| **55-geografiya** | Chiziqcha (leader line) bilan ulangan rangli yorliqlar; bazaviy chat ulushlaridan **faqat darajalar** (kam / o’rta / ko’p / juda ko’p — raqamsiz), **4 o’quv yili** tugmalari; yangi **Farg’ona vodiysi tumanlari zona xaritasi** (47 tuman, OCHA ROCCA/geoBoundaries CC BY 3.0 IGO). Foizli kirish fayli repoga qo’yilmadi. |
+| Faktlar tuzatildi | «19:30 gacha / 19:45 dan keyin» **olib tashlandi** (tizimda yo’q); dars 06:00 da boshlanadi; ovqat kuniga 2 mahal + non, choy; Face ID: 4 ta kirishda + tibbiy xonada 1; shifokor xabarnomasi 2026-yil sentabrdan ishlamoqda. |
+| 50-hayot | Haqiqiy sinfxona va bino (dron) suratlari; «Kun va ovqat» kartasi; suratlarni bosib kattalashtirish. |
+| 65-yangiliklar | Rasm yo’q bo’lsa **maktab logotipi**; «Yangilanishlar»da Face ID + Nazoratchi bot tepada, bot havolasi bilan. |
+| Olib tashlandi | «Ota-onalar fikri» (egasi: shart emas). |
+
+### ChatGPT (Astra 6) dan ko’chirilgan yechimlar (bizning animatsiyali tuzilmaga moslab)
+Yo’nalishlar **filtri** (Tibbiyot / Texnika va IT / Tillar, GSAP Flip bilan) · **FAQ qidiruvi** (ikkala alifboda: «shartnoma» = «şartnoma») ·
+**surat ko’rish oynasi** (sertifikat markazida — «Barcha yutuqlar» havolasi bilan; galereya) · sertifikatlarda **pauza/davom** tugmasi va fokusda to’xtash ·
+**«Asosiy mazmunga o’tish»** havolasi + `<main>` landmark + sarlavha ostida qolmaydigan anchorlar · mobil menyuda fokus boshqaruvi ·
+telefon maydoniga **+998 bilan joylashtirish** xatosi tuzatildi, `aria-invalid` · chat **25 s timeout** · yangiliklar rasm/havola hostlari
+`URL.hostname` bilan aniq tekshiriladi (o’xshash domen o’tmaydi) · Save-Data/sekin tarmoqda hero video o’zi yuklanmaydi · **Tashrif kartasi**
+(bino surati, manzil, ish vaqti, xarita, qo’ng’iroq) · ishlatilmaydigan 5 ta GSAP plagini olib tashlandi (≈76 KB).
+Ko’chirilmadi (ataylab): animatsiyalarni (reveal/split/pin/parallax) olib tashlash va soddalashtirish — egasi «o’ta sodda bo’lib qoldi» degan.
+
+### QA (v3)
+- `node build.mjs --release` — `index.html` ≈ 1,43 MB (Three.js rasadxona uchun ≈ 0,54 MB; server gzip bilan ~0,45 MB).
+- 1440×900 va 390×844 to’liq sahifa: konsol xatosi 0, gorizontal overflow 0, 390 px da 15 px dan kichik matn 0.
+- Funksional: filtr, FAQ qidiruvi (2 alifbo), lightbox (Esc), pauza, forma (ok, 60 s, duplicate, 429, +998 joylashtirish), chat, yangiliklar almashuvi, alifbo tugmasi, mobil menyu fokusi — hammasi o’tdi.
+- Audit: ʻ/ʼ 0; «19:30/19:45», «qabul ochiq», narx, o’quvchi soni/foizi — 0.
+
 ## 2026-09-27 — v2.0 (haqiqiy materiallar bilan qayta qurildi)
 Egasining fikri: v1 «multfilm bo’lib qolgan» (3D astrolyabiya, zarracha morfing, SVG illyustratsiyalar, soxta sertifikat kartalari).
 v2 da hammasi DIGITAL yuklagan `JONLI-SAYT/` materiallari asosida: jonli saytdagi video, suratlar, 91 ta sertifikat,

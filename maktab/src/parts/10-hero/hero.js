@@ -13,13 +13,21 @@ MU.part('hero', {
       video.muted = !on; if (on) video.play().catch(() => {});
       btn.setAttribute('aria-pressed', String(on)); txt.textContent = on ? 'Ovozni o’chirish' : 'Ovozni yoqish';
     };
-    btn.addEventListener('click', () => setSound(video.muted));
-    video.addEventListener('click', () => setSound(video.muted));
+    /* trafikni tejash: Save-Data yoki sekin tarmoqda video o’zi yuklanmaydi — poster ko’rinadi, tugma bilan yoqiladi */
+    const conn = navigator.connection || {};
+    let allow = !(conn.saveData || /(^|slow-)2g|3g/.test(conn.effectiveType || ''));
+    if (!allow) { video.preload = 'none'; txt.textContent = 'Videoni ko’rish'; }
+    const tap = () => {
+      if (!allow) { allow = true; video.play().catch(() => {}); txt.textContent = 'Ovozni yoqish'; return; }
+      setSound(video.muted);
+    };
+    btn.addEventListener('click', tap);
+    video.addEventListener('click', tap);
 
     if (MU.reduced) { video.removeAttribute('autoplay'); video.pause(); btn.hidden = true; return; }
 
     /* faqat ekranda o’ynaydi (trafik va batareya) */
-    const play = () => { const p = video.play(); if (p) p.catch(() => {}); };
+    const play = () => { if (!allow) return; const p = video.play(); if (p) p.catch(() => {}); };
     MU.onVisible(root, v => (v ? play() : video.pause()), '0px');
 
     /* kinematik ochilish: video yumaloq «oyna»dan to’liq ekranga */

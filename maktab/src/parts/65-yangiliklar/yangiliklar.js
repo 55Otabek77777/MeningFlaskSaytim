@@ -36,8 +36,11 @@ MU.part('yangiliklar', {
       }
       return { title: head, rest: t.slice(head.length).replace(/^\s+/, '') };
     };
-    const safeLink = l => (/^https:\/\/t\.me\//.test(l || '') ? l : 'https://t.me/ulugbek_rm');
-    const safePhoto = u => (/^https:\/\/[a-z0-9.-]*(telesco\.pe|cdn-telegram\.org)\//i.test(u || '') ? u : '');
+    /* havola/rasm hostlari URL.hostname bilan aniq tekshiriladi (evil-telesco.pe kabi o’xshash domenlar o’tmaydi) */
+    const host = u => { try { const x = new URL(u); return x.protocol === 'https:' ? x.hostname.toLowerCase() : ''; } catch (e) { return ''; } };
+    const under = (h, d) => h === d || h.endsWith('.' + d);
+    const safeLink = l => (host(l || '') === 't.me' ? l : 'https://t.me/ulugbek_rm');
+    const safePhoto = u => { const h = host(u || ''); return h && (under(h, 'telesco.pe') || under(h, 'cdn-telegram.org')) ? u : ''; };
     const img = (src, alt, cls) => {
       const i = document.createElement('img');
       i.alt = alt; i.loading = 'lazy'; i.decoding = 'async'; i.referrerPolicy = 'no-referrer';

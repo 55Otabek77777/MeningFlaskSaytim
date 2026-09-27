@@ -16,6 +16,16 @@ MU.part('hayot', {
     };
     setIdx(0, 1 / n);
 
+    /* suratni bosib kattalashtirish (lenta va «ikkinchi uy» suratlari) */
+    root.querySelectorAll('.hy-slide, .hy-shot').forEach(f => {
+      const img = f.querySelector('img'), cap = f.querySelector('figcaption b, figcaption');
+      if (!img) return;
+      f.tabIndex = 0; f.setAttribute('role', 'button'); f.setAttribute('aria-label', (img.alt || 'Surat') + ' — kattalashtirish');
+      const open = () => MU.lightbox && MU.lightbox({ src: img.currentSrc || img.src, alt: img.alt, caption: cap ? cap.textContent.trim() : img.alt });
+      f.addEventListener('click', open);
+      f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+
     /* mobil: surishni kuzatish */
     const onNativeScroll = () => {
       const max = track.scrollWidth - track.clientWidth;

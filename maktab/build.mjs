@@ -18,8 +18,8 @@ const args = process.argv.slice(2);
 const flag = n => args.includes('--' + n);
 const opt = n => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : null; };
 
-const GSAP_FILES = ['gsap', 'ScrollTrigger', 'SplitText', 'MotionPathPlugin', 'DrawSVGPlugin', 'CustomEase', 'Flip',
-  'Observer', 'ScrambleTextPlugin', 'MorphSVGPlugin', 'ScrollToPlugin', 'Draggable', 'InertiaPlugin'];
+/* faqat ishlatiladigan plaginlar (Observer, MorphSVG, ScrollTo, Draggable, Inertia — olib tashlandi, ≈78 KB) */
+const GSAP_FILES = ['gsap', 'ScrollTrigger', 'SplitText', 'MotionPathPlugin', 'DrawSVGPlugin', 'CustomEase', 'Flip', 'ScrambleTextPlugin'];
 
 const THREE_ADDONS = {
   EffectComposer: 'three/examples/jsm/postprocessing/EffectComposer.js',
@@ -27,7 +27,8 @@ const THREE_ADDONS = {
   UnrealBloomPass: 'three/examples/jsm/postprocessing/UnrealBloomPass.js',
   OutputPass: 'three/examples/jsm/postprocessing/OutputPass.js',
   ShaderPass: 'three/examples/jsm/postprocessing/ShaderPass.js',
-  RoundedBoxGeometry: 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
+  RoundedBoxGeometry: 'three/examples/jsm/geometries/RoundedBoxGeometry.js',
+  RoomEnvironment: 'three/examples/jsm/environments/RoomEnvironment.js'
 };
 const THREE_NAMESPACES = { BufferGeometryUtils: 'three/examples/jsm/utils/BufferGeometryUtils.js' };
 
@@ -105,18 +106,28 @@ if (three) vendorParts.push(three);
 const vendor = vendorParts.map(esc).join('\n;\n');
 
 const css = read(r('src/base/base.css')) + '\n' + parts.map(p => p.css).filter(Boolean).join('\n');
-const html = parts.map(p => p.html ? `<!-- ===== ${p.d} ===== -->\n${p.html.trim()}` : '').filter(Boolean).join('\n\n');
+/* <main> landmark: sarlavha (00-core), chat (98) va footer (99) tashqarida */
+const OUTSIDE = /^(00-core|98-|99-)/;
+const block = p => (p.html ? `<!-- ===== ${p.d} ===== -->\n${p.html.trim()}` : '');
+const pre = parts.filter(p => /^00-/.test(p.d)).map(block).filter(Boolean);
+const mid = parts.filter(p => !OUTSIDE.test(p.d)).map(block).filter(Boolean);
+const post = parts.filter(p => /^(98-|99-)/.test(p.d)).map(block).filter(Boolean);
+const html = [...pre, mid.length ? `<main id="main" tabindex="-1">\n${mid.join('\n\n')}\n</main>` : '', ...post].filter(Boolean).join('\n\n');
 const js = parts.flatMap(p => p.js).map(j =>
   `/* ===== ${j.name} ===== */\ntry {\n${j.code}\n} catch (e) { console.error('[MU] script ${j.name} failed:', e); }`).join('\n\n');
 
 const fonts = fs.existsSync(r('vendor/fonts.css')) ? read(r('vendor/fonts.css')) : '';
+/* alifbo: sahifa matni yangi o’zbek alifbosida (Ş Ç Ö Ğ); --alifbo joriy → hozirgi alifbo. <head> (SEO) joriy alifboda qoladi. */
+await import('./src/base/alifbo.js');
+const ALIFBO = opt('alifbo') === 'joriy' ? 'joriy' : 'yangi';
+const bodyHtml = ALIFBO === 'yangi' ? globalThis.MUAlifbo.html(html) : html;
 const tpl = read(r('src/template.html'));
 const outHtml = tpl
   .replace('/*@FONTS*/', () => fonts)
   .replace('/*@CSS*/', () => css)
-  .replace('<!--@HTML-->', () => html)
+  .replace('<!--@HTML-->', () => bodyHtml)
   .replace('/*@VENDOR*/', () => vendor)
-  .replace('/*@BOOT*/', () => esc(read(r('src/base/bootstrap.js'))))
+  .replace('/*@BOOT*/', () => esc(read(r('src/base/alifbo.js')).replace("api.mode = stored === 'joriy' ? 'joriy' : 'yangi';", `api.mode = stored === 'joriy' || stored === 'yangi' ? stored : '${ALIFBO}';`) + '\n' + read(r('src/base/bootstrap.js'))))
   .replace('/*@JS*/', () => esc(js));
 
 fs.mkdirSync(r('dist'), { recursive: true });
@@ -127,6 +138,7 @@ fs.writeFileSync(outPath, outHtml);
 const kb = s => (Buffer.byteLength(s) / 1024).toFixed(1) + ' KB';
 console.log(`✔ built ${path.relative(ROOT, outPath)}  (${kb(outHtml)})`);
 console.log(`  parts: ${dirs.join(', ')}`);
+console.log(`  alifbo: ${ALIFBO}`);
 console.log(`  vendor ${kb(vendor)} (three ${three ? kb(three) : '—'}) · fonts ${kb(fonts)} · css ${kb(css)} · html ${kb(html)} · js ${kb(js)}`);
 if (flag('release')) {
   fs.copyFileSync(outPath, r('index.html'));

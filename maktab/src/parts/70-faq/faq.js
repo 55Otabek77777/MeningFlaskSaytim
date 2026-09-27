@@ -20,5 +20,28 @@ MU.part('faq', {
       toggle(it, open);
     }));
     toggle(items[0], true);
+
+    /* qidiruv: joriy va yangi alifboda bir xil ishlaydi (şifokor = shifokor, öqiş = o’qish) */
+    const A = window.MUAlifbo;
+    const norm = t => (A ? A.toOld(String(t)) : String(t)).toLowerCase().replace(/[’'‘\u02BB\u02BC`]/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const input = root.querySelector('#fq-search'), status = root.querySelector('.fq-search__status');
+    if (input) {
+      let tm = 0;
+      input.addEventListener('input', () => {
+        clearTimeout(tm);
+        tm = setTimeout(() => {
+          const q = norm(input.value.trim());
+          let n = 0, first = null;
+          items.forEach(it => {
+            const hit = !q || norm(it.textContent).includes(q);
+            it.hidden = !hit;
+            if (hit) { n++; if (!first) first = it; }
+          });
+          status.textContent = !q ? '' : n ? n + ' ta javob topildi.' : 'Mos javob topilmadi — menejerimizga qo’ng’iroq qiling: +998 97 417 37 77.';
+          if (q && first && n <= 3) { items.forEach(o => o !== first && toggle(o, false)); toggle(first, true); }
+          ScrollTrigger.refresh();
+        }, 120);
+      });
+    }
   }
 });

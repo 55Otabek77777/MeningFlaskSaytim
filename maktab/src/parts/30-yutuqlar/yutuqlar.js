@@ -154,7 +154,24 @@ MU.part('yutuqlar', {
       if (moved && Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
     });
     window.addEventListener('pointercancel', () => { swiping = false; stage.classList.remove('is-drag'); });
-    stage.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+    stage.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    /* markaziy sertifikat bosilsa — kattalashtirib ko’rsatiladi (ichida «Barcha yutuqlar» havolasi) */
+    track.addEventListener('click', e => {
+      const a = e.target.closest('.yt-cert.is-center');
+      if (!a || !MU.lightbox) return;
+      e.preventDefault();
+      const c = items[index];
+      MU.lightbox({ src: c.src, alt: alt(c), caption: `${c.name} — ${c.subject} · ${c.grade} daraja`, href: '/yutuqlar', hrefText: 'Barcha yutuqlarni ko’rish →' });
+    });
+    /* pauza / davom (jonli saytdagi avtomatik almashish saqlangan, lekin to’xtatish mumkin) */
+    const playBtn = root.querySelector('.yt-play');
+    let paused = false;
+    playBtn.addEventListener('click', () => {
+      paused = !paused;
+      playBtn.setAttribute('aria-pressed', String(paused));
+      playBtn.setAttribute('aria-label', paused ? 'Avtomatik almashishni davom ettirish' : 'Avtomatik almashishni to’xtatish');
+      lastAdvance = Date.now();
+    });
 
     const seek = x => {
       const r = bar.getBoundingClientRect(), n = items.length;
@@ -215,7 +232,7 @@ MU.part('yutuqlar', {
 
     /* ---------- ritm: soat har soniyada, sertifikat har 3 soniyada */
     const advance = () => {
-      if (MU.reduced || dragging || hover || swiping || items.length <= 1) return;
+      if (MU.reduced || paused || dragging || hover || swiping || items.length <= 1 || document.querySelector('.mu-lb[open]') || stage.contains(document.activeElement)) return;
       const next = (index + 1) % items.length;
       if (!items[next].loaded && Date.now() - lastAdvance < 6000) return;
       go(next);

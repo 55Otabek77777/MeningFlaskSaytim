@@ -33,6 +33,7 @@ MU.part('chat', {
     const bubble = (role, text) => {
       const row = document.createElement('div');
       row.className = 'ch-msg ' + (role === 'user' ? 'ch-msg--me' : 'ch-msg--bot');
+      if (role === 'user') row.dataset.raw = ''; /* foydalanuvchi yozgani o’zgarmaydi */
       if (role !== 'user') row.innerHTML = `<span class="ch-msg__ava"><img src="${LOGO}" alt="" width="18" height="18"></span>`;
       const b = document.createElement('div');
       b.className = 'ch-bubble';
@@ -86,7 +87,9 @@ MU.part('chat', {
       let reply;
       try {
         const history = messages.slice(1).slice(-8).map(m => ({ role: m.role, content: m.content }));
-        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history, sessionId: sessionId() }) });
+        const ctrl = new AbortController(), tm = setTimeout(() => ctrl.abort(), 25000); /* 25 s — javob kelmasa menejerga yo’naltiramiz */
+        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history, sessionId: sessionId() }), signal: ctrl.signal });
+        clearTimeout(tm);
         let data = null;
         try { data = await res.json(); } catch (err) { /* JSON emas */ }
         reply = data && typeof data.reply === 'string' && data.reply.length ? cleanReply(data.reply) : FAIL;

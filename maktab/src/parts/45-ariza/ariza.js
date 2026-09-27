@@ -8,7 +8,8 @@ MU.part('ariza', {
     const tk = k => root.querySelector(`[data-tk="${k}"]`);
 
     /* telefon maskasi: +998 | 90 123 45 67 */
-    const digits = () => phoneI.value.replace(/\D/g, '').slice(0, 9);
+    /* +998 bilan to’liq raqam kiritilsa/joylashtirilsa ham to’g’ri olinadi */
+    const digits = () => { let d = phoneI.value.replace(/\D/g, ''); if (d.length > 9 && d.startsWith('998')) d = d.slice(3); return d.slice(0, 9); };
     const fmtPhone = d => [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean).join(' ');
     phoneI.addEventListener('input', () => {
       phoneI.value = fmtPhone(digits());
@@ -57,6 +58,7 @@ MU.part('ariza', {
     const check = k => {
       const msg = rules[k](), f = fieldOf(k);
       f.classList.toggle('is-invalid', !!msg); f.classList.toggle('is-valid', !msg);
+      f.querySelectorAll('input, select').forEach(x => { if (x.type !== 'radio') x.setAttribute('aria-invalid', String(!!msg)); });
       f.querySelector('.az-err').textContent = msg;
       return !msg;
     };
