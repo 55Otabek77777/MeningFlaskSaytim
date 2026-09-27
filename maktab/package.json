@@ -7,6 +7,7 @@
     "qa": "node qa.mjs"
   },
   "devDependencies": {
+    "@svg-maps/uzbekistan": "^2.0.0",
     "d3-geo": "^3.1.1",
     "esbuild": "^0.28.2",
     "gsap": "^3.15.0",
