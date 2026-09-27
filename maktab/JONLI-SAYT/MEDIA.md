@@ -60,5 +60,48 @@ Jonli sahifadagi **91 ta** yozuv (nom, fan, daraja, URL, o‘lcham) — `API/ser
 - **«Xiralashtirish» qayerda:** rasm fayllarining o‘zi xira emas — ularda to‘liq ism, shaxsiy kod, ba’zilarida foto bor (bu egasining Telegram kanalidagi ochiq e’lonlari). Saytdagi «xira» ko‘rinish — `AchievementsCarousel` da yon kartalarga CSS `filter: blur(2 / 3.6 / 5.5px)` + `opacity .5/.24/.08` berilgani; markazdagi karta aniq. Yangi sahifada ham shu yondashuv: markaz aniq, yonlar xira.
 - Rasm fayllari ataylab repoga ko‘chirilmadi (shaxsiy ma’lumotni yana bir ommaviy joyga nusxalamaslik uchun) — sayt qilganidek **URL bilan** ishlating; `next.config.ts` da shu host uchun `remotePatterns` bor.
 
+## 6. Qulayliklar / bino suratlari — `MEDIA/qulayliklar/` (2026-09-28 qo‘shildi)
+
+Qidirilgan manbalar: lokal disklar (`D:\DIGITAL`, `D:\ulugbek_maktab`, `D:\MyProjects`, `D:\agent`) va rasmiy kanal
+`@ulugbek_rm` ning **594 ta posti (4246–4848, 2026-yil)** — 563 ta rasm ko‘rib chiqildi. Natija: ~85 % — sertifikat/natija
+rasmlari; **Face ID apparati, videokuzatuv xonasi, yotoqxona, oshxona, laboratoriya, shifokor xonasi, sport maydoni
+suratlari YO‘Q** (na diskda, na kanalda). Egasi telefonidan suratga olib yuborsa, shu papkaga qo‘shiladi.
+Quyidagilar — egasi o‘zi ochiq e’lon qilgan (kanal) yoki sayt uchun bergan suratlar; o‘quvchi yuzi yaqin plandagi surat yo‘q.
+
+| fayl | nima tasvirlangan | manba | qayerda ishlatish mumkin |
+|---|---|---|---|
+| `bino-dron-1.webp` | Maktab hududining drondan umumiy ko‘rinishi — kulrang tomli asosiy bino, hovli, atrofdagi mahalla | kanal 4631 (12.07.2026, «Nega aynan biz?») | hero fon / «Bino» kartasi / geografiya |
+| `bino-dron-2.webp` | Drondan yaqinroq: bino, hovlida saf tortgan o‘quvchilar (juda kichik, yuz ko‘rinmaydi) | kanal 4618 (07.2026) | «Maktab hayoti», meros |
+| `bino-dron-3.webp` | Vertikal dron kadri — bino va qishloq panoramasi (mobil hero uchun qulay 9:16) | kanal 4623 | mobil hero / parallaks |
+| `sinfxona-1.webp` | Sinfxona: oq devor, katta derazalar, oq partalar, konditsioner; bir nechta o‘quvchi dars vaqtida (yon/orqa tomondan) | kanal 02.09.2026 (Telegram eksport) | «Sinfxona» kartasi |
+| `sinfxona-2.webp` | Katta sinfxona, to‘liq guruh dars vaqtida (keng plan) | kanal 02.09.2026 | «Maktab hayoti» |
+| `sinfxona-3.webp` | Sinfxona, o‘quvchilar yozmoqda (orqadan/yon) | kanal 02.09.2026 | «Maktab hayoti» |
+| `sinfxona-daftarlar.webp` | Partadagi daftar-kitoblar to‘plami — yuzsiz detal | kanal 01.09.2026 | detal/fon, «Nega biz» |
+| `vokzal-1.webp` | Temir yo‘l, yaqinlashayotgan poyezd, bitta o‘quvchi orqadan — «vokzalga 300 m» fakti uchun | kanal 4826 (21.08.2026) | «Transport» kartasi |
+| `vokzal-2.webp` | Tong, poyezd va perron, o‘quvchilar uzoqdan | kanal 4847 (26.09.2026) | «Transport» / uyga javob kuni |
+| `zal-tomosha.webp` | Zal: o‘quvchilar (orqadan) ekranda video tomosha qilmoqda | kanal 4612 | «Maktab hayoti» / tadbirlar |
+
+Bino fasadi — mavjud `photos/history-1994.webp` (peshtoqli oq bino). Bitiruv/sayohat/O‘rda — mavjud `photos/*`.
+
+## 7. Nazoratchi bot materiallari — `MEDIA/bot/` (2026-09-28)
+
+Haqiqiy Telegram skrinshoti **yo‘q** (Telegram mijozi yo‘q; xiralashtirish uchun ham manba yo‘q). O‘rniga maktabning
+o‘zi tayyorlagan (2026-09) **namuna kartalar va infografikalar** — shaxsiy ma’lumotsiz: namunalarda ism sifatida
+egasining o‘z ismi «MASHRABOV OTABEK», surat o‘rnida «NAMUNA — haqiqiy surat emas» yozuvi. Matnlar — `MATNLAR.md → NAZORATCHI BOT`.
+
+| fayl | nima | ishlatish |
+|---|---|---|
+| `namuna-a-uyga-ketganda.webp` | Face ID xabarnoma kartasi namunasi — «UYGA JAVOB KUNI» (chiqish) | bot bloki — «xabar shunday keladi» |
+| `namuna-b-uydan-kelganda.webp` | Namuna — «UYDAN — MAKTABGA QAYTDI · QAYTISH KUNI» (1-bino — o‘ng tomon apparati) | bot bloki |
+| `namuna-c-odatiy-kun.webp` | Namuna — odatiy kun, «Bosh kirish» (uch kunlik kirish vaqtlari) | bot bloki |
+| `infografika-apparat-javoblari.webp` | «FACE ID — APPARAT QANDAY XABAR BERADI»: 🔴 QIZIL (yuz tanilmadi) · 🟡 SARIQ (noto‘g‘ri vaqt) · 🟢 YASHIL (qabul qilindi) | Face ID bo‘limi — 3 ta rangli karta g‘oyasi |
+| `infografika-apparat-ish-vaqti.webp` | «FACE ID — APPARATNING ISH VAQTLARI»: odatiy kun 03:00–06:00 / 06:00–20:00 tartibi, uyga javob kuni 03:45–08:00, uydan qaytish 09:00–20:00 | Face ID bo‘limi — vaqt jadvali |
+| `infografika-apparat-tartib.webp` | «FACE ID APPARATI — qanday ishlaydi»: O‘TDI / TOPILMADI / NOTO‘G‘RI VAQT + haftalik vaqt diagrammasi | Face ID bo‘limi |
+| `infografika-bot-xabarnomalar.webp` | «TELEGRAM BOTGA KELADIGAN XABARNOMALAR»: Face ID (maktabga kirdi, kechikib keldi, uyga javob berildi, uydan qaytdi, kech qaytdi, o‘tmadi) · to‘lov va hujjatlar · murojaat | bot bloki — xabar turlari ro‘yxati |
+| `infografika-oquvchi-yoriqnoma.webp` | «FACE ID — O‘QUVCHILAR UCHUN YO‘RIQNOMA» (to‘liq plakat: rangli javoblar + kun tartibi) | bot/Face ID bo‘limi — plakat ko‘rinishi |
+
+⛔ Yuklanmadi (ataylab): haftalik davomat dashbordlari va «Ota-onalarga murojaat» video kadrlari — ularda **o‘quvchilar soni** yozilgan.
+Eslatma: egasining 12.09 dagi video murojaatida «6 ta Face ID apparati» deyilgan (4 ta kirish + 1 tibbiy xona + boshqa); saytdagi tasdiqlangan shakl — **«kirish joylarida 4 ta»** (SPEC §9). Ziddiyat bo‘lsa egasidan so‘raladi, hozircha 4.
+
 ## 5. Yangiliklar rasmlari
 Telegram kanal postlarining rasmlari `https://cdn4.telesco.pe/file/...` (yoki `*.cdn-telegram.org`) URL’lari — `t.me/s/ulugbek_rm` preview’dan olinadi, muddati o‘tishi mumkin. Statik saqlanmaydi.

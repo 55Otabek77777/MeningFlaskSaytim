@@ -16,6 +16,9 @@ oldin berilgan ULKAN PROMPT’da (`maktab/SPEC.md`). Bu papka unga **material** 
 | `MATNLAR.md` | Bosh sahifadagi HAR BIR sarlavha, matn, tugma — ekrandagi tartibda (+ eskirgan joylar ro‘yxati) |
 | `MEDIA.md` | Rasm/video ro‘yxati: fayl · nima tasvirlangan · saytda qayerda ishlatiladi |
 | `MEDIA/` | `public/` dan ko‘chirilgan fayllar: `logo.png`, `og-image.png`, `assets/video/hero.mp4` (+poster), `photos/*` |
+| `MEDIA/qulayliklar/` | **(28.09)** bino dron ko‘rinishlari, sinfxona, vokzal, zal — 10 ta webp; Face ID/yotoqxona/oshxona/lab/shifokor/sport suratlari topilmadi (MEDIA.md §6) |
+| `MEDIA/bot/` | **(28.09)** nazoratchi bot xabarnoma **namunalari** (soxta ism) va Face ID infografikalari — 8 ta webp; haqiqiy skrinshot yo‘q (MEDIA.md §7) |
+| `MATNLAR.md` → «BOSHQA SAHIFALAR», «NAZORATCHI BOT» | **(28.09)** /maktab-haqida, /qabul, /faq, /tarix, /aloqa matnlari aynan; bot /start, menyu tugmalari, Face ID va shifokor xabarnoma shablonlari |
 | `API.md` | Bosh sahifa chaqiradigan endpointlar, JSON namunalari, Firestore kolleksiyalari, ma’lumot oqimi |
 | `API/sertifikatlar.json` | Jonli sahifadagi 91 ta sertifikat yozuvi (ochiq rasm URL’lari bilan) |
 | `API/telegram-news-namuna.json` | `GET /api/telegram-news` javobi (qisqartirilgan namuna, iyul postlari — route keshi eskirgan) |
@@ -33,6 +36,12 @@ oldin berilgan ULKAN PROMPT’da (`maktab/SPEC.md`). Bu papka unga **material** 
 - `next.config.ts`, `package.json`, `postcss.config.mjs`, `tsconfig.json`, `firestore.rules`, `scripts/optimize-photos.mjs`, `scripts/generate-placeholders.mjs`.
 
 **Ataylab kiritilmadi:** `.env*` (hech qanday token/kalit yo‘q — hammasi `process.env.*` orqali), `lib/owners.ts` (admin Telegram ID’lari), `lib/bot-handler.ts`/`telegram-bot.ts`/`system-health.ts`/`anthropic.ts`/`ai-usage.ts` (bot ichki mantiqi), `/bot-admin`, `/demo`, `/ekran` sahifalari, `node_modules`. Bu kod **tailwind v4 + next/image** ga tayanadi — `maktab/` bundle’ida u kutubxonalar yo‘q; matn, tartib va effektlarni **ko‘chirib yozish** kerak, importlab emas.
+
+## Yangi alifbo qonuni — holat (2026-09-28 da tekshirildi)
+- **Hali imzolanmagan.** Qonunchilik palatasi 07.07.2026 da qabul qilgan, Senat 10.09.2026 (19-yalpi majlis) da ma’qullab Prezidentga yuborgan; lex.uz’da 2026-yilgi yangi tahrir **yo‘q** (faqat 931-XII 02.09.1993 va 71-I 06.05.1995). Matbuot: imzo 21-oktabr (O‘zbek tili bayrami) gacha kutilmoqda. Manbalar: [gazeta.uz 10.09](https://www.gazeta.uz/oz/2026/09/10/uzb-alphabet/), [spot.uz 10.09](https://www.spot.uz/oz/2026/09/10/uzbek-alphabet), [kun.uz 07.07](https://kun.uz/news/2026/07/07/ozbekistonda-alifbo-islohoti-boyicha-qonun-qabul-qilindi-4cf07b), [kun.uz dayjest 13.09](https://kun.uz/news/2026/09/13/maqullangan-alifbo-ozgarishi-va-kambagallikni-tugatish-vazifasi-hafta-dayjesti).
+- Mazmuni: 26 harf + 3 birikma o‘rniga **28 harf + 1 tutuq belgisi**; Oʻ→**Ö**, Gʻ→**Ğ**, Sh→**Ş**, Ch→**Ç**; «Ng» alifbodan chiqariladi. Eski yozuvdagi hujjatlar va peshtoqlar o‘tish davrida kuchda qoladi; aniq kuchga kirish sanasi e’lon qilinmagan.
+- **Tutuq belgisi kod nuqtasi qonunda ko‘rsatilmagan** («bitta apostrof» deyilgan, xolos); Raqamli texnologiyalar vazirligi «yagona texnik standart» ishlab chiqmoqda ([spot.uz](https://www.spot.uz/oz/2026/09/10/alphabet-technical-solution)). Unicode tavsiyasi — harf-apostrof **ʼ U+02BC**; amalda saytlar ko‘pincha **’ U+2019** ishlatadi ([uz.wikipedia](https://uz.wikipedia.org/wiki/%CA%BC_(belgi))).
+- **Sayt uchun qaror:** hozircha hech narsa o‘zgarmaydi — jonli sayt va bu papka **’ (U+2019)** bilan izchil; yangi harflar (Ö Ğ Ş Ç) qonun imzolanib, texnik standart chiqqach, alohida topshiriq bilan kiritiladi.
 
 ## Eslatmalar (buzilmasin)
 

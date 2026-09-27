@@ -189,3 +189,148 @@ Yangi sahifada **o‘ng ustun** ishlatiladi (SPEC.md bilan bir xil).
 | E. AI chat salomlashuvi | «…narxlar yoki maktab haqida…» | «narxlar» so‘zini olib tashlash mumkin — bot narx aytmaydi |
 | F. O‘quvchi soni | «Ilk minglik» (matn) | o‘zgarmaydi — raqam yo‘q |
 | G. 1560+ | «2025–2026 … 1560+» | o‘zgarmaydi — egasi tasdiqladi |
+
+---
+
+## BOSHQA SAHIFALAR — xavfsizlik / qulaylik matnlari (jonli sayt, aynan)
+
+### /maktab-haqida (`app/maktab-haqida/page.tsx`)
+- H1 **Maktab haqida** · sub «{yil} yildan buyon Farg’ona viloyatida sifatli xususiy ta’lim.»
+- Iqtibos: «**«MIRZO ULUG’BEK» xususiy maktabi — Uchko’prik tumani, Farg’ona viloyatida faoliyat yuritayotgan zamonaviy ta’lim maskani. Tajribali o’qituvchilar jamoasi va sifatli o’quv muhiti. 2025–2026 o’quv yilida o’quvchilarimiz ko’plab sertifikat va yutuqlarni qo’lga kiritdi. Kimyo-biologiya (tibbiyot), chet tillari va aniq fanlarga alohida e’tibor.**»
+- **Rahbariyat**: Jabborov A’zamjon Mashrabovich — Asoschi · Mashrabjonov Ulug’bek A’zamjon o’g’li — Direktor
+- **Tarix**: 1998 — «Jabborov A’zamjon Mashrabovich tomonidan Qayrog’och qishlog’ida kichkinagina repetitorlik markazi tashkil etildi — bu bugungi maktabning poydevori.» · 2024 — «Mashrabjonov Ulug’bek A’zamjon o’g’li rahbarligida maktab xususiy maktab maqomini oldi. «ULUGBEK PERFECT EDU» Nodavlat ta’lim muassasasi rasman ro’yxatdan o’tdi (Litsenziya № 363657, 21.08.2024).» · Bugun — «Tajribali o’qituvchilardan iborat jamoa va zamonaviy o’quv muhiti — Farg’ona vodiysining yetakchi xususiy maktablaridan biri.»
+- **Xavfsizlik** (4 karta, qalqon ikonkasi): **Hudud bo’ylab videokuzatuv kameralari** · **Yotoqxonalarda maxsus nazoratchilar — kun bo’yi** · **To’liq devor bilan o’ralgan hudud** · **Tungi yoritish va yong’in signalizatsiyasi**
+- **Ingliz tili yo’nalishi** (3 qator): Ixtisoslashtirilgan ingliz tili xonalari · Darajaga bo’lingan guruhlar va IELTS tayyorlovi · Tajribali o’qituvchilar — yuqori IELTS natijalari bilan
+- Yon panel **Raqamlarda** — bosh sahifadagi 6 ko‘rsatkich + **Hujjat topshirish**
+
+### /qabul (`app/qabul/page.tsx`)
+- Chip: «Qabulgacha: {n} kun» / 1-avgustdan keyin «Qabul boshlandi! 🎉» (⚠️ eskirgan — FARQLAR A) · H1 **Qabul**
+- Sub: «Rasmiy qabul 2026-yil 1-avgustdan boshlanadi, biroq o’rinlar cheklangan — adminlarimiz bilan bog’lanib, farzandingiz uchun joyni hoziroq band qilib qo’yishingiz mumkin.»
+- **Qabul shartlari**: **8–9-sinflar** — «Ariza asosida qabul qilinadi. Ariza qoldiring — adminlarimiz siz bilan bog’lanadi.» · **10–11-sinflar** — «Kuchaytirilgan suhbat va sinov asosida qabul qilinadi. Batafsil ma’lumot uchun admin va mas’ul shaxslardan.»
+- **Batafsil ma’lumot**: «Batafsil ma’lumot uchun adminlar bilan yoki maxsus telefon raqamlarga qo’ng’iroq qiling:» +998 97 417 37 77 · +998 94 595 37 77 · Telegram: @Otabek_Mashrabov
+- **Ariza qoldirish** — «Barcha maydonlarni to’ldiring — 1 daqiqa vaqt oladi.» + forma (§19)
+
+### /faq (`app/faq/page.tsx`) — 15 savol-javob, aynan
+1. **Qabul qachondan boshlanadi?** — Qabul 1-avgust sanasidan boshlanadi (2026-yil). Qabul jarayonlari allaqachon boshlangan — adminlar bilan gaplashib, hoziroq joy band qilishingiz mumkin. (⚠️ FARQLAR A)
+2. **Qaysi sinflarga qabul qilinadi?** — Bugungi holatda 8-sinfdan 11-sinfgacha. 8–9-sinflar ariza asosida, 10–11-sinflar guruhlarimizga mos kuchaytirilgan suhbat/sinov asosida qabul qilinadi.
+3. **To’lov qancha?** — To’lov haqida ma’lumot uchun maktab telefon raqamiga (+998 97 417 37 77) qo’ng’iroq qiling yoki Telegram orqali menejer/adminga yozing.
+4. **Yotoqxona bormi?** — Ha. Barcha o’quvchilar uchun yotoqxona mavjud va hamma o’quvchi yotoqxonada yashaydi — bu kuchaytirilgan nazorat tizimi uchun (uzoq/yaqin farqi yo’q).
+5. **Ovqatlanish qanday?** — Maktab tomonidan, maktab oshxonasida issiq ovqatlar beriladi.
+6. **Transport xizmati bormi?** — Maktabimiz poyezd vokzaliga juda yaqin — atigi 300 metr. Boshqa viloyatlardan kelgan o’quvchilar uyiga poyezdda qulay qatnaydi.
+7. **Qanday sertifikatlarga tayyorlanadi?** — Milliy sertifikat, IELTS va fan olimpiadalari — barcha fanlardan. Ayniqsa kimyo-biologiya (tibbiyot) va ingliz tili yo’nalishlarimiz kuchli natijalar beradi.
+8. **Maktabga tashrif buyursam bo’ladimi?** — Ha, albatta bo’ladi. Kelishilgan vaqtda adminlarimiz sizni kutib oladi.
+9. **Maktab qayerda joylashgan?** — Farg’ona viloyati, Uchko’prik tumani, Nihol MFY. Google Map’da ochish: https://maps.app.goo.gl/n7HcCtnK3KU1ZUWh9
+10. **Maktab litsenziyasi bormi?** — Ha. 2024-yilda litsenziya olingan (№ 363657), «ULUGBEK PERFECT EDU» nodavlat ta’lim muassasasi sifatida rasman ro’yxatdan o’tgan.
+11. **Maktabda xavfsizlik qanday?** — Butun hudud bo’ylab 64 ta videokuzatuv kamerasi o’rnatilgan, yotoqxonalarda esa maxsus nazoratchilar kun bo’yi faoliyat yuritadi — farzandingiz doimo ishonchli qo’llarda.
+12. **Tibbiyot yo’nalishiga tayyorlaysizmi?** — Ha, kimyo-biologiya yo’nalishimiz aynan tibbiyot va farmatsevtika oliygohlariga tayyorlovga qaratilgan: chuqurlashtirilgan kimyo va biologiya, laboratoriya amaliyoti va milliy sertifikatga yo’naltirilgan dastur.
+13. **Ingliz tili darajasi qanday?** — Ingliz tilida kuchli tayyorgarlik: darajaga bo’lingan guruhlar, CEFR va IELTS tayyorlovi. Tajribali o’qituvchilar — IELTS 8.0 natijalari bilan.
+14. **5–7-sinflarga qabul bormi?** — Hozirda maktabimizda 8–11-sinflar ta’lim oladi. 5-sinfdan 7-sinfgacha bo’lgan o’quvchilar uchun yangi bino qurilmoqda — ochilishi 2026-yil sentabrga rejalashtirilgan. Boshlang’ich sinflar mavjud emas. Yangiliklar Telegram kanalimizda e’lon qilinadi. (⚠️ FARQLAR B)
+15. **Rasmiylashtirish qanday kechadi?** — Ariza qoldirasiz → adminlar bog’lanadi → suhbat/sinov → farzandingiz 1-avgustdan o’qishni boshlaydi.
+- Pastda: **Savolingiz qoldimi?** «Qo’ng’iroq qiling: +998 97 417 37 77 yoki ariza qoldiring.» → **Hujjat topshirish**
+
+### /tarix (`app/tarix/page.tsx`)
+- H1 **Maktab tarixi va asoschilar** · sub «Bir oilaning orzusi — bir avlodning kelajagi. {yil} yillik yo’l.»
+- **1998 — Ilk qadam (poydevor)**: «Jabborov A’zamjon Mashrabovich tomonidan Farg’ona viloyati, Uchko’prik tumani, Qayrog’och qishlog’ida kichkinagina repetitorlik markazi tashkil etildi. Yillar davomidagi mashaqqatli mehnat bilan markaz bugungi darajaga yetib keldi.» (founder.webp)
+- **2024 — Xususiy maktab maqomi**: «Mashrabjonov Ulug’bek A’zamjon o’g’li rahbarligida maktab 2024-yilda xususiy maktab maqomini oldi. «ULUGBEK PERFECT EDU» rasman ro’yxatdan o’tdi (litsenziya № 363657). Birinchi bino — bugungi yutuqlarimiz poydevori.» (director.webp + history-1994.webp «Maktabning birinchi binosi»)
+- **2025 — Kengayish**: «Maktabimizga yana bitta bino qo’shildi — o’quv sharoitlari yanada kengaydi.» (hero.mp4 inline, controls)
+- **2026-sentabr — Tez orada — yangi bino**: «5-sinfdan 7-sinfgacha bo’lgan o’quvchilar uchun mo’ljallangan yangi ko’p qavatli bino qurilmoqda. Ochilishi 2026-yil sentabr oyiga rejalashtirilgan. Batafsil ma’lumot uchun adminlar bilan bog’laning.» (⚠️ FARQLAR B → «2027–2028 (reja)»)
+
+### /aloqa (`app/aloqa/page.tsx`)
+- **Telefon**: ikkala raqam + «Qabul va to’lov shartlari bo’yicha ma’lumot telefon orqali beriladi.»
+- **Ijtimoiy tarmoqlar**: Telegram @ulugbek_rm · Instagram @mirzoulugbekmaktabi · YouTube @ulugbek_xm · **Barcha rasmiy havolalar: mirzolink.com**
+- **Manzil va ish vaqti**: manzil · Dushanba — Yakshanba 07:00 — 21:30 · izoh (`HOME_LEAVE_NOTE`): «**«Mirzo Ulug’bek» xususiy maktabida 2 haftada bir marta (shanba–yakshanba) uyga ruxsat beriladi.**» · **Xaritada ochish** · Google Maps iframe (40.6182794, 70.9805234)
+- **Hujjat topshirmoqchimisiz?** «Onlayn ariza qoldiring — o’zimiz bog’lanamiz.» → **Ariza qoldirish**
+
+### `lib/site.ts` dagi qulflangan sinf izohi (`LOCKED_GRADE_NOTE`)
+«Ushbu sinflarimiz uchun tez orada yangi bino qurib bitkaziladi. Admin va menejerlarimiz sizga xabar beradi. Telegram kanallarimizda batafsil kuzatib boring.» (⚠️ FARQLAR B)
+
+---
+
+## NAZORATCHI BOT — @nazoratchiroobot (ota-onalar boti) matnlari
+
+Manba: `D:\ulugbek_maktab\ota_onalar_bot` — `BOT_MATNLARI_va_TAVSIFLAR.md` (2026-08-10, matnlarning yagona manbasi), `flows.py`, `watchers_attendance.py`; shifokor xabarnomasi — Face ID serveri (`shifokor-navbat.js`). Haqiqiy skrinshot **yo‘q** (Telegram mijozi yo‘q); `MEDIA/bot/` da maktab o‘zi tayyorlagan **namuna kartalar** (soxta ism «MASHRABOV OTABEK», «NAMUNA — haqiqiy surat emas») va infografikalar bor. Bot matnlari bot ichida **to‘g‘ri apostrof (')** bilan yozilgan — saytga ko‘chirsangiz ’ ga o‘tkazing.
+
+### BotFather tavsiflari
+- About (≤120): «Mirzo Ulug'bek xususiy maktabining rasmiy boti. Farzandingiz to'lovlari, e'lonlar va intizom xabarlari shu yerda.»
+- Description: «🏫 Mirzo Ulug'bek xususiy maktabining rasmiy ota-ona boti. / Farzandingiz maktabda — siz doim xabardorsiz: / 💰 To'lov — har bir to'lov tasdig'i va chek / 📌 E'lon va yangiliklar / ⚠️ Intizom xabarlari (jarima, spravka) / 💳 Shaxsiy to'lovlar tarixi / ▶️ Boshlash tugmasini bosing — 1 daqiqada ulanasiz.»
+- Buyruqlar: `start` Botni boshlash · `farzandim` Farzandim ma'lumotlari · `tolovlar` To'lov holati va cheklar · `aloqa` Administrator bilan aloqa · `yordam` Yordam va ko'rsatma
+
+### /start — xush kelibsiz (yangi foydalanuvchi)
+```
+🏫 MIRZO ULUG'BEK XUSUSIY MAKTABI
+━━━━━━━━━━━━━━━━━━━━
+
+Assalomu alaykum, hurmatli ota-ona! 👋
+
+Ushbu bot — farzandingizning maktabdagi SHAXSIY PROFILI.
+Farzandingiz maktabda — siz doim xabardorsiz:
+
+💰 TO'LOV — har bir to'lov qabul qilinganda tasdiq xabari
+📌 E'LON — maktab va sinf e'lonlari
+📰 YANGILIKLAR — tadbir va o'zgarishlar
+⚠️ INTIZOM — jarima yoki ogohlantirish qo'llanilsa
+
+Botdan foydalanish uchun avval maktabimizning rasmiy sahifalariga obuna bo'ling 👇
+```
+Keyin: **majburiy obuna ekrani** (inline tugmalar, aynan shu tartibda): `1️⃣ ▶️ YouTube — video kanal` · `2️⃣ 📸 Instagram — maktab` · `3️⃣ 📸 Instagram — direktor` (@ulugbekmashrabjonov7) · `4️⃣ 📢 Telegram — rasmiy kanal` · `✅ Tasdiqlash` → **kontakt so‘rash** («🔐 XAVFSIZ KIRISH … Pastdagi «📱 Telefon raqamimni yuborish» tugmasini bosing … ❗️ Faqat maktab qabulxonasiga berilgan telefon raqamlari tizimga kirishi mumkin.») → progress-bar (6 kadr: «🔐 Xavfsiz ulanish o'rnatilmoqda… ▓▓░░░░░░░░ 15%» … «✅ Topildi! Ma'lumotlar tayyor. 100%») → **o‘quvchi kartasi** (F.I.Sh., Sinf, Yo'nalish, Telefon 1/2 holati, Manzil, Tug'ilgan sana, Maktabga kelgan sana, Kelishilgan oylik to'lov, O'quv yili) → **to‘lov holati** bloki.
+Ro‘yxatdan o‘tgan foydalanuvchi /start bossa: «Assalomu alaykum! 👋 Quyidagi menyudan foydalaning:» + asosiy menyu.
+
+### Asosiy menyu (reply-klaviatura) — `flows.py`
+Ota-ona: `👨‍🎓 Farzandim` · `💰 To'lovlar` / `📞 Aloqa` · `ℹ️ Yordam` / `📨 Rahbariyatga savol va taklif`
+Admin: `🛠 Boshqaruv` / `📊 Statistika` · `🛂 Face ID` / `👨‍🎓 Farzandim`
+Kontakt tugmasi: `📱 Telefon raqamimni yuborish`
+
+### Face ID davomat xabarnomalari (ota-onaga, `watchers_attendance.py`)
+```
+✅ Farzandingiz maktabga kirdi        |  ⏰ Farzandingiz maktabga kirdi   |  🚪 Farzandingiz maktabdan chiqdi
+                                      |                                   |
+👤 {Ism Familiya}                     |  👤 {Ism Familiya}                |  👤 {Ism Familiya}
+🏫 {sinf}                             |  🏫 {sinf}                        |  🏫 {sinf}
+🕐 {HH:MM}                            |  🕐 {HH:MM}                       |  🕐 {HH:MM}
+                                      |  Darsga kechikdi (kursiv)         |
+```
+Kengaytirilgan shakl (6-sentabr e’lonida ishlatilgan, `koprik/_kechikkan_yubor.py`):
+```
+🏫 Mirzo Ulug'bek xususiy maktabi
+Face ID tizimidan xabarnoma
+━━━━━━━━━━━━━━━━━━━━
+
+👤 Farzandingiz {ISM}
+🎓 {sinf}
+🚪 {apparat — masalan «Bosh kirish»}
+🕐 {sana}, soat {HH:MM:SS} da maktabga kirdi
+```
+
+### Shifokor (tibbiy xona) xabarnomasi — Face ID serveri `shifokor-navbat.js`
+```
+🩺 TIBBIY XONADAN XABARNOMA
+Mirzo Ulug'bek xususiy maktabi
+━━━━━━━━━━━━━━━━━━━━
+
+👦 Farzandingiz {ISM} ({sinf})
+🕐 {sana va soat, sekundigacha} da maktab shifokori xonasiga
+tashrif buyurdi va ko'rikdan o'tdi.
+
+━━━━━━━━━━━━━━━━━━━━
+🤒 Murojaat sababi: {sabab}
+💊 Shifokor izohi: {izoh}
+👨‍⚕️ Shifokor: {ism}
+━━━━━━━━━━━━━━━━━━━━
+
+✅ Farzandingiz sog'lig'i nazoratda.
+🔔 Holatida o'zgarish bo'lsa, sizga darhol xabar beramiz.
+
+🔗 Bizning rasmiy ijtimoiy tarmoqlarimiz: mirzolink.com
+👤 Savollaringiz bo'lsa: @MirzoUlugbekMaktabi_Admin
+```
+
+### Aloqa kartasi / Yordam (botdagi)
+«📞 ALOQA — 👨‍💼 Administrator: Mashrabov Otabek · ✈️ Telegram: @MirzoUlugbekMaktabi_Admin · 📱 Telefon: +998916893777 · 🌐 Sayt: mirzoulugbek.app · ▶️ YouTube: @ulugbek_xm · 📸 Instagram: @mirzoulugbekmaktabi · 📢 Rasmiy kanal: @ulugbek_rm · 🔗 Barcha tarmoqlar: mirzolink.com»
+«ℹ️ YORDAM — 👨‍🎓 Farzandim — farzandingiz(lar)ning to'liq ma'lumot kartasi · 💰 To'lovlar — joriy to'lov holati va shaxsiy cheklar sahifasi · 📞 Aloqa — administrator bilan bog'lanish. Xabarlar avtomatik keladi: to'lov qabul qilinganda, e'lonlar chiqqanda va boshqa muhim hodisalarda.»
+⚠️ Botdagi admin telefoni (+998 91 689 37 77) — bot uchun; **saytda** rasmiy raqamlar +998 97 417 37 77 / +998 94 595 37 77 qoladi.
+
+### Kanal e’lonlaridan (ochiq, 2026-08/09) — Face ID qoidalari
+- 31.08: «Maktabimizda Face ID davomat tizimi to'liq ishga tushdi. Endi farzandingiz maktabga kirgan lahzada sizga darhol xabar keladi.»
+- Kelish vaqti: o‘quvchilar **19:30 gacha** kelishi kerak; **19:45 dan keyin** kelganga tizim avtomatik jarima va ogohlantirish yozadi (tafsilot adminlardan).
+- Uyga javob kuni: ertalab **04:00 dan** Face ID orqali chiqish.
+- Apparat rangli javoblari (yo‘riqnoma): 🟢 **YASHIL** — «Thank you» / qabul qilindi · 🟡 **SARIQ** — «Invalid time» — noto‘g‘ri vaqt · 🔴 **QIZIL** — «Failed» — yuz tanilmadi, qabulxonaga murojaat.
