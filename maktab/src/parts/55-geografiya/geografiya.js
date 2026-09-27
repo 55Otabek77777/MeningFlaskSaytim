@@ -1,42 +1,48 @@
-/* Geografiya: O’zbekiston xaritasi → sharqiy viloyatlarga zoom → har bir hududga chiziqcha (leader line) bilan
-   ulangan rangli yorliq, hududlardan maktabga nurlar. window.muGeoData bo’lsa (gen-hudud.mjs) — hududlar
-   «kam / o’rta / ko’p / juda ko’p» darajasida bo’yaladi (raqam ko’rsatilmaydi), yillar almashtiriladi. */
+/* Geografiya: O’zbekiston xaritasi → konturlar chiziladi → maktabdan to’lqin tarqalib hududlar bo’yaladi →
+   kamera o’quvchilar keladigan hududlarga yaqinlashadi → har bir hududdan maktabga nur oqadi, chiziqcha (leader line)
+   bilan ulangan nom yorlig’i chiqadi. window.muGeoData (gen-hudud.mjs) — barcha o’quv yillari JAMLANGAN:
+   rang va nur qalinligi o’quvchilar soniga qarab (raqamsiz, «kam/ko’p» so’zlarisiz). */
 MU.part('geografiya', {
   init(root) {
     const { gsap } = MU;
     const data = window.muUzMap; if (!data) return;
-    const GEO = window.muGeoData || null;
+    const GEO = window.muGeoData && window.muGeoData.order ? window.muGeoData : null;
     const NS = 'http://www.w3.org/2000/svg';
     const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
-    const COLORS = { fergana: '#dc2626', namangan: '#2563eb', andijan: '#7c3aed', 'tashkent-region': '#0891b2', 'tashkent-city': '#ea580c', jizzakh: '#16a34a',
-      bukhara: '#0d9488', samarqand: '#9333ea', sirdaryo: '#65a30d', navoiy: '#c2410c', qashqadaryo: '#be185d', surxondaryo: '#4f46e5', xorazm: '#0369a1', karakalpakstan: '#a16207' };
-    const TIER = [null, { n: 'kam', c: '#22c55e' }, { n: 'o’rta', c: '#eab308' }, { n: 'ko’p', c: '#f97316' }, { n: 'juda ko’p', c: '#dc2626' }];
+    const COLORS = { fergana: '#dc2626', namangan: '#2563eb', andijan: '#7c3aed', 'tashkent-region': '#0891b2', 'tashkent-city': '#ea580c', jizzakh: '#16a34a' };
     const FACT = ['fergana', 'namangan', 'andijan', 'tashkent-region', 'tashkent-city', 'jizzakh'];
+    /* issiqlik shkalasi: yashil → sariq → to’q sariq → qizil */
+    const HEAT = [[0, [34, 197, 94]], [0.35, [234, 179, 8]], [0.65, [249, 115, 22]], [1, [220, 38, 38]]];
+    const heat = t => {
+      let i = 0; while (i < HEAT.length - 2 && t > HEAT[i + 1][0]) i++;
+      const [a, ca] = HEAT[i], [b, cb] = HEAT[i + 1], k = Math.min(1, Math.max(0, (t - a) / (b - a)));
+      return `rgb(${ca.map((v, j) => Math.round(v + (cb[j] - v) * k)).join(',')})`;
+    };
 
     const host = root.querySelector('.gg-map__svg');
     const svg = el('svg', { viewBox: data.viewBox, preserveAspectRatio: 'xMidYMid meet', 'aria-hidden': 'true' }, host);
     const defs = el('defs', {}, svg);
-    const grad = el('linearGradient', { id: 'gg-grad', x1: '0', y1: '0', x2: '1', y2: '0' }, defs);
-    el('stop', { offset: '0', 'stop-color': '#3b5bdb', 'stop-opacity': '0' }, grad);
-    el('stop', { offset: '.5', 'stop-color': '#3b5bdb' }, grad);
-    el('stop', { offset: '1', 'stop-color': '#dc2626' }, grad);
-    const gR = el('g', {}, svg), gO = el('g', {}, svg), gB = el('g', {}, svg), gL = el('g', { class: 'gg-labels' }, svg), gT = el('g', {}, svg);
+    const gR = el('g', {}, svg), gO = el('g', {}, svg), gW = el('g', { class: 'gg-wave' }, svg), gB = el('g', { class: 'gg-beams' }, svg), gL = el('g', { class: 'gg-labels' }, svg), gT = el('g', {}, svg);
     const byId = {}, nameOf = {};
     data.regions.forEach(r => {
-      const p = el('path', { d: r.d, class: 'gg-r' + (r.id === 'aral-sea' ? ' gg-r--sea' : '') }, gR);
+      const p = el('path', { d: r.d, class: 'gg-r' + (r.id === 'aral-sea' ? ' gg-r--sea' : ''), 'data-id': r.id }, gR);
       el('title', {}, p).textContent = r.name;
       if (r.id !== 'aral-sea') el('path', { d: r.d, class: 'gg-outline' }, gO);
       byId[r.id] = p; nameOf[r.id] = r.name;
     });
 
+    const ids = (GEO ? GEO.order : FACT).filter(id => byId[id]);
+    const tOf = id => (GEO ? ((GEO.level[id] || 1) - 1) / 9 : 1);
+    const colorOf = id => (GEO ? heat(tOf(id)) : COLORS[id] || '#3b5bdb');
+
     /* hududning «ichki markazi»: bbox to’rida chegaradan eng uzoq nuqta (bbox markazi Toshkent vil. kabi shakllarda tashqarida qoladi) */
     const inner = {};
+    const pt = svg.createSVGPoint ? svg.createSVGPoint() : null;
     const interior = id => {
       if (inner[id]) return inner[id];
       const p = byId[id], b = p.getBBox(), L = p.getTotalLength(), edge = [];
       for (let i = 0; i < 160; i++) { const q = p.getPointAtLength((i / 160) * L); edge.push([q.x, q.y]); }
       let best = [b.x + b.width / 2, b.y + b.height / 2], bestD = -1;
-      const pt = svg.createSVGPoint ? svg.createSVGPoint() : null;
       for (let gx = 1; gx < 14; gx++) for (let gy = 1; gy < 14; gy++) {
         const x = b.x + (b.width * gx) / 14, y = b.y + (b.height * gy) / 14;
         if (pt) { pt.x = x; pt.y = y; if (!p.isPointInFill(pt)) continue; }
@@ -48,95 +54,122 @@ MU.part('geografiya', {
     const fb = byId.fergana.getBBox();
     const school = [fb.x + fb.width * 0.2, fb.y + fb.height * 0.32];
 
-    /* holat */
-    let year = GEO ? GEO.latest : null;
-    const shown = () => (GEO && GEO.years[year] ? Object.keys(GEO.years[year].viloyat).filter(id => byId[id]) : FACT);
-    const tierOf = id => (GEO && GEO.years[year] ? GEO.years[year].viloyat[id] || 0 : 0);
-    const colorOf = id => (GEO ? (TIER[tierOf(id)] || {}).c || '#dde6f6' : COLORS[id] || '#3b5bdb');
+    /* legend (nomlar, o’quvchilar soni bo’yicha tartibda) + rang shkalasi + manba yillari */
+    const legUl = root.querySelector('.gg-legend');
+    legUl.textContent = '';
+    ids.forEach(id => {
+      const li = document.createElement('li'); li.dataset.id = id;
+      const i = document.createElement('i'); i.style.background = colorOf(id); li.appendChild(i);
+      li.appendChild(document.createTextNode(nameOf[id]));
+      legUl.appendChild(li);
+    });
+    if (GEO) {
+      const sc = root.querySelector('.gg-scale'); sc.hidden = false;
+      sc.querySelector('.gg-scale__bar').style.background = `linear-gradient(90deg, ${HEAT.map(([t]) => heat(t) + ' ' + t * 100 + '%').join(', ')})`;
+      const ys = root.querySelector('.gg-src__years');
+      if (ys && GEO.years && GEO.years.length) ys.textContent = GEO.years.join(', ') + ' o’quv yillari';
+    }
 
-    let painted = false;
-    const paint = () => {
-      const ids = painted ? shown() : [];
-      Object.keys(byId).forEach(id => {
-        if (id === 'aral-sea') return;
-        const on = ids.includes(id);
-        byId[id].classList.toggle('is-lit', on);
-        byId[id].style.setProperty('--c', on ? colorOf(id) : '');
-      });
-      /* legend: shu yilda ko’rsatilgan hududlar (darajasi bilan) */
-      const ul = root.querySelector('.gg-legend');
-      ul.textContent = '';
-      shown().slice().sort((a, b) => tierOf(b) - tierOf(a)).forEach(id => {
-        const li = document.createElement('li'); li.dataset.id = id;
-        const i = document.createElement('i'); i.style.background = colorOf(id); li.appendChild(i);
-        li.appendChild(document.createTextNode(nameOf[id] + (GEO && tierOf(id) ? ' · ' + TIER[tierOf(id)].n : '')));
-        ul.appendChild(li);
-      });
+    /* hududlar rangi: to’lqin maktabdan tarqaladi — yaqin hudud oldin bo’yaladi */
+    const dist = id => Math.hypot(interior(id)[0] - school[0], interior(id)[1] - school[1]);
+    const byDist = ids.slice().sort((a, b) => dist(a) - dist(b));
+    const light = (id, on) => {
+      const p = byId[id]; p.classList.toggle('is-lit', on);
+      p.style.setProperty('--c', on ? colorOf(id) : '');
+      p.style.setProperty('--o', on ? (0.4 + 0.45 * tOf(id)).toFixed(2) : '');
     };
 
-    /* kamera: ko’rsatilgan hududlar + chap/o’ng yorliq ustunlari uchun joy */
+    /* kamera: ko’rsatilgan hududlar + yorliqlar uchun chetlarda joy */
     const full = data.viewBox.split(' ').map(Number);
-    let zoom = full, u = 1, labels = [];
+    let zoom = full, u = 1, labels = [], beams = [];
     const computeZoom = () => {
-      const W = host.clientWidth || 800, H = host.clientHeight || W / 2, ar = W / H;
-      const ids = shown().concat('fergana');
+      const W = host.clientWidth || 800, H = host.clientHeight || W / 2, ar = W / H, small = W < 560;
       let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-      ids.forEach(id => { const b = byId[id].getBBox(); x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
-      const side = W < 560 ? 78 : 190; /* har tomonda yorliq ustuni (px) */
-      const pad = 14, wR = x1 - x0 + pad * 2, hR = y1 - y0 + pad * 2;
-      let zw = wR / Math.max(0.3, 1 - (2 * side) / W), zh = zw / ar;
-      if (zh < hR * 1.08) { zh = hR * 1.08; zw = zh * ar; }
+      ids.concat('fergana').forEach(id => { const b = byId[id].getBBox(); x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
+      const sx = small ? 46 : 150, sy = small ? 22 : 36; /* ekran px */
+      let zw = (x1 - x0) / Math.max(0.3, 1 - (2 * sx) / W), zh = (y1 - y0) / Math.max(0.3, 1 - (2 * sy) / H);
+      if (zw / zh < ar) zw = zh * ar; else zh = zw / ar;
       const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
       zoom = [cx - zw / 2, cy - zh / 2, zw, zh];
       u = zw / W;
     };
 
-    /* yorliqlar: chap/o’ng ustun, chiziqcha: hudud nuqtasi → tirsak → yorliq */
+    /* yorliqlar: hudud nuqtasidan tashqariga qisqa chiziqcha → tirsak → nom (hudud yonida, xarita chetida emas).
+       Yo’nalish — hudud atrofidagi bo’sh joy tomonga (qo’shni rangli hududlar ustidan o’tmasin). */
+    const DIR = { fergana: [0.25, 1], andijan: [1, 0.15], namangan: [0.1, -1], 'tashkent-region': [-0.45, -1, 2], 'tashkent-city': [-1, -0.05], jizzakh: [-1, -0.2],
+      qashqadaryo: [-1, 0.35], sirdaryo: [-1, -0.35], samarqand: [-1, 0.25], navoiy: [-1, 0], bukhara: [-1, 0.1], surxondaryo: [0.6, 1], xorazm: [-1, 0], karakalpakstan: [-1, -0.2] };
+    const dirOf = id => {
+      let d = DIR[id]; if (!d) { const c = interior(id); d = [c[0] - school[0], c[1] - school[1]]; }
+      const n = Math.hypot(d[0], d[1]) || 1; return [d[0] / n, d[1] / n, d[2] || 1];
+    };
     const buildLabels = () => {
       gL.textContent = ''; labels = [];
-      const ids = shown(), [zx, zy, zw, zh] = zoom, mid = zx + zw / 2, small = zw / u < 560;
-      const fs = (small ? 11.5 : 15) * u, fs2 = (small ? 10 : 12.5) * u, gap = (GEO ? (small ? 30 : 42) : (small ? 21 : 30)) * u;
-      const cols = { L: [], R: [] };
-      ids.forEach(id => { const c = interior(id); cols[c[0] < mid ? 'L' : 'R'].push({ id, c }); });
-      for (const side of ['L', 'R']) {
-        const list = cols[side].sort((a, b) => a.c[1] - b.c[1]);
-        const top = zy + 24 * u, bot = zy + zh - 24 * u;
-        let y = top;
-        list.forEach(o => { o.y = Math.max(o.c[1], y); y = o.y + gap; });
-        const over = y - gap - bot; if (over > 0) list.forEach(o => { o.y -= over; });
-        for (let i = list.length - 2; i >= 0; i--) if (list[i + 1].y - list[i].y < gap) list[i].y = list[i + 1].y - gap;
-        list.forEach(o => {
-          const x = side === 'L' ? zx + 18 * u : zx + zw - 18 * u, anchor = side === 'L' ? 'start' : 'end';
-          const g = el('g', { class: 'gg-tag', 'data-id': o.id, style: `--c:${colorOf(o.id)}` }, gL);
-          const t = el('text', { x, y: o.y, 'text-anchor': anchor, 'font-size': fs.toFixed(2), class: 'gg-tag__name', 'stroke-width': (4 * u).toFixed(2) }, g);
-          t.textContent = nameOf[o.id];
-          let tw = 0; try { tw = t.getComputedTextLength(); } catch (e) { tw = nameOf[o.id].length * fs * 0.55; }
-          if (GEO) {
-            const t2 = el('text', { x, y: o.y + fs * 1.15, 'text-anchor': anchor, 'font-size': fs2.toFixed(2), class: 'gg-tag__tier', 'stroke-width': (3 * u).toFixed(2) }, g);
-            t2.textContent = (TIER[tierOf(o.id)] || {}).n || '';
+      const [zx, zy, zw, zh] = zoom, small = zw / u < 560;
+      const fs = (small ? 11.5 : 15) * u, R = (small ? 20 : 32) * u, tail = (small ? 9 : 14) * u, gapT = 5 * u, m = 8 * u;
+      const items = ids.map(id => {
+        const c = interior(id), [dx, dy, k] = dirOf(id), sx = dx < -0.05 ? -1 : 1;
+        const g = el('g', { class: 'gg-tag', 'data-id': id, style: `--c:${colorOf(id)}` }, gL);
+        const t = el('text', { 'text-anchor': sx < 0 ? 'end' : 'start', 'font-size': fs.toFixed(2), class: 'gg-tag__name', 'stroke-width': (4 * u).toFixed(2) }, g);
+        t.textContent = nameOf[id];
+        let tw = 0; try { tw = t.getComputedTextLength(); } catch (e) { tw = 0; } if (!tw) tw = nameOf[id].length * fs * 0.56;
+        return { id, g, t, c, sx, tw, ex: c[0] + dx * R * k, ey: c[1] + dy * R * k };
+      });
+      /* matn qutisi */
+      const box = o => { const tx = o.ex + o.sx * (tail + gapT); return o.sx > 0 ? [tx, o.ey - fs * 0.62, tx + o.tw, o.ey + fs * 0.62] : [tx - o.tw, o.ey - fs * 0.62, tx, o.ey + fs * 0.62]; };
+      const clamp = o => {
+        const b = box(o);
+        if (b[0] < zx + m) o.ex += zx + m - b[0]; else if (b[2] > zx + zw - m) o.ex -= b[2] - (zx + zw - m);
+        o.ey = Math.min(Math.max(o.ey, zy + fs), zy + zh - fs * 0.8);
+      };
+      items.forEach(clamp);
+      /* «Uchko’prik» yozuvi (maktab nuqtasi ostida) — qo’zg’almas to’siq */
+      const sw = (schLbl.textContent.length * 15 * 0.62 * u) / 2, sy = school[1] + 26 * u;
+      const fixed = [[school[0] - sw, sy - 15 * u, school[0] + sw, sy + 5 * u], [school[0] - 9 * u, school[1] - 9 * u, school[0] + 9 * u, school[1] + 9 * u]];
+      /* bir-birini bosib qolmasin: vertikal itarish */
+      for (let it = 0; it < 40; it++) {
+        let moved = false;
+        items.forEach(o => fixed.forEach(F => {
+          const A = box(o);
+          if (A[0] < F[2] + 3 * u && F[0] < A[2] + 3 * u && A[1] < F[3] + 2 * u && F[1] < A[3] + 2 * u) {
+            o.ey += (A[1] + A[3]) / 2 >= (F[1] + F[3]) / 2 ? F[3] + 2 * u - A[1] : F[1] - 2 * u - A[3]; moved = true;
           }
-          const ex = side === 'L' ? x + tw + 8 * u : x - tw - 8 * u;       /* yorliq chekkasi */
-          const elbow = side === 'L' ? ex + 22 * u : ex - 22 * u;
-          const ly = o.y - fs * 0.34;
-          const line = el('polyline', { points: `${o.c[0].toFixed(1)},${o.c[1].toFixed(1)} ${elbow.toFixed(1)},${ly.toFixed(1)} ${ex.toFixed(1)},${ly.toFixed(1)}`, class: 'gg-tag__line', 'stroke-width': (1.6 * u).toFixed(2) }, g);
-          g.insertBefore(line, t);
-          el('circle', { cx: o.c[0].toFixed(1), cy: o.c[1].toFixed(1), r: (4.2 * u).toFixed(2), class: 'gg-tag__dot', 'stroke-width': (2 * u).toFixed(2) }, g);
-          labels.push({ g, line, id: o.id });
-        });
+        }));
+        for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) {
+          const A = box(items[i]), B = box(items[j]);
+          if (A[0] < B[2] + 4 * u && B[0] < A[2] + 4 * u && A[1] < B[3] && B[1] < A[3]) {
+            const push = (Math.min(A[3], B[3]) - Math.max(A[1], B[1])) / 2 + 1.5 * u, up = items[i].ey <= items[j].ey ? -1 : 1;
+            items[i].ey += up * push; items[j].ey -= up * push; moved = true;
+          }
+        }
+        items.forEach(clamp);
+        if (!moved) break;
       }
+      items.forEach(o => {
+        const tx = o.ex + o.sx * (tail + gapT), tailX = o.ex + o.sx * tail;
+        o.t.setAttribute('x', tx.toFixed(1)); o.t.setAttribute('y', (o.ey + fs * 0.34).toFixed(1));
+        const line = el('polyline', { points: `${o.c[0].toFixed(1)},${o.c[1].toFixed(1)} ${o.ex.toFixed(1)},${o.ey.toFixed(1)} ${tailX.toFixed(1)},${o.ey.toFixed(1)}`, class: 'gg-tag__line', 'stroke-width': (1.6 * u).toFixed(2) }, o.g);
+        o.g.insertBefore(line, o.t);
+        const dot = el('circle', { cx: o.c[0].toFixed(1), cy: o.c[1].toFixed(1), r: (4.2 * u).toFixed(2), class: 'gg-tag__dot', 'stroke-width': (2 * u).toFixed(2) }, o.g);
+        labels.push({ g: o.g, line, t: o.t, dot, id: o.id });
+      });
     };
 
-    /* nurlar: hududlardan maktabga */
-    let beams = [];
+    /* nurlar: hududdan maktabga; qalinligi va oqimdagi tomchilar soni — o’quvchilar soniga qarab */
     const buildBeams = () => {
-      gB.textContent = ''; beams = [];
-      shown().filter(id => id !== 'fergana').forEach(id => {
-        const [x, y] = interior(id), mx = (x + school[0]) / 2, my = Math.min(y, school[1]) - 40 * u - Math.abs(x - school[0]) * 0.12;
+      gB.textContent = ''; defs.textContent = ''; beams = [];
+      ids.filter(id => id !== 'fergana').forEach((id, n) => {
+        const t = tOf(id), [x, y] = interior(id), mx = (x + school[0]) / 2, my = Math.min(y, school[1]) - 40 * u - Math.abs(x - school[0]) * 0.12;
         const d = `M${x.toFixed(1)} ${y.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${school[0].toFixed(1)} ${school[1].toFixed(1)}`;
-        el('path', { d, class: 'gg-beam-base', 'stroke-width': (1.6 * u).toFixed(2) }, gB);
-        const b = el('path', { d, class: 'gg-beam', 'stroke-width': (2.8 * u).toFixed(2) }, gB);
-        const L = b.getTotalLength(); b.style.strokeDasharray = `${Math.max(8, L * 0.28)} ${L * 2}`; b.style.strokeDashoffset = L * 0.58;
-        beams.push({ b, L });
+        const gid = 'gg-bg-' + n;
+        const lg = el('linearGradient', { id: gid, gradientUnits: 'userSpaceOnUse', x1: x.toFixed(1), y1: y.toFixed(1), x2: school[0].toFixed(1), y2: school[1].toFixed(1) }, defs);
+        el('stop', { offset: '0', 'stop-color': colorOf(id), 'stop-opacity': '.45' }, lg);
+        el('stop', { offset: '1', 'stop-color': '#dc2626' }, lg);
+        const g = el('g', { class: 'gg-beam-g', 'data-id': id }, gB);
+        const base = el('path', { d, class: 'gg-beam-base', 'stroke-width': ((1 + 1.8 * t) * u).toFixed(2) }, g);
+        const b = el('path', { d, class: 'gg-beam', stroke: `url(#${gid})`, 'stroke-width': ((1.8 + 2.6 * t) * u).toFixed(2) }, g);
+        const L = b.getTotalLength(), k = 1 + Math.round(t * 3), per = L / k, seg = Math.max(7 * u, per * 0.32);
+        b.style.strokeDasharray = `${seg.toFixed(1)} ${(per - seg).toFixed(1)}`;
+        beams.push({ g, b, base, L, per, id });
       });
     };
     const sch = el('g', { class: 'gg-school' }, gT);
@@ -151,150 +184,68 @@ MU.part('geografiya', {
 
     const layout = () => { computeZoom(); buildBeams(); buildLabels(); sizeSchool(); };
 
-    /* legend ↔ xarita */
+    /* legend ↔ xarita ↔ yorliq ↔ nur */
     const hot = (id, on) => {
       if (byId[id]) byId[id].classList.toggle('is-hot', on);
-      root.querySelectorAll('.gg-legend li').forEach(li => li.classList.toggle('is-hot', on && li.dataset.id === id));
+      svg.classList.toggle('has-hot', on);
+      legUl.querySelectorAll('li').forEach(li => li.classList.toggle('is-hot', on && li.dataset.id === id));
       labels.forEach(l => l.g.classList.toggle('is-hot', on && l.id === id));
+      beams.forEach(bm => bm.g.classList.toggle('is-hot', on && bm.id === id));
     };
-    const legUl = root.querySelector('.gg-legend');
-    legUl.addEventListener('pointerover', e => { const li = e.target.closest('li'); if (li) hot(li.dataset.id, true); });
-    legUl.addEventListener('pointerout', e => { const li = e.target.closest('li'); if (li) hot(li.dataset.id, false); });
+    const hotFrom = (e, on) => { const t = e.target.closest('[data-id]'); if (t && ids.includes(t.dataset.id)) hot(t.dataset.id, on); };
+    legUl.addEventListener('pointerover', e => hotFrom(e, true));
+    legUl.addEventListener('pointerout', e => hotFrom(e, false));
+    gR.addEventListener('pointerover', e => hotFrom(e, true));
+    gR.addEventListener('pointerout', e => hotFrom(e, false));
 
-    /* yillar (faqat ma’lumot bo’lsa) */
-    if (GEO) {
-      root.querySelector('.gg-tiers').hidden = false;
-      root.querySelectorAll('.gg-tiers i').forEach(i => { i.style.background = TIER[+i.dataset.t].c; });
-      const ys = Object.keys(GEO.years).sort();
-      if (ys.length > 1) {
-        const wrap = root.querySelector('.gg-years'); wrap.hidden = false;
-        ys.forEach(y => {
-          const btn = document.createElement('button');
-          btn.type = 'button'; btn.textContent = y.replace('-', '–'); btn.setAttribute('role', 'tab'); btn.setAttribute('aria-selected', String(y === year));
-          btn.addEventListener('click', () => {
-            if (y === year) return; year = y;
-            wrap.querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', String(x === btn)));
-            paint(); layout(); valley.update(y); if (done) startLife();
-            gsap.to(svg, { attr: { viewBox: zoom.map(v => v.toFixed(1)).join(' ') }, duration: 0.9, ease: 'mu.inOut' });
-            if (!MU.reduced) gsap.from(gL.children, { autoAlpha: 0, x: 0, duration: 0.5, stagger: 0.05 });
-          });
-          wrap.appendChild(btn);
-        });
-      }
-    }
-
-    /* ---------------------------------------------------------------- Farg’ona vodiysi tumanlari (daraja xaritasi) */
-    const valley = (() => {
-      const V = window.muValley, wrap = root.querySelector('.gg-valley');
-      if (!V || !GEO || !wrap) return { update() {} };
-      wrap.hidden = false;
-      const vhost = wrap.querySelector('.gg-valley__svg'), empty = wrap.querySelector('.gg-valley__empty');
-      const [, , VW, VH] = V.viewBox.split(' ').map(Number);
-      const W = vhost.clientWidth || 1000, side = W < 560 ? 70 : 170;
-      const vbW = VW / Math.max(0.35, 1 - (2 * side) / W), u = vbW / W, vx = -(vbW - VW) / 2;
-      const vsvg = el('svg', { viewBox: `${vx.toFixed(1)} -10 ${vbW.toFixed(1)} ${VH + 20}`, 'aria-hidden': 'true' }, vhost);
-      const gP = el('g', {}, vsvg), gLb = el('g', { class: 'gg-labels' }, vsvg), gS = el('g', {}, vsvg);
-      const tp = {}, tn = {};
-      V.t.forEach(t => { const p = el('path', { d: t.d, class: 'gg-t', 'data-reg': t.reg }, gP); el('title', {}, p).textContent = t.uz; tp[t.id] = p; tn[t.id] = t.uz; });
-      /* tuman ichki nuqtasi */
-      const ip = {};
-      const inPt = id => {
-        if (ip[id]) return ip[id];
-        const p = tp[id], b = p.getBBox(), pt = vsvg.createSVGPoint(); let best = [b.x + b.width / 2, b.y + b.height / 2], bd = -1;
-        const L = p.getTotalLength(), edge = []; for (let i = 0; i < 90; i++) { const q = p.getPointAtLength((i / 90) * L); edge.push([q.x, q.y]); }
-        for (let gx = 1; gx < 11; gx++) for (let gy = 1; gy < 11; gy++) {
-          const x = b.x + (b.width * gx) / 11, y = b.y + (b.height * gy) / 11; pt.x = x; pt.y = y;
-          if (!p.isPointInFill(pt)) continue;
-          let d = 1e9; for (const [ex, ey] of edge) d = Math.min(d, (ex - x) ** 2 + (ey - y) ** 2);
-          if (d > bd) { bd = d; best = [x, y]; }
-        }
-        return (ip[id] = best);
-      };
-      /* maktab — Uchko’prik */
-      const sp = tp.Uchkuprik ? inPt('Uchkuprik') : [VW / 2, VH / 2];
-      const pl = el('circle', { cx: sp[0], cy: sp[1], r: 8 * u, class: 'gg-vpulse' }, gS);
-      el('circle', { cx: sp[0], cy: sp[1], r: 6 * u, class: 'gg-vschool', 'stroke-width': 2.5 * u }, gS);
-      const lbls = [];
-      const labels = (tiers) => {
-        gLb.textContent = ''; lbls.length = 0;
-        const ids = Object.keys(tiers).filter(id => tiers[id] >= 3 && tp[id]).sort((a, b) => tiers[b] - tiers[a]);
-        const mid = VW / 2, fs = (W < 560 ? 11.5 : 14.5) * u, fs2 = (W < 560 ? 10 : 12) * u, gap = (W < 560 ? 30 : 40) * u, cols = { L: [], R: [] };
-        ids.forEach(id => { const c = inPt(id); cols[c[0] < mid ? 'L' : 'R'].push({ id, c }); });
-        for (const sd of ['L', 'R']) {
-          const list = cols[sd].sort((a, b) => a.c[1] - b.c[1]); let y = 20 * u;
-          list.forEach(o => { o.y = Math.max(o.c[1], y); y = o.y + gap; });
-          const over = y - gap - (VH - 10 * u); if (over > 0) list.forEach(o => { o.y -= over; });
-          list.forEach(o => {
-            const x = sd === 'L' ? vx + 14 * u : vx + vbW - 14 * u, anchor = sd === 'L' ? 'start' : 'end', col = TIER[tiers[o.id]].c;
-            const g = el('g', { class: 'gg-tag', style: `--c:${col}` }, gLb);
-            const t = el('text', { x, y: o.y, 'text-anchor': anchor, 'font-size': fs.toFixed(2), class: 'gg-tag__name', 'stroke-width': (4 * u).toFixed(2) }, g);
-            t.textContent = tn[o.id];
-            const t2 = el('text', { x, y: o.y + fs * 1.1, 'text-anchor': anchor, 'font-size': fs2.toFixed(2), class: 'gg-tag__tier', 'stroke-width': (3 * u).toFixed(2) }, g);
-            t2.textContent = TIER[tiers[o.id]].n;
-            let tw = 0; try { tw = t.getComputedTextLength(); } catch (e) { tw = tn[o.id].length * fs * 0.55; }
-            const ex = sd === 'L' ? x + tw + 8 * u : x - tw - 8 * u, elb = sd === 'L' ? ex + 20 * u : ex - 20 * u, ly = o.y - fs * 0.34;
-            const line = el('polyline', { points: `${o.c[0].toFixed(1)},${o.c[1].toFixed(1)} ${elb.toFixed(1)},${ly.toFixed(1)} ${ex.toFixed(1)},${ly.toFixed(1)}`, class: 'gg-tag__line', 'stroke-width': (1.5 * u).toFixed(2) }, g);
-            g.insertBefore(line, t);
-            el('circle', { cx: o.c[0].toFixed(1), cy: o.c[1].toFixed(1), r: (3.6 * u).toFixed(2), class: 'gg-tag__dot', 'stroke-width': (1.8 * u).toFixed(2) }, g);
-            lbls.push(line);
-          });
-        }
-      };
-      let shownOnce = false;
-      const update = y => {
-        const tiers = (GEO.years[y] && GEO.years[y].tuman) || null;
-        empty.hidden = !!tiers; vsvg.style.opacity = tiers ? '' : '.35';
-        Object.keys(tp).forEach(id => { const t = tiers ? tiers[id] || 0 : 0; tp[id].style.setProperty('--c', t ? TIER[t].c : ''); tp[id].classList.toggle('is-on', !!t); tp[id].querySelector('title').textContent = tn[id] + (t ? ' — ' + TIER[t].n : ''); });
-        labels(tiers || {});
-        if (shownOnce && !MU.reduced) lbls.forEach((l, i) => gsap.from(l, { drawSVG: '0%', duration: 0.7, delay: i * 0.06 }));
-      };
-      update(year);
-      if (!MU.reduced) {
-        gsap.set(gLb, { autoAlpha: 0 });
-        const tlv = gsap.timeline({ scrollTrigger: { trigger: vhost, start: 'top 78%', once: true }, onComplete: () => { shownOnce = true; } });
-        tlv.from(gP.children, { opacity: 0, duration: 0.5, stagger: { each: 0.02, from: 'random' } })
-          .set(gLb, { autoAlpha: 1 })
-          .add(() => lbls.forEach((l, i) => gsap.from(l, { drawSVG: '0%', duration: 0.8, delay: i * 0.08, ease: 'power2.inOut' })))
-          .from(gLb.querySelectorAll('text'), { autoAlpha: 0, duration: 0.5, stagger: 0.03 }, '+=0.3');
-        gsap.fromTo(pl, { attr: { r: 8 * u }, opacity: 0.9 }, { attr: { r: 26 * u }, opacity: 0, duration: 1.6, repeat: -1, ease: 'power2.out' });
-      } else shownOnce = true;
-      return { update };
-    })();
-
-    paint(); layout();
+    layout();
     let done = false;
     const setVB = () => svg.setAttribute('viewBox', zoom.map(v => v.toFixed(1)).join(' '));
     /* boshlang’ich kadr: butun xarita host nisbatida */
     const W0 = host.clientWidth || 800, H0 = host.clientHeight || 400, ar0 = W0 / H0;
     let fw = full[2], fh = full[3]; if (fw / fh < ar0) fw = fh * ar0; else fh = fw / ar0;
     svg.setAttribute('viewBox', [full[0] + full[2] / 2 - fw / 2, full[1] + full[3] / 2 - fh / 2, fw, fh].map(v => v.toFixed(1)).join(' '));
-    let rw = W0;
-    window.addEventListener('resize', () => { const w = host.clientWidth; if (Math.abs(w - rw) < 40) return; rw = w; layout(); if (done) { setVB(); startLife(); } });
 
-    if (MU.reduced) { done = true; painted = true; paint(); setVB(); return; }
-    gsap.set([gB, gT], { autoAlpha: 0 });
-    gsap.set(gL, { autoAlpha: 0 });
-    const tl = gsap.timeline({ scrollTrigger: { trigger: host, start: 'top 75%', once: true }, onComplete: () => { done = true; } });
-    tl.from(gO.children, { drawSVG: '0%', duration: 1.4, stagger: 0.03, ease: 'power2.inOut' })
-      .call(() => { painted = true; paint(); }, null, 0.8)
-      .to(svg, { attr: { viewBox: zoom.map(v => v.toFixed(1)).join(' ') }, duration: 1.8, ease: 'mu.inOut' }, 1.4)
-      .to([gB, gT], { autoAlpha: 1, duration: 0.6 }, 2.9)
-      .from(dot, { attr: { r: 0 }, duration: 0.7, ease: 'back.out(3)' }, 2.9)
-      .set(gL, { autoAlpha: 1 }, 3.1)
-      .add(() => {
-        labels.forEach((l, i) => {
-          gsap.from(l.line, { drawSVG: '0%', duration: 0.9, delay: i * 0.12, ease: 'power2.inOut' });
-          gsap.from(l.g.querySelectorAll('text'), { autoAlpha: 0, duration: 0.5, delay: 0.5 + i * 0.12 });
-          gsap.from(l.g.querySelector('circle'), { attr: { r: 0 }, duration: 0.5, delay: i * 0.12, ease: 'back.out(3)' });
-        });
-      }, 3.1);
     /* doimiy hayot: nurlar oqadi, maktab pulsi — faqat ekranda */
     const life = gsap.timeline({ repeat: -1, paused: true });
     const startLife = () => {
       life.clear();
-      beams.forEach(({ b, L }, i) => life.fromTo(b, { strokeDashoffset: L * 0.58 }, { strokeDashoffset: -L * 0.02, duration: 2.2, ease: 'none', repeat: -1, delay: i * 0.3 }, 0));
+      beams.forEach(({ b, per }) => life.fromTo(b, { strokeDashoffset: per }, { strokeDashoffset: 0, duration: 1.5, ease: 'none', repeat: -1 }, 0));
       life.fromTo(pulse, { attr: { r: 9 * u }, opacity: 0.9 }, { attr: { r: 30 * u }, opacity: 0, duration: 1.6, ease: 'power2.out', repeat: -1 }, 0);
     };
-    tl.call(() => { startLife(); MU.onVisible(root, v => (v ? life.play() : life.pause())); });
+    let rw = W0;
+    window.addEventListener('resize', () => { const w = host.clientWidth; if (Math.abs(w - rw) < 40) return; rw = w; layout(); if (done) { setVB(); startLife(); } });
+
+    if (MU.reduced) { done = true; ids.forEach(id => light(id, true)); setVB(); return; }
+
+    gsap.set([gB, gT, gL], { autoAlpha: 0 });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: host, start: 'top 75%', once: true }, onComplete: () => { done = true; } });
+    /* 1) konturlar */
+    tl.from(gO.children, { drawSVG: '0%', duration: 1.3, stagger: 0.03, ease: 'power2.inOut' });
+    /* 2) maktabdan to’lqin — hudud to’lqin yetib kelgan lahzada bo’yaladi */
+    const R = Math.max(full[2], full[3]) * 0.9, W1 = 1.1, WD = 2.2;
+    [0, 0.3, 0.6].forEach((dl, i) => {
+      const w = el('circle', { cx: school[0], cy: school[1], r: 1, class: 'gg-wave__ring' + (i ? ' gg-wave__ring--echo' : '') }, gW);
+      tl.fromTo(w, { attr: { r: 2 }, opacity: i ? 0.35 : 0.8 }, { attr: { r: R }, opacity: 0, duration: WD, ease: 'none' }, W1 + dl);
+    });
+    byDist.forEach(id => tl.call(() => light(id, true), null, W1 + (dist(id) / R) * WD));
+    /* 3) kamera */
+    tl.add(() => gsap.to(svg, { attr: { viewBox: zoom.map(v => v.toFixed(1)).join(' ') }, duration: 1.6, ease: 'mu.inOut' }), 2.1);
+    /* 4) maktab va nurlar */
+    tl.to(gT, { autoAlpha: 1, duration: 0.5 }, 3.4)
+      .from(dot, { attr: { r: 0 }, duration: 0.7, ease: 'back.out(3)' }, 3.4)
+      .set(gB, { autoAlpha: 1 }, 3.5)
+      .add(() => beams.forEach((bm, i) => {
+        gsap.from(bm.base, { drawSVG: '0%', duration: 0.9, delay: i * 0.1, ease: 'power2.out' });
+        gsap.from(bm.b, { opacity: 0, duration: 0.5, delay: 0.6 + i * 0.1 });
+      }), 3.5)
+      /* 5) yorliqlar */
+      .set(gL, { autoAlpha: 1 }, 3.8)
+      .add(() => labels.forEach((l, i) => {
+        gsap.from(l.dot, { attr: { r: 0 }, duration: 0.45, delay: i * 0.1, ease: 'back.out(3)' });
+        gsap.from(l.line, { drawSVG: '0%', duration: 0.8, delay: 0.1 + i * 0.1, ease: 'power2.inOut' });
+        gsap.from(l.t, { autoAlpha: 0, x: l.t.getAttribute('text-anchor') === 'start' ? -8 * u : 8 * u, duration: 0.5, delay: 0.5 + i * 0.1, ease: 'power2.out' });
+      }), 3.8)
+      .call(() => { gW.textContent = ''; startLife(); MU.onVisible(root, v => (v ? life.play() : life.pause())); }, null, 4.8);
   }
 });

@@ -1,5 +1,20 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.1 (egasining v3 izohlari bo’yicha)
+| Qism | Nima |
+|---|---|
+| Ish vaqti | Hamma joyda **06:00 — 21:30** (menyu, qabul kartasi, FAQ, tashrif kartasi, footer, JSON-LD `opens`). FAQ’dagi «qabul 07:00 dan boshlangan» — boshqa fakt, o’zgarmadi. |
+| **25-meros** | 2024: eski bino surati endi **«Maktabning birinchi binosi»**. 2025 «Kengayish — yangi bino»: **yangi binoning surati** (`qulayliklar/bino-dron-2.webp` — kanal 4623 videosidan dron kadri: uch qavatli bino, peshtoqida «Xususiy Mirzo Ulug’bek maktabi»). Ikkala surat bir xil balandlikda, 16:10 kesim. |
+| 75-kanallar | «Maktabga tashrif buyuring» kartasida eski bino o’rniga **yangi bino** (+ «Maktabning yangi binosi» yozuvi). |
+| 50-hayot | Uchinchi surat: bino takrorlanmasin deb **`bino-dron-1.webp`** (maktab va Qayrog’och — tepadan panorama). |
+| **55-geografiya** (qayta ishlandi) | **Barcha o’quv yillari birlashtirildi** (2022–2023, 2024–2025, 2025–2026, 2026–2027 — viloyat ulushlari o’rtachasi; yil tugmalari yo’q). Rang — **o’quvchilar soniga qarab** uzluksiz shkala (yashil → sariq → to’q sariq → qizil) va to’qlik; «kam / o’rta / ko’p / juda ko’p» so’zlari **olib tashlandi** — o’rniga so’zsiz shkala (bir kishi ↔ ko’p kishi belgisi). Nurlar qalinligi va oqimdagi tomchilar soni ham shu bo’yicha. Yangi animatsiya: konturlar → **maktabdan to’lqin** (hudud to’lqin yetgan lahzada bo’yaladi) → kamera → nurlar → yorliqlar. Yorliqlar endi **hudud yonida** (qisqa chiziqcha, bo’sh tomonga), bir-birini va «Uchko’prik» yozuvini bosmaydi. Legend/hudud/yorliq/nur — hover’da bir-biriga bog’langan. |
+| Olib tashlandi | **Farg’ona vodiysi — tumanlar kesimida** xaritasi to’liq (`a-tuman.js`, `gen-tuman.mjs`, OCHA/geoBoundaries krediti). |
+| `gen-hudud.mjs` | Yillarni birlashtiradi (yilda `jami` bo’lsa — o’quvchilar soni bilan tortiladi); `a-hudud.js` da faqat **tartib va 1…10 daraja** — foiz ham, son ham yo’q. |
+| `PROMPTLAR-2.md` | DIGITAL (yangi bino suratlari; topilmasa router orqali «Javas loyihasi» chatiga — eski Surface kompyuter ekran stoli) va ChatGPT (yakuniy «o’zbeklarga mosligi» tekshiruvi) uchun promptlar. |
+
+QA: desktop 1440 + mobil 390 to’liq sahifa — konsol xatosi 0, gorizontal overflow yo’q, 15 px dan kichik matn yo’q (headless’da faqat `hero.mp4` ERR_ABORTED).
+Audit: `index.html` da foiz/son yo’q, «07:00 — 21:30» yo’q, ʻ/ʼ yo’q, «asosiy binosi» yo’q.
+
 ## 2026-09-28 — v3.0 (uchinchi versiya: yangi alifbo, Face ID + Nazoratchi bot, professional rasadxona, hududiy zona xaritasi)
 Manbalar: egasining izohlari; **bazaviy chat** (maktab bazasidan: hududiy ulushlar, bot imkoniyatlari va haqiqiy xabar matnlari, Face ID,
 qulayliklar, «19:30/19:45» xatosi); **DIGITAL** (`ff844d2`: sinfxona/bino suratlari, Face ID infografikalari, bot namunalari, alifbo qonuni holati);

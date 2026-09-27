@@ -56,7 +56,8 @@
 /* ---- tashrif kartasi */
 #kanallar .kn-visit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; margin-top: 18px; overflow: hidden; border-radius: 28px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-card); }
 #kanallar .kn-visit__img { margin: 0; min-height: 280px; position: relative; }
-#kanallar .kn-visit__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#kanallar .kn-visit__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 44%; }
+#kanallar .kn-visit__img figcaption { position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 10px; background: rgba(255, 255, 255, .92); font-weight: 800; font-size: .9375rem; color: var(--mu-ink); }
 #kanallar .kn-visit__body { display: grid; gap: 14px; align-content: center; padding: clamp(22px, 3vw, 40px); }
 #kanallar .kn-visit__body .h3 { color: var(--mu-ink); }
 #kanallar .kn-visit__body p { color: var(--text-2); }
