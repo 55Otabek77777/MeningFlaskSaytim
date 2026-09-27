@@ -1,0 +1,578 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (next-themes toggles .dark on <html>). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== v3.0 design tokens: light (default) + dark palettes ===== */
+:root {
+  --primary: #1e3a8a;      /* logotip ko'ki */
+  --primary-dark: #172b6b;
+  --accent: #dc2626;       /* logotip qizili */
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --soft-tint: #eef2fb;
+  --card: #ffffff;
+  --radius: 16px;
+  --shadow-card: 0 4px 24px rgba(30, 58, 138, 0.08);
+
+  --background: var(--bg);
+  --foreground: var(--text);
+}
+
+.dark {
+  --primary: #3b5bdb;      /* yorqinroq ko'k (dark fonda o'qiladi) */
+  --primary-dark: #2f4bc0;
+  --accent: #ef4444;
+  --bg: #0b1220;
+  --bg-soft: #0d1628;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --soft-tint: #1c2a4d;
+  --card: #111a2e;
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--primary);
+  --color-brand-dark: var(--primary-dark);
+  --color-brand-soft: var(--soft-tint);
+  --color-accent: var(--accent);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-mist: var(--bg-soft);
+  --color-card: var(--card);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* ===== Dark-mode surface fallbacks for white utilities ===== */
+.dark .bg-white {
+  background-color: var(--card);
+}
+.dark .bg-white\/95 {
+  background-color: rgba(11, 18, 32, 0.92);
+}
+.dark .border-mist {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--bg-soft);
+  color: var(--text);
+}
+
+/* Dark: brand text on the brand-soft tint (#1c2a4d) fails WCAG AA at #3b5bdb.
+   Lighten it to a readable blue for active/hover nav, avatars and chips. */
+.dark .bg-brand-soft.text-brand,
+.dark .hover\:text-brand:hover {
+  color: #93c5fd;
+}
+
+/* Dark: elements that must stay white on a solid brand (blue) section —
+   step circles, on-brand CTA buttons — must not flip to the dark card color. */
+.dark .on-brand-white {
+  background-color: #ffffff;
+}
+
+/* Decorative hero blobs (pure CSS, very light blue) */
+.hero-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.dark .hero-blob {
+  opacity: 0.25;
+}
+
+/* Card shadow token as utility */
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+/* ===== 21st.dev-style gallery caption (gradient reveal on hover) ===== */
+.photo-card {
+  position: relative;
+  overflow: hidden;
+}
+.photo-card img {
+  transition: transform 0.5s ease;
+}
+.photo-card:hover img {
+  transform: scale(1.06);
+}
+.photo-card figcaption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 2.25rem 1rem 0.9rem;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.85), transparent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.photo-card:hover figcaption {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (hover: none) {
+  .photo-card figcaption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== Scroll-reveal for /tarix images (IntersectionObserver adds .revealed) ===== */
+.reveal-img {
+  opacity: 0;
+  transform: translateY(24px);
+  clip-path: inset(12% 0 12% 0);
+  transition: opacity 0.7s ease, transform 0.7s ease, clip-path 0.7s ease;
+}
+.reveal-img.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  clip-path: inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-img {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .photo-card img {
+    transition: none;
+  }
+}
+
+/* ===== Countdown digit shift (ShiftingCountdown pattern, CSS-driven) ===== */
+@keyframes cd-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-50%); opacity: 0; }
+}
+@keyframes cd-in {
+  from { transform: translateY(50%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.cd-out { animation: cd-out 0.35s ease forwards; }
+.cd-in { animation: cd-in 0.35s ease forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .cd-out, .cd-in { animation: none; }
+}
+
+/* ===== v5 PRO effects (Magic MCP fallback, pure CSS) ===== */
+
+/* Border-beam: light streak running around the button border. */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+.btn-beam {
+  position: relative;
+  isolation: isolate;
+}
+.btn-beam::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0%,
+    transparent 72%,
+    #ffd8d8 82%,
+    #ffffff 86%,
+    #ffd8d8 90%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-spin 3.2s linear infinite;
+}
+
+/* Shimmer: white streak sweeping across on hover. */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.btn-shimmer:hover::after {
+  transform: translateX(120%);
+}
+
+/* Card border-glow on hover (yo'nalish kartalari). */
+.card-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+.card-glow:hover {
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--accent) 35%, transparent),
+    0 12px 32px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+/* AI chat launcher: attention ring via a compositor-only transform/opacity
+   pseudo-element (no per-frame repaint -> no perf hit). */
+.ai-launcher {
+  position: fixed;
+}
+.ai-launcher::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  border: 2px solid var(--accent);
+  animation: ai-ring 2.4s ease-out infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+@keyframes ai-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  70%, 100% { transform: scale(1.4); opacity: 0; }
+}
+.ai-launcher:hover {
+  transform: scale(1.06);
+  transition: transform 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai-launcher::before { animation: none; }
+}
+
+/* AI chat "typing…" dots. */
+@keyframes ai-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+.ai-dot {
+  display: inline-block;
+  height: 7px;
+  width: 7px;
+  border-radius: 9999px;
+  background: var(--primary);
+  animation: ai-bounce 1s ease-in-out infinite;
+}
+
+/* AI chat: submit-button spinner. */
+@keyframes ai-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* AI chat: message bubble entrance (fade + rise). */
+@keyframes ai-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ai-msg {
+  animation: ai-msg-in 0.3s ease-out both;
+}
+
+/* AI chat: panel entrance (slide up + fade). */
+@keyframes ai-window-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ai-window {
+  animation: ai-window-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-launcher { animation: none; }
+  .ai-dot { animation: none; }
+  .ai-msg, .ai-window { animation: none; }
+}
+
+/* Contact map: night (dark) tint in dark mode; smooth zoom on hover. */
+.dark .map-embed iframe {
+  filter: invert(0.92) hue-rotate(180deg) contrast(0.9) brightness(0.9);
+}
+
+/* Certificate lightbox: gentle fade+zoom when the image swaps. */
+@keyframes ach-lightbox-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+.ach-lightbox-img {
+  animation: ach-lightbox-in 0.28s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ach-lightbox-img { animation: none; }
+}
+
+/* ===== Full-screen kiosk (/ekran) ===== */
+.ekran-bg {
+  background:
+    radial-gradient(60rem 34rem at 15% -10%, rgba(96, 130, 240, 0.28), transparent 62%),
+    radial-gradient(50rem 28rem at 90% 112%, rgba(59, 91, 219, 0.3), transparent 60%),
+    linear-gradient(160deg, #1a2856 0%, #101a3d 55%, #1c2c62 100%);
+}
+@keyframes ekran-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+.ekran-img {
+  animation: ekran-in 0.6s ease-out both;
+}
+
+/* Coverflow centre image: gentle open when the show mounts. */
+@keyframes ekran-open {
+  from { opacity: 0; transform: translateY(20px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ekran-open {
+  animation: ekran-open 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ===== Book style (/ekran Stil 2) ===== */
+@keyframes book-intro-in {
+  0% { opacity: 0; transform: translateY(24px) scale(0.9); letter-spacing: 0.4em; }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.book-intro {
+  animation: book-intro-in 1.1s ease-out both;
+}
+.book-stage {
+  position: relative;
+  animation: book-open 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes book-open {
+  from { opacity: 0; transform: rotateX(35deg) scale(0.9); }
+  to { opacity: 1; transform: rotateX(0) scale(1); }
+}
+.book-page {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.book-flip {
+  transform-origin: left center;
+  animation: book-page-turn 0.65s ease-in forwards;
+  box-shadow: -20px 0 40px rgba(0, 0, 0, 0.35);
+}
+@keyframes book-page-turn {
+  from { transform: rotateY(0deg); opacity: 1; }
+  to { transform: rotateY(-168deg); opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ekran-img, .ekran-open, .book-intro, .book-stage { animation: none; }
+  .book-flip { animation-duration: 0.01ms; }
+}
+
+/* ===== Achievements carousel panel — "Aurora Depth" showcase =====
+   Layered royal-blue aurora glows + a faint gold warmth over a deep navy
+   canvas, with a slow GPU-only drift and a cinematic focal vignette that
+   keeps the centred certificate the brightest thing on screen. A delicate
+   gold hairline crowns the top edge for a premium, framed finish.
+   Fixed dark palette in BOTH themes; only the bottom feather tracks --bg. */
+.ach-panel {
+  background:
+    /* anchored royal-blue aurora — top-left */
+    radial-gradient(56rem 40rem at 8% -12%, rgba(96, 130, 240, 0.36), transparent 60%),
+    /* anchored royal-blue aurora — bottom-right */
+    radial-gradient(52rem 36rem at 96% 112%, rgba(59, 91, 219, 0.34), transparent 58%),
+    /* faint gold warmth rising from the lower edge (echoes the amber accents) */
+    radial-gradient(46rem 22rem at 60% 120%, rgba(212, 175, 55, 0.1), transparent 62%),
+    /* focal vignette — darkens the quiet edges, leaves the centre clear */
+    radial-gradient(125% 110% at 50% 40%, transparent 48%, rgba(7, 11, 30, 0.5) 100%),
+    /* deep diagonal navy base */
+    linear-gradient(158deg, #26386f 0%, #16224a 54%, #273a72 100%);
+}
+
+/* Drifting aurora layer: oversized so the slow transform never reveals an
+   edge, and every glow fades to transparent so there is no hard seam over
+   the base. Compositor-only (transform) — no per-frame repaint. Clipped by
+   the panel's existing overflow-hidden. */
+.ach-panel::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(42rem 30rem at 28% 22%, rgba(96, 130, 240, 0.22), transparent 60%),
+    radial-gradient(38rem 28rem at 74% 72%, rgba(59, 91, 219, 0.2), transparent 60%),
+    radial-gradient(50rem 20rem at 60% 50%, rgba(212, 175, 55, 0.07), transparent 66%);
+  transform: translate3d(-1.6%, -0.8%, 0) scale(1.06);
+  animation: ach-aurora-drift 30s ease-in-out infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+
+@keyframes ach-aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(-1.6%, -0.8%, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(1.6%, 0.8%, 0) scale(1.06);
+  }
+}
+
+/* Premium framing: a delicate gold hairline across the crown (fading at both
+   ends) with a soft gold bloom beneath it, plus the preserved bottom feather
+   so the navy melts into the page section below. Sits above the aurora but
+   below the content (z-2), so text and cards stay crisp. */
+.ach-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 12%, rgba(212, 175, 55, 0.45) 50%, transparent 88%),
+    linear-gradient(to bottom, rgba(212, 175, 55, 0.09), transparent),
+    linear-gradient(to bottom, transparent calc(100% - 96px), var(--bg));
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 100% 1px, 60% 16px, 100% 100%;
+  background-position: center top, center top, center bottom;
+}
+
+/* Quartz second hand: a crisp snap with a hair of overshoot on each tick.
+   Lives in a class (not inline) so the mount-guard can suppress it on the
+   first placement and reduced-motion can disable it. */
+.ach-second-hand {
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ach-panel::before {
+    animation: none;
+  }
+  .ach-second-hand {
+    transition: none !important;
+  }
+}
+
+/* ===== Premium admission banner — Midnight (chosen design) =====
+   Deep navy-black blend (NOT pure black): blue radial glows breathe
+   through the dark base, red hairline + colon accents stay. Fixed
+   palette in BOTH themes. */
+.cd-midnight {
+  background:
+    radial-gradient(48rem 26rem at 18% -12%, rgba(59, 91, 219, 0.32), transparent 62%),
+    radial-gradient(40rem 22rem at 88% 112%, rgba(30, 58, 138, 0.4), transparent 58%),
+    radial-gradient(36rem 16rem at 50% -10%, rgba(239, 68, 68, 0.1), transparent 60%),
+    linear-gradient(160deg, #0e1734 0%, #0a1026 52%, #0f1a3d 100%);
+}
+.cd-midnight::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ef4444, transparent);
+}
+.cd-midnight > * {
+  position: relative;
+}
+
+/* Countdown chip word swap on hover: "Birinchi" -> "Birinchilardan". */
+.cd-hover-alt {
+  display: none;
+}
+.cd-hover:hover .cd-hover-base {
+  display: none;
+}
+.cd-hover:hover .cd-hover-alt {
+  display: inline;
+}
+
+/* Hero copy fade-in on load. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-fadein {
+  animation: hero-rise 0.7s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fadein {
+    animation: none;
+  }
+}
+
+/* Social cards: icon micro-animation on hover (bounce + slight rotate). */
+@keyframes icon-pop {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.18) rotate(-6deg); }
+  70% { transform: scale(0.96) rotate(3deg); }
+  100% { transform: scale(1.1) rotate(0deg); }
+}
+.social-card:hover .social-icon {
+  animation: icon-pop 0.45s ease forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .social-card:hover .social-icon {
+    animation: none;
+  }
+}
+
+/* Hero CTA: slow gradient shift pulse. */
+@keyframes cta-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.cta-gradient {
+  background: linear-gradient(120deg, var(--accent), #b91c1c, var(--accent));
+  background-size: 220% 220%;
+  animation: cta-shift 5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-beam::before,
+  .cta-gradient {
+    animation: none;
+  }
+  .btn-shimmer::after {
+    display: none;
+  }
+}
+
+/* Swiper pagination brand colors */
+.swiper-pagination-bullet {
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  background: var(--primary);
+  opacity: 1;
+}

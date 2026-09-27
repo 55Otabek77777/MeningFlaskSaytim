@@ -1,0 +1,99 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // DEFAULT DENY (fixed 2026-07-06): the old "test mode" rule was
+    // date-limited (expired 2026-03-04) and only triggered the Firebase
+    // "test mode expiring" warning. It is replaced with an explicit
+    // deny-all so intent is clear. Client access is granted ONLY by the
+    // narrow, validated public_* blocks below. Existing collections
+    // (students, logs, custom-lists, payments, ...) stay closed to the
+    // client and are reachable only via the server Admin SDK, which
+    // bypasses these rules — so no bot or server job is affected.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ============================================================
+    // PUBLIC WEBSITE COLLECTIONS — added 2026-07-02 for the official
+    // school website (mirzo-digital-sayt). Existing blocks above are
+    // preserved untouched. Only public_* collections are exposed.
+    // ============================================================
+
+    // News synced from the school Telegram channel: public read-only.
+    match /public_news/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Certificate gallery metadata: public read-only.
+    match /public_certificates/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Site settings (managed server-side): public read-only.
+    match /public_settings/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Admission applications: superseded by /api/ariza (server-side,
+    // service-account, rate-limited + honeypot + duplicate-blocked — see
+    // app/api/ariza/route.ts), which writes to the private bot_arizalar
+    // collection instead. Nothing in the app reads or writes this collection
+    // anymore, so it's closed outright rather than left as an unrated,
+    // unrate-limited anonymous-write surface (audit finding, 2026-07-16).
+    match /public_admissions/{docId} {
+      allow read, write: if false;
+    }
+
+    // ============================================================
+    // AI COST/DATA COLLECTIONS — added 2026-07-06 (v8). No service
+    // account on Vercel, so writes come from the web SDK on the server.
+    // Rules make them tamper-resistant without a service account.
+    // ============================================================
+
+    // Monthly AI spend counter (public_ai_usage/{YYYY-MM}). spent_usd may
+    // ONLY rise, by <=0.1 per write — it can never be reset down, so an
+    // attacker can't zero the cost guard. (Real hard cap = Anthropic
+    // Console billing limit.)
+    match /public_ai_usage/{month} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.keys().hasOnly(['spent_usd', 'updatedAt']) &&
+        request.resource.data.spent_usd is number &&
+        request.resource.data.spent_usd >= 0 &&
+        request.resource.data.spent_usd <= 0.1;
+      allow update: if
+        request.resource.data.keys().hasOnly(['spent_usd', 'updatedAt']) &&
+        request.resource.data.spent_usd is number &&
+        request.resource.data.spent_usd >= resource.data.spent_usd &&
+        request.resource.data.spent_usd <= resource.data.spent_usd + 0.1;
+      allow delete: if false;
+    }
+
+    // AI-rewritten news cache: public read, create-once, immutable.
+    match /public_news_rewritten/{postId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.keys().hasOnly(['text', 'createdAt']) &&
+        request.resource.data.text is string &&
+        request.resource.data.text.size() <= 2000;
+      allow update, delete: if false;
+    }
+
+    // Unanswered chat questions collected for future admin review:
+    // create-only with validation, no client read/update/delete.
+    match /public_unanswered_questions/{docId} {
+      allow create: if
+        request.resource.data.keys().hasOnly(['question', 'answered', 'createdAt']) &&
+        request.resource.data.question is string &&
+        request.resource.data.question.size() >= 1 &&
+        request.resource.data.question.size() <= 1000 &&
+        request.resource.data.answered == false;
+      allow read, update, delete: if false;
+    }
+  }
+}
