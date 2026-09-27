@@ -65,3 +65,25 @@
 }
 @media (max-width: 1000px) { #aloqa .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { #aloqa .ft-grid { grid-template-columns: 1fr; } #aloqa .ft-col h3 { font-size: .9375rem; } #aloqa .ft-logo small { font-size: .9375rem; } }
+
+#aloqa { background: #142a48; color: #e6edf7; padding-block: 72px 36px; }
+#aloqa .ft-cta .h2 { color: #fff; }
+#aloqa .ft-cta .accent-azure { color: #d9bc87; }
+#aloqa .ft-cta .lead { color: #d0dbea; }
+#aloqa .eyebrow { color: #d9bc87; }
+#aloqa .ft-cta .btn--ghost { background: transparent; color: #fff; border-color: #ffffff70; }
+#aloqa .ft-grid { gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid #ffffff26; }
+#aloqa .ft-col { background: none; box-shadow: none; border: 0; border-radius: 0; padding: 0; }
+#aloqa .ft-col h3 { color: #e0c595; font-family: var(--font-body); font-size: 15px; }
+#aloqa .ft-col p,#aloqa .ft-links a,#aloqa .ft-logo small,#aloqa .ft-dim { color: #ccd8e9 !important; }
+#aloqa .ft-logo span,#aloqa .ft-big,#aloqa .ft-link,#aloqa .ft-bottom b { color: #fff; }
+#aloqa .ft-logo small { font-size: 15px; }
+#aloqa .ft-icons a { width: 44px; height: 44px; border-radius: 6px; background: #ffffff12; border: 1px solid #ffffff26; }
+#aloqa .ft-links a { display: inline-block; padding: 5px 0; }
+#aloqa .ft-bottom { border-color: #ffffff26; margin-top: 40px; color: #ccd8e9; }
+#aloqa .ft-visits { background: #ffffff0d; box-shadow: none; border: 1px solid #ffffff26; border-radius: 6px; }
+#aloqa .ft-visits p,#aloqa .ft-visits b { color: #ccd8e9; }
+#aloqa .ft-sticky { border-radius: 8px; background: #fff; }
+#aloqa .ft-sticky a { border-radius: 5px; font-size: 15px; }
+#aloqa .ft-sticky__apply { animation: none; }
+@media(max-width:760px) { #aloqa { padding-bottom: 110px; } }

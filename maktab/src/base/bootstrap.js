@@ -310,7 +310,9 @@
       if (!target) return;
       e.preventDefault();
       MU.emit('navigate', { hash, target });
-      MU.scrollTo(target);
+      MU.scrollTo(target, { offset: -100 });
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
     });
   }
 

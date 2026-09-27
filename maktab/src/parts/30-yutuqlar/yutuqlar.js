@@ -22,6 +22,14 @@ MU.part('yutuqlar', {
 
     const alt = c => `${c.name} — ${c.subject} fanidan ${c.grade} darajali sertifikat`;
     let items = ALL, cards = [], index = 0, capTimer = 0, lastAdvance = 0, hover = false, dragging = false, visible = false;
+    let paused = MU.reduced;
+    const pause = root.querySelector('.yt-pause');
+    const syncPause = () => {
+      pause.setAttribute('aria-pressed', String(paused));
+      pause.textContent = MU.t(paused ? 'Almashishni davom ettirish' : 'Almashishni to’xtatish');
+    };
+    pause.addEventListener('click', () => { paused = !paused; syncPause(); });
+    syncPause();
 
     /* ---------- kartalar */
     const build = () => {
@@ -31,7 +39,9 @@ MU.part('yutuqlar', {
         a.className = 'yt-cert is-off';
         a.href = '/yutuqlar';
         a.tabIndex = -1;
-        a.setAttribute('aria-label', `${alt(c)} — barcha yutuqlarni ochish`);
+        a.setAttribute('aria-label', MU.t(`${alt(c)} — kattalashtirish`));
+        a.setAttribute('aria-haspopup', 'dialog');
+        a.addEventListener('click', e => { if (moved) return; e.preventDefault(); MU.viewPhoto(c.src, alt(c)); });
         a.innerHTML = `<span class="yt-cert__frame"><img alt="" width="${c.w}" height="${c.h}" decoding="async" draggable="false"><span class="yt-cert__sheen"></span></span>`;
         const img = a.querySelector('img');
         img.alt = alt(c);
@@ -52,7 +62,9 @@ MU.part('yutuqlar', {
       const n = items.length;
       cards.forEach((k, i) => {
         const p = posOf(i), a = Math.abs(p);
-        if (a <= RENDER + 1 && !k.img.src) k.img.src = k.c.src; /* ±3 + bitta oldindan */
+        if (visible && a <= RENDER && !k.img.hasAttribute('src')) k.img.src = k.c.src;
+        k.el.tabIndex = p === 0 ? 0 : -1;
+        k.el.setAttribute('aria-hidden', String(p !== 0));
         if (a > RENDER) { k.el.classList.add('is-off'); k.el.classList.remove('is-center'); return; }
         k.el.classList.remove('is-off');
         k.el.classList.toggle('is-center', p === 0);
@@ -215,7 +227,7 @@ MU.part('yutuqlar', {
 
     /* ---------- ritm: soat har soniyada, sertifikat har 3 soniyada */
     const advance = () => {
-      if (MU.reduced || dragging || hover || swiping || items.length <= 1) return;
+      if (paused || document.hidden || document.querySelector('dialog[open]') || root.contains(document.activeElement) || dragging || hover || swiping || items.length <= 1) return;
       const next = (index + 1) % items.length;
       if (!items[next].loaded && Date.now() - lastAdvance < 6000) return;
       go(next);
@@ -229,6 +241,7 @@ MU.part('yutuqlar', {
     };
     MU.onVisible(root, v => {
       visible = v;
+      if (v) layout();
       root.classList.toggle('is-inview', v && !MU.reduced);
       cancelAnimationFrame(raf);
       if (v) { lastBucket = -1; base = null; tick(); raf = requestAnimationFrame(loop); }

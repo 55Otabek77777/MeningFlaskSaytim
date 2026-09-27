@@ -10,6 +10,8 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { build as esbuild } from 'esbuild';
+import { parse, serialize } from 'parse5';
+import { toLatin } from './src/base/alphabet.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const r = (...p) => path.join(ROOT, ...p);
@@ -18,8 +20,7 @@ const args = process.argv.slice(2);
 const flag = n => args.includes('--' + n);
 const opt = n => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : null; };
 
-const GSAP_FILES = ['gsap', 'ScrollTrigger', 'SplitText', 'MotionPathPlugin', 'DrawSVGPlugin', 'CustomEase', 'Flip',
-  'Observer', 'ScrambleTextPlugin', 'MorphSVGPlugin', 'ScrollToPlugin', 'Draggable', 'InertiaPlugin'];
+const GSAP_FILES = ['gsap', 'ScrollTrigger', 'SplitText', 'CustomEase'];
 
 const THREE_ADDONS = {
   EffectComposer: 'three/examples/jsm/postprocessing/EffectComposer.js',
@@ -105,19 +106,46 @@ if (three) vendorParts.push(three);
 const vendor = vendorParts.map(esc).join('\n;\n');
 
 const css = read(r('src/base/base.css')) + '\n' + parts.map(p => p.css).filter(Boolean).join('\n');
-const html = parts.map(p => p.html ? `<!-- ===== ${p.d} ===== -->\n${p.html.trim()}` : '').filter(Boolean).join('\n\n');
+const sectionHTML = p => p.html ? `<!-- ===== ${p.d} ===== -->\n${p.html.trim()}` : '';
+const html = parts.filter(p => +p.d.slice(0, 2) < 10).map(sectionHTML).join('\n') +
+  '\n<main id="main-content">\n' + parts.filter(p => +p.d.slice(0, 2) >= 10 && +p.d.slice(0, 2) < 98).map(sectionHTML).join('\n\n') +
+  '\n</main>\n' + parts.filter(p => +p.d.slice(0, 2) >= 98).map(sectionHTML).join('\n');
 const js = parts.flatMap(p => p.js).map(j =>
   `/* ===== ${j.name} ===== */\ntry {\n${j.code}\n} catch (e) { console.error('[MU] script ${j.name} failed:', e); }`).join('\n\n');
 
-const fonts = fs.existsSync(r('vendor/fonts.css')) ? read(r('vendor/fonts.css')) : '';
+const fontRoot = 'node_modules/@fontsource-variable/manrope';
+const fonts = (read(r(fontRoot, 'index.css')).match(/@font-face\s*\{[^}]+\}/g) || [])
+  .filter(block => /manrope-latin(?:-ext)?-wght/.test(block))
+  .map(block => block.replace('Manrope Variable', 'Manrope').replace(/url\(\.\/([^)]*)\)/g, (_, f) =>
+    `url(data:font/woff2;base64,${fs.readFileSync(r(fontRoot, f)).toString('base64')})`)).join('\n');
 const tpl = read(r('src/template.html'));
-const outHtml = tpl
+let outHtml = tpl
   .replace('/*@FONTS*/', () => fonts)
   .replace('/*@CSS*/', () => css)
   .replace('<!--@HTML-->', () => html)
   .replace('/*@VENDOR*/', () => vendor)
-  .replace('/*@BOOT*/', () => esc(read(r('src/base/bootstrap.js'))))
+  .replace('/*@BOOT*/', () => esc(read(r('src/base/bootstrap.js')) + '\n' + read(r('src/base/alphabet.js')).replace('/*@TO_LATIN*/', toLatin.toString())))
   .replace('/*@JS*/', () => esc(js));
+
+// Convert content, never executable code, URLs, IDs or API form values.
+const document = parse(outHtml);
+const labelAttrs = new Set(['alt', 'title', 'aria-label', 'aria-valuetext', 'placeholder', 'data-text']);
+function translate(node, skip = false) {
+  const attrs = node.attrs || [];
+  skip ||= ['script', 'style', 'textarea'].includes(node.tagName) || attrs.some(a => a.name === 'data-no-transliterate');
+  if (skip) return;
+  if (node.tagName === 'option' && !attrs.some(a => a.name === 'value')) {
+    attrs.push({ name: 'value', value: (node.childNodes || []).filter(n => n.nodeName === '#text').map(n => n.value).join('') });
+  }
+  if (node.nodeName === '#text') node.value = toLatin(node.value);
+  for (const a of attrs) {
+    const metaLabel = node.tagName === 'meta' && a.name === 'content' && attrs.some(x => /^(description|og:title|og:description)$/.test(x.value));
+    if (labelAttrs.has(a.name) || metaLabel) a.value = toLatin(a.value);
+  }
+  (node.childNodes || []).forEach(n => translate(n, skip));
+}
+translate(document);
+outHtml = serialize(document);
 
 fs.mkdirSync(r('dist'), { recursive: true });
 const outName = opt('out') || (only ? `preview-${dirs.map(d => d.replace(/^\d\d-/, '')).join('-')}.html` : 'index.html');

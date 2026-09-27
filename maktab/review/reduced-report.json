@@ -1,0 +1,79 @@
+{
+  "desktop": {
+    "shots": [
+      "qa\\release-reduced\\desktop-hero.png",
+      "qa\\release-reduced\\desktop-yutuqlar.png",
+      "qa\\release-reduced\\desktop-ariza.png",
+      "qa\\release-reduced\\desktop-hayot.png",
+      "qa\\release-reduced\\desktop-faq.png",
+      "qa\\release-reduced\\desktop-footer.png"
+    ],
+    "docHeight": 15735,
+    "scrollWidth": 1440,
+    "vw": 1440,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 2,
+    "pins": 0,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "meros",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "geografiya",
+      "tashrif",
+      "sharhlar",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "logs": []
+  },
+  "mobile": {
+    "shots": [
+      "qa\\release-reduced\\mobile-hero.png",
+      "qa\\release-reduced\\mobile-yutuqlar.png",
+      "qa\\release-reduced\\mobile-ariza.png",
+      "qa\\release-reduced\\mobile-hayot.png",
+      "qa\\release-reduced\\mobile-faq.png",
+      "qa\\release-reduced\\mobile-footer.png"
+    ],
+    "docHeight": 24271,
+    "scrollWidth": 390,
+    "vw": 390,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 2,
+    "pins": 0,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "meros",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "geografiya",
+      "tashrif",
+      "sharhlar",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "smallText": [],
+    "logs": []
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "environment": {
+    "browserChannel": "msedge",
+    "videoPlayback": "verified: currentTime >= 3 seconds"
+  },
+  "results": [
+    {
+      "name": "One H1, main landmark, source facts and initial video deferral",
+      "ok": true
+    },
+    {
+      "name": "Alphabet conversion leaves API, URLs and usernames intact",
+      "ok": true
+    },
+    {
+      "name": "Mobile menu: open, trapped focus, Escape, focus restoration",
+      "ok": true
+    },
+    {
+      "name": "Direction filtering and future grades remain explicit",
+      "ok": true
+    },
+    {
+      "name": "Certificates: real URLs, subject filter, keyboard and lightbox",
+      "ok": true
+    },
+    {
+      "name": "Gallery: next, previous and full image with Escape",
+      "ok": true
+    },
+    {
+      "name": "FAQ search: both alphabets, no-match and accordion",
+      "ok": true
+    },
+    {
+      "name": "Form validation sends no request",
+      "ok": true
+    },
+    {
+      "name": "Form success preserves all five contract keys and +998 paste",
+      "ok": true
+    },
+    {
+      "name": "60-second throttle survives reload and sends no second request",
+      "ok": true
+    },
+    {
+      "name": "Grade notes and duplicate response",
+      "ok": true
+    },
+    {
+      "name": "HTTP 429 is handled, retry remains available",
+      "ok": true
+    },
+    {
+      "name": "Server error retains entered data",
+      "ok": true
+    },
+    {
+      "name": "Chat payload, history bound, session and focus trap",
+      "ok": true
+    },
+    {
+      "name": "Visit is counted once per session; telephone click uses bodyless POST",
+      "ok": true
+    },
+    {
+      "name": "News updates only from a newer snapshot and rejects unapproved image hosts",
+      "ok": true
+    },
+    {
+      "name": "390px layout, no runtime errors or live API requests",
+      "ok": true
+    },
+    {
+      "name": "Desktop dropdown: keyboard access, Escape and collapse",
+      "ok": true
+    },
+    {
+      "name": "Video: opt-in playback or explicit unsupported-codec fallback; Escape stops it",
+      "ok": true
+    },
+    {
+      "name": "Certificates rotate normally and stop on explicit pause",
+      "ok": true
+    },
+    {
+      "name": "Responsive widths: 320, 390, 768, 1100, 1440; no document overflow",
+      "ok": true
+    }
+  ],
+  "logs": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+    }
+  ],
+  "apiRequests": [
+    {
+      "url": "http://127.0.0.1:58204/api/telegram-news",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/ariza",
+      "method": "POST",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/visit",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/ariza",
+      "method": "POST",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/visit",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/ariza",
+      "method": "POST",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/ariza",
+      "method": "POST",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/chat",
+      "method": "POST",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/track-call",
+      "method": "POST",
+      "type": "ping"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/telegram-news",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/visit",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "http://127.0.0.1:58204/api/telegram-news",
+      "method": "GET",
+      "type": "fetch"
+    }
+  ],
+  "note": "All APIs mocked. Expected HTTP 400/429 and deliberately cancelled video requests are recorded; runtime errors must be zero."
+}

@@ -20,5 +20,18 @@ MU.part('faq', {
       toggle(it, open);
     }));
     toggle(items[0], true);
+    const search = root.querySelector('.fq-search');
+    const normalize = value => MU.t(value).toLocaleLowerCase('uz').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    search.addEventListener('input', () => {
+      const query = normalize(search.value.trim());
+      let count = 0;
+      items.forEach(item => {
+        item.hidden = !!query && !normalize(item.textContent).includes(query);
+        if (!item.hidden) count++;
+      });
+      root.querySelector('.fq-search-status').textContent = query
+        ? MU.t(count ? count + ' ta javob topildi.' : 'Mos javob topilmadi. Menejerimiz bilan bog’laning.') : '';
+      ScrollTrigger.refresh();
+    });
   }
 });

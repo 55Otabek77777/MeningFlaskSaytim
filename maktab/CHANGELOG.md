@@ -1,5 +1,55 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.0 (professional ko’rinish va qulay foydalanish)
+
+Asos: `claude/logistics-site-animation-comparison-r4scvk`, commit `229ea27`. Ish faqat `chatgpt/maktab-astra6` branch’ida, agent/subagentsiz bajarildi. Faktlar `JONLI-SAYT` va FARQLAR o’ng ustunidan; boshqa loyiha papkalari o’zgarmadi.
+
+### Dizayn, bo’limlar va foydalanish
+
+| Fayl / papka | O’zgarish |
+|---|---|
+| `src/base/base.css` | Oq/iliq fon, to’q ko’k va qizil rang, Manrope, tartibli sarlavha va intervallar. Kichikroq radiuslar, sokin tugmalar. 390 px da matn kamida 15 px. |
+| `src/parts/*/part.html` | Matnni yashiradigan generic reveal/split/scramble/tilt/parallax atributlari olib tashlandi. Kontent darhol ko’rinadi. |
+| `00-core/{part.html,core.css,core.js}` | Soddalashtirilgan header, mazmunga o’tish havolasi, desktop dropdown, native dialog mobil menyu; Tab/Shift+Tab fokus chegarasi, Escape, yopilganda fokus qaytishi. Umumiy surat ko’rish dialogi qo’shildi. Telefon tracking saqlandi. |
+| `10-hero/{part.html,hero.css,hero.js}`, `src/template.html` | Birinchi ekranda haqiqiy asosiy bino surati va aniq CTA. Bino rasmi preload. Video alohida tugma orqali dialogda, boshqaruvlari bilan ochiladi; src/poster bosilguncha belgilanmaydi. Yopilganda/to’liq yashirilganda ijro to’xtaydi; video xatosida original havola bor. |
+| `12-qabul/{part.html,qabul.css}` | Qabulning tasdiqlangan joriy holati aniq to’q ko’k blokda, chalg’ituvchi animatsiyalarsiz. |
+| `20-stats/{part.html,stats.css,stats.js}` | Oltita asl ko’rsatkich tartibli jadvalda. Sun’iy o’sib boruvchi sanoq, canvas va bezaklar olib tashlandi; Ilk minglik matni saqlandi. |
+| `25-meros/{part.html,meros.css,meros.js}` | Asoschi/direktor haqiqiy suratlari, o’qiladigan izohlar va sodda tarix chizig’i. Takroriy bino tasviri yashirildi, parallax olib tashlandi. |
+| `30-yutuqlar/{part.html,yutuqlar.css,yutuqlar.js}` | 91 haqiqiy sertifikat, fan filtri va soat saqlandi. Tinchroq fon, yaqin sertifikatlarnigina yuklash; markazdagi rasmni kattalashtirish. Aniq pauza/davom tugmasi, fokus/hover/yashirin sahifa/dialogda pauza; reduced-motion’da avtomatik almashish boshlanmaydi. Yon kartalar klaviatura fokusidan chiqarildi. |
+| `35-yonalishlar/{part.html,yonalishlar.css,yonalishlar.js}` | 6 faol yo’nalish kartasi: barcha / tibbiyot / texnika va IT / tillar filtrlari, e’lon qilinadigan natija holati. 5–7-sinf rejasi alohida. Rus yo’nalishlari 9–11-sinflar uchun. Mavjud ichki URL’lar saqlandi. |
+| `40-qabul-jarayoni/{part.html,part.js,process.css}` | 5 qadamli ixcham tushuntirish. 8–9, 10 va 11/bitiruvchilar qabulidagi farqlar asl faktlar bilan; katta dekorativ panellar olib tashlandi. |
+| `45-ariza/{part.html,ariza.css,ariza.js}` | Doim o’qiladigan yorliqlar, aria-invalid, xatoga fokus. To’liq +998 telefon raqamini joylashtirish tuzatildi. Konfetti olib tashlandi; muvaffaqiyat/duplicate/429/60 soniya cheklovi saqlandi. Ism va API qiymatlari transliteratsiya qilinmaydi. |
+| `50-hayot/{part.html,hayot.css,hayot.js}` | 8 haqiqiy surat: odatiy gorizontal lenta, scroll-snap, oldingi/keyingi va klaviatura boshqaruvi, joriy indeks, kattalashtirish. Desktop sahifani ushlab turadigan pin olib tashlandi. Yotoqxona, xavfsizlik, shifokor va kun tartibi faktlari tartiblandi. |
+| `55-geografiya/{part.html,geografiya.js}` | Asl SVG xarita va haqiqiy hududlar saqlandi. Animatsion nurlar va oliygoh yo’li olib tashlandi; Farg’ona hududi tushunarli izohlandi. |
+| **`58-tashrif/{part.html,tashrif.css}`** | **Yangi bo’lim:** haqiqiy bino, manbada berilgan to’liq manzil, har kungi 07:00–21:30 ish vaqti, telefon va mavjud Google Maps havolasi. |
+| `60-sharhlar/{part.html,sharhlar.css}` | Asl 3 sharh va Google bahosi saqlandi. Sokin kartalar; mobil’da har biri alohida to’liq o’qiladi. |
+| `65-yangiliklar/{part.html,yangiliklar.css,yangiliklar.js}` | Yangiliklar o’qilishi va uzun matnlar ko’rinishi yaxshilandi; eski keshni rad etish saqlandi. Rasm hosti URL.hostname bilan aniq tekshiriladi; o’xshash zararli domen qabul qilinmaydi. |
+| `70-faq/{part.html,faq.css,faq.js}` | **Yangi qidiruv:** ikkala o’zbek alifbosidagi so’zlar bilan; topilmasa aniq holat va menejerga yo’l. Asl 15 savol/javob saqlandi. |
+| `75-kanallar/{part.html,kanallar.css}`, `99-footer/{part.html,footer.css,footer.js}` | Aloqa va footer tartiblandi. Barcha aloqa/ichki yo’llar, sessiya tashrif hisoblagichi saqlandi; meteor/marquee bezaklari olib tashlandi. |
+| `98-chat/{part.html,chat.css,chat.js}` | Native modal, fokusni saqlash, Escape, aniq yopish. 25 soniya timeout. Javoblar yangi alifboda, foydalanuvchi matni aslida; history/session kontrakti saqlandi. |
+
+### Build, alifbo va hajm
+
+- `build.mjs`: parse5 yordamida matn/ko’rinadigan atributlarni xavfsiz transliteratsiya, haqiqiy `<main>` landmark. Asl option qiymatlari oldindan saqlanadi; URL/script/style/API qiymatiga tegilmaydi.
+- **`src/base/alphabet.mjs`, `alphabet.js`**: umumiy build/runtime `toLatin`, `MU.t`, `MU.translate`, dinamik matn kuzatuvchisi. Tekshirilgan asos branch’da bu mexanizm bo’lmagani uchun qo’shildi. Ş, Ç, Ö, Ğ va ’ chiqadi; user input, @username va havolalar saqlanadi.
+- `src/base/bootstrap.js`: anchor offset va bo’limga klaviatura fokusi.
+- `package.json`, `package-lock.json`: parse5 va lokal Manrope; `qa:functional` buyrug’i. `vendor/Manrope-OFL.txt` litsenziya.
+- Ishlatilmaydigan GSAP plaginlari bundle’dan chiqarildi. Lokal Manrope latin/latin-ext ichiga joylandi; shrift uchun tarmoq so’rovi yo’q.
+- Release `index.html` va `dist/index.html`: **832 846 → 490 408 bayt (813,3 → 478,9 KiB)**, **41,1% kam**. Bu HTML hajmi; original media alohida. 76 MB video boshlang’ich yuklanishdan chiqarildi.
+
+### QA va hujjatlar
+
+- `qa.mjs`: tashqi tarmoq standart yopiq, barcha API mock; `--live-media` faqat tasdiqlangan rasm GET’lari; brauzer kanali tanlash. 15 px chegarasi, gorizontal lenta bilan hujjat overflow’ini farqlash, sahifaning oxirgi qoldiq ekranini ham olish. Xato topilsa jarayon muvaffaqiyatsiz tugaydi.
+- **`qa-functional.mjs`**: 21 muvaffaqiyatli tekshiruv — forma/telefon/kontrakt/limit, chat, menyu/fokus, yo’nalish, FAQ, galereya, sertifikat va video, tashrif/qo’ng’iroq, yangilik va moslashuv.
+- 1440×900 va 390×844 to’liq QA: **62 skrinshot**, konsol xatosi **0**, gorizontal overflow **0**, 390 px da 15 px dan kichik matn **0**.
+- Reduced-motion: 12 skrinshot, ikkala o’lchamda yuqoridagi xatolar **0**. Jonli GCS/Telegram rasm tekshiruvi ham o’tdi. Edge’da haqiqiy MP4 ijrosi va yopilganda to’xtashi tekshirildi.
+- Sun’iy 400/429 sinovlarida kutilgan HTTP resurs xabarlari qayd etiladi; JavaScript runtime xatosi yo’q. **Jonli /api/ariza ga sinov yuborilmadi.**
+- **`QA.md`, `review/`**: egasiga hisobot, tanlangan ko’rinishlar va mashina o’qiydigan natijalar. To’liq fayl ro’yxati `review/CHANGED-FILES.txt`.
+- `SPEC.md` va `DEPLOY.md` joriy tuzilma/qoidalarga moslandi. `JONLI-SAYT/API.md` dagi eski jonli ariza sinovi ko’rsatmasi joriy taqiq bilan almashtirildi; kontrakt o’zgarmadi.
+- `.gitattributes`: maktab matn fayllari uchun LF; `.gitignore`: brauzer debug.log fayli chiqarildi.
+
+**Tarixiy qayd:** pastdagi v1/v2 yozuvlar tarix sifatida saqlangan. U yerdagi «jonli bitta ariza sinovi» ko’rsatmalari bekor; joriy topshiriqda jonli sinov yuborish taqiqlangan. Sertifikatlar snapshotligicha qoladi; yangi backend yoki avtomatik sertifikat endpointi qo’shilmadi. Telegram route keshi backend tomonda eski bo’lsa, tasdiqlangan yangi snapshot saqlanadi.
+
 ## 2026-09-27 — v2.0 (haqiqiy materiallar bilan qayta qurildi)
 Egasining fikri: v1 «multfilm bo’lib qolgan» (3D astrolyabiya, zarracha morfing, SVG illyustratsiyalar, soxta sertifikat kartalari).
 v2 da hammasi DIGITAL yuklagan `JONLI-SAYT/` materiallari asosida: jonli saytdagi video, suratlar, 91 ta sertifikat,

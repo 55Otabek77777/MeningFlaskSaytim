@@ -71,3 +71,16 @@
   #yangiliklar .ny-row a { height: 100%; grid-template-columns: 148px minmax(0, 1fr); gap: 18px; padding: 14px; }
   #yangiliklar .ny-row .ny-thumb { width: 148px; height: auto; aspect-ratio: 4 / 3; max-height: 100%; }
 }
+
+#yangiliklar .ny-big,#yangiliklar .ny-upd { border-radius: 10px; box-shadow: none; }
+#yangiliklar .ny-row > a,#yangiliklar .ny-row__body { min-width: 0; }
+#yangiliklar .ny-row { min-width: 0; }
+#yangiliklar .ny-date,#yangiliklar .ny-tag { font-size: 15px; }
+#yangiliklar .ny-live::before { animation: none; box-shadow: none; }
+#yangiliklar .ny-big:hover { transform: none; box-shadow: none; }
+#yangiliklar .ny-upd { background: #f2f4f7; border: 1px solid #e0e4ea; }
+#yangiliklar .ny-upd__list li { border-radius: 6px; box-shadow: none; }
+@media(max-width:560px) {
+ #yangiliklar .ny-row__title { font-size: 16px; }
+ #yangiliklar .ny-row > a { gap: 14px; }
+}

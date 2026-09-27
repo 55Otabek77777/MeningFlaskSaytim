@@ -47,7 +47,13 @@ async function serve(root) {
   return serverPort;
 }
 export const apiLog = [];
-export async function mockRoutes(context, { ariza } = {}) {
+export async function mockRoutes(context, { ariza, liveMedia = false } = {}) {
+  // Fail closed: every API stays mocked, including in real-image screenshot mode.
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.hostname === '127.0.0.1') return route.continue();
+    return route.abort('blockedbyclient');
+  });
   await context.route('https://mirzoulugbek.app/**', route => {
     const p = new URL(route.request().url()).pathname;
     let f = IMG_MAP[p] && path.join(ROOT, 'assets', IMG_MAP[p]);
@@ -56,7 +62,10 @@ export async function mockRoutes(context, { ariza } = {}) {
   });
   /* sertifikat (GCS) va Telegram rasmlari konteynerdan yopiq — QA uchun neytral placeholder */
   const PH = '<svg xmlns="http://www.w3.org/2000/svg" width="1414" height="2000"><rect width="100%" height="100%" fill="#f4ecd4"/><rect x="60" y="60" width="1294" height="1880" fill="none" stroke="#c9a24b" stroke-width="10"/><text x="707" y="1000" font-size="90" text-anchor="middle" fill="#9a7a2c" font-family="Arial">QA placeholder</text></svg>';
-  await context.route(/storage\.googleapis\.com|telesco\.pe|cdn-telegram\.org/, route => route.fulfill({ status: 200, contentType: 'image/svg+xml', body: PH }));
+  await context.route(/^https:\/\/(?:storage\.googleapis\.com|(?:[a-z0-9-]+\.)*(?:telesco\.pe|cdn-telegram\.org))\//, route => {
+    if (liveMedia && route.request().method() === 'GET' && route.request().resourceType() === 'image') return route.continue();
+    return route.fulfill({ status: 200, contentType: 'image/svg+xml', body: PH });
+  });
   await context.route('**/api/telegram-news', route => route.fulfill({ path: path.join(ROOT, 'JONLI-SAYT/API/telegram-news-namuna.json'), contentType: 'application/json' }));
   await context.route('**/api/chat', route => route.fulfill({ json: { reply: 'Assalomu alaykum! Qabul bo’yicha menejerimiz +998 97 417 37 77 raqamida javob beradi.', deferred: false } }));
   await context.route('**/api/visit', route => { apiLog.push(['visit', route.request().method()]); route.fulfill({ json: { total: 2288 } }); });
@@ -72,12 +81,13 @@ export async function mockRoutes(context, { ariza } = {}) {
   });
 }
 
-export async function openPage(file, vp = 'desktop', { reduced = false, waitReveal = true, ariza } = {}) {
+export async function openPage(file, vp = 'desktop', { reduced = false, waitReveal = true, ariza, liveMedia = false } = {}) {
   const browser = await chromium.launch({
+    channel: process.env.MU_QA_BROWSER_CHANNEL || undefined,
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl', '--autoplay-policy=no-user-gesture-required']
   });
   const context = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion: reduced ? 'reduce' : 'no-preference' });
-  await mockRoutes(context, { ariza });
+  await mockRoutes(context, { ariza, liveMedia });
   const page = await context.newPage();
   const logs = [];
   page.on('console', m => {
@@ -137,7 +147,7 @@ export async function pageChecks(page) {
     const clips = el => {
       for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
         const s = getComputedStyle(p);
-        if (/(hidden|clip)/.test(s.overflowX) || /(hidden|clip)/.test(s.overflow) || s.position === 'fixed') return true;
+        if (/(hidden|clip|auto|scroll)/.test(s.overflowX) || s.position === 'fixed') return true;
       }
       return false;
     };
@@ -173,7 +183,7 @@ async function main() {
   const frames = opt('frames') ? opt('frames').split(',').map(Number) : null;
   const report = {};
   for (const vp of vps) {
-    const { browser, page, logs } = await openPage(file, vp, { reduced: flag('reduced') });
+    const { browser, page, logs } = await openPage(file, vp, { reduced: flag('reduced'), liveMedia: flag('live-media') });
     await sleep(flag('full') ? 2200 : 900);
     const r = report[vp] = { shots: [] };
     const take = async (spec, label) => {
@@ -194,6 +204,7 @@ async function main() {
       const step = Math.max(vh * 0.9, h / 89);
       let i = 0;
       for (let y = 0; y <= h + 1; y += step) await take(`y=${Math.round(y)}`, `full-${String(i++).padStart(3, '0')}`);
+      if (h % step > 1) await take(`y=${h}`, 'full-last');
     }
     Object.assign(r, await pageChecks(page));
     if (vp === 'mobile') r.smallText = await page.evaluate(() => {
@@ -205,7 +216,7 @@ async function main() {
         const cs = getComputedStyle(el), rc = el.getBoundingClientRect();
         if (!rc.width || cs.visibility === 'hidden' || cs.display === 'none' || el.closest('[aria-hidden="true"]')) return;
         const fz = parseFloat(cs.fontSize);
-        if (fz < 14.5) out.push(`${fz}px ${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]} «${el.textContent.trim().slice(0, 30)}»`);
+        if (fz < 15) out.push(`${fz}px ${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]} «${el.textContent.trim().slice(0, 30)}»`);
       });
       return out;
     });
@@ -215,6 +226,7 @@ async function main() {
   fs.mkdirSync(out, { recursive: true });
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
+  if (Object.values(report).some(r => r.overflowX || r.overflowOffenders.length || r.smallText?.length || r.logs.length)) process.exitCode = 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch(e => { console.error(e); process.exit(1); });

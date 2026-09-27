@@ -24,7 +24,7 @@ So‘rov:
 - `fullName` 3–120 belgi · `region` — aynan `lib/site.ts` `REGIONS` ro‘yxatidan (14 ta, apostrof ’) · `grade` — aynan `ACTIVE_GRADES`: `8-sinf`, `9-sinf`, `10-sinf`, `11-sinf`, `Bitiruvchi (11-sinfni tugatgan)` · `phone` — `^\+998\d{9}$` · `website` — honeypot (yashirin, bo‘sh).
 - Javoblar: `200 {"ok":true}` · `200 {"ok":true,"duplicate":true,"createdAt":"2026-..."}` (shu telefon+ism avval yuborgan) · `400 {"ok":false,"error":"invalid"|"bad_json"}` · `429 {"ok":false,"error":"rate_limited"}` (IP: 3 ta / 10 daqiqa).
 - Server: Telegram’ga xabar («Ota onalar ro‘yxati» bot chati) + private `bot_arizalar` kolleksiyasiga yozadi. Klient tomonda ham 60 s throttle (`localStorage["ariza_last_submit"]`).
-- ⚠️ Haqiqiy POST egasining Telegramiga boradi — sinovni mock bilan qiling; jonli yuborish **bitta**, ism `Sinov Sinovov`.
+- ⚠️ Haqiqiy POST egasining Telegramiga boradi. **2026-09-28 joriy topshiriq: jonli sinov yuborilmaydi; faqat lokal mock bilan tekshiriladi.** API kontrakti o’zgarmagan.
 
 ### 1.4 `POST /api/chat` — AI yordamchi (o‘ng-pastdagi vidjet)
 So‘rov: `{"message": "…", "history": [{"role":"user|assistant","content":"…"}], "sessionId": "<uuid, localStorage site_ai_session>"}`

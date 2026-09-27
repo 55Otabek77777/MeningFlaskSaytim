@@ -5,22 +5,6 @@ MU.part('footer', {
     root.querySelector('.ft-yrs').textContent = MU.years();
     MU.onVisible(root, v => root.classList.toggle('is-inview', v));
 
-    /* meteorlar (magicui) */
-    const box = root.querySelector('.ft-meteors');
-    if (!MU.reduced) for (let i = 0; i < 14; i++) {
-      const m = document.createElement('i');
-      m.style.left = MU.rand(10, 110) + '%';
-      m.style.animationDelay = MU.rand(0, 8).toFixed(2) + 's';
-      m.style.animationDuration = MU.rand(4, 9).toFixed(2) + 's';
-      box.appendChild(m);
-    }
-
-    /* katta so’z belgisi — scroll bilan yig’iladi */
-    if (!MU.reduced) gsap.fromTo(root.querySelectorAll('.ft-mega span'), { yPercent: 70, autoAlpha: 0 }, {
-      yPercent: 0, autoAlpha: 1, stagger: 0.15, ease: 'none',
-      scrollTrigger: { trigger: root.querySelector('.ft-mega'), start: 'top bottom', end: 'bottom 85%', scrub: 1 }
-    });
-
     /* tashrif hisoblagichi — mavjud sayt mantig’i (sessionStorage mu_visit_counted) */
     const wrap = root.querySelector('.ft-visits'), num = root.querySelector('.ft-visits__num');
     let counted = false;
@@ -30,7 +14,7 @@ MU.part('footer', {
       .then(data => {
         if (!counted) { try { sessionStorage.setItem('mu_visit_counted', '1'); } catch (e) { /* jim */ } }
         const total = Number(data && data.total);
-        if (!total) return;
+        if (!Number.isFinite(total) || total <= 0) return;
         wrap.hidden = false;
         const o = { v: 0 }, show = () => { num.textContent = Math.round(o.v).toLocaleString('uz-UZ').replace(/[,.\u202F]/g, '\u00A0'); };
         if (MU.reduced) { o.v = total; show(); return; }

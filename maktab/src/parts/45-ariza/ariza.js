@@ -8,7 +8,11 @@ MU.part('ariza', {
     const tk = k => root.querySelector(`[data-tk="${k}"]`);
 
     /* telefon maskasi: +998 | 90 123 45 67 */
-    const digits = () => phoneI.value.replace(/\D/g, '').slice(0, 9);
+    const digits = () => {
+      let value = phoneI.value.replace(/\D/g, '');
+      if (value.length > 9 && value.startsWith('998')) value = value.slice(3);
+      return value.slice(0, 9);
+    };
     const fmtPhone = d => [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean).join(' ');
     phoneI.addEventListener('input', () => {
       phoneI.value = fmtPhone(digits());
@@ -57,6 +61,7 @@ MU.part('ariza', {
     const check = k => {
       const msg = rules[k](), f = fieldOf(k);
       f.classList.toggle('is-invalid', !!msg); f.classList.toggle('is-valid', !msg);
+      f.querySelectorAll('input,select').forEach(input => input.setAttribute('aria-invalid', String(!!msg)));
       f.querySelector('.az-err').textContent = msg;
       return !msg;
     };
@@ -117,7 +122,7 @@ MU.part('ariza', {
         const when = fmtDate(data.createdAt);
         say('is-info', `<b class="az-st__title">Siz allaqachon ro’yxatdan o’tgansiz</b><p>${when ? `Arizangiz avval, ${when}da qabul qilingan.` : 'Arizangiz avval qabul qilingan.'} Qayta yuborish shart emas — menejerlarimiz bilan bog’lanasiz.</p><p class="az-st__sub">Ma’lumotlaringizni to’g’rilash kerak bo’lsa yoki xabarnomalarni kuzatib borish uchun rasmiy botimizga o’ting 👇</p>${BOT}<p class="az-st__sub">Savol bo’lsa: <a href="tel:+998974173777">+998 97 417 37 77</a></p>`);
       } else if (res.ok && data.ok) {
-        setBtn('ok'); stamp(); confetti();
+        setBtn('ok'); stamp();
         say('is-ok', `<b class="az-st__title">Arizangiz qabul qilindi ✅</b><p>Tez orada menejerlarimiz siz bilan bog’lanadi.</p><p class="az-st__sub">So’nggi yangiliklar, natijalar va savollaringizga javob olish uchun rasmiy botimizga o’ting 👇</p>${BOT}`);
       } else if (res.status === 429 || data.error === 'rate_limited') {
         setBtn('idle');
@@ -136,28 +141,5 @@ MU.part('ariza', {
         onComplete: () => gsap.fromTo(s.parentElement, { x: -3 }, { x: 0, duration: 0.3, ease: 'elastic.out(1, .3)' }) });
     };
 
-    /* yulduzcha konfetti */
-    const cv = $('.az-confetti'), ctx = cv.getContext('2d');
-    const confetti = () => {
-      if (MU.reduced) return;
-      const r = cv.getBoundingClientRect(), d = MU.dpr(2);
-      cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0);
-      const cx = r.width / 2, cy = r.height - 110;
-      const COLORS = ['#dc2626', '#3b5bdb', '#1e3a8a', '#c98a1b', '#e0a526'];
-      const ps = Array.from({ length: 90 }, () => ({ x: cx, y: cy, vx: MU.rand(-7, 7), vy: MU.rand(-13, -5), r: MU.rand(3, 7), a: MU.rand(0, 6.28), va: MU.rand(-0.2, 0.2), c: COLORS[Math.floor(Math.random() * 5)], star: Math.random() < 0.45 }));
-      let life = 0;
-      const tick = () => {
-        life++; ctx.clearRect(0, 0, r.width, r.height);
-        ps.forEach(p => {
-          p.vy += 0.32; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.a += p.va;
-          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.globalAlpha = Math.max(0, 1 - life / 110);
-          if (p.star) { ctx.beginPath(); for (let i = 0; i < 8; i++) { const rr = i % 2 ? p.r * 0.45 : p.r * 1.4, t = (i / 8) * Math.PI * 2; ctx.lineTo(Math.cos(t) * rr, Math.sin(t) * rr); } ctx.fill(); }
-          else ctx.fillRect(-p.r / 2, -p.r, p.r, p.r * 2);
-          ctx.restore();
-        });
-        if (life < 110) requestAnimationFrame(tick); else ctx.clearRect(0, 0, r.width, r.height);
-      };
-      tick();
-    };
   }
 });

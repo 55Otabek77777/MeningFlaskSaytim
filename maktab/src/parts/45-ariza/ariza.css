@@ -107,3 +107,28 @@
   #ariza .az-grade--wide { width: 100%; }
   #ariza .az-grade--wide span { width: 100%; justify-content: center; }
 }
+
+/* v3: calm, accessible form; labels never shrink below 15px. */
+#ariza { background: #f7f8fa; }
+#ariza .az-bg,#ariza .az-card__shine { display: none; }
+#ariza .az-card { box-shadow: none; border: 1px solid #d8dfe9; border-radius: 10px; background: white; }
+#ariza .az-ticket { transform: none; box-shadow: none; background: white; border-radius: 8px; }
+#ariza .az-ticket::before { display: none; }
+#ariza .az-ticket__rows dt,#ariza .az-ticket__year { font-size: 15px; font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+#ariza .az-field { display: flex; flex-direction: column; gap: 8px; }
+#ariza .az-field label { position: static; order: -1; font-size: 15px; font-weight: 700; color: #34445d; transform: none !important; }
+#ariza .az-field input,#ariza .az-field select { border-radius: 6px; height: 54px; padding: 12px 16px; font-size: 16px; background: #fafbfc; }
+#ariza .az-field--phone input { padding-left: 78px; }
+#ariza .az-prefix { top: 49px; left: 16px; transform: translateY(-50%); }
+#ariza .az-caret { top: 46px; }
+#ariza .az-grade span,#ariza .az-grade--locked { border-radius: 5px; font-size: 15px; box-shadow: none; }
+#ariza .az-submit { border-radius: 6px; box-shadow: none; height: 56px; }
+#ariza .az-grades__locked { border-radius: 6px; border: 1px solid #e5dac4; }
+#ariza .az-grade:hover span { transform: none; }
+#ariza .az-ticket__stamp { font-size: 15px; }
+@media(max-width:700px) {
+ #ariza .az-card { padding: 24px 20px; }
+ #ariza .az-ticket { display: none; }
+ #ariza .az-intro { position: static; }
+ #ariza .az-grades__locked { flex-direction: column; align-items: start; }
+}

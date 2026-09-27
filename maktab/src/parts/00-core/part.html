@@ -1,3 +1,4 @@
+<a class="skip-link" href="#bosh" data-part="core">Asosiy mazmunga o’tish</a>
 <div class="nv-progress" data-part="core" aria-hidden="true"><span></span></div>
 <header class="nv" data-part="core">
   <a class="nv-logo" href="/" aria-label="«Mirzo Ulug’bek» xususiy maktabi — bosh sahifa">
@@ -5,7 +6,6 @@
     <span class="nv-word">MIRZO ULUG’BEK<small>xususiy maktabi</small></span>
   </a>
   <nav class="nv-links" aria-label="Asosiy menyu">
-    <a href="/" aria-current="page">Bosh sahifa</a>
     <a href="/maktab-haqida">Maktab haqida</a>
     <div class="nv-dd">
       <button class="nv-dd__btn" type="button" aria-expanded="false" aria-controls="nv-dd-list">Yo’nalishlar <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -19,18 +19,17 @@
         <a href="/yonalishlar/5-7-sinflar">5–7-sinflar</a>
       </div>
     </div>
-    <a href="/qabul">Qabul</a>
-    <a href="/yutuqlar">Yutuqlar</a>
-    <a href="/yangiliklar">Yangiliklar</a>
-    <a href="/faq">FAQ</a>
-    <a href="/aloqa">Aloqa</a>
+    <a href="#yutuqlar">Yutuqlar</a>
+    <a href="#hayot">Maktab hayoti</a>
+    <a href="#aloqa">Aloqa</a>
   </nav>
   <div class="nv-actions">
-    <a class="btn btn--primary btn--sm nv-cta" data-magnetic="0.25" href="#ariza"><span class="btn__label" data-text="Hujjat topshirish"><span>Hujjat topshirish</span></span></a>
+    <a class="btn btn--primary btn--sm nv-cta" href="#ariza"><span class="btn__label" data-text="Hujjat topshirish"><span>Hujjat topshirish</span></span></a>
     <button class="nv-burger" type="button" aria-label="Menyuni ochish" aria-expanded="false" aria-controls="nv-menu"><span></span><span></span></button>
   </div>
 </header>
-<div class="nv-menu" id="nv-menu" data-part="core" hidden>
+<dialog class="nv-menu" id="nv-menu" data-part="core" aria-label="Maktab menyusi" data-lenis-prevent>
+  <div class="nv-menu__head"><span>MIRZO ULUG’BEK</span><button class="mu-dialog__close nv-close" type="button" aria-label="Menyuni yopish" autofocus>×</button></div>
   <div class="nv-menu__inner">
     <nav class="nv-menu__links" aria-label="Mobil menyu">
       <a href="/">Bosh sahifa</a>
@@ -49,4 +48,4 @@
       <p>Har kuni 07:00 — 21:30 · Uchko’prik, Farg’ona</p>
     </div>
   </div>
-</div>
+</dialog>

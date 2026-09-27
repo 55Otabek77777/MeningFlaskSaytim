@@ -20,3 +20,14 @@
 #faq .fq-a a { color: var(--mu-accent); font-weight: 800; }
 @media (max-width: 900px) { #faq .fq-grid { grid-template-columns: 1fr; } #faq .fq-side { position: relative; top: 0; } }
 @media (max-width: 560px) { #faq .fq-a p { padding-left: 20px; } #faq .fq-q { gap: 12px; padding: 16px; } }
+
+#faq { background: #fff; }
+#faq .fq-item { border: 1px solid #dce2ea; border-radius: 6px; box-shadow: none; }
+#faq .fq-item.is-open { box-shadow: none; background: #f8fafc; }
+#faq .fq-list { gap: 8px; }
+#faq .fq-q { font-size: 17px; font-weight: 700; }
+#faq .fq-search-label { font-size: 15px; font-weight: 700; margin-top: 8px; }
+#faq .fq-search { width: 100%; border: 1px solid #bdcadd; border-radius: 6px; padding: 14px 16px; font-size: 16px; margin-top: -10px; background: #fff; }
+#faq .fq-search-status { font-size: 15px; color: #57657c; }
+#faq .fq-search-status:empty { display: none; }
+#faq .fq-item[hidden] { display: none; }

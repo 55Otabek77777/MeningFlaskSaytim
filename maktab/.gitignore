@@ -2,6 +2,7 @@ node_modules/
 dist/*
 !dist/index.html
 qa/
+debug.log
 vendor/.cache/
 vendor/three.iife.min.js
 vendor/fonts-remote.css

@@ -1,12 +1,12 @@
 MU.part('yonalishlar', {
-  init(root) {
-    MU.onVisible(root, v => root.classList.toggle('is-inview', v && !MU.reduced));
-    if (MU.reduced) return;
-    /* ikonkalar kartalar kirganda chiziladi */
-    const icons = root.querySelectorAll('.yn-ico svg');
-    MU.gsap.from(icons, {
-      scale: 0.4, rotation: -25, autoAlpha: 0, duration: 1, stagger: 0.08, ease: 'back.out(2)',
-      scrollTrigger: { trigger: root.querySelector('.yn-grid'), start: 'top 80%', once: true }
-    });
-  }
+ init(root) {
+  const filters = [...root.querySelectorAll('[data-filter]')], cards = [...root.querySelectorAll('[data-goals]')];
+  filters.forEach(button => button.addEventListener('click', () => {
+   filters.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+   let count = 0;
+   cards.forEach(card => { card.hidden = button.dataset.filter !== 'all' && !card.dataset.goals.split(' ').includes(button.dataset.filter); if (!card.hidden) count++; });
+   root.querySelector('.yn-status').textContent = MU.t(count + ' ta yo’nalish ko’rsatilmoqda.');
+   MU.ScrollTrigger.refresh();
+  }));
+ }
 });

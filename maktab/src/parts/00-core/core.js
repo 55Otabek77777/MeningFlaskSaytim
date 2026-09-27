@@ -1,76 +1,97 @@
-/* Oddiy sanoq (ming ajratkichsiz, masalan «1560+»). Har qism o’z init()ida MU.nums(root) chaqiradi. */
-MU.countUp = (el, to, { duration = 2.2, delay = 0, suffix = '', on = 'scroll', start = 'top 90%', decimals = 0 } = {}) => {
-  const o = { v: 0 };
-  const render = () => { el.textContent = (decimals ? o.v.toFixed(decimals) : Math.round(o.v)) + suffix; };
-  if (MU.reduced) { o.v = to; render(); return; }
-  render();
-  const tw = MU.gsap.to(o, { v: to, duration, delay, ease: 'power3.out', onUpdate: render, paused: true });
-  if (on === 'reveal') MU.on('reveal', () => tw.play());
-  else MU.ScrollTrigger.create({ trigger: el, start, once: true, onEnter: () => tw.play() });
-};
-MU.nums = root => root.querySelectorAll('[data-num]').forEach(el => MU.countUp(el, parseFloat(el.dataset.num), {
-  duration: parseFloat(el.dataset.numDuration || 2.2), delay: parseFloat(el.dataset.numDelay || 0),
-  suffix: el.dataset.numSuffix || '', on: el.dataset.numOn || 'scroll', decimals: parseInt(el.dataset.numDecimals || 0, 10)
-}));
-/* O’quv markazi tajribasi: 1999 asos → 2026 da 27 (site.ts experienceYears bilan bir xil) */
+/* Shared behavior stays on MU; raw API values are never transliterated. */
 MU.years = () => new Date().getFullYear() - 1999;
+MU.countUp = (el, to, { suffix = '', decimals = 0 } = {}) => {
+  el.textContent = (decimals ? to.toFixed(decimals) : String(to)) + suffix;
+};
+MU.nums = root => root.querySelectorAll('[data-num]').forEach(el => MU.countUp(el, +el.dataset.num, {
+  suffix: el.dataset.numSuffix || '', decimals: +(el.dataset.numDecimals || 0)
+}));
+
+MU.dialog = (dialog, { onClose } = {}) => {
+  dialog.querySelector('.mu-dialog__close')?.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const controls = [...dialog.querySelectorAll('a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),video[controls],[tabindex="0"]')]
+      .filter(el => el.getClientRects().length && !el.closest('[hidden]'));
+    const first = controls[0], last = controls.at(-1);
+    if (!first) return;
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  let backdrop = false;
+  dialog.addEventListener('pointerdown', e => { backdrop = e.target === dialog && outside(e); });
+  const outside = e => { const r = dialog.getBoundingClientRect(); return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom; };
+  dialog.addEventListener('click', e => { if (backdrop && e.target === dialog && outside(e)) dialog.close(); backdrop = false; });
+  dialog.addEventListener('close', () => {
+    onClose?.();
+    if (!document.querySelector('dialog[open]')) {
+      document.body.classList.remove('mu-modal-open');
+      MU.lenis?.start();
+    }
+    dialog.muReturnFocus?.focus({ preventScroll: true });
+  });
+};
+MU.openDialog = dialog => {
+  if (dialog.open) return;
+  dialog.muReturnFocus = document.activeElement;
+  dialog.showModal();
+  document.body.classList.add('mu-modal-open');
+  MU.lenis?.stop();
+};
 
 MU.part('core', {
   init() {
-    const { gsap, ScrollTrigger } = MU;
     const nav = document.querySelector('.nv');
     const bar = document.querySelector('.nv-progress span');
-    let menuOpen = false;
-
-    /* progress + header holati */
-    gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
-    ScrollTrigger.create({
-      start: 0, end: 'max',
-      onUpdate(self) {
-        const y = self.scroll();
-        nav.classList.toggle('is-glass', y > 30);
-        nav.classList.toggle('is-hidden', y > 500 && self.direction === 1 && !menuOpen);
-      }
+    MU.gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: .2 } });
+    const dd = nav.querySelector('.nv-dd'), ddBtn = dd.querySelector('button');
+    const setDropdown = open => {
+      dd.classList.toggle('is-open', open);
+      ddBtn.setAttribute('aria-expanded', String(open));
+    };
+    ddBtn.addEventListener('click', () => setDropdown(!dd.classList.contains('is-open')));
+    dd.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { setDropdown(false); ddBtn.focus(); }
+      if (e.key === 'ArrowDown' && e.target === ddBtn) { e.preventDefault(); setDropdown(true); dd.querySelector('a').focus(); }
     });
-    /* Yo’nalishlar dropdown (klaviatura/sensor uchun) */
-    const dd = nav.querySelector('.nv-dd'), ddBtn = dd.querySelector('.nv-dd__btn');
-    ddBtn.addEventListener('click', () => { const o = !dd.classList.contains('is-open'); dd.classList.toggle('is-open', o); ddBtn.setAttribute('aria-expanded', String(o)); });
-    document.addEventListener('click', e => { if (!dd.contains(e.target)) { dd.classList.remove('is-open'); ddBtn.setAttribute('aria-expanded', 'false'); } });
+    dd.addEventListener('focusout', e => { if (!dd.contains(e.relatedTarget)) setDropdown(false); });
+    document.addEventListener('click', e => { if (!dd.contains(e.target) || e.target.closest('a')) setDropdown(false); });
 
-    /* qo’ng’iroq bosilishi → /api/track-call (fire-and-forget, tel: navigatsiyasi bloklanmaydi) */
     document.addEventListener('click', e => {
-      const a = e.target.closest && e.target.closest('a[href^="tel:"]');
-      if (!a) return;
+      if (!e.target.closest('a[href^="tel:"]')) return;
       try {
         if (navigator.sendBeacon) navigator.sendBeacon('/api/track-call');
         else fetch('/api/track-call', { method: 'POST', keepalive: true }).catch(() => {});
-      } catch (err) { /* jim */ }
+      } catch {}
     }, true);
 
-    /* mobil menyu */
-    const burger = nav.querySelector('.nv-burger');
-    const menu = document.getElementById('nv-menu');
-    const links = menu.querySelectorAll('.nv-menu__links a, .nv-menu__foot > *');
-    const setMenu = open => {
-      if (open === menuOpen) return;
-      menuOpen = open;
-      burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Menyuni yopish' : 'Menyuni ochish');
-      document.body.classList.toggle('nv-locked', open);
-      if (MU.lenis) open ? MU.lenis.stop() : MU.lenis.start();
-      if (open) {
-        menu.hidden = false;
-        gsap.killTweensOf([menu, links]);
-        gsap.fromTo(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)' }, { clipPath: 'circle(150% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.9, ease: 'mu.inOut' });
-        gsap.fromTo(links, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
-      } else {
-        gsap.to(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.6, ease: 'mu.inOut', onComplete: () => { if (!menuOpen) menu.hidden = true; } });
-      }
-    };
-    burger.addEventListener('click', () => setMenu(!menuOpen));
-    menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+    const burger = nav.querySelector('.nv-burger'), menu = document.getElementById('nv-menu');
+    MU.dialog(menu, { onClose: () => burger.setAttribute('aria-expanded', 'false') });
+    burger.addEventListener('click', () => { MU.openDialog(menu); burger.setAttribute('aria-expanded', 'true'); });
+    menu.addEventListener('click', e => {
+      if (!e.target.closest('a')) return;
+      menu.muReturnFocus = null;
+      menu.close();
+      document.body.classList.remove('mu-modal-open');
+      MU.lenis?.start();
+    });
+    matchMedia('(min-width: 1101px)').addEventListener('change', e => { if (e.matches && menu.open) menu.close(); });
 
-    if (!MU.reduced) gsap.from(nav, { y: -90, autoAlpha: 0, duration: 1.2, delay: 0.2, ease: 'mu.out' });
+    const viewer = document.createElement('dialog');
+    viewer.className = 'mu-dialog mu-viewer';
+    viewer.setAttribute('aria-labelledby', 'mu-viewer-title');
+    viewer.setAttribute('data-lenis-prevent', '');
+    viewer.innerHTML = '<div class="mu-dialog__head"><h2 id="mu-viewer-title">Yaqindan ko’rish</h2><button class="mu-dialog__close" type="button" aria-label="Yopish" autofocus>×</button></div><img class="mu-viewer__image" alt=""><div class="mu-viewer__foot"><p class="mu-viewer__caption"></p><a class="mu-viewer__link" target="_blank" rel="noopener noreferrer">Asl rasmni ochish ↗</a></div>';
+    document.body.appendChild(viewer);
+    MU.dialog(viewer);
+    const photo = viewer.querySelector('img'), caption = viewer.querySelector('.mu-viewer__caption');
+    photo.addEventListener('error', () => { caption.textContent = MU.t('Rasm yuklanmadi. Asl rasm havolasi orqali qayta ochib ko’ring.'); });
+    MU.viewPhoto = (src, description) => {
+      photo.src = src;
+      photo.alt = MU.t(description);
+      caption.textContent = MU.t(description);
+      viewer.querySelector('a').href = src;
+      MU.openDialog(viewer);
+    };
   }
 });

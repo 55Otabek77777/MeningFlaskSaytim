@@ -1,0 +1,13 @@
+#tashrif { background: #fff; padding-top: 0; }
+.visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px,5vw,72px); align-items: center; }
+.visit-photo { overflow: hidden; border-radius: 10px; background: #f3f5f8; border: 1px solid #e0e5eb; }
+.visit-photo img { width: 100%; aspect-ratio: 4/3; height: auto; object-fit: cover; }
+.visit-photo figcaption { font-size: 15px; padding: 16px 20px; color: #4c5c73; }
+.visit-copy { display: grid; gap: 20px; }
+.visit-details { display: grid; gap: 16px; }
+.visit-details > div { display: grid; grid-template-columns: 90px 1fr; gap: 16px; font-size: 15px; border-top: 1px solid #dfe4eb; padding-top: 16px; }
+.visit-details dt { color: #5a6980; }
+.visit-details dd { font-weight: 600; }
+.visit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.visit-call { font-size: 16px; font-weight: 800; color: var(--mu-primary); padding: 12px 0; }
+@media(max-width:800px) { .visit-grid { grid-template-columns: 1fr; } .visit-photo img { aspect-ratio: 16/9; } }

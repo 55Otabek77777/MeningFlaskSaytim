@@ -53,3 +53,13 @@
   #kanallar .kn-txt small { font-size: .9375rem; }
   #kanallar .kn-ai__bubble { width: 80px; height: 80px; }
 }
+
+#kanallar .kn-ai { background: #18355e; box-shadow: none; border-radius: 10px; margin-bottom: 64px; }
+#kanallar .kn-ai__glow,#kanallar .kn-dots { display: none; }
+#kanallar .kn-ai__bubble { border-radius: 12px; width: 76px; height: 76px; box-shadow: none; }
+#kanallar .kn-card { border-radius: 8px; box-shadow: none; }
+#kanallar .kn-card:hover { transform: none; box-shadow: none; }
+#kanallar .kn-card::before { display: none; }
+#kanallar .kn-ico { border-radius: 7px; box-shadow: none; }
+#kanallar .kn-head { text-align: left; justify-items: start; }
+#kanallar .kn-card small { font-size: 15px; }

@@ -37,7 +37,7 @@ MU.part('yangiliklar', {
       return { title: head, rest: t.slice(head.length).replace(/^\s+/, '') };
     };
     const safeLink = l => (/^https:\/\/t\.me\//.test(l || '') ? l : 'https://t.me/ulugbek_rm');
-    const safePhoto = u => (/^https:\/\/[a-z0-9.-]*(telesco\.pe|cdn-telegram\.org)\//i.test(u || '') ? u : '');
+    const safePhoto = u => { try { const url = new URL(u); return url.protocol === 'https:' && /(^|\.)(telesco\.pe|cdn-telegram\.org)$/.test(url.hostname) ? url.href : ''; } catch { return ''; } };
     const img = (src, alt, cls) => {
       const i = document.createElement('img');
       i.alt = alt; i.loading = 'lazy'; i.decoding = 'async'; i.referrerPolicy = 'no-referrer';
@@ -97,7 +97,7 @@ MU.part('yangiliklar', {
       if (MU.reduced) return;
       if (firstPaint) {
         firstPaint = false;
-        gsap.from(rows, { x: 40, autoAlpha: 0, duration: 0.9, stagger: 0.08, ease: 'mu.out', scrollTrigger: { trigger: rowsEl, start: 'top 88%', once: true } });
+        gsap.from(rows, { y: 12, autoAlpha: 0, duration: 0.9, stagger: 0.08, ease: 'mu.out', scrollTrigger: { trigger: rowsEl, start: 'top 88%', once: true } });
       } else {
         gsap.fromTo([big, ...rows], { autoAlpha: 0.2, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'mu.out' });
       }

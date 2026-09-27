@@ -36,7 +36,8 @@ MU.part('chat', {
       if (role !== 'user') row.innerHTML = `<span class="ch-msg__ava"><img src="${LOGO}" alt="" width="18" height="18"></span>`;
       const b = document.createElement('div');
       b.className = 'ch-bubble';
-      b.textContent = text;
+      if (role === 'user') b.setAttribute('data-no-transliterate', '');
+      b.textContent = role === 'user' ? text : MU.t(text);
       row.appendChild(b);
       log.appendChild(row);
       if (!MU.reduced) gsap.from(row, { y: 14, autoAlpha: 0, scale: 0.96, transformOrigin: role === 'user' ? '100% 100%' : '0% 100%', duration: 0.4, ease: 'back.out(1.8)' });
@@ -51,25 +52,14 @@ MU.part('chat', {
     input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit(); } });
     sync();
 
-    const setOpen = v => {
-      open = v;
-      launch.setAttribute('aria-expanded', String(v));
-      if (v) {
-        lastFocus = document.activeElement;
-        panel.hidden = false; backdrop.hidden = false;
-        if (!MU.reduced) gsap.fromTo(panel, { scale: 0.6, autoAlpha: 0, y: 30 }, { scale: 1, autoAlpha: 1, y: 0, duration: 0.5, ease: 'back.out(1.5)' });
-        log.scrollTop = log.scrollHeight;
-        setTimeout(() => input.focus({ preventScroll: true }), 60);
-      } else {
-        const done = () => { panel.hidden = true; backdrop.hidden = true; };
-        if (MU.reduced) done(); else gsap.to(panel, { scale: 0.7, autoAlpha: 0, y: 20, duration: 0.25, ease: 'power2.in', onComplete: done });
-        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); else launch.focus({ preventScroll: true });
-      }
+    MU.dialog(panel, { onClose: () => { open = false; launch.setAttribute('aria-expanded', 'false'); } });
+    const setOpen = value => {
+      open = value;
+      launch.setAttribute('aria-expanded', String(value));
+      if (value) { MU.openDialog(panel); log.scrollTop = log.scrollHeight; input.focus({ preventScroll: true }); }
+      else panel.close();
     };
     launch.addEventListener('click', () => setOpen(true));
-    root.querySelector('.ch-close').addEventListener('click', () => setOpen(false));
-    backdrop.addEventListener('click', () => setOpen(false));
-    window.addEventListener('keydown', e => { if (open && e.key === 'Escape') setOpen(false); });
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -84,13 +74,15 @@ MU.part('chat', {
       typing.innerHTML = `<span class="ch-msg__ava"><img src="${LOGO}" alt="" width="18" height="18"></span><div class="ch-bubble ch-typing" aria-label="Yozmoqda"><i></i><i></i><i></i></div>`;
       log.appendChild(typing); log.scrollTop = log.scrollHeight;
       let reply;
+      const ctrl = new AbortController(), timeout = setTimeout(() => ctrl.abort(), 25000);
       try {
         const history = messages.slice(1).slice(-8).map(m => ({ role: m.role, content: m.content }));
-        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history, sessionId: sessionId() }) });
+        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history, sessionId: sessionId() }), signal: ctrl.signal });
         let data = null;
         try { data = await res.json(); } catch (err) { /* JSON emas */ }
         reply = data && typeof data.reply === 'string' && data.reply.length ? cleanReply(data.reply) : FAIL;
       } catch (err) { reply = OFFLINE; }
+      clearTimeout(timeout);
       typing.remove();
       messages.push({ role: 'assistant', content: reply });
       bubble('assistant', reply);
