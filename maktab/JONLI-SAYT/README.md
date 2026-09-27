@@ -16,7 +16,7 @@ oldin berilgan ULKAN PROMPT’da (`maktab/SPEC.md`). Bu papka unga **material** 
 | `MATNLAR.md` | Bosh sahifadagi HAR BIR sarlavha, matn, tugma — ekrandagi tartibda (+ eskirgan joylar ro‘yxati) |
 | `MEDIA.md` | Rasm/video ro‘yxati: fayl · nima tasvirlangan · saytda qayerda ishlatiladi |
 | `MEDIA/` | `public/` dan ko‘chirilgan fayllar: `logo.png`, `og-image.png`, `assets/video/hero.mp4` (+poster), `photos/*` |
-| `MEDIA/qulayliklar/` | **(28.09)** bino dron ko‘rinishlari, sinfxona, vokzal, zal — 10 ta webp; Face ID/yotoqxona/oshxona/lab/shifokor/sport suratlari topilmadi (MEDIA.md §6) |
+| `MEDIA/qulayliklar/` | **(28.09)** bino dron kadrlari (1080×1920), sinfxona, forma detali — 8 ta webp; Face ID/yotoqxona/oshxona/lab/shifokor/sport suratlari topilmadi (MEDIA.md §6) |
 | `MEDIA/bot/` | **(28.09)** nazoratchi bot xabarnoma **namunalari** (soxta ism) va Face ID infografikalari — 8 ta webp; haqiqiy skrinshot yo‘q (MEDIA.md §7) |
 | `MATNLAR.md` → «BOSHQA SAHIFALAR», «NAZORATCHI BOT» | **(28.09)** /maktab-haqida, /qabul, /faq, /tarix, /aloqa matnlari aynan; bot /start, menyu tugmalari, Face ID va shifokor xabarnoma shablonlari |
 | `API.md` | Bosh sahifa chaqiradigan endpointlar, JSON namunalari, Firestore kolleksiyalari, ma’lumot oqimi |

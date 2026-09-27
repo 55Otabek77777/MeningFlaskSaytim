@@ -70,18 +70,18 @@ Quyidagilar — egasi o‘zi ochiq e’lon qilgan (kanal) yoki sayt uchun bergan
 
 | fayl | nima tasvirlangan | manba | qayerda ishlatish mumkin |
 |---|---|---|---|
-| `bino-dron-1.webp` | Maktab hududining drondan umumiy ko‘rinishi — kulrang tomli asosiy bino, hovli, atrofdagi mahalla | kanal 4631 (12.07.2026, «Nega aynan biz?») | hero fon / «Bino» kartasi / geografiya |
-| `bino-dron-2.webp` | Drondan yaqinroq: bino, hovlida saf tortgan o‘quvchilar (juda kichik, yuz ko‘rinmaydi) | kanal 4618 (07.2026) | «Maktab hayoti», meros |
-| `bino-dron-3.webp` | Vertikal dron kadri — bino va qishloq panoramasi (mobil hero uchun qulay 9:16) | kanal 4623 | mobil hero / parallaks |
+| `bino-dron-1.webp` | **1080×1920** dron kadri (vertikal): maktab hududi va Qayrog‘och qishlog‘i panoramasi, kulrang tomli asosiy bino, daraxtlar, dalalar ufqda | kanal 4623 videosidan (07.2026) kadr — `ffmpeg`, q2 | mobil hero (9:16), parallaks, «Bino» kartasi (kesib 16:9 qilish mumkin) |
+| `bino-dron-2.webp` | **1080×1920** dron kadri: binoning tepadan ko‘rinishi — tom, hovli, darvoza, mashinalar; odam ko‘rinmaydi | kanal 4623 videosi | «Bino/xavfsizlik» kartasi, geografiya fon |
+| `bino-dron-3.webp` | 800×452 foto: drondan bino va hovlida saf tortgan o‘quvchilar (juda kichik, yuz ko‘rinmaydi) — kanal beradigan eng katta o‘lcham | kanal 4618 (07.2026) | karta/thumbnail (hero uchun kichik) |
+| `forma-orqadan.webp` | 1080×1920 kadr: maktab formasidagi (oq futbolka, «MIRZO ULUG’BEK XUSUSIY MAKTABI») o‘quvchi orqadan — yuzsiz brend detali | kanal 4623 videosi | «Maktab hayoti» detal, CTA fon |
 | `sinfxona-1.webp` | Sinfxona: oq devor, katta derazalar, oq partalar, konditsioner; bir nechta o‘quvchi dars vaqtida (yon/orqa tomondan) | kanal 02.09.2026 (Telegram eksport) | «Sinfxona» kartasi |
 | `sinfxona-2.webp` | Katta sinfxona, to‘liq guruh dars vaqtida (keng plan) | kanal 02.09.2026 | «Maktab hayoti» |
 | `sinfxona-3.webp` | Sinfxona, o‘quvchilar yozmoqda (orqadan/yon) | kanal 02.09.2026 | «Maktab hayoti» |
 | `sinfxona-daftarlar.webp` | Partadagi daftar-kitoblar to‘plami — yuzsiz detal | kanal 01.09.2026 | detal/fon, «Nega biz» |
-| `vokzal-1.webp` | Temir yo‘l, yaqinlashayotgan poyezd, bitta o‘quvchi orqadan — «vokzalga 300 m» fakti uchun | kanal 4826 (21.08.2026) | «Transport» kartasi |
-| `vokzal-2.webp` | Tong, poyezd va perron, o‘quvchilar uzoqdan | kanal 4847 (26.09.2026) | «Transport» / uyga javob kuni |
-| `zal-tomosha.webp` | Zal: o‘quvchilar (orqadan) ekranda video tomosha qilmoqda | kanal 4612 | «Maktab hayoti» / tadbirlar |
 
 Bino fasadi — mavjud `photos/history-1994.webp` (peshtoqli oq bino). Bitiruv/sayohat/O‘rda — mavjud `photos/*`.
+Kanalda **vokzal/poyezd** (4826, 4847), **zal** (4612), **kirish zinasi** (4680) va boshqa dron kadrlari (4631, 4617, 4633) faqat **video** shaklida
+va Telegram embed ularni bermaydi («not supported», hajmi katta) — preview 320px, yaroqsiz. Kerak bo‘lsa egasi asl fayllarni yuboradi.
 
 ## 7. Nazoratchi bot materiallari — `MEDIA/bot/` (2026-09-28)
 
