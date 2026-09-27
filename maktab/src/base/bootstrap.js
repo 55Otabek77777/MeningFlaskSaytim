@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ULUGʻBEK LOGISTICS — shared runtime (window.MU)
+   «Mirzo Ulug’bek» maktabi — shared runtime (window.MU)
    Loaded after vendor libs (gsap + plugins, Lenis, THREE) and before parts.
    Parts register with MU.part(name, { init(root, MU), reveal(root, MU) }).
    ========================================================================== */

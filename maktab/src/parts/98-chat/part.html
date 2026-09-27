@@ -1,0 +1,18 @@
+<div class="ch" data-part="chat">
+  <button class="ch-launch" type="button" aria-label="Yordamchi bilan suhbat" aria-expanded="false" aria-controls="ch-panel">
+    <img src="https://mirzoulugbek.app/logo.png" alt="" width="34" height="34" loading="lazy" decoding="async">
+  </button>
+  <div class="ch-backdrop" hidden></div>
+  <div class="ch-panel" id="ch-panel" role="dialog" aria-modal="true" aria-label="Mirzo Ulug’bek yordamchisi" hidden>
+    <div class="ch-head">
+      <span class="ch-ava"><img src="https://mirzoulugbek.app/logo.png" alt="" width="24" height="24" loading="lazy" decoding="async"></span>
+      <div class="ch-head__txt"><b>Mirzo Ulug’bek yordamchisi</b><small><i class="ch-online"></i>Odatda darhol javob beradi</small></div>
+      <button class="ch-close" type="button" aria-label="Yopish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    </div>
+    <div class="ch-log" aria-live="polite"></div>
+    <form class="ch-form">
+      <textarea class="ch-input" rows="1" maxlength="1000" placeholder="Savolingizni yozing…" aria-label="Savolingizni yozing…"></textarea>
+      <button class="ch-send" type="submit" aria-label="Yuborish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+    </form>
+  </div>
+</div>

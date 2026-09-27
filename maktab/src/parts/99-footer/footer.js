@@ -2,6 +2,7 @@ MU.part('footer', {
   init(root) {
     const { gsap, ScrollTrigger } = MU;
     root.querySelector('.ft-year').textContent = new Date().getFullYear();
+    root.querySelector('.ft-yrs').textContent = MU.years();
     MU.onVisible(root, v => root.classList.toggle('is-inview', v));
 
     /* meteorlar (magicui) */

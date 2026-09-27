@@ -50,9 +50,15 @@ export const apiLog = [];
 export async function mockRoutes(context, { ariza } = {}) {
   await context.route('https://mirzoulugbek.app/**', route => {
     const p = new URL(route.request().url()).pathname;
-    const f = IMG_MAP[p] && path.join(ROOT, 'assets', IMG_MAP[p]);
-    if (f && fs.existsSync(f)) route.fulfill({ path: f }); else route.fulfill({ status: 404, body: '' });
+    let f = IMG_MAP[p] && path.join(ROOT, 'assets', IMG_MAP[p]);
+    if (!f || !fs.existsSync(f)) f = path.join(ROOT, 'JONLI-SAYT/MEDIA', p);
+    if (fs.existsSync(f)) route.fulfill({ path: f }); else route.fulfill({ status: 404, body: '' });
   });
+  /* sertifikat (GCS) va Telegram rasmlari konteynerdan yopiq — QA uchun neytral placeholder */
+  const PH = '<svg xmlns="http://www.w3.org/2000/svg" width="1414" height="2000"><rect width="100%" height="100%" fill="#f4ecd4"/><rect x="60" y="60" width="1294" height="1880" fill="none" stroke="#c9a24b" stroke-width="10"/><text x="707" y="1000" font-size="90" text-anchor="middle" fill="#9a7a2c" font-family="Arial">QA placeholder</text></svg>';
+  await context.route(/storage\.googleapis\.com|telesco\.pe|cdn-telegram\.org/, route => route.fulfill({ status: 200, contentType: 'image/svg+xml', body: PH }));
+  await context.route('**/api/telegram-news', route => route.fulfill({ path: path.join(ROOT, 'JONLI-SAYT/API/telegram-news-namuna.json'), contentType: 'application/json' }));
+  await context.route('**/api/chat', route => route.fulfill({ json: { reply: 'Assalomu alaykum! Qabul bo’yicha menejerimiz +998 97 417 37 77 raqamida javob beradi.', deferred: false } }));
   await context.route('**/api/visit', route => { apiLog.push(['visit', route.request().method()]); route.fulfill({ json: { total: 2288 } }); });
   await context.route('**/api/track-call', route => { apiLog.push(['track-call']); route.fulfill({ json: { ok: true } }); });
   await context.route('**/api/ariza', async route => {

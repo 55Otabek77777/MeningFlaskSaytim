@@ -1,0 +1,104 @@
+<section id="ariza" class="section az" data-part="ariza" aria-labelledby="az-title">
+  <div class="az-bg" aria-hidden="true"><div class="az-orb az-orb--a"></div><div class="az-orb az-orb--b"></div></div>
+  <div class="container az-grid">
+    <div class="az-intro">
+      <span class="eyebrow" data-scramble>Onlayn ariza</span>
+      <h2 id="az-title" class="h2" data-split="lines">Birinchi qadamni tashlang — <span class="accent-coral">hujjat topshiring</span></h2>
+      <p class="lead" data-reveal="blur">Ariza bir daqiqa oladi. Tez orada menejerlarimiz siz bilan bog’lanadi.</p>
+
+      <div class="az-ticket" data-reveal="flip" aria-hidden="true">
+        <div class="az-ticket__head">
+          <img src="https://mirzoulugbek.app/logo.png" alt="" width="40" height="40" loading="lazy">
+          <div><b>Ariza varaqasi</b><span>«Mirzo Ulug’bek» xususiy maktabi</span></div>
+          <span class="az-ticket__year">2026–2027</span>
+        </div>
+        <dl class="az-ticket__rows">
+          <div><dt>Ism-familiya</dt><dd data-tk="fullName">—</dd></div>
+          <div><dt>Viloyat</dt><dd data-tk="region">—</dd></div>
+          <div><dt>Sinf</dt><dd data-tk="grade">—</dd></div>
+          <div><dt>Telefon</dt><dd data-tk="phone">+998</dd></div>
+        </dl>
+        <div class="az-ticket__stamp">Qabul qilindi</div>
+        <div class="az-ticket__perf"></div>
+      </div>
+
+      <div class="az-call">
+        <span>Yoki qo’ng’iroq qiling:</span>
+        <a href="tel:+998974173777">+998 97 417 37 77</a>
+        <a href="tel:+998945953777">+998 94 595 37 77</a>
+      </div>
+    </div>
+
+    <div class="az-card" data-reveal="up">
+      <div class="az-card__shine" aria-hidden="true"></div>
+      <form class="az-form" novalidate>
+        <div class="az-field" data-field="fullName">
+          <input id="az-name" name="fullName" type="text" autocomplete="name" placeholder=" " maxlength="120" required>
+          <label for="az-name">Ism-familiya</label>
+          <span class="az-err" aria-live="polite"></span>
+        </div>
+
+        <div class="az-field az-field--select" data-field="region">
+          <select id="az-region" name="region" required>
+            <option value="" selected disabled hidden></option>
+            <option>Andijon viloyati</option>
+            <option>Buxoro viloyati</option>
+            <option>Farg’ona viloyati</option>
+            <option>Jizzax viloyati</option>
+            <option>Xorazm viloyati</option>
+            <option>Namangan viloyati</option>
+            <option>Navoiy viloyati</option>
+            <option>Qashqadaryo viloyati</option>
+            <option>Qoraqalpog’iston Respublikasi</option>
+            <option>Samarqand viloyati</option>
+            <option>Sirdaryo viloyati</option>
+            <option>Surxondaryo viloyati</option>
+            <option>Toshkent viloyati</option>
+            <option>Toshkent shahri</option>
+          </select>
+          <label for="az-region">Viloyat</label>
+          <svg class="az-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <span class="az-err" aria-live="polite"></span>
+        </div>
+
+        <fieldset class="az-grades" data-field="grade">
+          <legend>Sinf</legend>
+          <div class="az-grades__list">
+            <label class="az-grade"><input type="radio" name="grade" value="8-sinf"><span>8-sinf</span></label>
+            <label class="az-grade"><input type="radio" name="grade" value="9-sinf"><span>9-sinf</span></label>
+            <label class="az-grade"><input type="radio" name="grade" value="10-sinf"><span>10-sinf</span></label>
+            <label class="az-grade"><input type="radio" name="grade" value="11-sinf"><span>11-sinf</span></label>
+            <label class="az-grade az-grade--wide"><input type="radio" name="grade" value="Bitiruvchi (11-sinfni tugatgan)"><span>Bitiruvchi (11-sinfni tugatgan)</span></label>
+          </div>
+          <div class="az-grades__locked">
+            <span class="az-grade az-grade--locked" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>5–7-sinflar</span>
+            <p>5–7-sinflar uchun yangi bino qurilmoqda. 2027–2028 o’quv yilidan qabul ochish rejalashtirilgan.</p>
+          </div>
+          <p class="az-grade-note" aria-live="polite" hidden></p>
+          <span class="az-err" aria-live="polite"></span>
+        </fieldset>
+
+        <div class="az-field az-field--phone" data-field="phone">
+          <span class="az-prefix" aria-hidden="true">+998</span>
+          <input id="az-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder=" " required>
+          <label for="az-phone">Telefon raqami</label>
+          <span class="az-err" aria-live="polite"></span>
+        </div>
+
+        <div class="az-hp" aria-hidden="true">
+          <label for="az-website">Veb-sayt</label>
+          <input id="az-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="az-submit" type="submit">
+          <span class="az-submit__label">Ariza yuborish</span>
+          <span class="az-submit__spin" aria-hidden="true"></span>
+          <svg class="az-submit__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+        <p class="az-note">Ma’lumotlaringiz faqat qabul bo’limiga yuboriladi.</p>
+        <div class="az-status" role="status" aria-live="polite"></div>
+      </form>
+      <canvas class="az-confetti" aria-hidden="true"></canvas>
+    </div>
+  </div>
+</section>

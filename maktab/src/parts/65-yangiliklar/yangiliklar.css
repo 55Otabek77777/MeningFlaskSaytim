@@ -1,0 +1,73 @@
+/* ===== So’nggi yangiliklar — Telegram kanali: 1 katta karta + 4 qator, pastda statik «Yangilanishlar» ===== */
+#yangiliklar .ny-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 40px; margin-bottom: clamp(32px, 4.5vw, 56px); }
+#yangiliklar .ny-head__copy { display: grid; gap: 18px; justify-items: start; }
+#yangiliklar .ny-live::before { background: #229ed9; box-shadow: 0 0 0 0 rgba(34, 158, 217, .6); animation: ny-ping 1.8s infinite; }
+@keyframes ny-ping { 0% { box-shadow: 0 0 0 0 rgba(34, 158, 217, .6); } 100% { box-shadow: 0 0 0 10px rgba(34, 158, 217, 0); } }
+#yangiliklar .ny-all { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--mu-primary); padding: 10px 4px; border-bottom: 2px solid rgba(var(--azure-rgb), .2); transition: border-color .3s, gap .3s var(--ease-out); }
+#yangiliklar .ny-all:hover { border-color: var(--mu-accent); gap: 12px; }
+#yangiliklar .ny-all svg, #yangiliklar .ny-read svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+#yangiliklar .ny-feed { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: start; }
+#yangiliklar .ny-big { overflow: hidden; border-radius: 26px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-card); }
+#yangiliklar .ny-big__media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(135deg, #e7eefa, #d6e2f6); }
+#yangiliklar .ny-big__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform 1.2s var(--ease-out); }
+#yangiliklar .ny-big:hover .ny-big__media img { transform: scale(1.07); }
+#yangiliklar .ny-big__body { display: grid; gap: 12px; padding: 24px 26px 26px; }
+#yangiliklar .ny-date { font-family: var(--font-mono); font-weight: 600; font-size: .875rem; letter-spacing: .06em; color: var(--text-3); }
+#yangiliklar .ny-date:empty { display: none; }
+#yangiliklar .ny-big__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.2rem, 1.8vw, 1.55rem); line-height: 1.3; letter-spacing: -.015em; color: var(--mu-ink); overflow-wrap: anywhere; }
+#yangiliklar .ny-big__title a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .5s var(--ease-out); }
+#yangiliklar .ny-big__title a:hover { background-size: 100% 2px; }
+#yangiliklar .ny-big__text { color: var(--text-2); line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+#yangiliklar .ny-big__text:empty { display: none; }
+#yangiliklar .ny-read { justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-weight: 800; color: #1c8ac2; transition: gap .3s var(--ease-out); }
+#yangiliklar .ny-read:hover { gap: 12px; }
+
+#yangiliklar .ny-rows { display: grid; gap: 12px; }
+#yangiliklar .ny-row a { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; align-items: center; padding: 12px; border-radius: 20px; background: #fff; border: 1px solid var(--line);
+  box-shadow: var(--shadow-card); transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out), border-color .45s; }
+#yangiliklar .ny-row a:hover { transform: translateX(6px); box-shadow: var(--shadow-lift); border-color: rgba(34, 158, 217, .35); }
+#yangiliklar .ny-thumb { position: relative; width: 112px; height: 76px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, #e7eefa, #d6e2f6); }
+#yangiliklar .ny-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#yangiliklar .ny-ph { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(135deg, #2aabee, #229ed9); }
+#yangiliklar .ny-ph::before { content: ''; width: 34%; aspect-ratio: 1; background: #fff;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z'/%3E%3C/svg%3E") center / contain no-repeat; }
+#yangiliklar .ny-row__body { display: grid; gap: 4px; min-width: 0; }
+#yangiliklar .ny-row__title { font-weight: 700; color: var(--mu-ink); line-height: 1.4; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+#yangiliklar .ny-row .ny-date { font-size: .8125rem; }
+#yangiliklar .ny-empty { grid-column: 1 / -1; display: grid; justify-items: center; gap: 16px; padding: 48px 20px; border-radius: 26px; background: #fff; border: 1px dashed var(--line-3); text-align: center; }
+#yangiliklar .ny-empty p { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; color: var(--mu-ink); }
+
+/* ---- statik «Yangilanishlar» */
+#yangiliklar .ny-upd { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); margin-top: clamp(40px, 5vw, 72px); padding: clamp(24px, 3.5vw, 44px);
+  border-radius: 28px; background: linear-gradient(135deg, rgba(var(--turq-rgb), .07), rgba(var(--gold-rgb), .06)); border: 1px solid var(--line); }
+#yangiliklar .ny-upd__head { display: grid; gap: 8px; align-content: start; }
+#yangiliklar .ny-upd__head .h3 { color: var(--mu-ink); }
+#yangiliklar .ny-upd__head p { color: var(--text-2); }
+#yangiliklar .ny-upd__list { display: grid; gap: 0; }
+#yangiliklar .ny-upd__list li { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 16px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); }
+#yangiliklar .ny-upd__list li:first-child { border-top: 0; padding-top: 0; }
+#yangiliklar .ny-upd__list p { color: var(--text); line-height: 1.55; }
+#yangiliklar .ny-tag { justify-self: start; padding: 4px 11px; border-radius: 99px; font-weight: 800; font-size: .8rem; letter-spacing: .04em; color: var(--mu-primary); background: rgba(var(--azure-rgb), .08); border: 1px solid rgba(var(--azure-rgb), .14); white-space: nowrap; }
+#yangiliklar .ny-tag--new { color: #fff; background: var(--mu-accent); border-color: var(--mu-accent); }
+#yangiliklar .ny-tag--gold { color: #8a5a0b; background: rgba(var(--gold-rgb), .14); border-color: rgba(var(--gold-rgb), .3); }
+
+@media (max-width: 1000px) {
+  #yangiliklar .ny-feed { grid-template-columns: minmax(0, 1fr); }
+  #yangiliklar .ny-upd { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  #yangiliklar .ny-row a { grid-template-columns: 88px minmax(0, 1fr); gap: 12px; }
+  #yangiliklar .ny-thumb { width: 88px; height: 64px; }
+  #yangiliklar .ny-upd__list li { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #yangiliklar .ny-tag, #yangiliklar .ny-date, #yangiliklar .ny-row .ny-date { font-size: .9375rem; }
+  #yangiliklar .ny-big__body { padding: 20px; }
+}
+#yangiliklar .ny-empty[hidden], #yangiliklar .ny-big[hidden], #yangiliklar .ny-rows[hidden] { display: none; }
+@media (min-width: 1001px) {
+  #yangiliklar .ny-feed { align-items: stretch; }
+  #yangiliklar .ny-rows { grid-auto-rows: 1fr; }
+  #yangiliklar .ny-row a { height: 100%; grid-template-columns: 148px minmax(0, 1fr); gap: 18px; padding: 14px; }
+  #yangiliklar .ny-row .ny-thumb { width: 148px; height: auto; aspect-ratio: 4 / 3; max-height: 100%; }
+}

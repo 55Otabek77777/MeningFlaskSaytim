@@ -1,24 +1,31 @@
-<canvas class="nv-sky" data-part="core" aria-hidden="true"></canvas>
 <div class="nv-progress" data-part="core" aria-hidden="true"><span></span></div>
 <header class="nv" data-part="core">
-  <a class="nv-logo" href="#bosh" aria-label="«Mirzo Ulug’bek» xususiy maktabi — bosh sahifa">
-    <span class="nv-logo__ring" aria-hidden="true"></span>
+  <a class="nv-logo" href="/" aria-label="«Mirzo Ulug’bek» xususiy maktabi — bosh sahifa">
     <img class="nv-logo__img" src="https://mirzoulugbek.app/logo.png" alt="Mirzo Ulug’bek maktabi" width="44" height="44" fetchpriority="high">
     <span class="nv-word">MIRZO ULUG’BEK<small>xususiy maktabi</small></span>
   </a>
   <nav class="nv-links" aria-label="Asosiy menyu">
-    <a href="#yonalishlar"><span data-text="Yo’nalishlar">Yo’nalishlar</span></a>
-    <a href="#hayot"><span data-text="Maktab hayoti">Maktab hayoti</span></a>
-    <a href="#qabul"><span data-text="Qabul">Qabul</span></a>
-    <a href="#yutuqlar"><span data-text="Yutuqlar">Yutuqlar</span></a>
-    <a href="#aloqa"><span data-text="Aloqa">Aloqa</span></a>
-    <a href="/yangiliklar" class="nv-ext"><span data-text="Yangiliklar">Yangiliklar</span></a>
+    <a href="/" aria-current="page">Bosh sahifa</a>
+    <a href="/maktab-haqida">Maktab haqida</a>
+    <div class="nv-dd">
+      <button class="nv-dd__btn" type="button" aria-expanded="false" aria-controls="nv-dd-list">Yo’nalishlar <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nv-dd__list" id="nv-dd-list">
+        <a href="/yonalishlar/kimyo-biologiya">Kimyo–Biologiya</a>
+        <a href="/yonalishlar/ingliz-tili">Ingliz tili</a>
+        <a href="/yonalishlar/matematika-fizika">Matematika–Fizika</a>
+        <a href="/yonalishlar/matematika-ingliz">Matematika–Ingliz tili</a>
+        <a href="/yonalishlar/ona-tili-adabiyot">Ona tili–Adabiyot</a>
+        <a href="#yonalishlar">Rus tili yo’nalishlari <em>yangi</em></a>
+        <a href="/yonalishlar/5-7-sinflar">5–7-sinflar</a>
+      </div>
+    </div>
+    <a href="/qabul">Qabul</a>
+    <a href="/yutuqlar">Yutuqlar</a>
+    <a href="/yangiliklar">Yangiliklar</a>
+    <a href="/faq">FAQ</a>
+    <a href="/aloqa">Aloqa</a>
   </nav>
   <div class="nv-actions">
-    <a class="nv-phone" href="tel:+998974173777" aria-label="Qo’ng’iroq qilish: +998 97 417 37 77">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
-      <span>+998 97 417 37 77</span>
-    </a>
     <a class="btn btn--primary btn--sm nv-cta" data-magnetic="0.25" href="#ariza"><span class="btn__label" data-text="Hujjat topshirish"><span>Hujjat topshirish</span></span></a>
     <button class="nv-burger" type="button" aria-label="Menyuni ochish" aria-expanded="false" aria-controls="nv-menu"><span></span><span></span></button>
   </div>
@@ -26,13 +33,14 @@
 <div class="nv-menu" id="nv-menu" data-part="core" hidden>
   <div class="nv-menu__inner">
     <nav class="nv-menu__links" aria-label="Mobil menyu">
-      <a href="#yonalishlar"><em>01</em>Yo’nalishlar</a>
-      <a href="#hayot"><em>02</em>Maktab hayoti</a>
-      <a href="#qabul"><em>03</em>Qabul</a>
-      <a href="#yutuqlar"><em>04</em>Yutuqlar</a>
-      <a href="#faq"><em>05</em>Savollar</a>
-      <a href="#aloqa"><em>06</em>Aloqa</a>
-      <a href="/yangiliklar"><em>07</em>Yangiliklar</a>
+      <a href="/">Bosh sahifa</a>
+      <a href="/maktab-haqida">Maktab haqida</a>
+      <a href="#yonalishlar">Yo’nalishlar</a>
+      <a href="/qabul">Qabul</a>
+      <a href="/yutuqlar">Yutuqlar</a>
+      <a href="/yangiliklar">Yangiliklar</a>
+      <a href="/faq">FAQ</a>
+      <a href="/aloqa">Aloqa</a>
     </nav>
     <div class="nv-menu__foot">
       <a class="btn btn--primary" href="#ariza"><span class="btn__label" data-text="Hujjat topshirish"><span>Hujjat topshirish</span></span></a>

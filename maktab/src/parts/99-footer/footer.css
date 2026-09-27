@@ -25,6 +25,17 @@
 #aloqa .ft-big:hover, #aloqa .ft-link:hover { color: var(--mu-accent); }
 #aloqa .ft-link { font-weight: 800; color: var(--mu-primary); }
 #aloqa .ft-dim { color: var(--text-2) !important; font-size: .9375rem; }
+#aloqa .ft-logo { display: flex; align-items: center; gap: 12px; }
+#aloqa .ft-logo img { width: 48px; height: 48px; padding: 4px; border-radius: 14px; background: #fff; box-shadow: 0 6px 16px -8px rgba(30, 58, 138, .5); }
+#aloqa .ft-logo span { display: grid; font-family: var(--font-display); font-weight: 800; font-size: 1rem; letter-spacing: .01em; color: var(--mu-primary); line-height: 1.15; }
+#aloqa .ft-logo small { font-family: var(--font-body); font-weight: 600; font-size: .85rem; letter-spacing: .04em; color: var(--text-2); }
+#aloqa .ft-icons { display: flex; gap: 8px; margin-top: 4px; }
+#aloqa .ft-icons a { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: var(--mu-primary); transition: transform .4s var(--ease-out), background .3s; }
+#aloqa .ft-icons a:hover { transform: translateY(-3px) rotate(-6deg); background: var(--mu-accent); }
+#aloqa .ft-icons svg { width: 20px; height: 20px; fill: #fff; }
+#aloqa .ft-links { display: grid; gap: 6px; }
+#aloqa .ft-links a { color: var(--text); font-weight: 600; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .4s var(--ease-out), color .3s; }
+#aloqa .ft-links a:hover { color: var(--mu-accent); background-size: 100% 1.5px; }
 #aloqa .ft-social { display: grid; gap: 8px; }
 #aloqa .ft-social a { display: flex; align-items: center; gap: 12px; padding: 6px; margin: -6px; border-radius: 14px; transition: background .3s; }
 #aloqa .ft-social a:hover { background: rgba(59, 91, 219, .07); }
@@ -36,6 +47,7 @@
 #aloqa .ft-mega { display: grid; margin-top: clamp(48px, 8vw, 110px); font-family: var(--font-display); font-weight: 900; line-height: .86; letter-spacing: -.055em; text-align: center; }
 #aloqa .ft-mega span { font-size: clamp(2.6rem, 12.2vw, 12.5rem); background: linear-gradient(90deg, #1e3a8a, #3b5bdb, #c98a1b, #dc2626, #1e3a8a); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: mu-shimmer 10s linear infinite; animation-play-state: var(--ft-play, paused); }
+#aloqa .ft-bottom b { color: var(--mu-primary); }
 #aloqa .ft-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 24px; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line-2); font-size: .9375rem; color: var(--text-2); }
 
 /* mobil yopishqoq panel */
@@ -52,4 +64,4 @@
   #aloqa .ft-sticky__apply { background: var(--mu-accent); color: #fff; animation: hero-pulse 2.6s ease-out infinite; }
 }
 @media (max-width: 1000px) { #aloqa .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { #aloqa .ft-grid { grid-template-columns: 1fr; } #aloqa .ft-col h3 { font-size: .9375rem; } }
+@media (max-width: 560px) { #aloqa .ft-grid { grid-template-columns: 1fr; } #aloqa .ft-col h3 { font-size: .9375rem; } #aloqa .ft-logo small { font-size: .9375rem; } }

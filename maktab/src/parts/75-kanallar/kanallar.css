@@ -1,0 +1,55 @@
+/* ===== AI bot CTA + «Biz bilan bog’laning» (jonli saytdagi 8 ta rasmiy kanal) ===== */
+#kanallar .kn-ai { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(20px, 3.5vw, 48px);
+  padding: clamp(26px, 4vw, 52px); border-radius: var(--r-xl); color: #fff; background: linear-gradient(120deg, #16224a 0%, #1e3a8a 45%, #3b5bdb 100%);
+  box-shadow: 0 40px 90px -40px rgba(30, 58, 138, .7); margin-bottom: clamp(64px, 8vw, 120px); }
+#kanallar .kn-ai__glow { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(40rem 20rem at var(--gx, 80%) 0%, rgba(125, 211, 252, .28), transparent 60%), radial-gradient(30rem 16rem at 10% 120%, rgba(252, 211, 77, .16), transparent 60%); }
+#kanallar .kn-ai__bubble { position: relative; width: 96px; height: 96px; display: grid; place-items: center; border-radius: 28px 28px 28px 8px; background: #fff; box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .5); }
+#kanallar .kn-ai__bubble img { width: 56px; height: 56px; }
+#kanallar .kn-dots { position: absolute; right: -14px; bottom: -10px; display: flex; gap: 4px; padding: 8px 10px; border-radius: 99px; background: #22c55e; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .45); }
+#kanallar .kn-dots i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: kn-dot 1.2s ease-in-out infinite; animation-play-state: var(--kn-play, paused); }
+#kanallar .kn-dots i:nth-child(2) { animation-delay: .15s; }
+#kanallar .kn-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes kn-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .55; } 30% { transform: translateY(-4px); opacity: 1; } }
+#kanallar.is-inview { --kn-play: running; }
+#kanallar .kn-ai__copy { display: grid; gap: 10px; }
+#kanallar .kn-ai__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3.2vw, 2.8rem); line-height: 1.05; letter-spacing: -.03em; color: #fff; }
+#kanallar .kn-ai__copy p { color: rgba(255, 255, 255, .82); font-size: var(--fs-lead); line-height: 1.55; max-width: 58ch; }
+#kanallar .kn-ai__btn { color: #1e3a8a; background: #fff; box-shadow: 0 16px 36px -16px rgba(0, 0, 0, .55); }
+#kanallar .kn-ai__btn::before { background: #fcd34d; }
+#kanallar .kn-ai__bot { width: 22px; height: 22px; flex: none; }
+
+#kanallar .kn-head { display: grid; gap: 18px; justify-items: center; text-align: center; margin-bottom: clamp(32px, 4.5vw, 56px); }
+#kanallar .kn-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+#kanallar .kn-card { position: relative; overflow: hidden; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; height: 100%; padding: 18px 18px 18px 16px;
+  border-radius: 22px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-card); transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out), border-color .45s; }
+#kanallar .kn-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--c) 14%, transparent), transparent 65%); }
+#kanallar .kn-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); border-color: color-mix(in srgb, var(--c) 35%, transparent); }
+#kanallar .kn-card:hover::before { opacity: 1; }
+#kanallar .kn-ico { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 15px; color: #fff; background: var(--c); box-shadow: 0 10px 22px -10px var(--c); transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+#kanallar .kn-ico svg { width: 24px; height: 24px; }
+#kanallar .kn-card:hover .kn-ico { transform: scale(1.12) rotate(-8deg); }
+#kanallar .kn-txt { display: grid; gap: 2px; min-width: 0; }
+#kanallar .kn-txt b { color: var(--mu-ink); font-weight: 800; line-height: 1.3; }
+#kanallar .kn-txt small { color: var(--text-2); font-size: .9rem; overflow-wrap: anywhere; }
+#kanallar .kn-go { width: 20px; height: 20px; fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .4s var(--ease-out), stroke .4s; }
+#kanallar .kn-card:hover .kn-go { transform: translate(3px, -3px); stroke: var(--c); }
+#kanallar .kn-wide { grid-column: 1 / -1; }
+#kanallar .kn-all { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 20px 26px; border-radius: 22px; border: 2px dashed var(--line-3);
+  color: var(--mu-primary); font-weight: 700; transition: background .4s, border-color .4s; }
+#kanallar .kn-all b { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
+#kanallar .kn-all svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .4s var(--ease-out); }
+#kanallar .kn-all:hover { background: rgba(var(--turq-rgb), .06); border-color: var(--mu-primary-2); }
+#kanallar .kn-all:hover svg { transform: translateX(5px); }
+
+@media (max-width: 1100px) { #kanallar .kn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  #kanallar .kn-ai { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  #kanallar .kn-ai__btn { width: 100%; }
+}
+@media (max-width: 560px) {
+  #kanallar .kn-grid { grid-template-columns: minmax(0, 1fr); }
+  #kanallar .kn-txt small { font-size: .9375rem; }
+  #kanallar .kn-ai__bubble { width: 80px; height: 80px; }
+}

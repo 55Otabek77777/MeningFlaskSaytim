@@ -7,12 +7,15 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const MAP = { '/logo.png': 'logo.png', '/icon.png': 'icon.png', '/og-image.png': 'og-image.png',
   '/photos/founder.webp': 'asoschi.webp', '/photos/director.webp': 'direktor.webp', '/photos/history-1994.webp': 'bino-asosiy.webp' };
-const MIME = { png: 'image/png', webp: 'image/webp' };
+const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg' };
+/* assets/ da yo‘q bo‘lsa — DIGITAL yuklagan jonli sayt fayllari (JONLI-SAYT/MEDIA/<yo‘l>); video URL o‘zgarmaydi (poster ko‘rinadi) */
+const fileFor = p => { const a = MAP[p] && path.join(ROOT, 'assets', MAP[p]); if (a && fs.existsSync(a)) return a; const b = path.join(ROOT, 'JONLI-SAYT/MEDIA', p); return fs.existsSync(b) ? b : null; };
 let html = fs.readFileSync(path.join(ROOT, 'dist/index.html'), 'utf8');
 const cache = {};
-html = html.replace(/https:\/\/mirzoulugbek\.app(\/[\w\-./]+\.(?:png|webp))/g, (m, p) => {
-  if (!MAP[p]) return m;
-  if (!cache[p]) { const f = path.join(ROOT, 'assets', MAP[p]); cache[p] = `data:${MIME[f.split('.').pop()]};base64,${fs.readFileSync(f).toString('base64')}`; }
+html = html.replace(/https:\/\/mirzoulugbek\.app(\/[\w\-./]+\.(?:png|webp|jpg))/g, (m, p) => {
+  const f = fileFor(p);
+  if (!f) return m;
+  if (!cache[p]) cache[p] = `data:${MIME[f.split('.').pop()]};base64,${fs.readFileSync(f).toString('base64')}`;
   return cache[p];
 });
 fs.writeFileSync(path.join(ROOT, 'dist/preview-inline.html'), html);

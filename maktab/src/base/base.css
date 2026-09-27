@@ -160,7 +160,7 @@ html { scrollbar-color: var(--ink-600) var(--ink-950); scrollbar-width: thin; }
 .accent-gold { color: var(--gold); }
 .accent-coral { color: var(--coral); }
 .accent-azure { color: var(--azure); }
-/* SplitText masks: keep descenders + Uzbek ʻ visible */
+/* SplitText masks: keep descenders + Uzbek ’ visible */
 .mu-line { padding-bottom: .06em; }
 .mu-line-mask { padding-bottom: .02em; margin-bottom: -.02em; }
 .mu-char, .mu-word { will-change: transform; }

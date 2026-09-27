@@ -1,0 +1,143 @@
+/* ===== Yutuqlar — jonli saytdagi «Aurora» panel: haqiqiy sertifikatlar coverflow + soat ===== */
+#yutuqlar { position: relative; isolation: isolate; overflow: hidden; color: #fff; padding-block: clamp(72px, 9vw, 128px);
+  background:
+    radial-gradient(56rem 40rem at 8% -12%, rgba(96, 130, 240, .36), transparent 60%),
+    radial-gradient(52rem 36rem at 96% 112%, rgba(59, 91, 219, .34), transparent 58%),
+    radial-gradient(46rem 22rem at 60% 120%, rgba(212, 175, 55, .1), transparent 62%),
+    radial-gradient(125% 110% at 50% 40%, transparent 48%, rgba(7, 11, 30, .5) 100%),
+    linear-gradient(158deg, #26386f 0%, #16224a 54%, #273a72 100%); }
+/* oltin chiziq tepada + pastda yorug‘ fonga erish */
+#yutuqlar::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, transparent 12%, rgba(212, 175, 55, .55) 50%, transparent 88%), linear-gradient(to bottom, rgba(212, 175, 55, .1), transparent);
+  background-repeat: no-repeat; background-size: 100% 1px, 60% 18px; background-position: top center; }
+#yutuqlar .yt-bg { position: absolute; inset: -25%; z-index: -2; pointer-events: none; animation: yt-drift 30s ease-in-out infinite; animation-play-state: var(--yt-play, paused); }
+#yutuqlar .yt-bg i { position: absolute; border-radius: 50%; filter: blur(40px); }
+#yutuqlar .yt-bg i:nth-child(1) { width: 60%; height: 55%; left: 10%; top: 5%; background: radial-gradient(circle, rgba(96, 130, 240, .3), transparent 65%); }
+#yutuqlar .yt-bg i:nth-child(2) { width: 55%; height: 50%; right: 5%; bottom: 8%; background: radial-gradient(circle, rgba(59, 91, 219, .28), transparent 65%); }
+#yutuqlar .yt-bg i:nth-child(3) { width: 70%; height: 30%; left: 20%; top: 40%; background: radial-gradient(circle, rgba(212, 175, 55, .09), transparent 66%); }
+@keyframes yt-drift { 0%, 100% { transform: translate3d(-1.6%, -.8%, 0) scale(1.06); } 50% { transform: translate3d(1.6%, .8%, 0) scale(1.06); } }
+#yutuqlar.is-inview { --yt-play: running; }
+
+#yutuqlar .yt-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "head show" "clock show" "cta show"; grid-template-rows: auto auto 1fr;
+  column-gap: clamp(32px, 5vw, 80px); row-gap: 34px; align-items: start; }
+#yutuqlar .yt-head { grid-area: head; display: grid; gap: 20px; justify-items: start; }
+#yutuqlar .yt-clockrow { grid-area: clock; }
+#yutuqlar .yt-show { grid-area: show; align-self: center; }
+#yutuqlar .yt-cta { grid-area: cta; display: flex; flex-wrap: wrap; gap: 12px; align-self: start; }
+
+#yutuqlar .yt-eyebrow { color: #fcd34d; }
+#yutuqlar .yt-eyebrow::before { box-shadow: 0 0 10px rgba(252, 211, 77, .6); }
+#yutuqlar .yt-title { color: #fff; }
+#yutuqlar .yt-stat { display: flex; align-items: center; gap: 16px; padding: 14px 20px 14px 18px; border-radius: 20px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .14); }
+#yutuqlar .yt-stat b { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.3rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums;
+  background: linear-gradient(120deg, #fde68a, #fbbf24 55%, #f59e0b); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+#yutuqlar .yt-stat > span { color: rgba(255, 255, 255, .8); font-weight: 600; font-size: .95rem; line-height: 1.45; }
+#yutuqlar .yt-text { color: rgba(255, 255, 255, .74); font-size: var(--fs-lead); line-height: 1.6; max-width: 56ch; }
+
+/* ---- soat (350px koordinata tizimi, --k bilan kichraytiriladi) */
+#yutuqlar .yt-clockrow { display: flex; align-items: center; gap: 22px; }
+#yutuqlar .yt-clock { --size: 180px; --k: .5143; position: relative; flex: none; width: var(--size); height: var(--size); }
+#yutuqlar .yt-clock__halo { position: absolute; left: 50%; top: 50%; width: 129%; height: 129%; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(190, 210, 255, .55) 0%, rgba(120, 150, 245, .25) 40%, rgba(90, 120, 240, 0) 70%); filter: blur(8px); }
+#yutuqlar .yt-clock__dial { position: absolute; left: 0; top: 0; width: 350px; height: 350px; transform-origin: 0 0; transform: scale(var(--k)); border-radius: 50%; overflow: hidden;
+  background: radial-gradient(125% 120% at 50% 16%, #ffffff 0%, #f4f7fd 52%, #e6ecf8 100%);
+  box-shadow: 0 26px 55px rgba(8, 16, 44, .55), inset 0 3px 8px rgba(255, 255, 255, .95), inset 0 -14px 30px rgba(31, 48, 95, .14), inset 0 0 0 2px rgba(255, 255, 255, .9), inset 0 0 0 5px rgba(59, 91, 219, .22); }
+#yutuqlar .yt-clock__dial::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(212, 175, 55, .4); pointer-events: none; }
+#yutuqlar .yt-clock__marks { position: absolute; inset: 0; }
+#yutuqlar .yt-clock__marks i { position: absolute; left: 175px; top: 10px; width: 1px; height: 10px; background: rgba(30, 45, 90, .32); transform-origin: center 165px; }
+#yutuqlar .yt-clock__marks b { position: absolute; width: 30px; height: 20px; line-height: 20px; text-align: center; font: 700 17px/20px var(--font-body); color: #1e2d5a; }
+#yutuqlar .yt-clock__logo { position: absolute; left: 150px; top: 78px; width: 50px; height: 50px; filter: drop-shadow(0 1px 3px rgba(30, 45, 90, .28)); }
+#yutuqlar .yt-clock__brand { position: absolute; left: 0; right: 0; bottom: 104px; text-align: center; line-height: 1.2; pointer-events: none; }
+#yutuqlar .yt-clock__brand b { display: block; font: 800 17px/1.2 var(--font-body); letter-spacing: .03em; text-transform: uppercase; color: #2445c4; }
+#yutuqlar .yt-clock__brand small { display: block; margin-top: 2px; font: 600 12px/1.2 var(--font-body); color: #64748b; }
+#yutuqlar .yt-hand { position: absolute; z-index: 2; left: 175px; bottom: 175px; transform-origin: center bottom; will-change: transform; background: #1c2c58; box-shadow: 0 1px 4px rgba(20, 35, 80, .35); }
+#yutuqlar .yt-hand--h { width: 6px; height: 70px; margin-left: -3px; border-radius: 3px; }
+#yutuqlar .yt-hand--m { width: 4px; height: 100px; margin-left: -2px; border-radius: 2px; }
+#yutuqlar .yt-hand--s { width: 2px; height: 134px; margin-left: -1px; bottom: 161px; transform-origin: 1px 120px; background: none; box-shadow: none; transition: transform 140ms cubic-bezier(.34, 1.56, .64, 1); }
+#yutuqlar .yt-hand--s::before { content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 120px; background: #ff6b00; box-shadow: 0 0 6px rgba(255, 107, 0, .6); }
+#yutuqlar .yt-hand--s span { position: absolute; left: -2px; bottom: 0; width: 6px; height: 14px; border-radius: 0 0 4px 4px; background: #ff6b00; }
+#yutuqlar .yt-hand--s.no-tr { transition: none; }
+#yutuqlar .yt-clock__cap { position: absolute; z-index: 3; left: 161px; top: 161px; width: 28px; height: 28px; border-radius: 50%; background: #1c2c58; box-shadow: 0 0 0 3px rgba(255, 255, 255, .95), 0 2px 6px rgba(10, 20, 50, .35); }
+#yutuqlar .yt-clockcopy { display: grid; gap: 4px; }
+#yutuqlar .yt-clockcopy b { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; color: #fff; }
+#yutuqlar .yt-clockcopy span { color: rgba(255, 255, 255, .72); font-weight: 600; font-size: .95rem; }
+#yutuqlar .yt-clockcopy small { color: rgba(255, 255, 255, .6); font-size: .9rem; line-height: 1.45; max-width: 30ch; }
+
+/* ---- fan bo‘yicha saralash */
+#yutuqlar .yt-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 8px; }
+#yutuqlar .yt-chip { position: relative; padding: 8px 14px; border-radius: 99px; font-weight: 700; font-size: .875rem; color: rgba(255, 255, 255, .78); background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14); transition: color .3s, background .3s, border-color .3s; }
+#yutuqlar .yt-chip:hover { color: #fff; border-color: rgba(255, 255, 255, .4); }
+#yutuqlar .yt-chip[aria-pressed="true"] { color: #1a2856; background: #fcd34d; border-color: #fcd34d; }
+
+/* ---- coverflow sahnasi */
+#yutuqlar .yt-stage { --ch: 500px; position: relative; height: calc(var(--ch) + 60px); perspective: 1600px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+#yutuqlar .yt-track { position: absolute; inset: 0; }
+#yutuqlar .yt-cert { position: absolute; left: 50%; top: 50%; display: block; will-change: transform; outline: none;
+  transition: transform 520ms cubic-bezier(.33, 1, .68, 1), opacity 520ms cubic-bezier(.33, 1, .68, 1), filter 520ms cubic-bezier(.33, 1, .68, 1); }
+#yutuqlar .yt-cert.is-off { display: none; }
+#yutuqlar .yt-cert__frame { position: relative; display: block; overflow: hidden; border-radius: 16px; background: #fff; border: 1px solid rgba(255, 255, 255, .15);
+  box-shadow: 0 30px 60px -20px rgba(3, 8, 28, .75), 0 0 0 1px rgba(0, 0, 0, .2); transform-style: preserve-3d; }
+#yutuqlar .yt-cert img { display: block; height: var(--ch); width: auto; max-width: none; object-fit: contain; background: linear-gradient(135deg, #f1f5ff, #e2e8f5); }
+#yutuqlar .yt-cert.is-center .yt-cert__frame { box-shadow: 0 40px 80px -24px rgba(3, 8, 28, .85), 0 0 0 1px rgba(252, 211, 77, .45), 0 0 60px -10px rgba(252, 211, 77, .25); }
+#yutuqlar .yt-cert__sheen { position: absolute; inset: -40% -60%; pointer-events: none; background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, .55) 50%, transparent 58%); transform: translateX(-70%); opacity: 0; }
+#yutuqlar .yt-cert.is-sheen .yt-cert__sheen { animation: yt-sheen 1.1s cubic-bezier(.45, 0, .2, 1) .12s both; }
+@keyframes yt-sheen { 0% { transform: translateX(-70%); opacity: 1; } 100% { transform: translateX(70%); opacity: 1; } }
+#yutuqlar .yt-cert:focus-visible .yt-cert__frame { box-shadow: 0 0 0 3px #fcd34d, 0 40px 80px -24px rgba(3, 8, 28, .85); }
+#yutuqlar .yt-stage.is-pre .yt-cert { opacity: 0 !important; transform: translate(-50%, -46%) scale(.62) !important; filter: blur(8px) !important; transition: none; }
+#yutuqlar .yt-stage.is-drag { cursor: grabbing; }
+#yutuqlar .yt-arrow { position: absolute; z-index: 60; top: 50%; width: 46px; height: 46px; margin-top: -23px; display: grid; place-items: center; border-radius: 50%;
+  color: rgba(255, 255, 255, .85); background: rgba(8, 14, 40, .45); border: 1px solid rgba(255, 255, 255, .16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .3s, color .3s, transform .3s var(--ease-out); }
+#yutuqlar .yt-arrow:hover { background: rgba(8, 14, 40, .75); color: #fff; transform: scale(1.06); }
+#yutuqlar .yt-arrow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#yutuqlar .yt-arrow--prev { left: 4px; }
+#yutuqlar .yt-arrow--next { right: 4px; }
+
+/* ---- izoh + progress */
+#yutuqlar .yt-caption { max-width: 440px; min-height: 76px; margin: 4px auto 0; padding: 12px 20px; border-radius: 18px; text-align: center; overflow: hidden;
+  background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); }
+#yutuqlar .yt-caption__name { font-weight: 800; font-size: 1.125rem; color: #fff; overflow-wrap: anywhere; }
+#yutuqlar .yt-caption__meta { margin-top: 2px; font-size: .95rem; color: rgba(255, 255, 255, .7); }
+#yutuqlar .yt-progress { display: flex; align-items: center; gap: 14px; max-width: 440px; margin: 16px auto 0; }
+#yutuqlar .yt-bar { position: relative; flex: 1; height: 22px; cursor: pointer; touch-action: none; outline: none; }
+#yutuqlar .yt-bar::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border-radius: 99px; background: rgba(255, 255, 255, .15); }
+#yutuqlar .yt-bar__fill { position: absolute; left: 0; top: 50%; height: 6px; margin-top: -3px; width: var(--p, 0%); border-radius: 99px; background: #fcd34d; transition: width .45s cubic-bezier(.33, 1, .68, 1); }
+#yutuqlar .yt-bar__thumb { position: absolute; top: 50%; left: var(--p, 0%); width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fcd34d; box-shadow: 0 2px 8px rgba(0, 0, 0, .35); transition: left .45s cubic-bezier(.33, 1, .68, 1), transform .2s; }
+#yutuqlar .yt-bar:focus-visible .yt-bar__thumb, #yutuqlar .yt-bar:hover .yt-bar__thumb { transform: scale(1.25); }
+#yutuqlar .yt-bar.is-drag .yt-bar__fill, #yutuqlar .yt-bar.is-drag .yt-bar__thumb { transition: none; }
+#yutuqlar .yt-count { flex: none; min-width: 64px; text-align: right; font-weight: 700; font-size: .9rem; font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, .7); }
+
+/* ---- CTA */
+#yutuqlar .yt-btn-white { color: #1e3a8a; background: #fff; box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .5); }
+#yutuqlar .yt-btn-white::before { background: #fcd34d; }
+#yutuqlar .yt-btn-line { color: #fff; border: 1.5px solid rgba(255, 255, 255, .3); background: transparent; }
+#yutuqlar .yt-btn-line::before { background: rgba(255, 255, 255, .12); }
+#yutuqlar .yt-btn-line:hover { border-color: rgba(255, 255, 255, .6); }
+#yutuqlar .yt-tg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+
+@media (max-width: 1023px) {
+  #yutuqlar .yt-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "clock" "show" "cta"; grid-template-rows: none; row-gap: 26px; }
+  #yutuqlar .yt-head { justify-items: center; text-align: center; }
+  #yutuqlar .yt-text { margin-inline: auto; }
+  #yutuqlar .yt-clockrow { justify-content: center; }
+  #yutuqlar .yt-cta { justify-content: center; }
+}
+@media (max-width: 640px) {
+  #yutuqlar .yt-stage { --ch: 330px; height: calc(var(--ch) + 40px); }
+  #yutuqlar .yt-clockrow { flex-direction: column; text-align: center; gap: 16px; }
+  #yutuqlar .yt-clock { --size: 150px; --k: .4286; }
+  #yutuqlar .yt-clockcopy small { margin-inline: auto; }
+  #yutuqlar .yt-filter { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; margin-inline: calc(var(--gutter) * -1); padding: 2px var(--gutter) 6px; scrollbar-width: none; }
+  #yutuqlar .yt-filter::-webkit-scrollbar { display: none; }
+  #yutuqlar .yt-chip { flex: none; font-size: .9375rem; }
+  #yutuqlar .yt-count { font-size: .9375rem; }
+  #yutuqlar .yt-clockcopy small { font-size: .9375rem; }
+  #yutuqlar .yt-arrow { width: 40px; height: 40px; margin-top: -20px; }
+  #yutuqlar .yt-cta .btn { width: 100%; }
+  #yutuqlar .yt-stat { flex-direction: column; gap: 6px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #yutuqlar .yt-bg { animation: none; }
+  #yutuqlar .yt-cert { transition: opacity 520ms ease; }
+  #yutuqlar .yt-hand--s { transition: none; }
+}
