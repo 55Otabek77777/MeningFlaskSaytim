@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy A4: Telegram parchalarining tabiiy sarlavhalari
+- Tasdiqlangan 5 snapshot posti uchun ixcham sarlavhalar berildi. «#BERILDI ...», kontekstsiz «yuqorida» va eski postdagi «ertaga» bosh sahifada yarim jumla bo’lib chiqmaydi.
+- «Iloji boricha sog’-salomat» iborasi xabar mavzusini bildiradigan xolis sarlavhaga almashtirildi. Birinchi kartadagi reklama belgilariga to’la parcha ikki tabiiy jumlaga keltirildi.
+- Yangi fakt kiritilmadi. Asl manba matnlari snapshot’da, sanalar va post havolalari o’z holicha; kelajakdagi API postlari mavjud umumiy render’dan foydalanadi.
+- A106–A111 qaydlari qo’shildi: jami 111 tahrir qaydi. QA: yangi alifboda desktop/390 px yangiliklar va mock API sinovlari o’tdi; konsol/overflow/15 px xatosi 0.
+
 ## 2026-09-28 — yakuniy B4: Telegram rasmlarini tiklash
 - Haqiqiy media QA’da snapshot’dagi eski Telegram preview URL’lari `ERR_BLOCKED_BY_ORB` berdi. Shu postlarning (4848, 4847, 4845, 4844) amaldagi rasm manzillari rasmiy kanal sahifalaridan yangilandi; matn, sana, post ID va havola o’zgarmadi.
 - `refresh-media.mjs` qo’shildi: faqat snapshot’da bor postlar, faqat ruxsat etilgan rasm hostlari; barcha o’qishlar muvaffaqiyatli bo’lgach fayl yoziladi. Bu qo’lda ishlatiladigan yordamchi — saytdan Telegram sahifasiga yangi so’rov qo’shilmagan.
