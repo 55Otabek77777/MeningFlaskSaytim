@@ -53,7 +53,7 @@ try {
   await page.evaluate(()=>MUAlifbo.set('joriy'));await page.reload();
   await page.waitForFunction(()=>window.MU?.revealed);
   assert.equal(await page.evaluate(()=>MUAlifbo.mode),'joriy');
-  assert.match(await page.locator('#nz-title').innerText(),/bo’ling/);
+  assert.match(await page.locator('#nazorat .lead').first().innerText(),/Qo’ng’iroq/);
   assert.match(await page.title(),/Uchko’prik, Farg’ona/);
   assert.equal(logs.length,0);
  });

@@ -3,7 +3,7 @@
 | Qadam | Kimga | Qachon | Keyin |
 |---|---|---|---|
 | 1 | DIGITAL — dron videolari va kadrlari (fleshka, lokal disklar) | ✅ bajarildi (232d83e) → v3.4 | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude kadrlarni pastki bo’limlarga qo’yadi va «ChatGPT’ga berishga tayyor» deydi |
-| 2 | ChatGPT — o’zbekcha tekshiruv + chiroyli takliflar | Claude «ChatGPT’ga berishga tayyor» degach | ChatGPT hisobotini Claude chatiga tashlaysiz → Claude yaxshilarini qo’shadi, oxirgi commit xabarida «DEPLOYGA TAYYOR» |
+| 2 | ChatGPT — o’zbekcha tekshiruv + chiroyli takliflar | ✅ bajarildi (7805d05) → v3.5 | ChatGPT hisobotini Claude chatiga tashlaysiz → Claude yaxshilarini qo’shadi, oxirgi commit xabarida «DEPLOYGA TAYYOR» |
 | 3 | DIGITAL — deploy | Claude «DEPLOYGA TAYYOR» degach | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude tekshiradi |
 
 ---
@@ -111,7 +111,7 @@ Bu hisobotni egasi Claude chatiga olib boradi — aniq va to’liq yozing.
 ## 3-PROMPT — DIGITAL (deploy)
 
 ```
-Salom, DIGITAL. Bu — Claude Code cloud chatidan. Maktab bosh sahifasi (v3) deployga tayyor.
+Salom, DIGITAL. Bu — Claude Code cloud chatidan. Maktab bosh sahifasi (v3.5) deployga tayyor.
 Vazifa: uni mirzoulugbek.app ga deploy qilish (Next.js 15 sayt, Vercel — mirzo-digital-sayt).
 
 0. TEKSHIRING: repo 55Otabek77777/MeningFlaskSaytim, branch claude/logistics-site-animation-comparison-r4scvk.
@@ -123,16 +123,17 @@ Vazifa: uni mirzoulugbek.app ga deploy qilish (Next.js 15 sayt, Vercel — mirzo
 3. MEDIA: DEPLOY.md da sanalgan yangi fayllarni (26 ta: rasmlar + 3 ta dron klipi) saytning public/ ichiga
    ko’chiring, URL bir xil qolsin. Qoida: index.html dagi har bir https://mirzoulugbek.app/media/X →
    public/media/X (manba: maktab/JONLI-SAYT/MEDIA/X) — papkalar: bino/, bot/, dron/, dron/klip/, qulayliklar/.
-4. BOSH SAHIFA: maktab/index.html (bitta fayl, ~1,4 MB) ni public/ ga qo’ying (masalan public/bosh.html) va
+4. BOSH SAHIFA: maktab/index.html (bitta fayl, ~1,5 MB) ni public/ ga qo’ying (masalan public/bosh.html) va
    faqat «/» ni shu faylga yo’naltiring — next.config.ts da rewrites → beforeFiles:
    { source: '/', destination: '/bosh.html' } (yoki v2 da ishlatgan usulingiz). app/page.tsx ni o’chirmang
    (orqaga qaytish oson bo’lsin). Boshqa sahifalar (/yutuqlar, /tarix, /qabul …) va /api/* o’zgarmaydi.
-   index.html ichini qo’lda o’zgartirmang.
+   index.html ichini qo’lda o’zgartirmang. maktab/review/, maktab/qa/, dist/preview-* — deploy qilinmaydi.
 5. Avval PREVIEW deploy. Preview URL’da tekshiring (kompyuter + telefon):
    - bosh sahifa ochiladi, konsolda xato yo’q; hero video o’ynaydi, «Ovozni yoqish» ishlaydi;
    - barcha suratlar va dron kliplari chiqadi (yangi bino, «Maktabimiz — osmondan», footer panoramasi) — 404 yo’q;
    - sertifikatlar karuseli, «So’nggi yangiliklar» (/api/telegram-news), footerdagi tashriflar (/api/visit),
-     chat vidjeti (/api/chat) ishlaydi; «Ö / O’» alifbo tugmasi ishlaydi;
+     chat vidjeti (/api/chat) ishlaydi; «Ö / O’» alifbo tugmasi ishlaydi; yo’nalishlar filtri, «Maktab hayoti»
+     tugmalari, dron kadrlarini tanlash paneli va mobil menyu (ochish/yopish) ishlaydi;
    - boshqa sahifalar va menyu havolalari ishlaydi.
 6. Hammasi joyida bo’lsa — PRODUCTION ga chiqaring va o’sha tekshiruvni mirzoulugbek.app da takrorlang.
    Ariza formasidan FAQAT BITTA sinov: ism «Sinov Sinovov» → egasining Telegramiga kelganini tasdiqlang.

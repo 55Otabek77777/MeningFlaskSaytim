@@ -75,6 +75,24 @@
 - Bazaviy ko’rinish: Edge, 1440×900 va 390×844, 20 skrinshot — konsol/overflow/kichik matn xatosi 0. Animatsiyalar, video va media o’zgarmadi.
 - Eski changelog’dagi jonli ariza sinovi ko’rsatmalari joriy topshiriqda qo’llanmaydi: barcha sinovlar mock bilan.
 
+## 2026-09-28 — v3.5 — DEPLOYGA TAYYOR (ChatGPT yakuniy tekshiruvi birlashtirildi)
+Manba: `chatgpt/maktab-yakuniy` (`7805d05`, 11 commit; hisobot — `YAKUNIY-HISOBOT.md`, skrinshotlar — `review/yakuniy/`). Claude har bir commit’ni ko’rib chiqdi va birlashtirdi.
+
+**Qabul qilindi:** o’zbekcha matn tuzatishlari (111 qator: «Siz» murojaati, «Kimyo–biologiya» imlosi, sana formati «2026-yil 28-sentabr», ortiqcha va’dalar olib tashlandi, «minglab» kabi son ishorasi yo’q, «Hudud» maydoni, qabul shartlari — jonli sayt ariza formasidagi faktdan);
+alifbo: barcha apostroflar ikkala rejimda ’ ga keltiriladi; bot tugmalari va menyu nomlari botdagidek (`data-raw`);
+yo’nalishlar filtri — siljiydigan tanlov belgisi va natija soni; «Maktab hayoti» — oldingi/keyingi tugmalari, klaviatura, kattalashtirish belgisi;
+dron lentasi — 5 kadrni bevosita tanlash paneli, hisoblagich va klip ko’rinayotgan kadrga mos, sahifa yashirinsa klip to’xtaydi;
+yangiliklar — Telegram rasm manzillari yangilandi, matnsiz postlarga asl sarlavhasidan olingan qisqa nom; mobil menyuda yopish tugmasi ko’rinadi; `qa-language.mjs` (8 test).
+
+**Claude tuzatdi (egasining ko’rsatmasi ustun):**
+- Hero H1 — jonli saytning o’z shiori qoldirildi: «Biz nafaqat dars beramiz — farzandingiz kelajagini yaratamiz» (lead — ChatGPT varianti).
+- Nazorat — egasi «reklama qilganga o’xshab maqta» degan: sarlavha «Farzandingiz qayerda — Siz doim bilasiz», lead’ga ChatGPT’ning aniqligi qo’shildi («Botga ulangan bo’lsangiz…»); `qa-language.mjs` dagi tekshiruv shu bo’lim lead’iga ko’chirildi (maqsad o’zgarmadi: joriy alifbo qayta yuklashdan keyin saqlanadi).
+- SEO `description` — ChatGPT varianti + faktlar: 1998-yildan, 1560+ sertifikat, yotoqxona, Face ID.
+
+**Yakuniy tekshiruv:** `qa-language.mjs` 8/8 PASS; desktop + mobil to’liq sahifa (19 bo’lim) — konsol xatosi 0, overflow 0, 15 px dan kichik matn 0; reduced-motion mobil — toza;
+audit: foiz/son yo’q, narx yo’q, ʻ/ʼ yo’q, faqat ochiq telefonlar (+998 97 417 37 77, +998 94 595 37 77), tashqi skript yo’q; media 26/26 fayl mavjud va DEPLOY.md da.
+`index.html` ≈ 1,49 MB. Jonli `/api/ariza` ga hech narsa yuborilmadi.
+
 ## 2026-09-28 — v3.4 (DIGITAL: fleshkadagi 24.06.2026 dron s’yomkasi — `MEDIA/dron/`, 4K; hero videoga tegilmadi)
 | Qism | Nima |
 |---|---|

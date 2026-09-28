@@ -1,6 +1,6 @@
 # DEPLOY — DIGITAL seansi uchun
 
-1. Fayl: `maktab/index.html` (= `maktab/dist/index.html`, ≈ 1,43 MB, gzip ≈ 0,45 MB) — **v3** — bitta fayl, tashqi CDN/shrift/analitika yo’q.
+1. Fayl: `maktab/index.html` (= `maktab/dist/index.html`, ≈ 1,49 MB, gzip ≈ 0,47 MB) — **v3.5, DEPLOYGA TAYYOR** — bitta fayl, tashqi CDN/shrift/analitika yo’q.
    `dist/preview-inline.html` va `dist/artifact.html` — **faqat ko’rib chiqish uchun** (rasmlar data: URI), deploy qilinmaydi.
 2. Uni `mirzoulugbek.app` ildiziga bosh sahifa qilib qo’ying (Next.js: masalan `public/` ga statik fayl va `/` → shu fayl rewrite,
    yoki `app/page.tsx` o’rniga statik javob). Qolgan sahifalar va `/api/*` o’zgarmaydi.
