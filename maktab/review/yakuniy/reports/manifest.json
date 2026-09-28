@@ -1,0 +1,34 @@
+{
+  "baseCommit": "d32ec9b",
+  "sourceCommit": "5b4d0ea",
+  "fullPageTestCommit": "4cdd6b4",
+  "menuRetestCommit": "5b4d0ea",
+  "branch": "chatgpt/maktab-yakuniy",
+  "releaseSha256": "a81251a29f420b44fc05b588cc74b8d961614317af97925667ab6168f744738e",
+  "viewports": {
+    "desktop": "1440x900",
+    "mobile": "390x844 DPR2"
+  },
+  "screenshots": [
+    "a-mobile-hero-joriy.png",
+    "a-mobile-hero-yangi.png",
+    "b1-desktop-keyin.png",
+    "b1-desktop-oldin.png",
+    "b1-mobile-keyin.png",
+    "b1-mobile-oldin.png",
+    "b2-desktop-keyin.png",
+    "b2-mobile-keyin.png",
+    "b3-desktop-keyin.png",
+    "b3-desktop-oldin.png",
+    "b3-mobile-keyin.png",
+    "b3-mobile-oldin.png",
+    "b4-news-keyin.png",
+    "b5-menu-oldin.png",
+    "menu-joriy.png",
+    "menu-yangi.png"
+  ],
+  "fullPageScreenshotCount": 200,
+  "scenarioGroups": 33,
+  "liveApiRequests": 0,
+  "hashNormalization": "UTF-8, LF line endings"
+}

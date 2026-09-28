@@ -1,0 +1,31 @@
+{
+  "cert": {
+    "host": "storage.googleapis.com",
+    "width": 1420,
+    "height": 2000
+  },
+  "news": [
+    {
+      "host": "cdn4.telesco.pe",
+      "width": 320,
+      "height": 180
+    },
+    {
+      "host": "cdn4.telesco.pe",
+      "width": 320,
+      "height": 180
+    },
+    {
+      "host": "cdn4.telesco.pe",
+      "width": 320,
+      "height": 180
+    },
+    {
+      "host": "cdn4.telesco.pe",
+      "width": 320,
+      "height": 180
+    }
+  ],
+  "logs": [],
+  "liveApiRequests": 0
+}

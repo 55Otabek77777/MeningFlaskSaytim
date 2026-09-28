@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "name": "PASS desktop reduced=false filters, rapid changes, visibility, overflow, console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=false filters, rapid changes, visibility, overflow, console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=true filters, rapid changes, visibility, overflow, console",
+      "ok": true
+    },
+    {
+      "name": "PASS desktop reduced=false next/end/home/lightbox/console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=false next/end/home/lightbox/console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=true next/end/home/lightbox/console",
+      "ok": true
+    },
+    {
+      "name": "PASS desktop reduced=false five scenes, clips/static media, pause, console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=false five scenes, clips/static media, pause, console",
+      "ok": true
+    },
+    {
+      "name": "PASS mobile reduced=true five scenes, clips/static media, pause, console",
+      "ok": true
+    }
+  ]
+}

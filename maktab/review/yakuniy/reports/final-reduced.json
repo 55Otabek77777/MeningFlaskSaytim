@@ -1,0 +1,115 @@
+{
+  "desktop": {
+    "shots": [
+      "qa\\final-reduced\\desktop-hero.png",
+      "qa\\final-reduced\\desktop-qabulholati.png",
+      "qa\\final-reduced\\desktop-stats.png",
+      "qa\\final-reduced\\desktop-nazorat.png",
+      "qa\\final-reduced\\desktop-meros.png",
+      "qa\\final-reduced\\desktop-rasadxona.png",
+      "qa\\final-reduced\\desktop-yutuqlar.png",
+      "qa\\final-reduced\\desktop-yonalishlar.png",
+      "qa\\final-reduced\\desktop-process.png",
+      "qa\\final-reduced\\desktop-ariza.png",
+      "qa\\final-reduced\\desktop-hayot.png",
+      "qa\\final-reduced\\desktop-dron.png",
+      "qa\\final-reduced\\desktop-geografiya.png",
+      "qa\\final-reduced\\desktop-yangiliklar.png",
+      "qa\\final-reduced\\desktop-faq.png",
+      "qa\\final-reduced\\desktop-kanallar.png",
+      "qa\\final-reduced\\desktop-footer.png"
+    ],
+    "docHeight": 25800,
+    "scrollWidth": 1440,
+    "vw": 1440,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 4,
+    "pins": 0,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "nazorat",
+      "meros",
+      "rasadxona",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "dron",
+      "geografiya",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "logs": [],
+    "cancelledMedia": [
+      {
+        "type": "requestfailed",
+        "text": "https://mirzoulugbek.app/assets/video/hero.mp4 net::ERR_ABORTED"
+      }
+    ]
+  },
+  "mobile": {
+    "shots": [
+      "qa\\final-reduced\\mobile-hero.png",
+      "qa\\final-reduced\\mobile-qabulholati.png",
+      "qa\\final-reduced\\mobile-stats.png",
+      "qa\\final-reduced\\mobile-nazorat.png",
+      "qa\\final-reduced\\mobile-meros.png",
+      "qa\\final-reduced\\mobile-rasadxona.png",
+      "qa\\final-reduced\\mobile-yutuqlar.png",
+      "qa\\final-reduced\\mobile-yonalishlar.png",
+      "qa\\final-reduced\\mobile-process.png",
+      "qa\\final-reduced\\mobile-ariza.png",
+      "qa\\final-reduced\\mobile-hayot.png",
+      "qa\\final-reduced\\mobile-dron.png",
+      "qa\\final-reduced\\mobile-geografiya.png",
+      "qa\\final-reduced\\mobile-yangiliklar.png",
+      "qa\\final-reduced\\mobile-faq.png",
+      "qa\\final-reduced\\mobile-kanallar.png",
+      "qa\\final-reduced\\mobile-footer.png"
+    ],
+    "docHeight": 35756,
+    "scrollWidth": 390,
+    "vw": 390,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 4,
+    "pins": 0,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "nazorat",
+      "meros",
+      "rasadxona",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "dron",
+      "geografiya",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "smallText": [],
+    "logs": [],
+    "cancelledMedia": [
+      {
+        "type": "requestfailed",
+        "text": "https://mirzoulugbek.app/assets/video/hero.mp4 net::ERR_ABORTED"
+      }
+    ]
+  }
+}

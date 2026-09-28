@@ -1,5 +1,13 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy Q1: hisobot va tekshiruv dalillari
+- YAKUNIY-HISOBOT.md: egasi Claude’ga ko’chirishi uchun to’liq hisobot, 111 qatorli A jadvali, B1–B5 commit’lari, fayllar, QA, baho va eng muhim 5 tuzatish.
+- review/yakuniy/: 16 tanlangan PNG (12.7 MB), oldin/keyin taqqoslashlar, barcha asosiy JSON natijalar va release SHA-256 manifesti. Sertifikatning asl fayli repoga ko’chirilmagan.
+- Ikki alifboda desktop/390 px full QA: 200 skrinshot; konsol/runtime, overflow va <15 px matn xatosi 0. Reduced-motion: 34 skrinshot. B5’dan keyin mobil menyu alohida oddiy/reduced rejimlarda qayta sinovdan o’tdi.
+- Doimiy QA skriptlari: 8 alifbo + 9 interaksiya + 10 API + 6 navigatsiya = 33 ssenariy guruhi; barchasi o’tdi. GCS sertifikati va 4 Telegram rasmi haqiqiy hostlardan yuklandi, xato 0.
+- Barcha API so’rovlari mock. Ataylab sinovdagi 400/429 javoblari va brauzer bekor qilgan video so’rovlari natijalarda alohida yozilgan. Jonli ariza yuborilmadi.
+- Hero video markup/CSS/JS va dependency’lar d32ec9b bilan bir xil; 26 JS sintaksisi tekshirildi; index.html va dist/index.html teng. Jismoniy telefonda FPS o’lchovi bajarilmagan.
+
 ## 2026-09-28 — yakuniy B5: mobil menyuning yopish tugmasi va kontrasti
 - Vizual QA’da topildi: menyu z-index 900, header 800 bo’lgani uchun yopish tugmasi menyu ortida qolgan. Menyu ochiq paytda header tepaga ko’tariladi va oq fon bilan aniq ko’rinadi.
 - Menyu ichidagi Alifbo yozuvi va tanlanmagan tugma kontrasti oshirildi; faol rejim oq tugma bilan ajratildi, fokus halqasi qo’shildi.

@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "name": "Mixed apostrophes normalize to U+2019 in both modes",
+      "ok": true
+    },
+    {
+      "name": "Uzbek letters and uppercase words round-trip",
+      "ok": true
+    },
+    {
+      "name": "IELTS SAT Face ID Telegram START and public handles are unchanged",
+      "ok": true
+    },
+    {
+      "name": "data-raw protects external button labels, including nested elements",
+      "ok": true
+    },
+    {
+      "name": "Head stays in current alphabet; API option values remain original",
+      "ok": true
+    },
+    {
+      "name": "Dynamic assistant text normalizes, user text and API values stay raw",
+      "ok": true
+    },
+    {
+      "name": "Both alphabet modes preserve brand labels and bot buttons",
+      "ok": true
+    },
+    {
+      "name": "Current alphabet persists after reload without changing SEO",
+      "ok": true
+    }
+  ],
+  "logs": [],
+  "cancelledMedia": [
+    {
+      "type": "requestfailed",
+      "text": "https://mirzoulugbek.app/assets/video/hero.mp4 net::ERR_ABORTED"
+    }
+  ]
+}
