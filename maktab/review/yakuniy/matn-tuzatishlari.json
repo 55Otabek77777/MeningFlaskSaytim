@@ -106,5 +106,833 @@
     "after": "Qabul va maktab haqida ma’lumot",
     "reason": "Javob tezligiga va’da o’rniga yordamchining vazifasi.",
     "severity": "o’rta"
+  },
+  {
+    "id": "A13",
+    "group": "A2",
+    "file": "src/parts/20-stats/part.html",
+    "before": "2025–2026 o’quv yilida o’quvchilarimiz soni ilk minglik davriga qadam qo’ydi",
+    "after": "2025–2026 o’quv yilidagi o’quvchilar jamoamiz",
+    "reason": "Ilk minglik kartasidagi g’aliz davriga qadam qo’ydi jumlasi tabiiylashtirildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A14",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "surati va soati bilan",
+    "after": "surati va kirgan vaqti bilan",
+    "reason": "Soati so’zi o’rniga voqea vaqti aniq aytildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A15",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Kechikdi yoki o’tmadi — darhol bilasiz",
+    "after": "Kechikish va davomat haqida xabar",
+    "reason": "O’tmadi nimadan ekani noaniq; vazifa aniq nomlandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A16",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Uyga javob va qaytish",
+    "after": "Uyga ketish va maktabga qaytish",
+    "reason": "Og’zaki ibora o’rniga barcha oilalarga tushunarli atama.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A17",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "shifokor ko’rigi sanasi-soati",
+    "after": "shifokor ko’rigidan o’tgan sana va vaqt",
+    "reason": "Tabiiy so’z birikmasi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A18",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Bot menyusi — maktab qo’lingizda",
+    "after": "Bot orqali ma’lumot va aloqa",
+    "reason": "Kalka o’rniga bo’limning amaliy ma’nosi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A19",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "«Farzandim», «To’lovlar», «Aloqa», «Rahbariyatga savol va taklif»",
+    "after": "<span data-raw>«Farzandim», «To’lovlar», «Aloqa», «Rahbariyatga savol va taklif»</span>",
+    "reason": "Tashqi bot menyusi nomlari aynan botdagidek saqlanadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A20",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Apparat qanday javob beradi",
+    "after": "Face ID ranglari nimani bildiradi?",
+    "reason": "Ota-ona uchun bevosita tushunarli savol.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A21",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "davomat yozildi, ota-onaga xabar ketdi.",
+    "after": "davomat qayd etildi, botga ulangan ota-onaga xabar yuborildi.",
+    "reason": "Rasmiy, ravon ifoda va ulanish sharti.",
+    "severity": "yuqori"
+  },
+  {
+    "id": "A22",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "adminga murojaat qilish kerak.",
+    "after": "maktab mas’uliga murojaat qiling.",
+    "reason": "Hurmatli va tushunarli murojaat.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A23",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Telegram’da <a href=\"https://t.me/nazoratchiroobot\" target=\"_blank\" rel=\"noopener noreferrer\">@nazoratchiroobot</a> ni oching",
+    "after": "Telegram orqali <a href=\"https://t.me/nazoratchiroobot\" target=\"_blank\" rel=\"noopener noreferrer\">@nazoratchiroobot</a> botini oching",
+    "reason": "Username’dan keyingi ajralgan ni tuzatildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A24",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "«START» tugmasini bosing",
+    "after": "<span data-raw>«START»</span> tugmasini bosing",
+    "reason": "Inglizcha tashqi tugma nomiga data-raw qo’yildi.",
+    "severity": "past"
+  },
+  {
+    "id": "A25",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "«📱 Telefon raqamimni yuborish» ni bosing",
+    "after": "<span data-raw>«📱 Telefon raqamimni yuborish»</span> tugmasini bosing",
+    "reason": "Tashqi botdagi tugma nomi saqlandi, jumla to’g’rilandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A26",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "avval adminga ayting.",
+    "after": "avval qabul bo’limiga xabar bering.",
+    "reason": "Odobli va aniq harakat.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A27",
+    "group": "A2",
+    "file": "src/parts/25-meros/part.html",
+    "before": "qishloq bolalari ham dunyo darajasidagi ta’lim olsin.",
+    "after": "qishloq bolalari ham sifatli ta’lim olsin.",
+    "reason": "Dunyo darajasidagi kalkasi soddaroq, ishonchli maqsad bilan ifodalandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A28",
+    "group": "A2",
+    "file": "src/parts/25-meros/part.html",
+    "before": "Nomimiz — Mirzo Ulug’bek (1394–1449), 1018 yulduz katalogini tuzgan olim: aniqlik va ilm ramzi.",
+    "after": "Maktabimiz 1018 yulduzning o’rnini qayd etgan olim — Mirzo Ulug’bek (1394–1449) nomi bilan ataladi.",
+    "reason": "Grammatik bog’lanish tiklandi; sana va ilmiy raqam saqlandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A29",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Osmonni o’lchagan olim — <span>nomimiz shundan.</span>",
+    "after": "Osmonni o’lchagan olim — <span>nomimizdagi ilmiy meros.</span>",
+    "reason": "Nomimiz shundan og’zaki jumlasi adabiylashtirildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A30",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Aniqlik an’anasi davom etadi: bugun «Mirzo Ulug’bek» maktabida har bir yo’nalish — o’z orbitasiga ega aniq dastur.",
+    "after": "Ilmga qiziqish davom etadi. «Mirzo Ulug’bek» maktabining ta’lim yo’nalishlari bilan tanishing.",
+    "reason": "Orbitaga ega dastur sun’iy tashbehi o’rniga tushunarli o’tish.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A31",
+    "group": "A2",
+    "file": "src/parts/30-yutuqlar/part.html",
+    "before": "Ushbu kelajagingizni «Mirzo Ulug’bek» bilan birga yarating",
+    "after": "Farzandingizning ta’lim yo’lini birga tanlaymiz",
+    "reason": "Ushbu kelajagingizni grammatik-uslubiy g’alizligi tuzatildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A32",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Kuchli til bazasi va xalqaro imtihonlarga tayyorlov. Tajribali o’qituvchilar jamoasi bilan natijaga yo’naltirilgan darslar.",
+    "after": "Ingliz tilini puxta o’rganish va xalqaro imtihonlarga tayyorgarlik. Darslarni tajribali o’qituvchilar olib boradi.",
+    "reason": "Til bazasi va natijaga yo’naltirilgan darslar kalkasi tabiiylashtirildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A33",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Texnik oliygohlarga poydevor: olimpiada, sertifikat va kirish imtihonlariga tizimli tayyorlov.",
+    "after": "Texnika yo’nalishidagi oliy ta’lim muassasalariga tayyorgarlik: fan olimpiadalari, sertifikat va kirish imtihonlari.",
+    "reason": "Texnik oliygohlarga poydevor birikmasi aniqlashtirildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A34",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "2027–2028 dan reja",
+    "after": "2027–2028 o’quv yili uchun reja",
+    "reason": "Davr va reja maqomi to’liq ifodalandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A35",
+    "group": "A2",
+    "file": "src/parts/40-qabul-jarayoni/part.html",
+    "before": "Saytdagi onlayn forma yoki bitta qo’ng’iroq: ism-familiya, viloyat, sinf va telefon raqami — shuning o’zi yetarli.",
+    "after": "Saytdagi arizani to’ldiring yoki qo’ng’iroq qiling. Dastlabki murojaat uchun ism-familiya, hudud, sinf va telefon raqami kerak.",
+    "reason": "To’liq qabulga yetarli hujjatlar bilan dastlabki ariza farqlanadi.",
+    "severity": "yuqori"
+  },
+  {
+    "id": "A36",
+    "group": "A2",
+    "file": "src/parts/40-qabul-jarayoni/part.html",
+    "before": "Kerakli hujjatlar ro’yxatini adminlarimiz aytadi.",
+    "after": "Kerakli hujjatlar ro’yxatini qabul bo’limi xodimlari tushuntiradi.",
+    "reason": "Rasmiy xizmat atamasi va tabiiy fe’l.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A37",
+    "group": "A2",
+    "file": "src/parts/40-qabul-jarayoni/part.html",
+    "before": "farzandi kirgan/chiqqanini darhol biladi.",
+    "after": "farzandining maktabga kirgani yoki chiqqani haqida xabar oladi.",
+    "reason": "Qiyshiq chiziq o’rniga ravon gap; botga ulanish sharti avvalgi gapda saqlanadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A38",
+    "group": "A2",
+    "file": "src/parts/45-ariza/part.html",
+    "before": "Ariza bir daqiqa oladi. Tez orada menejerlarimiz siz bilan bog’lanadi.",
+    "after": "Arizani to’ldirish taxminan bir daqiqa vaqt oladi. So’ng menejerlarimiz Siz bilan bog’lanadi.",
+    "reason": "Tarjima kalkasi va aniq vaqt va’dasi yumshatildi, hurmat shakli.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A39",
+    "group": "A2",
+    "file": "src/parts/45-ariza/part.html",
+    "before": ">Viloyat<",
+    "after": ">Hudud<",
+    "reason": "Ro’yxatda Toshkent shahri va Qoraqalpog’iston Respublikasi ham bor.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A40",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": "Viloyatni tanlang.",
+    "after": "Hududni tanlang.",
+    "reason": "Forma yorlig’i bilan xato matni izchil.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A41",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": "Telefon raqamni to’liq kiriting:",
+    "after": "Telefon raqamingizni to’liq kiriting:",
+    "reason": "Qaratqich/egalik shakli tuzatildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A42",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": "Qayta yuborish shart emas — menejerlarimiz bilan bog’lanasiz.",
+    "after": "Qayta yuborish shart emas. Savolingiz bo’lsa, menejerlarimiz bilan bog’laning.",
+    "reason": "Noaniq kelasi zamon o’rniga aniq va xushmuomala yo’l-yo’riq.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A43",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": "`${+p.day}-${OY[+p.month - 1]}, ${p.year}, ${p.hour}:${p.minute}`",
+    "after": "`${p.year}-yil ${+p.day}-${OY[+p.month - 1]}, soat ${p.hour}:${p.minute}`",
+    "reason": "Sana yil–kun–oy tartibida, Toshkent vaqt mintaqasi saqlandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A44",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": "Arizangiz avval, ${when}da qabul qilingan.",
+    "after": "Arizangiz ${when}da qabul qilingan.",
+    "reason": "Ortiqcha vergul va avval takrori olib tashlandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A45",
+    "group": "A2",
+    "file": "src/parts/50-hayot/part.html",
+    "before": "Bir maktab — <span class=\"accent-azure\">minglab yorqin taqdir</span>",
+    "after": "Bilim, do’stlik va <span class=\"accent-azure\">maktab hayoti</span>",
+    "reason": "Minglab degan umumiy reklama o’rniga haqiqiy galereya mazmuni.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A46",
+    "group": "A2",
+    "file": "src/parts/50-hayot/part.html",
+    "before": "unutilmas bilim sayohatlaridan",
+    "after": "bilim sayohatlaridan",
+    "reason": "Sun’iy hissiy baho o’rniga sodda izoh.",
+    "severity": "past"
+  },
+  {
+    "id": "A47",
+    "group": "A2",
+    "file": "src/parts/50-hayot/part.html",
+    "before": "har kuni nazorat va g’amxo’rlikda.",
+    "after": "har kuni e’tibor va g’amxo’rlikda.",
+    "reason": "Oilaga yo’naltirilgan, iliqroq ohang; xavfsizlik faktlari alohida saqlangan.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A48",
+    "group": "A2",
+    "file": "src/parts/50-hayot/part.html",
+    "before": "2 haftada bir marta uyga javob;",
+    "after": "Ikki haftada bir marta uyga borishga ruxsat;",
+    "reason": "Hududiy og’zaki ibora adabiy shaklga keltirildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A49",
+    "group": "A2",
+    "file": "src/parts/50-hayot/part.html",
+    "before": "Kun va ovqat",
+    "after": "Kun tartibi va ovqatlanish",
+    "reason": "Atama izchilligi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A50",
+    "group": "A2",
+    "file": "src/parts/52-dron/part.html",
+    "before": "Kadrlar — maktabning dron s’yomkasidan (2026-yil iyun)",
+    "after": "Maktabning dron tasvirlari · 2026-yil iyun",
+    "reason": "Ruscha s’yomka o’rniga o’zbekcha tasvir.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A51",
+    "group": "A2",
+    "file": "src/parts/55-geografiya/part.html",
+    "before": "Maktab poyezd vokzaliga ~300 metr — boshqa viloyatlardan kelganlar poyezdda qulay qatnaydi.",
+    "after": "Maktabdan poyezd vokzaligacha taxminan 300 metr. Boshqa viloyatlardan keladigan oilalar uchun ham qulay.",
+    "reason": "Gapda masofa munosabati tiklandi; qiymat o’zgarmadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A52",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "Telegramda o’qish",
+    "after": "Telegram orqali o’qish",
+    "reason": "Brendga qo’shimcha qo’shmasdan tabiiy ifoda.",
+    "severity": "past"
+  },
+  {
+    "id": "A53",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "@nazoratchiroobot’ga ulanish",
+    "after": "Nazoratchi botga ulanish",
+    "reason": "Username’ga apostrofli qo’shimcha o’rniga xizmat nomi; URL o’zgarmadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A54",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "tashrif sanasi-soati",
+    "after": "tashrif sanasi va vaqti",
+    "reason": "G’aliz juft atama tuzatildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A55",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "Uyga javobdan qaytish muddati",
+    "after": "Uyga ketgan o’quvchilarning qaytish muddati",
+    "reason": "Ota-onaga tushunarli adabiy shakl.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A56",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/yangiliklar.js",
+    "before": "`${+p.day}-${OY[+p.month - 1]}, ${p.year}`",
+    "after": "`${p.year}-yil ${+p.day}-${OY[+p.month - 1]}`",
+    "reason": "Yangilik sanasi o’zbekcha tartibda.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A57",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/yangiliklar.js",
+    "before": "`${d.getDate()}-${OY[d.getMonth()]}, ${d.getFullYear()}`",
+    "after": "`${d.getFullYear()}-yil ${d.getDate()}-${OY[d.getMonth()]}`",
+    "reason": "Sana fallback’i ham bir xil tartibda.",
+    "severity": "past"
+  },
+  {
+    "id": "A58",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/yangiliklar.js",
+    "before": "'Telegram post'",
+    "after": "'Telegram xabari'",
+    "reason": "Inglizcha fallback yorlig’i o’zbekchalashtirildi.",
+    "severity": "past"
+  },
+  {
+    "id": "A59",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Maktab menejeri qo’ng’iroqqa har kuni 06:00 — 21:30 javob beradi.",
+    "after": "Maktab menejeriga har kuni soat 06:00 dan 21:30 gacha qo’ng’iroq qilishingiz mumkin.",
+    "reason": "Vaqt oralig’i grammatik jihatdan to’liq va tabiiy.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A60",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Qabul qachondan boshlanadi?",
+    "after": "Hozir qabul davom etyaptimi?",
+    "reason": "Tarixiy boshlanish o’rniga ota-onaning hozirgi savoli; sana javobda saqlanadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A61",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Rasmiy qabul 2026-yil 1-avgust, soat 07:00 dan boshlangan.",
+    "after": "Rasmiy qabul 2026-yil 1-avgust kuni soat 07:00 da boshlangan.",
+    "reason": "Sana/vaqtning bog’lanishi to’g’rilandi; tarixiy 07:00 o’zgarmadi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A62",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "8–11-sinflarga va bitiruvchilarga (11-sinfni tugatganlar).",
+    "after": "8–11-sinflar o’quvchilari hamda 11-sinfni tugatgan bitiruvchilar uchun ariza qabul qilinadi.",
+    "reason": "Tugallanmagan va kelishigi mos bo’lmagan gap tuzatildi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A63",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Maktab poyezd vokzaliga ~300 metr masofada",
+    "after": "Maktabdan poyezd vokzaligacha taxminan 300 metr",
+    "reason": "Masofa ifodasi to’g’rilandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A64",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Batafsil ma’lumotni adminlarimiz beradi.",
+    "after": "Batafsil ma’lumotni qabul bo’limi xodimlari beradi.",
+    "reason": "Admin atamasi ota-onaga tushunarli shaklda.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A65",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Kelishilgan vaqtda adminlar kutib oladi",
+    "after": "Kelishilgan vaqtda Sizni maktab xodimlari kutib oladi",
+    "reason": "Hurmat va grammatik to’liqlik.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A66",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Qanday sertifikatlarga tayyorlanadi?",
+    "after": "Qaysi imtihonlarga tayyorlanadi?",
+    "reason": "Sertifikatga emas, imtihonga tayyorlanish aniqroq.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A67",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "litsenziya № 363657, 21.08.2024",
+    "after": "2024-yil 21-avgustda berilgan № 363657 litsenziya",
+    "reason": "Sana o’zbekcha yozildi; litsenziya raqami saqlandi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A68",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Kerakli hujjatlar ro’yxatini adminlarimiz aytadi.",
+    "after": "Kerakli hujjatlar ro’yxatini qabul bo’limi xodimlari tushuntiradi.",
+    "reason": "Qabul bosqichi bilan izchil atama.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A69",
+    "group": "A2",
+    "file": "src/parts/75-kanallar/part.html",
+    "before": "Kelishilgan vaqtda adminlar kutib oladi — oldindan qo’ng’iroq qiling.",
+    "after": "Tashrif vaqtini oldindan qo’ng’iroq qilib kelishib oling. Sizni maktabimizda kutamiz.",
+    "reason": "Tabiiy va hurmatli mehmondo’stlik ifodasi.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A70",
+    "group": "A2",
+    "file": "src/parts/75-kanallar/part.html",
+    "before": "Dushanba — Yakshanba, 06:00 — 21:30",
+    "after": "Har kuni, 06:00 — 21:30",
+    "reason": "Haftaning yetti kuni ekani ravshan; bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A71",
+    "group": "A2",
+    "file": "src/parts/99-footer/part.html",
+    "before": "Dushanba — Yakshanba",
+    "after": "Har kuni",
+    "reason": "Ish vaqti boshqa bo’limlar bilan izchil.",
+    "severity": "past"
+  },
+  {
+    "id": "A72",
+    "group": "A2",
+    "file": "src/parts/99-footer/part.html",
+    "before": "tajribali jamoa va bitta maqsad:",
+    "after": "tajribali jamoa va umumiy maqsad:",
+    "reason": "Tabiiy so’z birikmasi.",
+    "severity": "past"
+  },
+  {
+    "id": "A73",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": ">FAQ<",
+    "after": ">Savollar<",
+    "reason": "Menyu atamasi o’zbekcha.",
+    "severity": "past"
+  },
+  {
+    "id": "A74",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "Hujjat topshirish",
+    "after": "Ariza qoldirish",
+    "reason": "Tugma hujjat yuklash emas, dastlabki arizaga olib boradi.",
+    "severity": "past"
+  },
+  {
+    "id": "A75",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "Kimyo–Biologiya",
+    "after": "Kimyo–biologiya",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A76",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "Matematika–Fizika",
+    "after": "Matematika–fizika",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A77",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "Matematika–Ingliz tili",
+    "after": "Matematika–ingliz tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A78",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "Ona tili–Adabiyot",
+    "after": "Ona tili–adabiyot",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A79",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "O‘",
+    "after": "O’",
+    "reason": "Joriy alifbo tugmasida U+2019.",
+    "severity": "past"
+  },
+  {
+    "id": "A80",
+    "group": "A2",
+    "file": "src/parts/00-core/part.html",
+    "before": "G‘",
+    "after": "G’",
+    "reason": "Joriy alifbo izohida U+2019.",
+    "severity": "past"
+  },
+  {
+    "id": "A81",
+    "group": "A2",
+    "file": "src/parts/10-hero/part.html",
+    "before": "Birinchi qadamni tashlang — hujjat topshiring",
+    "after": "Qabul uchun ariza qoldiring",
+    "reason": "Ixcham va amaliy CTA.",
+    "severity": "past"
+  },
+  {
+    "id": "A82",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Kimyo–Biologiya",
+    "after": "Kimyo–biologiya",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A83",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Matematika–Fizika",
+    "after": "Matematika–fizika",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A84",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Matematika–Ingliz tili",
+    "after": "Matematika–ingliz tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A85",
+    "group": "A2",
+    "file": "src/parts/27-rasadxona/part.html",
+    "before": "Ona tili–Adabiyot",
+    "after": "Ona tili–adabiyot",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A86",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Kimyo–Biologiya",
+    "after": "Kimyo–biologiya",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A87",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Matematika–Fizika",
+    "after": "Matematika–fizika",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A88",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Matematika–Ingliz tili",
+    "after": "Matematika–ingliz tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A89",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Ona tili–Adabiyot",
+    "after": "Ona tili–adabiyot",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A90",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Rus tili–Ingliz tili",
+    "after": "Rus tili–ingliz tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A91",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Rus tili–Ona tili",
+    "after": "Rus tili–ona tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A92",
+    "group": "A2",
+    "file": "src/parts/35-yonalishlar/part.html",
+    "before": "Rus tili–Tarix",
+    "after": "Rus tili–tarix",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A93",
+    "group": "A2",
+    "file": "src/parts/40-qabul-jarayoni/part.html",
+    "before": " siz bilan",
+    "after": " Siz bilan",
+    "reason": "Hurmat murojaati izchil.",
+    "severity": "past"
+  },
+  {
+    "id": "A94",
+    "group": "A2",
+    "file": "src/parts/45-ariza/part.html",
+    "before": "Birinchi qadamni tashlang — <span class=\"accent-coral\">hujjat topshiring</span>",
+    "after": "Qabul uchun <span class=\"accent-coral\">ariza qoldiring</span>",
+    "reason": "Forma vazifasi aniq.",
+    "severity": "past"
+  },
+  {
+    "id": "A95",
+    "group": "A2",
+    "file": "src/parts/45-ariza/ariza.js",
+    "before": " siz bilan",
+    "after": " Siz bilan",
+    "reason": "Hurmat murojaati izchil.",
+    "severity": "past"
+  },
+  {
+    "id": "A96",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "Rus tili–Ingliz tili",
+    "after": "Rus tili–ingliz tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A97",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "Rus tili–Ona tili",
+    "after": "Rus tili–ona tili",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A98",
+    "group": "A2",
+    "file": "src/parts/65-yangiliklar/part.html",
+    "before": "Rus tili–Tarix",
+    "after": "Rus tili–tarix",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A99",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "Kimyo–Biologiya",
+    "after": "Kimyo–biologiya",
+    "reason": "Fan nomlarida bosh harf izchilligi.",
+    "severity": "past"
+  },
+  {
+    "id": "A100",
+    "group": "A2",
+    "file": "src/parts/99-footer/part.html",
+    "before": ">FAQ<",
+    "after": ">Savollar<",
+    "reason": "Menyu atamasi o’zbekcha.",
+    "severity": "past"
+  },
+  {
+    "id": "A101",
+    "group": "A2",
+    "file": "src/parts/99-footer/part.html",
+    "before": "Hujjat topshirish",
+    "after": "Ariza qoldirish",
+    "reason": "Tugma hujjat yuklash emas, dastlabki arizaga olib boradi.",
+    "severity": "past"
+  },
+  {
+    "id": "A102",
+    "group": "A2",
+    "file": "src/parts/22-nazorat/part.html",
+    "before": "Farzandingiz kirishdagi Face ID qurilmasidan o’tganida, <b>Nazoratchi bot</b> botga ulangan ota-onaga Telegram orqali surati va kirgan vaqti bilan xabar yuboradi.",
+    "after": "Botga ulangan bo’lsangiz, farzandingiz kirishdagi Face ID qurilmasidan o’tganida <b>Nazoratchi bot</b> Sizga Telegram orqali surati va kirgan vaqti bilan xabar yuboradi.",
+    "reason": "Bot so’zi takrori bartaraf etildi, Siz murojaati aniq.",
+    "severity": "o’rta"
+  },
+  {
+    "id": "A103",
+    "group": "A2",
+    "file": "src/parts/40-qabul-jarayoni/part.html",
+    "before": "8–9-sinflarga qabul ariza asosida. 10–11-sinflarga — kuchaytirilgan suhbat va sinov asosida.",
+    "after": "8–9-sinflarga qabul ariza asosida. 10–11-sinflarga — kuchaytirilgan suhbat va sinov asosida. 11-sinf va bitiruvchilar uchun yo’nalish bo’yicha sertifikat talab etiladi.",
+    "reason": "JONLI-SAYT/MATNLAR.md dagi sertifikat talabi jarayonda ham ko’rinadi.",
+    "severity": "yuqori"
+  },
+  {
+    "id": "A104",
+    "group": "A2",
+    "file": "src/parts/70-faq/part.html",
+    "before": "10–11-sinflar: kuchaytirilgan suhbat va sinov) → shartnoma va hujjatlar.",
+    "after": "10–11-sinflar: kuchaytirilgan suhbat va sinov) → shartnoma va hujjatlar. 11-sinf va bitiruvchilar uchun yo’nalish bo’yicha sertifikat talab etiladi.",
+    "reason": "FAQ va formadagi sinf shartlari izchil.",
+    "severity": "yuqori"
   }
 ]

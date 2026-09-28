@@ -51,9 +51,9 @@ MU.part('ariza', {
     const fieldOf = k => root.querySelector(`[data-field="${k}"]`);
     const rules = {
       fullName: () => { const v = nameI.value.trim(); return v.length >= 3 && v.length <= 120 ? '' : 'Ism-familiyani to’liq kiriting.'; },
-      region: () => (regionS.value ? '' : 'Viloyatni tanlang.'),
+      region: () => (regionS.value ? '' : 'Hududni tanlang.'),
       grade: () => (form.querySelector('input[name="grade"]:checked') ? '' : 'Sinfni tanlang.'),
-      phone: () => (/^\d{9}$/.test(digits()) ? '' : 'Telefon raqamni to’liq kiriting: +998 90 123 45 67')
+      phone: () => (/^\d{9}$/.test(digits()) ? '' : 'Telefon raqamingizni to’liq kiriting: +998 90 123 45 67')
     };
     const check = k => {
       const msg = rules[k](), f = fieldOf(k);
@@ -81,7 +81,7 @@ MU.part('ariza', {
       try {
         const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tashkent', day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
           .formatToParts(d).map(x => [x.type, x.value]));
-        return `${+p.day}-${OY[+p.month - 1]}, ${p.year}, ${p.hour}:${p.minute}`;
+        return `${p.year}-yil ${+p.day}-${OY[+p.month - 1]}, soat ${p.hour}:${p.minute}`;
       } catch (e) { return ''; }
     };
     /* 60 soniyalik mijoz tomoni cheklovi — jonli saytdagi kabi localStorage["ariza_last_submit"] */
@@ -117,10 +117,10 @@ MU.part('ariza', {
       if (res.ok && data.ok && data.duplicate) {
         setBtn('ok'); stamp();
         const when = fmtDate(data.createdAt);
-        say('is-info', `<b class="az-st__title">Siz allaqachon ro’yxatdan o’tgansiz</b><p>${when ? `Arizangiz avval, ${when}da qabul qilingan.` : 'Arizangiz avval qabul qilingan.'} Qayta yuborish shart emas — menejerlarimiz bilan bog’lanasiz.</p><p class="az-st__sub">Ma’lumotlaringizni to’g’rilash kerak bo’lsa yoki xabarnomalarni kuzatib borish uchun rasmiy botimizga o’ting 👇</p>${BOT}<p class="az-st__sub">Savol bo’lsa: <a href="tel:+998974173777">+998 97 417 37 77</a></p>`);
+        say('is-info', `<b class="az-st__title">Siz allaqachon ro’yxatdan o’tgansiz</b><p>${when ? `Arizangiz ${when}da qabul qilingan.` : 'Arizangiz avval qabul qilingan.'} Qayta yuborish shart emas. Savolingiz bo’lsa, menejerlarimiz bilan bog’laning.</p><p class="az-st__sub">Ma’lumotlaringizni to’g’rilash kerak bo’lsa yoki xabarnomalarni kuzatib borish uchun rasmiy botimizga o’ting 👇</p>${BOT}<p class="az-st__sub">Savol bo’lsa: <a href="tel:+998974173777">+998 97 417 37 77</a></p>`);
       } else if (res.ok && data.ok) {
         setBtn('ok'); stamp(); confetti();
-        say('is-ok', `<b class="az-st__title">Arizangiz qabul qilindi ✅</b><p>Tez orada menejerlarimiz siz bilan bog’lanadi.</p><p class="az-st__sub">So’nggi yangiliklar, natijalar va savollaringizga javob olish uchun rasmiy botimizga o’ting 👇</p>${BOT}`);
+        say('is-ok', `<b class="az-st__title">Arizangiz qabul qilindi ✅</b><p>Tez orada menejerlarimiz Siz bilan bog’lanadi.</p><p class="az-st__sub">So’nggi yangiliklar, natijalar va savollaringizga javob olish uchun rasmiy botimizga o’ting 👇</p>${BOT}`);
       } else if (res.status === 429 || data.error === 'rate_limited') {
         setBtn('idle');
         say('is-warn', 'Iltimos, bir daqiqadan so’ng qayta urinib ko’ring.');

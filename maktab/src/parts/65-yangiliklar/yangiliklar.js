@@ -19,8 +19,8 @@ MU.part('yangiliklar', {
       try {
         const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tashkent', day: 'numeric', month: 'numeric', year: 'numeric' })
           .formatToParts(d).map(x => [x.type, x.value]));
-        return `${+p.day}-${OY[+p.month - 1]}, ${p.year}`;
-      } catch (e) { return `${d.getDate()}-${OY[d.getMonth()]}, ${d.getFullYear()}`; }
+        return `${p.year}-yil ${+p.day}-${OY[+p.month - 1]}`;
+      } catch (e) { return `${d.getFullYear()}-yil ${d.getDate()}-${OY[d.getMonth()]}`; }
     };
     /* sarlavha — birinchi qator yoki birinchi gap (≤ max belgi), qolgani — matn */
     const split = (text, max) => {
@@ -87,7 +87,7 @@ MU.part('yangiliklar', {
         body.className = 'ny-row__body';
         const tt = document.createElement('span');
         tt.className = 'ny-row__title';
-        tt.textContent = r.title || 'Telegram post';
+        tt.textContent = r.title || 'Telegram xabari';
         body.appendChild(tt);
         const d = fmtDate(p.date);
         if (d) { const dt = document.createElement('time'); dt.className = 'ny-date'; dt.dateTime = p.date; dt.textContent = d; body.appendChild(dt); }

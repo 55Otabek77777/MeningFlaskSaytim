@@ -1,5 +1,14 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy A2: tabiiy o’zbekcha, sana va murojaat
+- «Siz» murojaati, fan nomlari, «Savollar», «Ariza qoldirish», «Hudud», sana/vaqt va telefon izohlari izchil qilindi. API region/grade qiymatlari saqlandi.
+- «Telegram’ingizga», «maktab qo’lingizda», «s’yomka», «til bazasi», «sanasi-soati» kabi kalkalar tabiiy ifodaga almashtirildi.
+- Ariza duplicate va yangilik sanalari `2026-yil 14-avgust, soat 14:12` shaklida. ISO qiymatlari va Asia/Tashkent saqlandi.
+- Tashqi botning aniq menyu/tugma nomlariga `data-raw` qo’yildi; «START» va «Telefon raqamimni yuborish» aynan saqlanadi. Alifbo tugmasidagi O’/G’ U+2019 bilan.
+- FAQ savoli joriy qabul holatiga mos; tarixiy 2026-yil 1-avgust 07:00 o’zgarmadi. Ish vaqti 06:00 — 21:30. 11-sinf/bitiruvchilarning manbadagi sertifikat talabi jarayon va FAQ’da ham aytildi.
+- FAQ elementlari alohida qatorlarga ajratildi. Barcha aniq almashtirishlar `review/yakuniy/matn-tuzatishlari.json` A2 guruhida (A1+A2: 104 yozuv).
+- Joriy alifboda desktop/mobil hero, ariza va FAQ tekshirildi: konsol/overflow/15 px xatosi 0. To’liq yakuniy sinovlar umumiy hisobotda.
+
 ## 2026-09-28 — yakuniy A1: aniq va ishonchli matn
 - Hero matni bilim, tarbiya va ota-ona bilan maslahatga yo’naltirildi; hero video elementi, CSS va JS o’zgarmadi.
 - SEO description’da ta’lim tajribasi xususiy maktab maqomi bilan aralashtirilmaydi. Head joriy alifboda.
