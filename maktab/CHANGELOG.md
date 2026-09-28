@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy B4: Telegram rasmlarini tiklash
+- Haqiqiy media QA’da snapshot’dagi eski Telegram preview URL’lari `ERR_BLOCKED_BY_ORB` berdi. Shu postlarning (4848, 4847, 4845, 4844) amaldagi rasm manzillari rasmiy kanal sahifalaridan yangilandi; matn, sana, post ID va havola o’zgarmadi.
+- `refresh-media.mjs` qo’shildi: faqat snapshot’da bor postlar, faqat ruxsat etilgan rasm hostlari; barcha o’qishlar muvaffaqiyatli bo’lgach fayl yoziladi. Bu qo’lda ishlatiladigan yordamchi — saytdan Telegram sahifasiga yangi so’rov qo’shilmagan.
+- Snapshot va undan yaratilgan `a-news.js`, release yangilandi. Mavjud logo fallback ham saqlandi.
+- Haqiqiy GCS sertifikati va to’rtta Telegram rasmi yuklandi; konsol/tarmoq xatosi 0. Barcha API sinovda mock. Rasm manzillari eskirsa, yordamchini, gen-news.mjs va release build’ni ketma-ket qayta ishga tushirish mumkin.
+
 ## 2026-09-28 — yakuniy B3: dron kadrlarini tanlash
 - Besh kadrga bevosita o’tish paneli, faol kadr belgisi va klaviatura fokusi qo’shildi. Desktop’da kadr nomlari; 390 px da 46 px balandlikdagi ixcham raqamlar va to’liq aria-label.
 - Hisoblagich, panel va videolar scrub tugashidagi haqiqiy kadrga bog’landi. Ken Burns, yaqinlashish/o’tishlar, kamera ramkasi, DRON belgisi, asl progress hamda 3 klip saqlandi.
