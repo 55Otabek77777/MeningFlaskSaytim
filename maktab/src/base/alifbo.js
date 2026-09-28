@@ -11,18 +11,19 @@
   const RE_O = new RegExp('([Oo])' + AP, 'g');
   const RE_G = new RegExp('([Gg])' + AP, 'g');
   const PROTECT = /(https?:\/\/[^\s<>"«»]+|www\.[^\s<>"«»]+|[\w.+-]+@[\w-]+\.[\w.]+|@[A-Za-z0-9_]{3,}|#[A-Za-z0-9_]+|\b[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.(?:app|com|uz|org|me|net|io)\b(?:\/[^\s<>"«»]*)?)/g;
-  const NEED_NEW = /[OoGg]['’‘\u02BB\u02BC`´]|[Ss][Hh]|[Cc][Hh]/;
-  const NEED_OLD = /[ÖöĞğŞşÇç]/;
+  const NEED_NEW = /[OoGg]['’‘\u02BB\u02BC`´]|[Ss][Hh]|[Cc][Hh]|['‘\u02BB\u02BC`´]/;
+  const NEED_OLD = /[ÖöĞğŞşÇç]|['‘\u02BB\u02BC`´]/;
+  const apostrophe = s => s.replace(/['‘\u02BB\u02BC`´]/g, '’');
   const up = (s, i) => { const n = s.charAt(i); return n && n === n.toUpperCase() && n !== n.toLowerCase(); };
 
   function segNew(s) {
-    return s.replace(RE_O, (m, o) => (o === 'O' ? 'Ö' : 'ö'))
+    return apostrophe(s).replace(RE_O, (m, o) => (o === 'O' ? 'Ö' : 'ö'))
       .replace(RE_G, (m, g) => (g === 'G' ? 'Ğ' : 'ğ'))
       .replace(/S[Hh]/g, 'Ş').replace(/s[Hh]/g, 'ş')
       .replace(/C[Hh]/g, 'Ç').replace(/c[Hh]/g, 'ç');
   }
   function segOld(s) {
-    return s.replace(/[ÖöĞğŞşÇç]/g, (ch, i, str) => {
+    return apostrophe(s).replace(/[ÖöĞğŞşÇç]/g, (ch, i, str) => {
       const U = up(str, i + 1) || (up(str, i - 1) && !/[a-zа-я]/.test(str.charAt(i + 1)));
       switch (ch) {
         case 'Ö': return 'O’';

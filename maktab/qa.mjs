@@ -88,10 +88,10 @@ export async function openPage(file, vp = 'desktop', { reduced = false, waitReve
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl', '--autoplay-policy=no-user-gesture-required']
   });
   const context = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion: reduced ? 'reduce' : 'no-preference' });
-  await context.addInitScript(mode => localStorage.setItem('mu_alifbo', mode), alphabet);
+  await context.addInitScript(mode => { if (localStorage.getItem('mu_alifbo') === null) localStorage.setItem('mu_alifbo', mode); }, alphabet);
   await mockRoutes(context, { ariza, liveMedia });
   const page = await context.newPage();
-  const logs = [];
+  const logs = [], cancelledMedia = [];
   page.on('console', m => {
     const t = m.type();
     if (t === 'error' || t === 'warning') {
@@ -101,7 +101,14 @@ export async function openPage(file, vp = 'desktop', { reduced = false, waitReve
     }
   });
   page.on('pageerror', e => logs.push({ type: 'pageerror', text: (e.stack || e.message).split('\n').slice(0, 5).join('\n') }));
-  page.on('requestfailed', q => { if (!q.url().startsWith('data:')) logs.push({ type: 'requestfailed', text: q.url().slice(0, 140) + ' ' + (q.failure() || {}).errorText }); });
+  page.on('requestfailed', q => {
+    if (q.url().startsWith('data:')) return;
+    const error = (q.failure() || {}).errorText;
+    const entry = { type: 'requestfailed', text: q.url().slice(0, 140) + ' ' + error };
+    // A video stopped by reduced-motion or a reload is a cancellation, not a console error.
+    if (q.resourceType() === 'media' && error === 'net::ERR_ABORTED') cancelledMedia.push(entry);
+    else logs.push(entry);
+  });
   const abs = path.isAbsolute(file) ? file : path.join(ROOT, file);
   const port = await serve(path.dirname(abs));
   await page.goto(`http://127.0.0.1:${port}/${path.basename(abs)}`, { waitUntil: 'load', timeout: 60000 });
@@ -109,7 +116,7 @@ export async function openPage(file, vp = 'desktop', { reduced = false, waitReve
     await page.waitForFunction(() => window.MU && window.MU.revealed, null, { timeout: 25000 })
       .catch(() => logs.push({ type: 'qa', text: 'MU.revealed was not reached within 25s (preloader stuck or boot error)' }));
   }
-  return { browser, context, page, logs };
+  return { browser, context, page, logs, cancelledMedia };
 }
 
 export async function scrollTo(page, spec) {
@@ -187,7 +194,7 @@ async function main() {
   const frames = opt('frames') ? opt('frames').split(',').map(Number) : null;
   const report = {};
   for (const vp of vps) {
-    const { browser, page, logs } = await openPage(file, vp, { reduced: flag('reduced'), liveMedia: flag('live-media'), alphabet: opt('alifbo') || 'yangi' });
+    const { browser, page, logs, cancelledMedia } = await openPage(file, vp, { reduced: flag('reduced'), liveMedia: flag('live-media'), alphabet: opt('alifbo') || 'yangi' });
     await sleep(flag('full') ? 2200 : 900);
     const r = report[vp] = { shots: [] };
     const take = async (spec, label) => {
@@ -225,6 +232,7 @@ async function main() {
       return out;
     });
     r.logs = logs;
+    r.cancelledMedia = cancelledMedia;
     await browser.close();
   }
   fs.mkdirSync(out, { recursive: true });

@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy A3: ikkala alifboda tutuq belgisi
+- Dinamik matnlardagi turli apostroflar ham U+2019 (`’`) ga keltiriladi: `taʼlim` → `ta’lim`. O’/G’ harflarining mavjud konvertatsiyasi saqlandi.
+- `data-raw`, tashqi bot tugmalari, URL/handle/email, foydalanuvchi matni va API qiymatlari o’zgarmaydi.
+- Yangi `qa-language.mjs`: 8 tekshiruv o’tdi — ikki alifbo, brendlar, apostrof, nested data-raw, SEO/JSON-LD, dinamik matn va qayta ochilganda tanlovning saqlanishi.
+- QA init tanlangan alifboni qayta yuklashda buzmaydi. Brauzer to’xtatgan media `ERR_ABORTED` alohida diagnostikaga yoziladi; haqiqiy konsol/tarmoq xatolari hanuz sinovni yiqitadi. Hero kodi o’zgarmadi.
+
 ## 2026-09-28 — yakuniy A2: tabiiy o’zbekcha, sana va murojaat
 - «Siz» murojaati, fan nomlari, «Savollar», «Ariza qoldirish», «Hudud», sana/vaqt va telefon izohlari izchil qilindi. API region/grade qiymatlari saqlandi.
 - «Telegram’ingizga», «maktab qo’lingizda», «s’yomka», «til bazasi», «sanasi-soati» kabi kalkalar tabiiy ifodaga almashtirildi.

@@ -934,5 +934,14 @@
     "after": "10–11-sinflar: kuchaytirilgan suhbat va sinov) → shartnoma va hujjatlar. 11-sinf va bitiruvchilar uchun yo’nalish bo’yicha sertifikat talab etiladi.",
     "reason": "FAQ va formadagi sinf shartlari izchil.",
     "severity": "yuqori"
+  },
+  {
+    "id": "A105",
+    "group": "A3",
+    "file": "src/base/alifbo.js",
+    "before": "taʼlim / ma‘lumot / san'at",
+    "after": "ta’lim / ma’lumot / san’at",
+    "reason": "Turli manbalardan kelgan dinamik matnda tutuq U+2019 bilan bir xil yoziladi; himoyalangan matn o’zgarmaydi.",
+    "severity": "o’rta"
   }
 ]
