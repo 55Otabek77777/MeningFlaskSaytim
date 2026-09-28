@@ -1686,6 +1686,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron .dr-cap span:not(.dr-no) { color: rgba(255, 255, 255, .78); }
 #dron .dr-no { font-family: var(--font-mono); font-size: .9375rem; color: #93c5fd; letter-spacing: .1em; }
 #dron .dr-hud, #dron .dr-corner { display: none; }
+#dron .dr-chapters { display: none; }
 #dron .dr-src { width: min(1240px, calc(100% - 32px)); margin: 14px auto 0; font-size: .9375rem; color: rgba(255, 255, 255, .6); }
 @media (max-width: 700px) { #dron .dr-list { grid-template-columns: minmax(0, 1fr); } }
 
@@ -1703,7 +1704,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron.is-live .dr-vid.is-on { opacity: 1; }
 #dron.is-live .dr-item::after { content: ''; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(180deg, rgba(8, 13, 30, .72) 0%, rgba(8, 13, 30, .08) 34%, rgba(8, 13, 30, .1) 58%, rgba(8, 13, 30, .82) 100%); }
-#dron.is-live .dr-cap { position: absolute; z-index: 2; left: max(16px, calc((100% - 1240px) / 2)); right: 16px; bottom: clamp(84px, 13vh, 130px); padding: 0; max-width: 620px; }
+#dron.is-live .dr-cap { position: absolute; z-index: 2; left: max(16px, calc((100% - 1240px) / 2)); right: 16px; bottom: clamp(205px, 24vh, 240px); padding: 0; max-width: 620px; }
 #dron.is-live .dr-cap b { font-size: clamp(1.6rem, 3.4vw, 2.8rem); line-height: 1.05; letter-spacing: -.02em; }
 #dron.is-live .dr-cap span:not(.dr-no) { font-size: clamp(1rem, 1.4vw, 1.2rem); }
 #dron.is-live .dr-hud { display: flex; align-items: center; gap: 16px; position: absolute; z-index: 3; left: max(16px, calc((100% - 1240px) / 2)); right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(36px, 6vh, 60px);
@@ -1720,14 +1721,24 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron.is-live .dr-corner--bl { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
 #dron.is-live .dr-corner--br { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
 #dron.is-live .dr-src { position: absolute; z-index: 3; right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(62px, 9vh, 92px); width: auto; margin: 0; }
+#dron.is-live .dr-chapters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; position: absolute; z-index: 4; left: max(16px, calc((100% - 1240px) / 2)); right: max(16px, calc((100% - 1240px) / 2)); bottom: 112px; padding: 6px; border: 1px solid #ffffff35; border-radius: 18px; background: #0b183dcc; backdrop-filter: blur(16px); box-shadow: 0 14px 35px -20px #000; }
+#dron .dr-chapters button { position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 14px; min-width: 0; min-height: 54px; padding: 12px 18px; border: 1px solid transparent; border-radius: 12px; color: #d7e5f9; font-size: 15px; text-align: left; transition: background .35s, border-color .35s, color .35s; }
+#dron .dr-chapters b { font-family: var(--font-mono); font-size: 15px; font-variant-numeric: tabular-nums; color: #a9c9f6; }
+#dron .dr-chapters button:hover { background: #ffffff15; }
+#dron .dr-chapters button[aria-current="true"] { background: #ffffff1f; border-color: #adcdf980; color: #fff; box-shadow: inset 0 -2px #93c5fd; }
+#dron .dr-chapters button[aria-current="true"] b { color: #fff; }
+#dron .dr-chapters button:focus-visible { outline: 3px solid #f4c871; outline-offset: 2px; }
 @media (max-width: 700px) {
   #dron.is-live { height: 330vh; }
-  #dron.is-live .dr-cap { bottom: 196px; right: 16px; }
+  #dron.is-live .dr-cap { bottom: 250px; right: 16px; }
   #dron.is-live .dr-hud { bottom: 150px; right: 88px; }
   #dron.is-live .dr-src { display: none; }
   #dron.is-live .dr-corner--bl, #dron.is-live .dr-corner--br { bottom: 108px; }
   #dron.is-live .dr-corner { width: 24px; height: 24px; }
   #dron.is-live .dr-corner--tl, #dron.is-live .dr-corner--tr { top: 88px; }
+  #dron.is-live .dr-chapters { bottom: 178px; right: 88px; padding: 4px; gap: 3px; border-radius: 15px; }
+  #dron .dr-chapters button { justify-content: center; min-height: 46px; padding: 8px 0; border-radius: 10px; }
+  #dron .dr-chapters button span { display: none; }
 }
 
 /* ---- 55-geografiya/geografiya.css ---- */
@@ -3088,6 +3099,13 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <div class="dr-cap"><span class="dr-no">05</span><b>Poyezd vokzaliga ~300 metr</b><span>Boşqa viloyatlardan keliş qulay</span></div>
       </li>
     </ol>
+    <nav class="dr-chapters" aria-label="Dron kadrlarini tanlaş">
+      <button type="button" aria-label="1-kadr: Uçköprik tumani" aria-controls="dr-kadr-1" aria-current="true"><b aria-hidden="true">01</b><span>Hudud</span></button>
+      <button type="button" aria-label="2-kadr: Qayroğoç qişloği" aria-controls="dr-kadr-2"><b aria-hidden="true">02</b><span>Mahalla</span></button>
+      <button type="button" aria-label="3-kadr: yangi bino" aria-controls="dr-kadr-3"><b aria-hidden="true">03</b><span>Yangi bino</span></button>
+      <button type="button" aria-label="4-kadr: maktab hovlisi" aria-controls="dr-kadr-4"><b aria-hidden="true">04</b><span>Hovli</span></button>
+      <button type="button" aria-label="5-kadr: poyezd vokzali" aria-controls="dr-kadr-5"><b aria-hidden="true">05</b><span>Vokzal</span></button>
+    </nav>
     <div class="dr-hud" aria-hidden="true">
       <span class="dr-rec"><i></i>DRON</span>
       <span class="dr-count"><b>01</b> / 05</span>
@@ -9634,11 +9652,13 @@ MU.part('dron', {
     const { gsap } = MU;
     const items = Array.from(root.querySelectorAll('.dr-item'));
     const n = items.length;
+    const chapters = Array.from(root.querySelectorAll('.dr-chapters button'));
+    items.forEach((item, i) => { item.id = 'dr-kadr-' + (i + 1); });
     const countB = root.querySelector('.dr-count b'), prog = root.querySelector('.dr-prog b');
     MU.mm.add('(prefers-reduced-motion: no-preference)', () => {
       root.classList.add('is-live');
       /* sahnaga yaqinlashganda hamma kadrlar yuklansin */
-      MU.onVisible(root, v => { if (v) items.forEach(it => { const im = it.querySelector('img'); if (im) im.loading = 'eager'; }); }, '600px');
+      const disconnect = MU.onVisible(root, v => { if (v) items.forEach(it => { const im = it.querySelector('img'); if (im) im.loading = 'eager'; }); }, '600px');
       const imgs = items.map(it => it.querySelector('.dr-ph'));
       const caps = items.map(it => it.querySelector('.dr-cap'));
       gsap.set(items, { autoAlpha: 0 }); gsap.set(items[0], { autoAlpha: 1 });
@@ -9664,23 +9684,46 @@ MU.part('dron', {
       let active = -1, inView = false;
       const sync = () => vids.forEach((v, j) => {
         if (!v) return;
-        if (j === active && inView && videoOk()) {
+        if (j === active && inView && !document.hidden && videoOk()) {
           if (!v.getAttribute('src')) { v.addEventListener('playing', () => v.classList.add('is-on'), { once: true }); v.src = v.dataset.src; }
           const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
         } else if (!v.paused) v.pause();
       });
       const st = MU.ScrollTrigger.create({
         trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, animation: tl,
-        onToggle(self) { inView = self.isActive; sync(); },
-        onUpdate(self) {
-          const i = Math.min(n - 1, Math.floor(self.progress * n * 0.999));
-          countB.textContent = String(i + 1).padStart(2, '0');
-          gsap.set(prog, { scaleX: self.progress });
-          if (i !== active) { active = i; sync(); }
-        }
+        onToggle(self) { inView = self.isActive; sync(); }
       });
+      // Use rendered timeline time: the counter and clip follow the visible scene during scrub.
+      const updateChapter = () => {
+          const i = Math.min(n - 1, Math.floor((tl.time() + 0.225) / 1.45));
+          countB.textContent = String(i + 1).padStart(2, '0');
+          gsap.set(prog, { scaleX: tl.progress() });
+          if (i !== active) {
+            active = i;
+            chapters.forEach((b, j) => { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+            sync();
+          }
+      };
+      tl.eventCallback('onUpdate', updateChapter);
+      updateChapter();
+      const selectChapter = e => {
+        const i = chapters.indexOf(e.currentTarget);
+        const p = (i * 1.45 + 0.4) / tl.duration();
+        MU.scrollTo(st.start + (st.end - st.start) * p, { duration: 0.9 });
+      };
+      chapters.forEach(b => b.addEventListener('click', selectChapter));
+      document.addEventListener('visibilitychange', sync);
+      window.addEventListener('resize', sync, { passive: true });
+      if (conn.addEventListener) conn.addEventListener('change', sync);
       MU.ScrollTrigger.refresh();
-      return () => { vids.forEach(v => v && v.pause()); st.kill(); tl.kill(); root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' }); };
+      return () => {
+        chapters.forEach(b => b.removeEventListener('click', selectChapter));
+        document.removeEventListener('visibilitychange', sync);
+        window.removeEventListener('resize', sync);
+        if (conn.removeEventListener) conn.removeEventListener('change', sync);
+        disconnect(); vids.forEach(v => v && v.pause()); st.kill(); tl.kill();
+        root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' });
+      };
     });
   }
 });

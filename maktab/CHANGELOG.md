@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy B3: dron kadrlarini tanlash
+- Besh kadrga bevosita o’tish paneli, faol kadr belgisi va klaviatura fokusi qo’shildi. Desktop’da kadr nomlari; 390 px da 46 px balandlikdagi ixcham raqamlar va to’liq aria-label.
+- Hisoblagich, panel va videolar scrub tugashidagi haqiqiy kadrga bog’landi. Ken Burns, yaqinlashish/o’tishlar, kamera ramkasi, DRON belgisi, asl progress hamda 3 klip saqlandi.
+- Tab yashirilganda kliplar pauza qiladi; ekran/tarmoq sharti o’zgarganda ijro qayta tekshiriladi. Portret va reduced-motion’da kliplar yuklanmaydi; statik galereya saqlandi.
+- QA desktop/390 px: beshala kadr tanlandi; desktop’da 1/3/5-kliplarning ijrosi tasdiqlandi; bo’limdan chiqishda pauza; reduced-motion statik. Konsol/overflow/15 px xatosi 0. Hero video kodi o’zgarmadi.
+
 ## 2026-09-28 — yakuniy B2: haqiqiy suratlar galereyasi
 - Oldingi/keyingi surat tugmalari, ArrowLeft/ArrowRight/Home/End boshqaruvi, chekka holat belgilari va foydalanuvchi tanlovini o’qiydigan yashirin status qo’shildi.
 - Kattalashtirish belgisi suratlarning bosilishini tushunarli qiladi; mavjud lightbox saqlandi. Hisoblagich suratning haqiqiy o’rniga qarab yangilanadi.
