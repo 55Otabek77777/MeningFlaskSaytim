@@ -122,8 +122,9 @@ oldida metall panjara-darvoza; kanal 4623 videosidagi tepadan ko‘rinish (`qula
 | `maktab-bayrogi.webp` | 1920×1080 | Osmon fonida maktab bayrog‘i («Mirzo Ulug’bek xususiy maktabi» logotipli) — detal/parallaks | rolik ≈ 0:08 | — |
 
 Kirish qismi (yaqin plan), hovli ichkarisi, kechki yoritilgan ko‘rinish — rolikda **yo‘q**; kanal 4680 videosida kirish zinasi bor,
-lekin embed bermaydi. Asl dron/kirish suratlari egasining Surface kompyuterida deyilgan — «Javas loyihasi» chatiga so‘rov
-yuborilgani hisobotda.
+lekin embed bermaydi. Asl dron/kirish suratlari egasining Surface kompyuterida deyilgan: «Javas loyihasi» seansi mavjud emas,
+so‘rov ROUTER’ga berildi — Surface 28.09 kechasi o‘chiq edi; ROUTER yoqilgach kalit so‘z bo‘yicha ro‘yxat oladi va **ko‘chirishga
+egasidan ruxsat so‘raydi** (bolalar suratlari bo‘lishi mumkin). Kelsa — `MEDIA/bino/ASL/` → webp → shu jadvalga qo‘shiladi.
 
 `MEDIA/qulayliklar/` ga rolikdan qo‘shildi: `vokzal-temir-yol-dron.webp` (temir yo‘l kesishmasi, avtobuslar — «vokzalga 300 m»),
 `tadbir-yurish-dron.webp` (dron: bayroqli yurish, odamlar juda kichik), `tadbir-bayroqlar.webp` (bog‘da bayroqli yurish, yuzlar kichik),
