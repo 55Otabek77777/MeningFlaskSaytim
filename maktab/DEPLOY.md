@@ -11,8 +11,10 @@
      `/photos/grads-2324-a.webp`, `/photos/grads-2324-b.webp`, `/photos/students-2425-a.webp`, `/photos/students-2425-b.webp`,
      `/photos/students-2425-c.webp`, `/photos/trip-orda.webp`, `/photos/trip-a.webp`, `/photos/trip-b.webp`
    - **v3 da yangi** — shu fayllarni saytning `public/media/` ichiga ko’chiring (URL `https://mirzoulugbek.app/media/...`):
-     `JONLI-SAYT/MEDIA/qulayliklar/{sinfxona-1,sinfxona-2,bino-dron-1,bino-dron-2}.webp` → `public/media/qulayliklar/` (v3.1: `bino-dron-1` qo’shildi),
+     `JONLI-SAYT/MEDIA/qulayliklar/{sinfxona-1,sinfxona-2,bino-dron-1,sayohat-orda-dron-2,tadbir-bayroqlar}.webp` → `public/media/qulayliklar/`,
+     `JONLI-SAYT/MEDIA/bino/{yangi-bino-fasad,yangi-bino-fasad-keng}.webp` → `public/media/bino/`,
      `JONLI-SAYT/MEDIA/bot/namuna-c-odatiy-kun.webp` → `public/media/bot/`
+     (bu ro’yxat `index.html` dagi `mirzoulugbek.app/media/…` havolalari bilan aynan mos — deploy’dan keyin birortasi ham 404 bermasin)
    - tashqi rasm hostlari (jonli saytdagidek): `storage.googleapis.com/ulugbek-perfect-edu-7b4fa-certs/…` (sertifikatlar), `*.telesco.pe` (Telegram)
    - API: `POST /api/ariza`, `GET|POST /api/visit`, `POST /api/track-call`, `POST /api/chat`, `GET /api/telegram-news`
 4. Deploy’dan keyin tekshiruv:

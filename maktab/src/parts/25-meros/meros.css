@@ -31,7 +31,7 @@
 #meros .mr-steps p { color: var(--text-2); line-height: 1.55; }
 #meros .mr-bld { margin: 0; position: relative; border-radius: 18px; overflow: hidden; box-shadow: 0 20px 44px -26px rgba(30, 58, 138, .6); }
 #meros .mr-bld img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; display: block; transition: transform .8s var(--ease-out, ease); }
-#meros .mr-bld--new img { object-position: 50% 44%; }
+#meros .mr-bld--new img { object-position: 40% 50%; }
 #meros .mr-bld:hover img { transform: scale(1.04); }
 #meros .mr-bld figcaption { position: absolute; left: 8px; bottom: 8px; padding: 6px 10px; border-radius: 10px; background: rgba(255, 255, 255, .92); font-weight: 800; font-size: .85rem; color: var(--mu-ink); }
 

@@ -1,5 +1,13 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.2 (DIGITAL’ning yangi bino suratlari)
+| Qism | Nima |
+|---|---|
+| 25-meros | 2025 «Kengayish — yangi bino»: **`bino/yangi-bino-fasad.webp`** (asl YouTube rolikidan 1920×1080: peshtoqida «XUSUSIY MIRZO ULUG’BEK MAKTABI») — endi 2024 (birinchi bino) bilan yonma-yon solishtiriladi. |
+| 75-kanallar | Tashrif kartasi: **`bino/yangi-bino-fasad-keng.webp`** — ko’chadan ko’rinish (kelganda tanib olish oson). |
+| 50-hayot | Lenta 8 → **10 surat**: boshida **Qo’qon O’rdasi — dron kadri** (o’quvchilar saroy zinasida), 5-o’rinda **tadbir — bayroqlar bilan**. |
+| DEPLOY.md | `public/media/` ro’yxati `index.html` dagi havolalar bilan aynan moslandi (8 fayl; `bino-dron-2` endi ishlatilmaydi). |
+
 ## 2026-09-28 — v3.1 (egasining v3 izohlari bo’yicha)
 | Qism | Nima |
 |---|---|
