@@ -16,7 +16,8 @@ oldin berilgan ULKAN PROMPT’da (`maktab/SPEC.md`). Bu papka unga **material** 
 | `MATNLAR.md` | Bosh sahifadagi HAR BIR sarlavha, matn, tugma — ekrandagi tartibda (+ eskirgan joylar ro‘yxati) |
 | `MEDIA.md` | Rasm/video ro‘yxati: fayl · nima tasvirlangan · saytda qayerda ishlatiladi |
 | `MEDIA/` | `public/` dan ko‘chirilgan fayllar: `logo.png`, `og-image.png`, `assets/video/hero.mp4` (+poster), `photos/*` |
-| `MEDIA/qulayliklar/` | **(28.09)** bino dron kadrlari (1080×1920), sinfxona, forma detali — 8 ta webp; Face ID/yotoqxona/oshxona/lab/shifokor/sport suratlari topilmadi (MEDIA.md §6) |
+| `MEDIA/bino/` | **(28.09, v3.1)** yangi (3 qavatli) bino: fasad ×2, dron ×2, hudud panoramasi ×2, bayroq — 7 ta webp 1920×1080, asl YouTube rolikidan (MEDIA.md §8; «yangi» — ko‘rinish bo‘yicha, egasi tasdiqlashi kerak) |
+| `MEDIA/qulayliklar/` | **(28.09)** dron kadrlari (1080×1920), sinfxona ×3, daftarlar, forma, temir yo‘l (dron), tadbir yurishlari — 10 ta webp; Face ID/yotoqxona/oshxona/lab/shifokor/sport suratlari topilmadi (MEDIA.md §6) |
 | `MEDIA/bot/` | **(28.09)** nazoratchi bot xabarnoma **namunalari** (soxta ism) va Face ID infografikalari — 8 ta webp; haqiqiy skrinshot yo‘q (MEDIA.md §7) |
 | `MATNLAR.md` → «BOSHQA SAHIFALAR», «NAZORATCHI BOT» | **(28.09)** /maktab-haqida, /qabul, /faq, /tarix, /aloqa matnlari aynan; bot /start, menyu tugmalari, Face ID va shifokor xabarnoma shablonlari |
 | `API.md` | Bosh sahifa chaqiradigan endpointlar, JSON namunalari, Firestore kolleksiyalari, ma’lumot oqimi |

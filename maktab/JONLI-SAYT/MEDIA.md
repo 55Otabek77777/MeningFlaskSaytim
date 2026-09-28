@@ -72,7 +72,6 @@ Quyidagilar — egasi o‘zi ochiq e’lon qilgan (kanal) yoki sayt uchun bergan
 |---|---|---|---|
 | `bino-dron-1.webp` | **1080×1920** dron kadri (vertikal): maktab hududi va Qayrog‘och qishlog‘i panoramasi, kulrang tomli asosiy bino, daraxtlar, dalalar ufqda | kanal 4623 videosidan (07.2026) kadr — `ffmpeg`, q2 | mobil hero (9:16), parallaks, «Bino» kartasi (kesib 16:9 qilish mumkin) |
 | `bino-dron-2.webp` | **1080×1920** dron kadri: binoning tepadan ko‘rinishi — tom, hovli, darvoza, mashinalar; odam ko‘rinmaydi | kanal 4623 videosi | «Bino/xavfsizlik» kartasi, geografiya fon |
-| `bino-dron-3.webp` | 800×452 foto: drondan bino va hovlida saf tortgan o‘quvchilar (juda kichik, yuz ko‘rinmaydi) — kanal beradigan eng katta o‘lcham | kanal 4618 (07.2026) | karta/thumbnail (hero uchun kichik) |
 | `forma-orqadan.webp` | 1080×1920 kadr: maktab formasidagi (oq futbolka, «MIRZO ULUG’BEK XUSUSIY MAKTABI») o‘quvchi orqadan — yuzsiz brend detali | kanal 4623 videosi | «Maktab hayoti» detal, CTA fon |
 | `sinfxona-1.webp` | Sinfxona: oq devor, katta derazalar, oq partalar, konditsioner; bir nechta o‘quvchi dars vaqtida (yon/orqa tomondan) | kanal 02.09.2026 (Telegram eksport) | «Sinfxona» kartasi |
 | `sinfxona-2.webp` | Katta sinfxona, to‘liq guruh dars vaqtida (keng plan) | kanal 02.09.2026 | «Maktab hayoti» |
@@ -102,6 +101,34 @@ egasining o‘z ismi «MASHRABOV OTABEK», surat o‘rnida «NAMUNA — haqiqiy 
 
 ⛔ Yuklanmadi (ataylab): haftalik davomat dashbordlari va «Ota-onalarga murojaat» video kadrlari — ularda **o‘quvchilar soni** yozilgan.
 Eslatma: egasining 12.09 dagi video murojaatida «6 ta Face ID apparati» deyilgan (4 ta kirish + 1 tibbiy xona + boshqa); saytdagi tasdiqlangan shakl — **«kirish joylarida 4 ta»** (SPEC §9). Ziddiyat bo‘lsa egasidan so‘raladi, hozircha 4.
+
+## 8. Yangi bino — `MEDIA/bino/` (2026-09-28, v3.1 so‘rovi)
+
+Manba: **`RO'LIK YOTUBE (2).mp4`** — maktabning asl YouTube roligi (1920×1080, 20 Mbit/s, 1:40; `hero.mp4` shuning siqilgan
+nusxasi), `D:\DIGITAL\SAYT UCHUN KERAKLI RASM VA VIDEO\`. Kadrlar `ffmpeg -q:v 2` bilan olindi, keskinlik bo‘yicha tanlandi.
+Ikki bino farqi: **birinchi (eski) bino** — `photos/history-1994.webp`: 2 qavat, markazida ko‘tarilgan peshtoq, ko‘k eshik, oldida
+archalar. **Yangi (2025) bino** — 3 qavat, 2–3-qavatlarda balkonlar, tekis tom, peshtoq lentasida «XUSUSIY MIRZO ULUG’BEK MAKTABI»,
+oldida metall panjara-darvoza; kanal 4623 videosidagi tepadan ko‘rinish (`qulayliklar/bino-dron-2.webp`) ham shu bino.
+⚠️ «Yangi/eski» ajratish — ko‘rinish bo‘yicha xulosa; egasining tasdig‘i so‘ralgan (taqqoslash rasmi yuborildi).
+
+| fayl | o‘lcham | nima tasvirlangan | manba | bino |
+|---|---|---|---|---|
+| `yangi-bino-fasad.webp` | 1920×1080 | Oldingi fasad, pastdan yuqoriga: 3 qavat, balkonlar, «XUSUSIY MIRZO ULUG’BEK …» yozuvi, bayroqlar, kirish oldida mashina va 2 kishi (uzoqda) | rolik ≈ 0:12 | yangi |
+| `yangi-bino-fasad-keng.webp` | 1920×1080 | Ko‘cha bo‘ylab keng plan: bino butun uzunligi, panjara, mashina, daraxtlar | rolik ≈ 0:07 | yangi |
+| `yangi-bino-dron.webp` | 1920×1080 | Dron, qiya: kulrang tomli 3 qavatli bino, hovli, darvoza, qo‘shni tomlar | rolik ≈ 0:11 | yangi |
+| `yangi-bino-dron-2.webp` | 1920×1080 | Dron, boshqa burchak: bino va hovli, atrof mahalla | rolik ≈ 0:10.5 | yangi |
+| `hudud-panorama-dron.webp` | 1920×1080 | Dron panorama: maktab hududi, qishloq va dalalar ufqda (kun) | rolik ≈ 0:08.5 | ikkalasi |
+| `hudud-panorama-dron-2.webp` | 1920×1080 | Dron panorama, kengroq (Uchko‘prik) — fon uchun | rolik ≈ 1:30 | — |
+| `maktab-bayrogi.webp` | 1920×1080 | Osmon fonida maktab bayrog‘i («Mirzo Ulug’bek xususiy maktabi» logotipli) — detal/parallaks | rolik ≈ 0:08 | — |
+
+Kirish qismi (yaqin plan), hovli ichkarisi, kechki yoritilgan ko‘rinish — rolikda **yo‘q**; kanal 4680 videosida kirish zinasi bor,
+lekin embed bermaydi. Asl dron/kirish suratlari egasining Surface kompyuterida deyilgan — «Javas loyihasi» chatiga so‘rov
+yuborilgani hisobotda.
+
+`MEDIA/qulayliklar/` ga rolikdan qo‘shildi: `vokzal-temir-yol-dron.webp` (temir yo‘l kesishmasi, avtobuslar — «vokzalga 300 m»),
+`tadbir-yurish-dron.webp` (dron: bayroqli yurish, odamlar juda kichik), `tadbir-bayroqlar.webp` (bog‘da bayroqli yurish, yuzlar kichik),
+`sayohat-orda-dron-1.webp` (Qo‘qon O‘rdasi — dron, gulzor va saroy, odamlar mayda), `sayohat-orda-dron-2.webp` (O‘rda zinasida saf tortgan
+o‘quvchilar — dron, yuzlar ko‘rinmaydi). Hammasi 1920×1080, rolik ≈ 0:48–0:57.
 
 ## 5. Yangiliklar rasmlari
 Telegram kanal postlarining rasmlari `https://cdn4.telesco.pe/file/...` (yoki `*.cdn-telegram.org`) URL’lari — `t.me/s/ulugbek_rm` preview’dan olinadi, muddati o‘tishi mumkin. Statik saqlanmaydi.
