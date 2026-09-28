@@ -88,3 +88,12 @@
 @media (max-width: 560px) { #hayot .hy-shots { grid-template-columns: minmax(0, 1fr); } #hayot .hy-shot--tall { aspect-ratio: 3 / 4; } }
 #hayot .hy-slide, #hayot .hy-shot { cursor: zoom-in; }
 #hayot .hy-slide:focus-visible .hy-frame, #hayot .hy-shot:focus-visible { outline: 3px solid var(--mu-primary-2); outline-offset: 4px; }
+#hayot .hy-controls { display: flex; flex: none; gap: 8px; }
+#hayot .hy-controls button { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--line-2); border-radius: 50%; background: #fff; color: var(--mu-primary); box-shadow: 0 6px 18px -12px #1e3a8a90; transition: background .25s, color .25s, transform .25s; }
+#hayot .hy-controls button:hover:not([aria-disabled="true"]) { background: var(--mu-primary); color: #fff; transform: translateY(-2px); }
+#hayot .hy-controls button[aria-disabled="true"] { opacity: .4; cursor: default; }
+#hayot .hy-controls button:focus-visible { outline: 3px solid var(--mu-gold); outline-offset: 3px; }
+#hayot .hy-controls svg, #hayot .hy-zoom svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#hayot .hy-zoom { position: absolute; z-index: 3; top: 16px; right: 16px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ffffff65; border-radius: 50%; color: #fff; background: #101c3890; backdrop-filter: blur(10px); pointer-events: none; transition: background .35s, transform .35s; }
+#hayot .hy-slide:hover .hy-zoom, #hayot .hy-shot:hover .hy-zoom { background: #193d80; transform: scale(1.08); }
+@media (max-width: 640px) { #hayot .hy-hud { gap: 10px; } #hayot .hy-controls { gap: 6px; } }

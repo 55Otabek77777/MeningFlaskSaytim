@@ -1,5 +1,80 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy Q1: hisobot va tekshiruv dalillari
+- YAKUNIY-HISOBOT.md: egasi Claude’ga ko’chirishi uchun to’liq hisobot, 111 qatorli A jadvali, B1–B5 commit’lari, fayllar, QA, baho va eng muhim 5 tuzatish.
+- review/yakuniy/: 16 tanlangan PNG (12.7 MB), oldin/keyin taqqoslashlar, barcha asosiy JSON natijalar va release SHA-256 manifesti. Sertifikatning asl fayli repoga ko’chirilmagan.
+- Ikki alifboda desktop/390 px full QA: 200 skrinshot; konsol/runtime, overflow va <15 px matn xatosi 0. Reduced-motion: 34 skrinshot. B5’dan keyin mobil menyu alohida oddiy/reduced rejimlarda qayta sinovdan o’tdi.
+- Doimiy QA skriptlari: 8 alifbo + 9 interaksiya + 10 API + 6 navigatsiya = 33 ssenariy guruhi; barchasi o’tdi. GCS sertifikati va 4 Telegram rasmi haqiqiy hostlardan yuklandi, xato 0.
+- Barcha API so’rovlari mock. Ataylab sinovdagi 400/429 javoblari va brauzer bekor qilgan video so’rovlari natijalarda alohida yozilgan. Jonli ariza yuborilmadi.
+- Hero video markup/CSS/JS va dependency’lar d32ec9b bilan bir xil; 26 JS sintaksisi tekshirildi; index.html va dist/index.html teng. Jismoniy telefonda FPS o’lchovi bajarilmagan.
+
+## 2026-09-28 — yakuniy B5: mobil menyuning yopish tugmasi va kontrasti
+- Vizual QA’da topildi: menyu z-index 900, header 800 bo’lgani uchun yopish tugmasi menyu ortida qolgan. Menyu ochiq paytda header tepaga ko’tariladi va oq fon bilan aniq ko’rinadi.
+- Menyu ichidagi Alifbo yozuvi va tanlanmagan tugma kontrasti oshirildi; faol rejim oq tugma bilan ajratildi, fokus halqasi qo’shildi.
+- Oddiy rejimdagi doira ochilishi va havolalar animatsiyasi saqlandi. Reduced-motion’da havolalar ham darhol ko’rinadi.
+- 390 px: yangi/joriy alifbo, yopish tugmasini haqiqiy bosish (elementFromPoint bilan), Escape/fokus va FAQ qidiruvi — oddiy hamda reduced-motion rejimlarida 6 ssenariy guruhi o’tdi. Konsol/overflow xatosi 0.
+
+## 2026-09-28 — yakuniy A4: Telegram parchalarining tabiiy sarlavhalari
+- Tasdiqlangan 5 snapshot posti uchun ixcham sarlavhalar berildi. «#BERILDI ...», kontekstsiz «yuqorida» va eski postdagi «ertaga» bosh sahifada yarim jumla bo’lib chiqmaydi.
+- «Iloji boricha sog’-salomat» iborasi xabar mavzusini bildiradigan xolis sarlavhaga almashtirildi. Birinchi kartadagi reklama belgilariga to’la parcha ikki tabiiy jumlaga keltirildi.
+- Yangi fakt kiritilmadi. Asl manba matnlari snapshot’da, sanalar va post havolalari o’z holicha; kelajakdagi API postlari mavjud umumiy render’dan foydalanadi.
+- A106–A111 qaydlari qo’shildi: jami 111 tahrir qaydi. QA: yangi alifboda desktop/390 px yangiliklar va mock API sinovlari o’tdi; konsol/overflow/15 px xatosi 0.
+
+## 2026-09-28 — yakuniy B4: Telegram rasmlarini tiklash
+- Haqiqiy media QA’da snapshot’dagi eski Telegram preview URL’lari `ERR_BLOCKED_BY_ORB` berdi. Shu postlarning (4848, 4847, 4845, 4844) amaldagi rasm manzillari rasmiy kanal sahifalaridan yangilandi; matn, sana, post ID va havola o’zgarmadi.
+- `refresh-media.mjs` qo’shildi: faqat snapshot’da bor postlar, faqat ruxsat etilgan rasm hostlari; barcha o’qishlar muvaffaqiyatli bo’lgach fayl yoziladi. Bu qo’lda ishlatiladigan yordamchi — saytdan Telegram sahifasiga yangi so’rov qo’shilmagan.
+- Snapshot va undan yaratilgan `a-news.js`, release yangilandi. Mavjud logo fallback ham saqlandi.
+- Haqiqiy GCS sertifikati va to’rtta Telegram rasmi yuklandi; konsol/tarmoq xatosi 0. Barcha API sinovda mock. Rasm manzillari eskirsa, yordamchini, gen-news.mjs va release build’ni ketma-ket qayta ishga tushirish mumkin.
+
+## 2026-09-28 — yakuniy B3: dron kadrlarini tanlash
+- Besh kadrga bevosita o’tish paneli, faol kadr belgisi va klaviatura fokusi qo’shildi. Desktop’da kadr nomlari; 390 px da 46 px balandlikdagi ixcham raqamlar va to’liq aria-label.
+- Hisoblagich, panel va videolar scrub tugashidagi haqiqiy kadrga bog’landi. Ken Burns, yaqinlashish/o’tishlar, kamera ramkasi, DRON belgisi, asl progress hamda 3 klip saqlandi.
+- Tab yashirilganda kliplar pauza qiladi; ekran/tarmoq sharti o’zgarganda ijro qayta tekshiriladi. Portret va reduced-motion’da kliplar yuklanmaydi; statik galereya saqlandi.
+- QA desktop/390 px: beshala kadr tanlandi; desktop’da 1/3/5-kliplarning ijrosi tasdiqlandi; bo’limdan chiqishda pauza; reduced-motion statik. Konsol/overflow/15 px xatosi 0. Hero video kodi o’zgarmadi.
+
+## 2026-09-28 — yakuniy B2: haqiqiy suratlar galereyasi
+- Oldingi/keyingi surat tugmalari, ArrowLeft/ArrowRight/Home/End boshqaruvi, chekka holat belgilari va foydalanuvchi tanlovini o’qiydigan yashirin status qo’shildi.
+- Kattalashtirish belgisi suratlarning bosilishini tushunarli qiladi; mavjud lightbox saqlandi. Hisoblagich suratning haqiqiy o’rniga qarab yangilanadi.
+- Desktop pin, ichki parallaks, parda ochilishi, mobil scroll-snap va ishora animatsiyasi saqlandi. Reduced-motion’da tugmalar animatsiyasiz suradi.
+- QA: desktop, 390 px mobil, reduced-motion — keyingi/oxirgi/birinchi surat, klaviatura, lightbox va Escape o’tdi; konsol/overflow/15 px xatosi 0. Skrinshotlar: qa/b2/.
+
+## 2026-09-28 — yakuniy B1: yo’nalishlarni tanlash
+- Bir butun filtr paneli, GSAP bilan siljiydigan ko’rsatkich va ko’rinadigan natija soni. Mobil: 2×2 tartib, kamida 46 px tugmalar, 15 px yozuv, klaviatura fokusi.
+- Mavjud Flip, tilt, ikonka, glow va kirish animatsiyalari saqlandi. Tez ketma-ket tanlov oldingi Flip’ni yakunlab, yangi joylashuvni to’g’ri hisoblaydi.
+- Alifbo yoki ekran o’lchami o’zgarsa ko’rsatkich qayta joylashadi; reduced-motion’da darhol o’tadi.
+- QA desktop/390 px: 4 filtr, tezkor almashtirish, kartalar ko’rinishi — o’tdi; konsol/overflow/15 px xatosi 0. Skrinshotlar: qa/b1/.
+
+## 2026-09-28 — yakuniy A3: ikkala alifboda tutuq belgisi
+- Dinamik matnlardagi turli apostroflar ham U+2019 (`’`) ga keltiriladi: `taʼlim` → `ta’lim`. O’/G’ harflarining mavjud konvertatsiyasi saqlandi.
+- `data-raw`, tashqi bot tugmalari, URL/handle/email, foydalanuvchi matni va API qiymatlari o’zgarmaydi.
+- Yangi `qa-language.mjs`: 8 tekshiruv o’tdi — ikki alifbo, brendlar, apostrof, nested data-raw, SEO/JSON-LD, dinamik matn va qayta ochilganda tanlovning saqlanishi.
+- QA init tanlangan alifboni qayta yuklashda buzmaydi. Brauzer to’xtatgan media `ERR_ABORTED` alohida diagnostikaga yoziladi; haqiqiy konsol/tarmoq xatolari hanuz sinovni yiqitadi. Hero kodi o’zgarmadi.
+
+## 2026-09-28 — yakuniy A2: tabiiy o’zbekcha, sana va murojaat
+- «Siz» murojaati, fan nomlari, «Savollar», «Ariza qoldirish», «Hudud», sana/vaqt va telefon izohlari izchil qilindi. API region/grade qiymatlari saqlandi.
+- «Telegram’ingizga», «maktab qo’lingizda», «s’yomka», «til bazasi», «sanasi-soati» kabi kalkalar tabiiy ifodaga almashtirildi.
+- Ariza duplicate va yangilik sanalari `2026-yil 14-avgust, soat 14:12` shaklida. ISO qiymatlari va Asia/Tashkent saqlandi.
+- Tashqi botning aniq menyu/tugma nomlariga `data-raw` qo’yildi; «START» va «Telefon raqamimni yuborish» aynan saqlanadi. Alifbo tugmasidagi O’/G’ U+2019 bilan.
+- FAQ savoli joriy qabul holatiga mos; tarixiy 2026-yil 1-avgust 07:00 o’zgarmadi. Ish vaqti 06:00 — 21:30. 11-sinf/bitiruvchilarning manbadagi sertifikat talabi jarayon va FAQ’da ham aytildi.
+- FAQ elementlari alohida qatorlarga ajratildi. Barcha aniq almashtirishlar `review/yakuniy/matn-tuzatishlari.json` A2 guruhida (A1+A2: 104 yozuv).
+- Joriy alifboda desktop/mobil hero, ariza va FAQ tekshirildi: konsol/overflow/15 px xatosi 0. To’liq yakuniy sinovlar umumiy hisobotda.
+
+## 2026-09-28 — yakuniy A1: aniq va ishonchli matn
+- Hero matni bilim, tarbiya va ota-ona bilan maslahatga yo’naltirildi; hero video elementi, CSS va JS o’zgarmadi.
+- SEO description’da ta’lim tajribasi xususiy maktab maqomi bilan aralashtirilmaydi. Head joriy alifboda.
+- Face ID doimiy joylashuv kuzatuvi kabi tasvirlanmaydi; botga ulanish sharti nazorat va tibbiy xabarnomada ochiq aytildi.
+- IELTS natijasidagi umumiy sifat kafolati, barcha yo’nalishlar va darhol AI javobi kabi haddan tashqari da’volar aniq ifodaga almashtirildi.
+- Sertifikatlar snapshot bo’lgani uchun ushbu sahifada avtomatik jonli uzatish va’da qilinmaydi.
+- 12 aniq o’zgarish (9 fayl): oldingi/yangi matn va sabablar `review/yakuniy/matn-tuzatishlari.json` A1 guruhida.
+- QA: desktop/mobil hero, nazorat, yo’nalishlar; konsol, gorizontal overflow va kichik matn xatosi 0. Ikki alifbo tugmasi, SEO, xom region qiymatlari tekshirildi.
+
+## 2026-09-28 — yakuniy tekshiruv: Q0 (QA tayyorgarligi)
+- Asos: `d32ec9b` (v3.4), yangi branch: `chatgpt/maktab-yakuniy`; agent/subagentsiz.
+- `qa.mjs`: barcha jonli API va ruxsat berilmagan tarmoq so’rovlari bloklanadi; API mocklari saqlandi. `--live-media` faqat tasdiqlangan rasm GET’lariga ruxsat beradi.
+- `--alifbo yangi|joriy`, o’rnatilgan Edge uchun `MU_QA_BROWSER_CHANNEL`, qat’iy 15 px, ichki scroll bilan hujjat overflow’ini farqlash, oxirgi ekran skrinshoti va QA xatosida exit code 1 qo’shildi.
+- Bazaviy ko’rinish: Edge, 1440×900 va 390×844, 20 skrinshot — konsol/overflow/kichik matn xatosi 0. Animatsiyalar, video va media o’zgarmadi.
+- Eski changelog’dagi jonli ariza sinovi ko’rsatmalari joriy topshiriqda qo’llanmaydi: barcha sinovlar mock bilan.
+
 ## 2026-09-28 — v3.4 (DIGITAL: fleshkadagi 24.06.2026 dron s’yomkasi — `MEDIA/dron/`, 4K; hero videoga tegilmadi)
 | Qism | Nima |
 |---|---|

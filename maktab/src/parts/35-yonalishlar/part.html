@@ -3,17 +3,20 @@
     <div class="sec-head">
       <span class="eyebrow" data-scramble>Yo’nalishlar</span>
       <h2 id="yn-title" class="h2" data-split="lines">Yo’nalish<span class="accent-azure">larimiz</span></h2>
-      <p class="lead" data-reveal="blur">Oliy o’quv yurtiga kirish uchun kerak bo’ladigan barcha yo’nalishlar maktabimizda mavjud. Har bir o’quvchi o’z maqsadiga mos fanlar juftligini tanlaydi.</p>
+      <p class="lead" data-reveal="blur">Farzandingizning qiziqishi va maqsadiga mos yo’nalishni tanlang. Quyida maktabimizdagi fanlar va tayyorlov yo’nalishlari bilan tanishishingiz mumkin.</p>
     </div>
 
-    <div class="yn-filters" role="group" aria-label="Qiziqish bo’yicha yo’nalishlar" data-reveal="up">
+    <div class="yn-tools" data-reveal="up">
+    <div class="yn-filters" role="group" aria-label="Qiziqish bo’yicha yo’nalishlar">
+      <span class="yn-selection" aria-hidden="true"></span>
       <button type="button" data-filter="all" aria-pressed="true">Barchasi</button><button type="button" data-filter="science" aria-pressed="false">Tibbiyot</button><button type="button" data-filter="tech" aria-pressed="false">Texnika va IT</button><button type="button" data-filter="languages" aria-pressed="false">Tillar</button>
-      <p class="sr-only yn-status" aria-live="polite"></p>
+    </div>
+      <p class="yn-status" aria-live="polite" aria-atomic="true">6 ta yo’nalish ko’rsatilmoqda.</p>
     </div>
     <div class="yn-grid" data-reveal-children data-reveal="flip" data-stagger="0.08">
       <a class="yn-card" data-goals="science" href="/yonalishlar/kimyo-biologiya" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--chem" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M26 8h12M28 8v16L14 48a6 6 0 0 0 5 9h26a6 6 0 0 0 5-9L36 24V8"/><path class="yi-liquid" d="M18 42c5-3 9 3 14 0s9-3 14 0l4 7a4 4 0 0 1-3.5 6h-29A4 4 0 0 1 14 49z"/><circle class="yi-bub yi-b1" cx="28" cy="46" r="2.2"/><circle class="yi-bub yi-b2" cx="35" cy="48" r="1.6"/><circle class="yi-bub yi-b3" cx="31" cy="50" r="1.2"/></svg></span><span class="yn-idx">01</span></div>
-        <h3 class="yn-card__title">Kimyo–Biologiya</h3>
+        <h3 class="yn-card__title">Kimyo–biologiya</h3>
         <p class="yn-card__text">Tibbiyot va farmatsevtikaga tayyorlov: chuqurlashtirilgan kimyo va biologiya, laboratoriya amaliyoti, milliy sertifikatga yo’naltirilgan dastur.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
@@ -21,27 +24,27 @@
       <a class="yn-card" data-goals="languages" href="/yonalishlar/ingliz-tili" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--eng" aria-hidden="true"><svg viewBox="0 0 64 64"><circle class="yi-glass" cx="28" cy="34" r="18"/><g class="yi-meri"><ellipse cx="28" cy="34" rx="8" ry="18"/><ellipse cx="28" cy="34" rx="15" ry="18"/></g><path class="yi-glass" d="M10 34h36M13 24h30M13 44h30"/><g class="yi-bubble"><path d="M38 6h20a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-9l-6 5v-5h-5a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><text x="48" y="19" text-anchor="middle">Hi</text></g></svg></span><span class="yn-idx">02</span></div>
         <h3 class="yn-card__title">Ingliz tili</h3>
-        <p class="yn-card__text">Kuchli til bazasi va xalqaro imtihonlarga tayyorlov. Tajribali o’qituvchilar jamoasi bilan natijaga yo’naltirilgan darslar.</p>
+        <p class="yn-card__text">Ingliz tilini puxta o’rganish va xalqaro imtihonlarga tayyorgarlik. Darslarni tajribali o’qituvchilar olib boradi.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="tech" href="/yonalishlar/matematika-fizika" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--phys" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="yi-atom"><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9"/><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9" transform="rotate(60 32 32)"/><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9" transform="rotate(120 32 32)"/></g><circle class="yi-core" cx="32" cy="32" r="4.5"/><circle class="yi-e" cx="56" cy="32" r="2.6"/><text class="yi-sigma" x="8" y="16">Σ</text></svg></span><span class="yn-idx">03</span></div>
-        <h3 class="yn-card__title">Matematika–Fizika</h3>
-        <p class="yn-card__text">Texnik oliygohlarga poydevor: olimpiada, sertifikat va kirish imtihonlariga tizimli tayyorlov.</p>
+        <h3 class="yn-card__title">Matematika–fizika</h3>
+        <p class="yn-card__text">Texnika yo’nalishidagi oliy ta’lim muassasalariga tayyorgarlik: fan olimpiadalari, sertifikat va kirish imtihonlari.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="tech languages" href="/yonalishlar/matematika-ingliz" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--mix" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M8 54h48M12 54V10"/><path class="yi-graph" d="M14 46l10-10 8 6 10-14 12-10"/><circle class="yi-dot" cx="54" cy="18" r="3"/><g class="yi-swap"><text class="yi-l1" x="40" y="54">π</text><text class="yi-l2" x="40" y="54">Aa</text></g></svg></span><span class="yn-idx">04</span></div>
-        <h3 class="yn-card__title">Matematika–Ingliz tili</h3>
-        <p class="yn-card__text">Eng ko’p talab qilinadigan juftlik: iqtisod, IT va xalqaro dasturlar uchun.</p>
+        <h3 class="yn-card__title">Matematika–ingliz tili</h3>
+        <p class="yn-card__text">Iqtisodiyot, IT va xalqaro dasturlarga tayyorlov uchun matematika va ingliz tili.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="languages" href="/yonalishlar/ona-tili-adabiyot" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--lit" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M32 16c-6-4-14-5-22-4v36c8-1 16 0 22 4 6-4 14-5 22-4V12c-8-1-16 0-22 4zM32 16v36"/><path class="yi-page" d="M32 16c5-3 11-4 18-3.5v34c-7-.5-13 .5-18 3.5z"/><path class="yi-quill" d="M54 6 38 30l-2 6 5-4L57 9z"/></svg></span><span class="yn-idx">05</span></div>
-        <h3 class="yn-card__title">Ona tili–Adabiyot</h3>
+        <h3 class="yn-card__title">Ona tili–adabiyot</h3>
         <p class="yn-card__text">Milliy sertifikat natijalari va filologiya yo’nalishlariga tayyorlov.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
@@ -51,7 +54,7 @@
         <div class="yn-card__top"><span class="yn-ico yn-ico--ru" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="yi-b1g"><path class="yi-glass" d="M6 10h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H18l-8 7v-7H6a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z"/><text x="21" y="27" text-anchor="middle">Ru</text></g><g class="yi-b2g"><path class="yi-glass2" d="M58 30H30a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h16l8 7v-7h4a4 4 0 0 0 4-4V34a4 4 0 0 0-4-4z"/><text x="44" y="45" text-anchor="middle">Uz</text></g></svg></span><span class="yn-idx">06</span></div>
         <h3 class="yn-card__title">Rus tili yo’nalishlari</h3>
         <p class="yn-card__text">2026–2027 o’quv yilidan rus tili yo’nalishlari ochildi (9–11-sinflar).</p>
-        <ul class="yn-pairs"><li>Rus tili–Ingliz tili</li><li>Rus tili–Ona tili</li><li>Rus tili–Tarix</li></ul>
+        <ul class="yn-pairs"><li>Rus tili–ingliz tili</li><li>Rus tili–ona tili</li><li>Rus tili–tarix</li></ul>
         <span class="yn-more">Ariza qoldirish <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
@@ -60,7 +63,7 @@
           <svg viewBox="0 0 160 120"><path class="yi-ground" d="M10 104h140"/><path class="yi-stem" d="M80 104V58"/><path class="yi-leaf yi-leaf--l" d="M80 76c-14 0-24-8-26-20 14 0 24 8 26 20z"/><path class="yi-leaf yi-leaf--r" d="M80 64c12-1 22-10 22-22-12 1-22 10-22 22z"/><g class="yi-lock"><rect x="112" y="64" width="30" height="24" rx="5"/><path d="M118 64v-7a9 9 0 0 1 18 0v7"/></g></svg>
         </div>
         <div class="yn-lock__body">
-          <span class="yn-plan">2027–2028 dan reja</span>
+          <span class="yn-plan">2027–2028 o’quv yili uchun reja</span>
           <h3 class="yn-card__title">5–7-sinflar</h3>
           <p class="yn-card__text">Hozirda maktabimizda 8–11-sinflar ta’lim oladi. 5–7-sinflar uchun yangi bino qurilmoqda. 2027–2028 o’quv yilidan bu sinflarga qabul ochish rejalashtirilgan.</p>
           <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>

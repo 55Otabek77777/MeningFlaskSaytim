@@ -7,6 +7,15 @@ MU.part('yangiliklar', {
     const rowsEl = root.querySelector('.ny-rows');
     const empty = root.querySelector('.ny-empty');
     const OY = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+    /* Approved snapshot excerpts contain truncated sentences and promotional emoji.
+       These short labels add no facts; the original posts remain available via their links. */
+    const SNAPSHOT_COPY = {
+      'ulugbek_rm/4848': { title: 'O’quvchilarni sog’-salomat qabul qilib oldik.', rest: 'Nazoratchi botga ulaning. Maktabning rasmiy kanalida e’lon va aloqa ma’lumotlari bilan tanishing.' },
+      'ulugbek_rm/4847': { title: 'Maktabdan xabar' },
+      'ulugbek_rm/4846': { title: 'Maktab ma’muriyatidan e’lon' },
+      'ulugbek_rm/4845': { title: 'O’quvchilarni kutib olish haqida' },
+      'ulugbek_rm/4844': { title: 'Video xabar' }
+    };
 
     /* xom Telegram matni: unicode qalin harflar → oddiy, apostroflar → ’, tinish belgisidan keyin emoji yopishmasin */
     const clean = t => String(t || '').normalize('NFKC').replace(/[\u02BB\u02BC'\u2018`\u00B4]/g, '’')
@@ -19,8 +28,8 @@ MU.part('yangiliklar', {
       try {
         const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tashkent', day: 'numeric', month: 'numeric', year: 'numeric' })
           .formatToParts(d).map(x => [x.type, x.value]));
-        return `${+p.day}-${OY[+p.month - 1]}, ${p.year}`;
-      } catch (e) { return `${d.getDate()}-${OY[d.getMonth()]}, ${d.getFullYear()}`; }
+        return `${p.year}-yil ${+p.day}-${OY[+p.month - 1]}`;
+      } catch (e) { return `${d.getFullYear()}-yil ${d.getDate()}-${OY[d.getMonth()]}`; }
     };
     /* sarlavha — birinchi qator yoki birinchi gap (≤ max belgi), qolgani — matn */
     const split = (text, max) => {
@@ -58,7 +67,7 @@ MU.part('yangiliklar', {
       shownTop = num(posts[0].id);
 
       const [a, ...rest] = posts;
-      const s = split(a.text, 80), link = safeLink(a.link);
+      const s = { ...split(a.text, 80), ...SNAPSHOT_COPY[a.id] }, link = safeLink(a.link);
       const media = big.querySelector('.ny-big__media');
       media.href = link;
       media.textContent = '';
@@ -74,7 +83,7 @@ MU.part('yangiliklar', {
 
       rowsEl.textContent = '';
       rest.slice(0, 4).forEach(p => {
-        const r = split(p.text, 70);
+        const r = { ...split(p.text, 70), ...SNAPSHOT_COPY[p.id] };
         const li = document.createElement('li');
         li.className = 'ny-row';
         const aEl = document.createElement('a');
@@ -87,7 +96,7 @@ MU.part('yangiliklar', {
         body.className = 'ny-row__body';
         const tt = document.createElement('span');
         tt.className = 'ny-row__title';
-        tt.textContent = r.title || 'Telegram post';
+        tt.textContent = r.title || 'Telegram xabari';
         body.appendChild(tt);
         const d = fmtDate(p.date);
         if (d) { const dt = document.createElement('time'); dt.className = 'ny-date'; dt.dateTime = p.date; dt.textContent = d; body.appendChild(dt); }

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>«Mirzo Ulug’bek» xususiy maktabi — Uchko’prik, Farg’ona</title>
-<meta name="description" content="27 yildan buyon Uchko’prik tumani, Farg’ona viloyatida faoliyat yuritayotgan xususiy maktab. 2025–2026 o’quv yilida 1560+ sertifikat, IELTS 8.0. 2026–2027 o’quv yili: sanoqli o’rinlar.">
+<meta name="description" content="Farg’ona viloyati, Uchko’prik tumanidagi «Mirzo Ulug’bek» xususiy maktabi. Ta’lim yo’nalishlari, yotoqxona va 2026–2027 o’quv yili qabul holati.">
 <meta name="theme-color" content="#1e3a8a">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mirzoulugbek.app/">
@@ -420,6 +420,13 @@ html { scrollbar-color: var(--ink-600) var(--ink-950); scrollbar-width: thin; }
 .nv-menu__tel { font-weight: 800; font-size: 1.15rem; }
 .nv-menu__foot p { color: rgba(255, 255, 255, .75); font-size: .9375rem; }
 body.nv-locked { overflow: hidden; }
+body.nv-locked .nv { z-index: calc(var(--z-menu) + 1); translate: 0 0; background: #f8faff; border-color: #fff; box-shadow: 0 10px 32px -20px #06153f; }
+.nv-menu .nv-menu__abc { color: #fff; }
+.nv-menu .nv-abc { background: #ffffff12; border-color: #ffffff45; }
+.nv-menu .nv-abc button { color: #edf4ff; }
+.nv-menu .nv-abc button:hover { background: #ffffff20; color: #fff; }
+.nv-menu .nv-abc button[aria-pressed="true"] { background: #fff; color: #1e3a8a; box-shadow: 0 5px 16px -8px #07143c; }
+.nv-menu a:focus-visible, .nv-menu button:focus-visible, body.nv-locked .nv-burger:focus-visible { outline: 3px solid #f4c871; outline-offset: 4px; }
 @media (max-width: 560px) { .nv-actions > .nv-abc { display: none; } }
 
 /* ---- «Asosiy mazmunga o’tish» (klaviatura) */
@@ -1135,11 +1142,21 @@ section[id], footer[id] { scroll-margin-top: 96px; }
   #yonalishlar .yn-lock__art { width: 180px; }
 }
 /* ---- qiziqish bo’yicha filtr (GSAP Flip bilan qayta joylashadi) */
-#yonalishlar .yn-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: -8px 0 26px; }
-#yonalishlar .yn-filters button { padding: 10px 18px; border-radius: 99px; font-weight: 800; color: var(--mu-primary); background: #fff; border: 1px solid var(--line-2); box-shadow: 0 6px 16px -12px rgba(30, 58, 138, .5); transition: background .3s, color .3s, border-color .3s, transform .3s var(--ease-out); }
-#yonalishlar .yn-filters button:hover { transform: translateY(-2px); border-color: var(--mu-primary-2); }
+#yonalishlar .yn-tools { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: -8px 0 28px; }
+#yonalishlar .yn-filters { position: relative; display: flex; flex-wrap: wrap; gap: 4px; padding: 5px; border: 1px solid var(--line-2); border-radius: 20px; background: #eef3fb; isolation: isolate; }
+#yonalishlar .yn-selection { position: absolute; left: 0; top: 0; z-index: -1; border-radius: 15px; background: linear-gradient(125deg, #244d9b, #142e68); box-shadow: 0 5px 12px -5px #1e3a8a80, inset 0 1px #ffffff35; pointer-events: none; }
+#yonalishlar .yn-filters button { min-height: 46px; padding: 10px 18px; border-radius: 15px; font-size: 15px; font-weight: 800; color: var(--mu-primary); background: transparent; border: 1px solid transparent; transition: color .25s, box-shadow .25s; }
+#yonalishlar .yn-filters button:hover { box-shadow: inset 0 0 0 1px #1e3a8a40; }
 #yonalishlar .yn-filters button[aria-pressed="true"] { background: var(--mu-primary); color: #fff; border-color: var(--mu-primary); }
+#yonalishlar .yn-filters.is-ready button[aria-pressed="true"] { background: transparent; border-color: transparent; }
+#yonalishlar .yn-filters button:focus-visible { outline: 3px solid var(--mu-gold); outline-offset: 3px; }
+#yonalishlar .yn-status { flex-shrink: 0; font-size: 15px; color: var(--text-2); font-variant-numeric: tabular-nums; }
 #yonalishlar .yn-card[hidden] { display: none; }
+@media (max-width: 760px) {
+  #yonalishlar .yn-tools { flex-direction: column; align-items: stretch; gap: 12px; }
+  #yonalishlar .yn-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #yonalishlar .yn-status { text-align: center; }
+}
 
 /* ---- 40-qabul-jarayoni/process.css ---- */
 /* ==========================================================================
@@ -1648,6 +1665,15 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 @media (max-width: 560px) { #hayot .hy-shots { grid-template-columns: minmax(0, 1fr); } #hayot .hy-shot--tall { aspect-ratio: 3 / 4; } }
 #hayot .hy-slide, #hayot .hy-shot { cursor: zoom-in; }
 #hayot .hy-slide:focus-visible .hy-frame, #hayot .hy-shot:focus-visible { outline: 3px solid var(--mu-primary-2); outline-offset: 4px; }
+#hayot .hy-controls { display: flex; flex: none; gap: 8px; }
+#hayot .hy-controls button { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--line-2); border-radius: 50%; background: #fff; color: var(--mu-primary); box-shadow: 0 6px 18px -12px #1e3a8a90; transition: background .25s, color .25s, transform .25s; }
+#hayot .hy-controls button:hover:not([aria-disabled="true"]) { background: var(--mu-primary); color: #fff; transform: translateY(-2px); }
+#hayot .hy-controls button[aria-disabled="true"] { opacity: .4; cursor: default; }
+#hayot .hy-controls button:focus-visible { outline: 3px solid var(--mu-gold); outline-offset: 3px; }
+#hayot .hy-controls svg, #hayot .hy-zoom svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#hayot .hy-zoom { position: absolute; z-index: 3; top: 16px; right: 16px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ffffff65; border-radius: 50%; color: #fff; background: #101c3890; backdrop-filter: blur(10px); pointer-events: none; transition: background .35s, transform .35s; }
+#hayot .hy-slide:hover .hy-zoom, #hayot .hy-shot:hover .hy-zoom { background: #193d80; transform: scale(1.08); }
+@media (max-width: 640px) { #hayot .hy-hud { gap: 10px; } #hayot .hy-controls { gap: 6px; } }
 
 /* ---- 52-dron/dron.css ---- */
 /* ===== Dron lentasi: sticky sahna, kadrlar «uchib kirish» bilan almashadi (JS: .is-live). Statik holatda — 2×2 galereya. ===== */
@@ -1667,6 +1693,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron .dr-cap span:not(.dr-no) { color: rgba(255, 255, 255, .78); }
 #dron .dr-no { font-family: var(--font-mono); font-size: .9375rem; color: #93c5fd; letter-spacing: .1em; }
 #dron .dr-hud, #dron .dr-corner { display: none; }
+#dron .dr-chapters { display: none; }
 #dron .dr-src { width: min(1240px, calc(100% - 32px)); margin: 14px auto 0; font-size: .9375rem; color: rgba(255, 255, 255, .6); }
 @media (max-width: 700px) { #dron .dr-list { grid-template-columns: minmax(0, 1fr); } }
 
@@ -1684,7 +1711,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron.is-live .dr-vid.is-on { opacity: 1; }
 #dron.is-live .dr-item::after { content: ''; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(180deg, rgba(8, 13, 30, .72) 0%, rgba(8, 13, 30, .08) 34%, rgba(8, 13, 30, .1) 58%, rgba(8, 13, 30, .82) 100%); }
-#dron.is-live .dr-cap { position: absolute; z-index: 2; left: max(16px, calc((100% - 1240px) / 2)); right: 16px; bottom: clamp(84px, 13vh, 130px); padding: 0; max-width: 620px; }
+#dron.is-live .dr-cap { position: absolute; z-index: 2; left: max(16px, calc((100% - 1240px) / 2)); right: 16px; bottom: clamp(205px, 24vh, 240px); padding: 0; max-width: 620px; }
 #dron.is-live .dr-cap b { font-size: clamp(1.6rem, 3.4vw, 2.8rem); line-height: 1.05; letter-spacing: -.02em; }
 #dron.is-live .dr-cap span:not(.dr-no) { font-size: clamp(1rem, 1.4vw, 1.2rem); }
 #dron.is-live .dr-hud { display: flex; align-items: center; gap: 16px; position: absolute; z-index: 3; left: max(16px, calc((100% - 1240px) / 2)); right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(36px, 6vh, 60px);
@@ -1701,14 +1728,24 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #dron.is-live .dr-corner--bl { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
 #dron.is-live .dr-corner--br { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
 #dron.is-live .dr-src { position: absolute; z-index: 3; right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(62px, 9vh, 92px); width: auto; margin: 0; }
+#dron.is-live .dr-chapters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; position: absolute; z-index: 4; left: max(16px, calc((100% - 1240px) / 2)); right: max(16px, calc((100% - 1240px) / 2)); bottom: 112px; padding: 6px; border: 1px solid #ffffff35; border-radius: 18px; background: #0b183dcc; backdrop-filter: blur(16px); box-shadow: 0 14px 35px -20px #000; }
+#dron .dr-chapters button { position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 14px; min-width: 0; min-height: 54px; padding: 12px 18px; border: 1px solid transparent; border-radius: 12px; color: #d7e5f9; font-size: 15px; text-align: left; transition: background .35s, border-color .35s, color .35s; }
+#dron .dr-chapters b { font-family: var(--font-mono); font-size: 15px; font-variant-numeric: tabular-nums; color: #a9c9f6; }
+#dron .dr-chapters button:hover { background: #ffffff15; }
+#dron .dr-chapters button[aria-current="true"] { background: #ffffff1f; border-color: #adcdf980; color: #fff; box-shadow: inset 0 -2px #93c5fd; }
+#dron .dr-chapters button[aria-current="true"] b { color: #fff; }
+#dron .dr-chapters button:focus-visible { outline: 3px solid #f4c871; outline-offset: 2px; }
 @media (max-width: 700px) {
   #dron.is-live { height: 330vh; }
-  #dron.is-live .dr-cap { bottom: 196px; right: 16px; }
+  #dron.is-live .dr-cap { bottom: 250px; right: 16px; }
   #dron.is-live .dr-hud { bottom: 150px; right: 88px; }
   #dron.is-live .dr-src { display: none; }
   #dron.is-live .dr-corner--bl, #dron.is-live .dr-corner--br { bottom: 108px; }
   #dron.is-live .dr-corner { width: 24px; height: 24px; }
   #dron.is-live .dr-corner--tl, #dron.is-live .dr-corner--tr { top: 88px; }
+  #dron.is-live .dr-chapters { bottom: 178px; right: 88px; padding: 4px; gap: 3px; border-radius: 15px; }
+  #dron .dr-chapters button { justify-content: center; min-height: 46px; padding: 8px 0; border-radius: 10px; }
+  #dron .dr-chapters button span { display: none; }
 }
 
 /* ---- 55-geografiya/geografiya.css ---- */
@@ -2113,11 +2150,11 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="nv-dd">
       <button class="nv-dd__btn" type="button" aria-expanded="false" aria-controls="nv-dd-list">Yönalişlar <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="nv-dd__list" id="nv-dd-list">
-        <a href="/yonalishlar/kimyo-biologiya">Kimyo–Biologiya</a>
+        <a href="/yonalishlar/kimyo-biologiya">Kimyo–biologiya</a>
         <a href="/yonalishlar/ingliz-tili">Ingliz tili</a>
-        <a href="/yonalishlar/matematika-fizika">Matematika–Fizika</a>
-        <a href="/yonalishlar/matematika-ingliz">Matematika–Ingliz tili</a>
-        <a href="/yonalishlar/ona-tili-adabiyot">Ona tili–Adabiyot</a>
+        <a href="/yonalishlar/matematika-fizika">Matematika–fizika</a>
+        <a href="/yonalishlar/matematika-ingliz">Matematika–ingliz tili</a>
+        <a href="/yonalishlar/ona-tili-adabiyot">Ona tili–adabiyot</a>
         <a href="#yonalishlar">Rus tili yönalişlari <em>yangi</em></a>
         <a href="/yonalishlar/5-7-sinflar">5–7-sinflar</a>
       </div>
@@ -2125,12 +2162,12 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <a href="/qabul">Qabul</a>
     <a href="/yutuqlar">Yutuqlar</a>
     <a href="/yangiliklar">Yangiliklar</a>
-    <a href="/faq">FAQ</a>
+    <a href="/faq">Savollar</a>
     <a href="/aloqa">Aloqa</a>
   </nav>
   <div class="nv-actions">
-    <div class="nv-abc" role="group" aria-label="Alifbo" data-raw><button type="button" data-abc="yangi" aria-pressed="true" title="Yangi alifbo: Ş Ç Ö Ğ">Ö</button><button type="button" data-abc="joriy" aria-pressed="false" title="Joriy alifbo: Sh Ch O‘ G‘">O‘</button></div>
-    <a class="btn btn--primary btn--sm nv-cta" data-magnetic="0.25" href="#ariza"><span class="btn__label" data-text="Hujjat topşiriş"><span>Hujjat topşiriş</span></span></a>
+    <div class="nv-abc" role="group" aria-label="Alifbo" data-raw><button type="button" data-abc="yangi" aria-pressed="true" title="Yangi alifbo: Ş Ç Ö Ğ">Ö</button><button type="button" data-abc="joriy" aria-pressed="false" title="Joriy alifbo: Sh Ch O’ G’">O’</button></div>
+    <a class="btn btn--primary btn--sm nv-cta" data-magnetic="0.25" href="#ariza"><span class="btn__label" data-text="Ariza qoldiriş"><span>Ariza qoldiriş</span></span></a>
     <button class="nv-burger" type="button" aria-label="Menyuni oçiş" aria-expanded="false" aria-controls="nv-menu"><span></span><span></span></button>
   </div>
 </header>
@@ -2143,12 +2180,12 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <a href="/qabul">Qabul</a>
       <a href="/yutuqlar">Yutuqlar</a>
       <a href="/yangiliklar">Yangiliklar</a>
-      <a href="/faq">FAQ</a>
+      <a href="/faq">Savollar</a>
       <a href="/aloqa">Aloqa</a>
     </nav>
     <div class="nv-menu__foot">
-      <div class="nv-menu__abc"><span>Alifbo</span><div class="nv-abc nv-abc--lg" role="group" aria-label="Alifbo" data-raw><button type="button" data-abc="yangi" aria-pressed="true" title="Yangi alifbo: Ş Ç Ö Ğ">Ö</button><button type="button" data-abc="joriy" aria-pressed="false" title="Joriy alifbo: Sh Ch O‘ G‘">O‘</button></div></div>
-      <a class="btn btn--primary" href="#ariza"><span class="btn__label" data-text="Hujjat topşiriş"><span>Hujjat topşiriş</span></span></a>
+      <div class="nv-menu__abc"><span>Alifbo</span><div class="nv-abc nv-abc--lg" role="group" aria-label="Alifbo" data-raw><button type="button" data-abc="yangi" aria-pressed="true" title="Yangi alifbo: Ş Ç Ö Ğ">Ö</button><button type="button" data-abc="joriy" aria-pressed="false" title="Joriy alifbo: Sh Ch O’ G’">O’</button></div></div>
+      <a class="btn btn--primary" href="#ariza"><span class="btn__label" data-text="Ariza qoldiriş"><span>Ariza qoldiriş</span></span></a>
       <a class="nv-menu__tel" href="tel:+998974173777">+998 97 417 37 77</a>
       <a class="nv-menu__tel" href="tel:+998945953777">+998 94 595 37 77</a>
       <p>Har kuni 06:00 — 21:30 · Uçköprik, Farğona</p>
@@ -2178,12 +2215,12 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="hero-copy">
       <span class="eyebrow" data-scramble data-on="reveal">Farğona · Uçköprik · 1998-yildan</span>
       <h1 id="hero-title" class="hero-title" data-split="words" data-on="reveal" data-delay="0.35">
-        Biz nafaqat dars beramiz — <span class="hero-hl">farzandingiz kelajagini yaratamiz.</span>
+        Bilim va tarbiya — <span class="hero-hl">farzandingiz kelajagi uçun.</span>
       </h1>
-      <p class="lead hero-lead" data-reveal="blur" data-on="reveal" data-delay="0.9">Yillar davomida sinovdan ötgan tajriba va zamonaviy ta’lim muhiti. Farzandingiz uçun töğri tanlov — aynan şu yerda.</p>
+      <p class="lead hero-lead" data-reveal="blur" data-on="reveal" data-delay="0.9">Tajribali ustozlar, ta’lim va kundalik ğamxörlik. Maktabimiz bilan tanişing, farzandingiz uçun mos yönalişni birga tanlaymiz.</p>
       <div class="hero-ctas" data-reveal="up" data-on="reveal" data-delay="1.05">
         <a class="btn btn--primary btn--lg hero-cta-main" data-magnetic="0.2" href="#ariza">
-          <span class="btn__label" data-text="Birinçi qadamni taşlang — hujjat topşiring"><span>Birinçi qadamni taşlang — hujjat topşiring</span></span>
+          <span class="btn__label" data-text="Qabul uçun ariza qoldiring"><span>Qabul uçun ariza qoldiring</span></span>
           <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <p class="hero-call">yoki qönğiroq qiling: <a href="tel:+998974173777">+998 97 417 37 77</a></p>
@@ -2255,7 +2292,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <article class="st-card st-b" data-spotlight>
         <div class="st-sparkle" aria-hidden="true"></div>
         <div class="st-word"><span>Ilk</span><span>minglik</span></div>
-        <p class="st-label">2025–2026 öquv yilida öquvçilarimiz soni ilk minglik davriga qadam qöydi</p>
+        <p class="st-label">2025–2026 öquv yilidagi öquvçilar jamoamiz</p>
       </article>
 
       <article class="st-card st-c" data-spotlight>
@@ -2275,7 +2312,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
           </svg>
           <div class="st-gauge__val"><small>IELTS</small><b data-scramble="0123456789.">8.0</b></div>
         </div>
-        <p class="st-label">öqituvçimizning şaxsiy natijasi — ta’lim sifati kafolati</p>
+        <p class="st-label">öqituvçimizning ingliz tili böyiça şaxsiy natijasi</p>
       </article>
 
       <article class="st-card st-e" data-spotlight>
@@ -2300,20 +2337,20 @@ section[id], footer[id] { scroll-margin-top: 96px; }
   <div class="container nz-grid">
     <div class="nz-copy">
       <span class="eyebrow nz-eyebrow" data-scramble>Xavfsizlik · Face ID · Nazoratçi bot</span>
-      <h2 id="nz-title" class="h2" data-split="lines">Farzandingiz qayerda — <span class="nz-accent">siz doim bilasiz.</span></h2>
-      <p class="lead" data-reveal="blur">Maktab kirişlaridagi Face ID apparatlari farzandingizni yuzidan taniydi, <b>@nazoratchiroobot</b> esa şu lahzaning özida Telegram’ingizga surati va soati bilan xabar yuboradi. Qönğiroq qilib söraşingiz şart emas — bot <b>bepul</b>.</p>
+      <h2 id="nz-title" class="h2" data-split="lines">Farzandingizning maktab hayotidan <span class="nz-accent">xabardor böling.</span></h2>
+      <p class="lead" data-reveal="blur">Botga ulangan bölsangiz, farzandingiz kirişdagi Face ID qurilmasidan ötganida <b>Nazoratçi bot</b> Sizga Telegram orqali surati va kirgan vaqti bilan xabar yuboradi. Botdan foydalaniş <b>bepul</b>.</p>
 
       <ul class="nz-feats" data-reveal-children data-reveal="up" data-stagger=".08">
         <li><span class="nz-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1M15 10v1M12 10v3h-1M9.5 16c1.4 1.1 3.6 1.1 5 0"/></svg></span>
-          <div><b>Maktabga kirdi — surati va soati bilan</b><span>Kirişlardagi 4 ta Face ID apparati (boş kiriş, 1- va 2-bino) har bir ötişni qayd etadi; xabarga apparat olgan surat ham ilova qilinadi.</span></div></li>
+          <div><b>Maktabga kirdi — surati va kirgan vaqti bilan</b><span>Kirişlardagi 4 ta Face ID apparati (boş kiriş, 1- va 2-bino) har bir ötişni qayd etadi; xabarga apparat olgan surat ham ilova qilinadi.</span></div></li>
         <li><span class="nz-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span>
-          <div><b>Keçikdi yoki ötmadi — darhol bilasiz</b><span>Dars 06:00 da boşlanadi. Keçiksa — neça daqiqa keçikkani yoziladi; Face ID’dan ötmagan bölsa — sabablarini tuşuntiruvçi xabar keladi.</span></div></li>
+          <div><b>Keçikiş va davomat haqida xabar</b><span>Dars 06:00 da boşlanadi. Keçiksa — neça daqiqa keçikkani yoziladi; Face ID’dan ötmagan bölsa — sabablarini tuşuntiruvçi xabar keladi.</span></div></li>
         <li><span class="nz-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></span>
-          <div><b>Uyga javob va qaytiş</b><span>Farzandingiz yölga çiqqani va yotoqxonaga yetib kelgani haqida xabar. Qaytiş muddati har davr uçun e’lon qilinadi; keç qaytsa — alohida xabar.</span></div></li>
+          <div><b>Uyga ketiş va maktabga qaytiş</b><span>Farzandingiz yölga çiqqani va yotoqxonaga yetib kelgani haqida xabar. Qaytiş muddati har davr uçun e’lon qilinadi; keç qaytsa — alohida xabar.</span></div></li>
         <li><span class="nz-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9-9.2C1.7 8.4 3.8 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3.4 0 5.5 3.4 4.2 6.8C19 16.6 12 21 12 21z"/><path d="M12 10v5M9.5 12.5h5"/></svg></span>
-          <div><b>Tibbiy xonadan xabarnoma</b><span>2026-yil sentabr oyidan işlamoqda: şifokor körigi sanasi-soati, murojaat sababi va şifokor izohi. Tibbiy xonaning öz Face ID qurilmasi bor.</span></div></li>
+          <div><b>Tibbiy xonadan xabarnoma</b><span>2026-yil sentabr oyidan işlamoqda: şifokor körigidan ötgan sana va vaqt, murojaat sababi va şifokor izohi. Tibbiy xonaning öz Face ID qurilmasi bor.</span></div></li>
         <li><span class="nz-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-          <div><b>Bot menyusi — maktab qölingizda</b><span>«Farzandim», «Tölovlar», «Aloqa», «Rahbariyatga savol va taklif»; bir neçta telefon raqamini ulaş mumkin, maktab e’lonlari ham şu botga keladi.</span></div></li>
+          <div><b>Bot orqali ma’lumot va aloqa</b><span><span data-raw>«Farzandim», «To’lovlar», «Aloqa», «Rahbariyatga savol va taklif»</span>; bir neçta telefon raqamini ulaş mumkin, maktab e’lonlari ham şu botga keladi.</span></div></li>
       </ul>
     </div>
 
@@ -2357,19 +2394,19 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 
   <div class="container nz-lower">
     <div class="nz-signals" data-reveal-children data-reveal="up" data-stagger=".08">
-      <h3 class="nz-sub">Apparat qanday javob beradi</h3>
-      <div class="nz-sig nz-sig--g"><i aria-hidden="true">✓</i><b>YAŞIL</b><span>Qabul qilindi — davomat yozildi, ota-onaga xabar ketdi.</span></div>
+      <h3 class="nz-sub">Face ID ranglari nimani bildiradi?</h3>
+      <div class="nz-sig nz-sig--g"><i aria-hidden="true">✓</i><b>YAŞIL</b><span>Qabul qilindi — davomat qayd etildi, botga ulangan ota-onaga xabar yuborildi.</span></div>
       <div class="nz-sig nz-sig--y"><i aria-hidden="true">!</i><b>SARIQ</b><span>Notöğri vaqt — apparat bu vaqtda ötişni qabul qilmaydi.</span></div>
-      <div class="nz-sig nz-sig--r"><i aria-hidden="true">✕</i><b>QIZIL</b><span>Tanimadi — yuzni qayta körsatiş yoki adminga murojaat qiliş kerak.</span></div>
+      <div class="nz-sig nz-sig--r"><i aria-hidden="true">✕</i><b>QIZIL</b><span>Tanimadi — yuzni qayta körsatiş yoki maktab mas’uliga murojaat qiling.</span></div>
     </div>
     <div class="nz-steps" data-reveal="up">
       <h3 class="nz-sub">Botga ulaniş — 3 qadam, bepul</h3>
       <ol>
-        <li><b>1</b><span>Telegram’da <a href="https://t.me/nazoratchiroobot" target="_blank" rel="noopener noreferrer">@nazoratchiroobot</a> ni oçing</span></li>
-        <li><b>2</b><span>«START» tugmasini bosing</span></li>
-        <li><b>3</b><span>«📱 Telefon raqamimni yuboriş» ni bosing</span></li>
+        <li><b>1</b><span>Telegram orqali <a href="https://t.me/nazoratchiroobot" target="_blank" rel="noopener noreferrer">@nazoratchiroobot</a> botini oçing</span></li>
+        <li><b>2</b><span><span data-raw>«START»</span> tugmasini bosing</span></li>
+        <li><b>3</b><span><span data-raw>«📱 Telefon raqamimni yuborish»</span> tugmasini bosing</span></li>
       </ol>
-      <p class="nz-note">Bot faqat maktab qabul bölimida röyxatga olingan raqamni taniydi. Raqamingiz özgargan bölsa, avval adminga ayting.</p>
+      <p class="nz-note">Bot faqat maktab qabul bölimida röyxatga olingan raqamni taniydi. Raqamingiz özgargan bölsa, avval qabul bölimiga xabar bering.</p>
       <div class="nz-cta">
         <a class="btn nz-btn btn--lg" data-magnetic href="https://t.me/nazoratchiroobot" target="_blank" rel="noopener noreferrer"><svg class="nz-btn__tg" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z"/></svg><span class="btn__label" data-text="Nazoratçi botga ulaniş"><span>Nazoratçi botga ulaniş</span></span></a>
         <a class="nz-ask" href="https://t.me/MirzoUlugbekMaktabi_Admin" target="_blank" rel="noopener noreferrer">Admin: @MirzoUlugbekMaktabi_Admin →</a>
@@ -2404,8 +2441,8 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <div class="mr-copy">
         <span class="eyebrow" data-scramble>Tarix</span>
         <h2 id="mr-title" class="h2" data-split="lines">Bir oilaning orzusi — <span class="accent-azure">bir avlodning kelajagi</span></h2>
-        <p class="lead" data-reveal="blur"><span class="mr-years">27</span> yil avval Jabborov A’zamjon Maşraboviç Uçköprikda kiçik bir orzu bilan iş boşladi: qişloq bolalari ham dunyo darajasidagi ta’lim olsin. Bugun bu orzuni öğli — Maşrabjonov Uluğbek A’zamjon öğli davom ettirmoqda. Ikki avlod, bitta maqsad — farzandingizning kelajagi.</p>
-        <p class="mr-name" data-reveal="fade">Nomimiz — Mirzo Uluğbek (1394–1449), 1018 yulduz katalogini tuzgan olim: aniqlik va ilm ramzi.</p>
+        <p class="lead" data-reveal="blur"><span class="mr-years">27</span> yil avval Jabborov A’zamjon Maşraboviç Uçköprikda kiçik bir orzu bilan iş boşladi: qişloq bolalari ham sifatli ta’lim olsin. Bugun bu orzuni öğli — Maşrabjonov Uluğbek A’zamjon öğli davom ettirmoqda. Ikki avlod, bitta maqsad — farzandingizning kelajagi.</p>
+        <p class="mr-name" data-reveal="fade">Maktabimiz 1018 yulduzning örnini qayd etgan olim — Mirzo Uluğbek (1394–1449) nomi bilan ataladi.</p>
         <a class="btn btn--ghost" data-magnetic href="/tarix" data-reveal="up"><span class="btn__label" data-text="Tariximiz bilan tanişing"><span>Tariximiz bilan tanişing</span></span><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
@@ -2436,7 +2473,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="container rx-ui">
       <div class="rx-copy">
         <span class="eyebrow rx-eyebrow" data-scramble>Rasadxona · 1420-yillar, Samarqand</span>
-        <h2 id="rx-title" class="rx-title" data-split="lines">Osmonni ölçagan olim — <span>nomimiz şundan.</span></h2>
+        <h2 id="rx-title" class="rx-title" data-split="lines">Osmonni ölçagan olim — <span>nomimizdagi ilmiy meros.</span></h2>
         <div class="rx-chapters">
           <article class="rx-ch is-on" data-ch="0">
             <p>Mirzo Uluğbek Samarqandda öz davrining eng yirik rasadxonalaridan birini qurdirdi va teleskop hali yöq zamonda osmonni oddiy köz bilan misli körilmagan aniqlikda ölçadi.</p>
@@ -2454,7 +2491,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
             <p>Yer öqining oğişi — ekliptika va osmon ekvatori orasidagi burçak. Uni ölçagan Faxriy sekstanti radiusi ≈ 40 metr bölgan — öz turidagi eng katta asbob.</p>
           </article>
           <article class="rx-ch" data-ch="4">
-            <p>Aniqlik an’anasi davom etadi: bugun «Mirzo Uluğbek» maktabida har bir yönaliş — öz orbitasiga ega aniq dastur.</p>
+            <p>Ilmga qiziqiş davom etadi. «Mirzo Uluğbek» maktabining ta’lim yönalişlari bilan tanişing.</p>
             <a class="rx-more" href="#yonalishlar">Yönalişlarimiz →</a>
           </article>
         </div>
@@ -2468,11 +2505,11 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       </aside>
     </div>
     <ul class="rx-orbit" aria-label="Yönalişlar">
-      <li><a href="/yonalishlar/kimyo-biologiya"><i>01</i>Kimyo–Biologiya</a></li>
+      <li><a href="/yonalishlar/kimyo-biologiya"><i>01</i>Kimyo–biologiya</a></li>
       <li><a href="/yonalishlar/ingliz-tili"><i>02</i>Ingliz tili</a></li>
-      <li><a href="/yonalishlar/matematika-fizika"><i>03</i>Matematika–Fizika</a></li>
-      <li><a href="/yonalishlar/matematika-ingliz"><i>04</i>Matematika–Ingliz tili</a></li>
-      <li><a href="/yonalishlar/ona-tili-adabiyot"><i>05</i>Ona tili–Adabiyot</a></li>
+      <li><a href="/yonalishlar/matematika-fizika"><i>03</i>Matematika–fizika</a></li>
+      <li><a href="/yonalishlar/matematika-ingliz"><i>04</i>Matematika–ingliz tili</a></li>
+      <li><a href="/yonalishlar/ona-tili-adabiyot"><i>05</i>Ona tili–adabiyot</a></li>
       <li><a href="#yonalishlar"><i>06</i>Rus tili yönalişlari</a></li>
     </ul>
     <p class="rx-credit" aria-hidden="true">Osmon: Yale Bright Star katalogi · d3-celestial</p>
@@ -2487,7 +2524,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <span class="eyebrow yt-eyebrow" data-scramble>Yutuqlarimiz</span>
       <h2 id="yt-title" class="h2 yt-title" data-split="words">Natijalar özi gapiradi</h2>
       <div class="yt-stat" data-reveal="up" data-delay=".1"><b><span data-num="1560">1560</span>+</b><span>milliy va xalqaro sertifikat<br>2025–2026 öquv yilida</span></div>
-      <p class="yt-text" data-reveal="blur" data-delay=".15">«Mirzo Uluğbek» xususiy maktabi öquvçilari 2025–2026 öquv yilida 1560+ milliy va xalqaro sertifikat qölga kiritdi. Quyida — ana şu natijalardan namunalar; ular maktabimizning rasmiy Telegram kanalidan bot orqali avtomatik saytga uzatiladi.</p>
+      <p class="yt-text" data-reveal="blur" data-delay=".15">«Mirzo Uluğbek» xususiy maktabi öquvçilari 2025–2026 öquv yilida 1560+ milliy va xalqaro sertifikat qölga kiritdi. Quyida maktabimizning rasmiy saytida e’lon qilingan sertifikatlardan namunalar bilan tanişing.</p>
     </div>
 
     <div class="yt-clockrow" data-reveal="up" data-delay=".2">
@@ -2505,7 +2542,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <div class="yt-clockcopy">
         <b>Vaqtingizni qadrlang</b>
         <span>Har lahza — kelajagingiz uçun bir qadam</span>
-        <small>Uşbu kelajagingizni «Mirzo Uluğbek» bilan birga yarating</small>
+        <small>Farzandingizning ta’lim yölini birga tanlaymiz</small>
       </div>
     </div>
 
@@ -2537,17 +2574,20 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="sec-head">
       <span class="eyebrow" data-scramble>Yönalişlar</span>
       <h2 id="yn-title" class="h2" data-split="lines">Yönaliş<span class="accent-azure">larimiz</span></h2>
-      <p class="lead" data-reveal="blur">Oliy öquv yurtiga kiriş uçun kerak böladigan barça yönalişlar maktabimizda mavjud. Har bir öquvçi öz maqsadiga mos fanlar juftligini tanlaydi.</p>
+      <p class="lead" data-reveal="blur">Farzandingizning qiziqişi va maqsadiga mos yönalişni tanlang. Quyida maktabimizdagi fanlar va tayyorlov yönalişlari bilan tanişişingiz mumkin.</p>
     </div>
 
-    <div class="yn-filters" role="group" aria-label="Qiziqiş böyiça yönalişlar" data-reveal="up">
+    <div class="yn-tools" data-reveal="up">
+    <div class="yn-filters" role="group" aria-label="Qiziqiş böyiça yönalişlar">
+      <span class="yn-selection" aria-hidden="true"></span>
       <button type="button" data-filter="all" aria-pressed="true">Barçasi</button><button type="button" data-filter="science" aria-pressed="false">Tibbiyot</button><button type="button" data-filter="tech" aria-pressed="false">Texnika va IT</button><button type="button" data-filter="languages" aria-pressed="false">Tillar</button>
-      <p class="sr-only yn-status" aria-live="polite"></p>
+    </div>
+      <p class="yn-status" aria-live="polite" aria-atomic="true">6 ta yönaliş körsatilmoqda.</p>
     </div>
     <div class="yn-grid" data-reveal-children data-reveal="flip" data-stagger="0.08">
       <a class="yn-card" data-goals="science" href="/yonalishlar/kimyo-biologiya" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--chem" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M26 8h12M28 8v16L14 48a6 6 0 0 0 5 9h26a6 6 0 0 0 5-9L36 24V8"/><path class="yi-liquid" d="M18 42c5-3 9 3 14 0s9-3 14 0l4 7a4 4 0 0 1-3.5 6h-29A4 4 0 0 1 14 49z"/><circle class="yi-bub yi-b1" cx="28" cy="46" r="2.2"/><circle class="yi-bub yi-b2" cx="35" cy="48" r="1.6"/><circle class="yi-bub yi-b3" cx="31" cy="50" r="1.2"/></svg></span><span class="yn-idx">01</span></div>
-        <h3 class="yn-card__title">Kimyo–Biologiya</h3>
+        <h3 class="yn-card__title">Kimyo–biologiya</h3>
         <p class="yn-card__text">Tibbiyot va farmatsevtikaga tayyorlov: çuqurlaştirilgan kimyo va biologiya, laboratoriya amaliyoti, milliy sertifikatga yönaltirilgan dastur.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
@@ -2555,27 +2595,27 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <a class="yn-card" data-goals="languages" href="/yonalishlar/ingliz-tili" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--eng" aria-hidden="true"><svg viewBox="0 0 64 64"><circle class="yi-glass" cx="28" cy="34" r="18"/><g class="yi-meri"><ellipse cx="28" cy="34" rx="8" ry="18"/><ellipse cx="28" cy="34" rx="15" ry="18"/></g><path class="yi-glass" d="M10 34h36M13 24h30M13 44h30"/><g class="yi-bubble"><path d="M38 6h20a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-9l-6 5v-5h-5a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><text x="48" y="19" text-anchor="middle">Hi</text></g></svg></span><span class="yn-idx">02</span></div>
         <h3 class="yn-card__title">Ingliz tili</h3>
-        <p class="yn-card__text">Kuçli til bazasi va xalqaro imtihonlarga tayyorlov. Tajribali öqituvçilar jamoasi bilan natijaga yönaltirilgan darslar.</p>
+        <p class="yn-card__text">Ingliz tilini puxta örganiş va xalqaro imtihonlarga tayyorgarlik. Darslarni tajribali öqituvçilar olib boradi.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="tech" href="/yonalishlar/matematika-fizika" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--phys" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="yi-atom"><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9"/><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9" transform="rotate(60 32 32)"/><ellipse class="yi-glass" cx="32" cy="32" rx="24" ry="9" transform="rotate(120 32 32)"/></g><circle class="yi-core" cx="32" cy="32" r="4.5"/><circle class="yi-e" cx="56" cy="32" r="2.6"/><text class="yi-sigma" x="8" y="16">Σ</text></svg></span><span class="yn-idx">03</span></div>
-        <h3 class="yn-card__title">Matematika–Fizika</h3>
-        <p class="yn-card__text">Texnik oliygohlarga poydevor: olimpiada, sertifikat va kiriş imtihonlariga tizimli tayyorlov.</p>
+        <h3 class="yn-card__title">Matematika–fizika</h3>
+        <p class="yn-card__text">Texnika yönalişidagi oliy ta’lim muassasalariga tayyorgarlik: fan olimpiadalari, sertifikat va kiriş imtihonlari.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="tech languages" href="/yonalishlar/matematika-ingliz" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--mix" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M8 54h48M12 54V10"/><path class="yi-graph" d="M14 46l10-10 8 6 10-14 12-10"/><circle class="yi-dot" cx="54" cy="18" r="3"/><g class="yi-swap"><text class="yi-l1" x="40" y="54">π</text><text class="yi-l2" x="40" y="54">Aa</text></g></svg></span><span class="yn-idx">04</span></div>
-        <h3 class="yn-card__title">Matematika–Ingliz tili</h3>
-        <p class="yn-card__text">Eng köp talab qilinadigan juftlik: iqtisod, IT va xalqaro dasturlar uçun.</p>
+        <h3 class="yn-card__title">Matematika–ingliz tili</h3>
+        <p class="yn-card__text">Iqtisodiyot, IT va xalqaro dasturlarga tayyorlov uçun matematika va ingliz tili.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
       <a class="yn-card" data-goals="languages" href="/yonalishlar/ona-tili-adabiyot" data-tilt="6">
         <div class="yn-card__top"><span class="yn-ico yn-ico--lit" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="yi-glass" d="M32 16c-6-4-14-5-22-4v36c8-1 16 0 22 4 6-4 14-5 22-4V12c-8-1-16 0-22 4zM32 16v36"/><path class="yi-page" d="M32 16c5-3 11-4 18-3.5v34c-7-.5-13 .5-18 3.5z"/><path class="yi-quill" d="M54 6 38 30l-2 6 5-4L57 9z"/></svg></span><span class="yn-idx">05</span></div>
-        <h3 class="yn-card__title">Ona tili–Adabiyot</h3>
+        <h3 class="yn-card__title">Ona tili–adabiyot</h3>
         <p class="yn-card__text">Milliy sertifikat natijalari va filologiya yönalişlariga tayyorlov.</p>
         <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
@@ -2585,7 +2625,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <div class="yn-card__top"><span class="yn-ico yn-ico--ru" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="yi-b1g"><path class="yi-glass" d="M6 10h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H18l-8 7v-7H6a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z"/><text x="21" y="27" text-anchor="middle">Ru</text></g><g class="yi-b2g"><path class="yi-glass2" d="M58 30H30a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h16l8 7v-7h4a4 4 0 0 0 4-4V34a4 4 0 0 0-4-4z"/><text x="44" y="45" text-anchor="middle">Uz</text></g></svg></span><span class="yn-idx">06</span></div>
         <h3 class="yn-card__title">Rus tili yönalişlari</h3>
         <p class="yn-card__text">2026–2027 öquv yilidan rus tili yönalişlari oçildi (9–11-sinflar).</p>
-        <ul class="yn-pairs"><li>Rus tili–Ingliz tili</li><li>Rus tili–Ona tili</li><li>Rus tili–Tarix</li></ul>
+        <ul class="yn-pairs"><li>Rus tili–ingliz tili</li><li>Rus tili–ona tili</li><li>Rus tili–tarix</li></ul>
         <span class="yn-more">Ariza qoldiriş <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
@@ -2594,7 +2634,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
           <svg viewBox="0 0 160 120"><path class="yi-ground" d="M10 104h140"/><path class="yi-stem" d="M80 104V58"/><path class="yi-leaf yi-leaf--l" d="M80 76c-14 0-24-8-26-20 14 0 24 8 26 20z"/><path class="yi-leaf yi-leaf--r" d="M80 64c12-1 22-10 22-22-12 1-22 10-22 22z"/><g class="yi-lock"><rect x="112" y="64" width="30" height="24" rx="5"/><path d="M118 64v-7a9 9 0 0 1 18 0v7"/></g></svg>
         </div>
         <div class="yn-lock__body">
-          <span class="yn-plan">2027–2028 dan reja</span>
+          <span class="yn-plan">2027–2028 öquv yili uçun reja</span>
           <h3 class="yn-card__title">5–7-sinflar</h3>
           <p class="yn-card__text">Hozirda maktabimizda 8–11-sinflar ta’lim oladi. 5–7-sinflar uçun yangi bino qurilmoqda. 2027–2028 öquv yilidan bu sinflarga qabul oçiş rejalaştirilgan.</p>
           <span class="yn-more">Batafsil <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -2691,7 +2731,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
               </div>
               <div class="prc-card__txt">
                 <h3 class="h3 prc-card__title">Ariza</h3>
-                <p>Saytdagi onlayn forma yoki bitta qönğiroq: ism-familiya, viloyat, sinf va telefon raqami — şuning özi yetarli.</p>
+                <p>Saytdagi arizani töldiring yoki qönğiroq qiling. Dastlabki murojaat uçun ism-familiya, hudud, sinf va telefon raqami kerak.</p>
               </div>
             </div>
             <ul class="prc-card__tags"><li>Onlayn forma</li><li>Qönğiroq</li><li>Telegram</li></ul>
@@ -2722,7 +2762,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
               </div>
               <div class="prc-card__txt">
                 <h3 class="h3 prc-card__title">Aloqa</h3>
-                <p>Maktab admini yoki menejeri siz bilan boğlanadi, savollaringizga javob beradi va maktabga taşrif vaqtini kelişadi.</p>
+                <p>Maktab admini yoki menejeri Siz bilan boğlanadi, savollaringizga javob beradi va maktabga taşrif vaqtini kelişadi.</p>
               </div>
             </div>
             <ul class="prc-card__tags"><li>Admin</li><li>Menejer</li><li>Taşrif</li></ul>
@@ -2751,7 +2791,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
               </div>
               <div class="prc-card__txt">
                 <h3 class="h3 prc-card__title">Suhbat / sinov</h3>
-                <p>8–9-sinflarga qabul ariza asosida. 10–11-sinflarga — kuçaytirilgan suhbat va sinov asosida.</p>
+                <p>8–9-sinflarga qabul ariza asosida. 10–11-sinflarga — kuçaytirilgan suhbat va sinov asosida. 11-sinf va bitiruvçilar uçun yönaliş böyiça sertifikat talab etiladi.</p>
               </div>
             </div>
             <ul class="prc-card__tags"><li>8–9: ariza asosida</li><li>10–11: suhbat va sinov</li></ul>
@@ -2782,7 +2822,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
               </div>
               <div class="prc-card__txt">
                 <h3 class="h3 prc-card__title">Rasmiylaştiriş</h3>
-                <p>Şartnoma va hujjatlar rasmiylaştiriladi. Kerakli hujjatlar röyxatini adminlarimiz aytadi.</p>
+                <p>Şartnoma va hujjatlar rasmiylaştiriladi. Kerakli hujjatlar röyxatini qabul bölimi xodimlari tuşuntiradi.</p>
               </div>
             </div>
             <ul class="prc-card__tags"><li>Şartnoma</li><li>Hujjatlar</li></ul>
@@ -2811,7 +2851,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
               </div>
               <div class="prc-card__txt">
                 <h3 class="h3 prc-card__title">Öqiş boşlanadi</h3>
-                <p>Öquvçi yotoqxonaga joylaşadi va Face ID tizimiga kiritiladi. Telegram botga ulangan ota-ona farzandi kirgan/çiqqanini darhol biladi.</p>
+                <p>Öquvçi yotoqxonaga joylaşadi va Face ID tizimiga kiritiladi. Telegram botga ulangan ota-ona farzandining maktabga kirgani yoki çiqqani haqida xabar oladi.</p>
               </div>
             </div>
             <ul class="prc-card__tags"><li>Yotoqxona</li><li>Face ID</li><li>Telegram bot</li></ul>
@@ -2830,8 +2870,8 @@ section[id], footer[id] { scroll-margin-top: 96px; }
   <div class="container az-grid">
     <div class="az-intro">
       <span class="eyebrow" data-scramble>Onlayn ariza</span>
-      <h2 id="az-title" class="h2" data-split="lines">Birinçi qadamni taşlang — <span class="accent-coral">hujjat topşiring</span></h2>
-      <p class="lead" data-reveal="blur">Ariza bir daqiqa oladi. Tez orada menejerlarimiz siz bilan boğlanadi.</p>
+      <h2 id="az-title" class="h2" data-split="lines">Qabul uçun <span class="accent-coral">ariza qoldiring</span></h2>
+      <p class="lead" data-reveal="blur">Arizani töldiriş taxminan bir daqiqa vaqt oladi. Söng menejerlarimiz Siz bilan boğlanadi.</p>
 
       <div class="az-ticket" data-reveal="flip" aria-hidden="true">
         <div class="az-ticket__head">
@@ -2841,7 +2881,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         </div>
         <dl class="az-ticket__rows">
           <div><dt>Ism-familiya</dt><dd data-tk="fullName" data-raw>—</dd></div>
-          <div><dt>Viloyat</dt><dd data-tk="region">—</dd></div>
+          <div><dt>Hudud</dt><dd data-tk="region">—</dd></div>
           <div><dt>Sinf</dt><dd data-tk="grade">—</dd></div>
           <div><dt>Telefon</dt><dd data-tk="phone">+998</dd></div>
         </dl>
@@ -2883,7 +2923,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
             <option value="Toshkent viloyati">Toşkent viloyati</option>
             <option value="Toshkent shahri">Toşkent şahri</option>
           </select>
-          <label for="az-region">Viloyat</label>
+          <label for="az-region">Hudud</label>
           <svg class="az-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           <span class="az-err" aria-live="polite"></span>
         </div>
@@ -2934,12 +2974,12 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 <section id="hayot" class="hy" data-part="hayot" aria-labelledby="hy-title">
   <div class="container hy-head">
     <span class="eyebrow" data-scramble>Maktab hayoti</span>
-    <h2 id="hy-title" class="h2" data-split="lines">Bir maktab — <span class="accent-azure">minglab yorqin taqdir</span></h2>
-    <p class="lead" data-reveal="blur">«Mirzo Uluğbek» xususiy maktabining turli yillardagi bitiruvçilari, öquvçilari va unutilmas bilim sayohatlaridan lavhalar — maktabimiz bilan yaqindan tanişing.</p>
+    <h2 id="hy-title" class="h2" data-split="lines">Bilim, döstlik va <span class="accent-azure">maktab hayoti</span></h2>
+    <p class="lead" data-reveal="blur">«Mirzo Uluğbek» xususiy maktabining turli yillardagi bitiruvçilari, öquvçilari va bilim sayohatlaridan lavhalar — maktabimiz bilan yaqindan tanişing.</p>
   </div>
 
   <div class="hy-reel" aria-roledescription="galereya" aria-label="Maktab hayotidan suratlar">
-    <div class="hy-track">
+    <div class="hy-track" id="hayot-suratlar">
       <figure class="hy-slide">
         <div class="hy-frame"><img src="https://mirzoulugbek.app/media/dron/orda-foto-1.webp" alt="Qöqon Ördasi — öquvçilarimiz saroy oldida, dron fotosi" width="1920" height="1080" loading="lazy" decoding="async"></div>
         <figcaption><span class="hy-no">01</span><span class="hy-tag">Bilim sayohati</span><b>Qöqon Ördasi — öquvçilarimiz saroy oldida</b></figcaption>
@@ -2985,17 +3025,22 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <figcaption><span class="hy-no">11</span><span class="hy-tag">Sayohat</span><b>Unutilmas sayohat kunlari</b></figcaption>
       </figure>
     </div>
-    <div class="hy-hud container" aria-hidden="true">
-      <span class="hy-count"><b>01</b> / 11</span>
-      <i class="hy-prog"><b></b></i>
-      <span class="hy-hint"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <div class="hy-hud container">
+      <span class="hy-count" aria-hidden="true"><b>01</b> / 11</span>
+      <i class="hy-prog" aria-hidden="true"><b></b></i>
+      <span class="hy-hint" aria-hidden="true"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <div class="hy-controls" role="group" aria-label="Suratlarni köriş">
+        <button class="hy-prev" type="button" aria-label="Oldingi surat" aria-controls="hayot-suratlar" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></button>
+        <button class="hy-next" type="button" aria-label="Keyingi surat" aria-controls="hayot-suratlar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+      </div>
+      <p class="sr-only hy-announcement" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
   <div class="container hy-home">
     <div class="hy-home__head">
       <h3 class="h3 hy-home__title" data-split="words">Maktab — ikkinçi uy</h3>
-      <p class="hy-home__lead" data-reveal="blur">Yotoqxona, xavfsizlik, salomatlik va kun tartibi — farzandingiz har kuni nazorat va ğamxörlikda.</p>
+      <p class="hy-home__lead" data-reveal="blur">Yotoqxona, xavfsizlik, salomatlik va kun tartibi — farzandingiz har kuni e’tibor va ğamxörlikda.</p>
     </div>
     <div class="hy-shots" data-reveal-children data-reveal="up" data-stagger=".1">
       <figure class="hy-shot hy-shot--wide"><img src="https://mirzoulugbek.app/media/qulayliklar/sinfxona-2.webp" alt="Sinfxona: öquvçilar dars vaqtida" loading="lazy" decoding="async"><figcaption>Sinfxonalarimiz — yoruğ, konditsionerli</figcaption></figure>
@@ -3007,7 +3052,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <svg class="hy-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V9l9-5 9 5v11"/><path d="M3 20h18"/><path d="M8 20v-5h8v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg>
         <h4>Yotoqxona</h4>
         <p class="hy-big"><b>Hamma</b><span>öquvçilar uçun</span></p>
-        <ul><li>Maktab-internat tartibi — yotoqxona barça öquvçilar uçun</li><li>Tartibni komendant va nazoratçilar kuzatib boradi</li><li>2 haftada bir marta uyga javob; ketiş va qaytiş vaqti bot orqali oldindan e’lon qilinadi</li></ul>
+        <ul><li>Maktab-internat tartibi — yotoqxona barça öquvçilar uçun</li><li>Tartibni komendant va nazoratçilar kuzatib boradi</li><li>Ikki haftada bir marta uyga borişga ruxsat; ketiş va qaytiş vaqti bot orqali oldindan e’lon qilinadi</li></ul>
       </article>
       <article class="hy-fact" data-spotlight>
         <svg class="hy-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
@@ -3020,11 +3065,11 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <svg class="hy-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-9-9.2C1.7 8.4 3.8 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3.4 0 5.5 3.4 4.2 6.8C19 16.6 12 21 12 21z"/><path d="M3.5 12h4l1.5-3 2.5 6 1.5-3h7.5"/></svg>
         <h4>Salomatlik</h4>
         <p class="hy-big"><b>Şifokor</b><span>tibbiy xona — maktabning özida</span></p>
-        <ul><li>Har bir körik tizimda qayd etiladi</li><li>2026-yil sentabr oyidan ota-onaga murojaat sababi va şifokor izohi bilan xabar boradi</li><li>Tibbiy xonaning öz Face ID qurilmasi bor</li></ul>
+        <ul><li>Har bir körik tizimda qayd etiladi</li><li>2026-yil sentabr oyidan botga ulangan ota-onaga murojaat sababi va şifokor izohi bilan xabar yuboriladi</li><li>Tibbiy xonaning öz Face ID qurilmasi bor</li></ul>
       </article>
       <article class="hy-fact" data-spotlight>
         <svg class="hy-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <h4>Kun va ovqat</h4>
+        <h4>Kun tartibi va ovqatlaniş</h4>
         <p class="hy-big"><b>06:00</b><span>darslar boşlanadi</span></p>
         <ul><li>Kuniga ikki mahal issiq ovqat, non va çoy — maktabning öz oşxonasi</li><li>Poyezd vokzaliga ~300 metr — boşqa viloyatlardan qatnaş qulay</li></ul>
       </article>
@@ -3061,6 +3106,13 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <div class="dr-cap"><span class="dr-no">05</span><b>Poyezd vokzaliga ~300 metr</b><span>Boşqa viloyatlardan keliş qulay</span></div>
       </li>
     </ol>
+    <nav class="dr-chapters" aria-label="Dron kadrlarini tanlaş">
+      <button type="button" aria-label="1-kadr: Uçköprik tumani" aria-controls="dr-kadr-1" aria-current="true"><b aria-hidden="true">01</b><span>Hudud</span></button>
+      <button type="button" aria-label="2-kadr: Qayroğoç qişloği" aria-controls="dr-kadr-2"><b aria-hidden="true">02</b><span>Mahalla</span></button>
+      <button type="button" aria-label="3-kadr: yangi bino" aria-controls="dr-kadr-3"><b aria-hidden="true">03</b><span>Yangi bino</span></button>
+      <button type="button" aria-label="4-kadr: maktab hovlisi" aria-controls="dr-kadr-4"><b aria-hidden="true">04</b><span>Hovli</span></button>
+      <button type="button" aria-label="5-kadr: poyezd vokzali" aria-controls="dr-kadr-5"><b aria-hidden="true">05</b><span>Vokzal</span></button>
+    </nav>
     <div class="dr-hud" aria-hidden="true">
       <span class="dr-rec"><i></i>DRON</span>
       <span class="dr-count"><b>01</b> / 05</span>
@@ -3068,7 +3120,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     </div>
     <span class="dr-corner dr-corner--tl" aria-hidden="true"></span><span class="dr-corner dr-corner--tr" aria-hidden="true"></span>
     <span class="dr-corner dr-corner--bl" aria-hidden="true"></span><span class="dr-corner dr-corner--br" aria-hidden="true"></span>
-    <p class="dr-src">Kadrlar — maktabning dron s’yomkasidan (2026-yil iyun)</p>
+    <p class="dr-src">Maktabning dron tasvirlari · 2026-yil iyun</p>
   </div>
 </section>
 
@@ -3079,7 +3131,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <div class="gg-copy">
         <span class="eyebrow" data-scramble>Geografiya</span>
         <h2 id="gg-title" class="h2" data-split="lines">Öquvçilarimiz <span class="accent-azure">qayerdan keladi?</span></h2>
-        <p class="lead" data-reveal="blur">Öquvçilarimiz Farğona vodiysining uç viloyatidan va undan taşqaridan keladi. Maktab poyezd vokzaliga ~300 metr — boşqa viloyatlardan kelganlar poyezdda qulay qatnaydi.</p>
+        <p class="lead" data-reveal="blur">Öquvçilarimiz Farğona vodiysining uç viloyatidan va undan taşqaridan keladi. Maktabdan poyezd vokzaligaça taxminan 300 metr. Boşqa viloyatlardan keladigan oilalar uçun ham qulay.</p>
       </div>
       <div class="gg-side">
         <ul class="gg-legend" data-reveal-children data-reveal="up" data-stagger="0.06">
@@ -3126,7 +3178,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
           <time class="ny-date"></time>
           <h3 class="ny-big__title"><a href="https://t.me/ulugbek_rm" target="_blank" rel="noopener noreferrer">&nbsp;</a></h3>
           <p class="ny-big__text"></p>
-          <a class="ny-read" href="https://t.me/ulugbek_rm" target="_blank" rel="noopener noreferrer">Telegramda öqiş <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="ny-read" href="https://t.me/ulugbek_rm" target="_blank" rel="noopener noreferrer">Telegram orqali öqiş <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </article>
       <ul class="ny-rows"></ul>
@@ -3147,12 +3199,12 @@ section[id], footer[id] { scroll-margin-top: 96px; }
           <div>
             <span class="ny-tag ny-tag--face">Face ID · Nazoratçi bot</span>
             <p>Maktab kirişlarida <b>4 ta Face ID apparati</b> (+ tibbiy xonada alohida qurilma). Botga ulangan ota-ona farzandi maktabga kirgan, keçikkan yoki uydan qaytgan lahzada surati bilan Telegram xabarini oladi. Ulaniş bepul.</p>
-            <div class="ny-upd__links"><a class="ny-botlink" href="https://t.me/nazoratchiroobot" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z"/></svg>@nazoratchiroobot’ga ulaniş</a><a class="ny-more" href="#nazorat">Batafsil →</a></div>
+            <div class="ny-upd__links"><a class="ny-botlink" href="https://t.me/nazoratchiroobot" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z"/></svg>Nazoratçi botga ulaniş</a><a class="ny-more" href="#nazorat">Batafsil →</a></div>
           </div>
         </li>
-        <li><span class="ny-tag ny-tag--new">Yangi</span><p>2026–2027 öquv yilidan rus tili yönalişlari oçildi (9–11-sinflar): Rus tili–Ingliz tili, Rus tili–Ona tili, Rus tili–Tarix.</p></li>
-        <li><span class="ny-tag">Salomatlik</span><p>2026-yil sentabr oyidan farzandingiz maktab şifokoriga murojaat qilsa, botga ulangan ota-onaga taşrif sanasi-soati, murojaat sababi va şifokor izohi Telegram orqali yuboriladi.</p></li>
-        <li><span class="ny-tag">Tartib</span><p>Dars soat 06:00 da boşlanadi; keçikib kirsa, ota-onaga neça daqiqa keçikkani bilan xabar boradi. Uyga javobdan qaytiş muddati har davr uçun alohida e’lon qilinadi.</p></li>
+        <li><span class="ny-tag ny-tag--new">Yangi</span><p>2026–2027 öquv yilidan rus tili yönalişlari oçildi (9–11-sinflar): Rus tili–ingliz tili, Rus tili–ona tili, Rus tili–tarix.</p></li>
+        <li><span class="ny-tag">Salomatlik</span><p>2026-yil sentabr oyidan farzandingiz maktab şifokoriga murojaat qilsa, botga ulangan ota-onaga taşrif sanasi va vaqti, murojaat sababi va şifokor izohi Telegram orqali yuboriladi.</p></li>
+        <li><span class="ny-tag">Tartib</span><p>Dars soat 06:00 da boşlanadi; keçikib kirsa, ota-onaga neça daqiqa keçikkani bilan xabar boradi. Uyga ketgan öquvçilarning qaytiş muddati har davr uçun alohida e’lon qilinadi.</p></li>
         <li><span class="ny-tag ny-tag--gold">8-sentabr</span><p>Asosçimiz Jabborov A’zamjon Maşraboviçning 60 yillik yubileyi.</p></li>
       </ol>
     </div>
@@ -3165,7 +3217,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="fq-side">
       <span class="eyebrow" data-scramble>Savol-javob</span>
       <h2 id="fq-title" class="h2" data-split="lines">Köp beriladigan <span class="accent-azure">savollar.</span></h2>
-      <p class="lead" data-reveal="blur">Javob topmadingizmi? Maktab menejeri qönğiroqqa har kuni 06:00 — 21:30 javob beradi.</p>
+      <p class="lead" data-reveal="blur">Javob topmadingizmi? Maktab menejeriga har kuni soat 06:00 dan 21:30 gaça qönğiroq qilişingiz mumkin.</p>
       <div class="fq-search" data-reveal="up">
         <label class="fq-search__label" for="fq-search">Savolni toping</label>
         <div class="fq-search__box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="fq-search" type="search" autocomplete="off" placeholder="Masalan: yotoqxona, Face ID, qabul"></div>
@@ -3176,7 +3228,23 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <a class="btn btn--ghost" href="/faq"><span class="btn__label" data-text="Barça savollar"><span>Barça savollar</span></span><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
-    <ol class="fq-list" data-reveal-children data-reveal="up" data-stagger="0.04"><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a0" id="fq-q0"><span class="fq-n">01</span><span class="fq-t">Qabul qaçondan boşlanadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a0" role="region" aria-labelledby="fq-q0" hidden><p>Rasmiy qabul 2026-yil 1-avgust, soat 07:00 dan boşlangan. 2026–2027 öquv yiliga asosiy qabul yakunlangan; ayrim sinflarda — masalan, 8–9-sinflarda — sanoqli örinlar qoldi. Joy bor-yöqligini bir qönğiroqda aniqlang: <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a1" id="fq-q1"><span class="fq-n">02</span><span class="fq-t">Qaysi sinflarga qabul qilinadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a1" role="region" aria-labelledby="fq-q1" hidden><p>8–11-sinflarga va bitiruvçilarga (11-sinfni tugatganlar). 5–7-sinflar uçun yangi bino qurilmoqda; 2027–2028 öquv yilidan qabul oçiş rejalaştirilgan.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a2" id="fq-q2"><span class="fq-n">03</span><span class="fq-t">Tölov qança?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a2" role="region" aria-labelledby="fq-q2" hidden><p>Aniq summani maktab menejeri aytadi — <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a3" id="fq-q3"><span class="fq-n">04</span><span class="fq-t">Yotoqxona bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a3" role="region" aria-labelledby="fq-q3" hidden><p>Ha, yotoqxona hamma öquvçilar uçun (maktab-internat tartibi). Yotoqxonalarda maxsus nazoratçilar bor; 2 haftada bir marta (şanba–yakşanba) uyga ruxsat beriladi.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a4" id="fq-q4"><span class="fq-n">05</span><span class="fq-t">Ovqatlaniş qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a4" role="region" aria-labelledby="fq-q4" hidden><p>Kuniga ikki mahal issiq ovqat, şuningdek non va çoy beriladi — maktabning öz oşxonasi bor.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a5" id="fq-q5"><span class="fq-n">06</span><span class="fq-t">Transport xizmati bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a5" role="region" aria-labelledby="fq-q5" hidden><p>Maktab poyezd vokzaliga ~300 metr masofada — boşqa viloyatlardan kelganlar poyezdda qulay qatnaydi. Batafsil ma’lumotni adminlarimiz beradi.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a6" id="fq-q6"><span class="fq-n">07</span><span class="fq-t">Qanday sertifikatlarga tayyorlanadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a6" role="region" aria-labelledby="fq-q6" hidden><p>Milliy sertifikat, CEFR va IELTS imtihonlari hamda fan olimpiadalariga. 2025–2026 öquv yili davomida öquvçilarimiz 1560+ milliy va xalqaro sertifikat qölga kiritdi.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a7" id="fq-q7"><span class="fq-n">08</span><span class="fq-t">Maktabga taşrif buyursam böladimi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a7" role="region" aria-labelledby="fq-q7" hidden><p>Ha. Kelişilgan vaqtda adminlar kutib oladi — oldindan qönğiroq qiling: <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a8" id="fq-q8"><span class="fq-n">09</span><span class="fq-t">Maktab qayerda joylaşgan?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a8" role="region" aria-labelledby="fq-q8" hidden><p>Farğona viloyati, Uçköprik tumani, Nihol MFY, Qayroğoç qişloği, 45-uy. <a href="https://maps.app.goo.gl/n7HcCtnK3KU1ZUWh9" target="_blank" rel="noopener">Xaritada oçiş ↗</a></p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a9" id="fq-q9"><span class="fq-n">10</span><span class="fq-t">Maktab litsenziyasi bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a9" role="region" aria-labelledby="fq-q9" hidden><p>Ha — litsenziya № 363657, 21.08.2024 («ULUGBEK PERFECT EDU» nodavlat ta’lim muassasasi).</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a10" id="fq-q10"><span class="fq-n">11</span><span class="fq-t">Maktabda xavfsizlik qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a10" role="region" aria-labelledby="fq-q10" hidden><p>Hudud böylab 64 ta videokuzatuv kamerasi, yotoqxonada komendant va nazoratçilar, kirişlarda 4 ta Face ID apparati. Botga ulangan ota-ona farzandi maktabga kirgani, keçikkani yoki uydan qaytgani haqida darhol Telegram xabarini oladi (@nazoratchiroobot, bepul).</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a11" id="fq-q11"><span class="fq-n">12</span><span class="fq-t">Tibbiyot yönalişiga tayyorlaysizmi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a11" role="region" aria-labelledby="fq-q11" hidden><p>Ha — Kimyo–Biologiya yönalişi: çuqurlaştirilgan kimyo va biologiya, laboratoriya amaliyoti, milliy sertifikatga yönaltirilgan dastur.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a12" id="fq-q12"><span class="fq-n">13</span><span class="fq-t">Ingliz tili darajasi qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a12" role="region" aria-labelledby="fq-q12" hidden><p>Darajalarga bölingan guruhlar, CEFR va IELTS imtihonlariga tayyorlov. Ingliz tilidan natijalar — CEFR B2–C1; öqituvçimizning şaxsiy natijasi — IELTS 8.0.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a13" id="fq-q13"><span class="fq-n">14</span><span class="fq-t">5–7-sinflarga qabul bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a13" role="region" aria-labelledby="fq-q13" hidden><p>Hozirça yöq. 5–7-sinflar uçun yangi bino qurilmoqda; 2027–2028 öquv yilidan qabul oçiş rejalaştirilgan — yangiliklarni <a href="https://t.me/ulugbek_rm" target="_blank" rel="noopener">Telegram kanalimizda</a> kuzatib boring.</p></div></li><li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a14" id="fq-q14"><span class="fq-n">15</span><span class="fq-t">Rasmiylaştiriş qanday keçadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a14" role="region" aria-labelledby="fq-q14" hidden><p>Ariza → admin yoki menejer bilan aloqa → suhbat yoki sinov (8–9-sinflar: ariza asosida; 10–11-sinflar: kuçaytirilgan suhbat va sinov) → şartnoma va hujjatlar. Kerakli hujjatlar röyxatini adminlarimiz aytadi.</p></div></li></ol>
+    <ol class="fq-list" data-reveal-children data-reveal="up" data-stagger="0.04">
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a0" id="fq-q0"><span class="fq-n">01</span><span class="fq-t">Hozir qabul davom etyaptimi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a0" role="region" aria-labelledby="fq-q0" hidden><p>Rasmiy qabul 2026-yil 1-avgust kuni soat 07:00 da boşlangan. 2026–2027 öquv yiliga asosiy qabul yakunlangan; ayrim sinflarda — masalan, 8–9-sinflarda — sanoqli örinlar qoldi. Joy bor-yöqligini bir qönğiroqda aniqlang: <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a1" id="fq-q1"><span class="fq-n">02</span><span class="fq-t">Qaysi sinflarga qabul qilinadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a1" role="region" aria-labelledby="fq-q1" hidden><p>8–11-sinflar öquvçilari hamda 11-sinfni tugatgan bitiruvçilar uçun ariza qabul qilinadi. 5–7-sinflar uçun yangi bino qurilmoqda; 2027–2028 öquv yilidan qabul oçiş rejalaştirilgan.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a2" id="fq-q2"><span class="fq-n">03</span><span class="fq-t">Tölov qança?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a2" role="region" aria-labelledby="fq-q2" hidden><p>Aniq summani maktab menejeri aytadi — <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a3" id="fq-q3"><span class="fq-n">04</span><span class="fq-t">Yotoqxona bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a3" role="region" aria-labelledby="fq-q3" hidden><p>Ha, yotoqxona hamma öquvçilar uçun (maktab-internat tartibi). Yotoqxonalarda maxsus nazoratçilar bor; 2 haftada bir marta (şanba–yakşanba) uyga ruxsat beriladi.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a4" id="fq-q4"><span class="fq-n">05</span><span class="fq-t">Ovqatlaniş qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a4" role="region" aria-labelledby="fq-q4" hidden><p>Kuniga ikki mahal issiq ovqat, şuningdek non va çoy beriladi — maktabning öz oşxonasi bor.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a5" id="fq-q5"><span class="fq-n">06</span><span class="fq-t">Transport xizmati bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a5" role="region" aria-labelledby="fq-q5" hidden><p>Maktabdan poyezd vokzaligaça taxminan 300 metr — boşqa viloyatlardan kelganlar poyezdda qulay qatnaydi. Batafsil ma’lumotni qabul bölimi xodimlari beradi.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a6" id="fq-q6"><span class="fq-n">07</span><span class="fq-t">Qaysi imtihonlarga tayyorlanadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a6" role="region" aria-labelledby="fq-q6" hidden><p>Milliy sertifikat, CEFR va IELTS imtihonlari hamda fan olimpiadalariga. 2025–2026 öquv yili davomida öquvçilarimiz 1560+ milliy va xalqaro sertifikat qölga kiritdi.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a7" id="fq-q7"><span class="fq-n">08</span><span class="fq-t">Maktabga taşrif buyursam böladimi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a7" role="region" aria-labelledby="fq-q7" hidden><p>Ha. Kelişilgan vaqtda Sizni maktab xodimlari kutib oladi — oldindan qönğiroq qiling: <a href="tel:+998974173777">+998 97 417 37 77</a>.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a8" id="fq-q8"><span class="fq-n">09</span><span class="fq-t">Maktab qayerda joylaşgan?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a8" role="region" aria-labelledby="fq-q8" hidden><p>Farğona viloyati, Uçköprik tumani, Nihol MFY, Qayroğoç qişloği, 45-uy. <a href="https://maps.app.goo.gl/n7HcCtnK3KU1ZUWh9" target="_blank" rel="noopener">Xaritada oçiş ↗</a></p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a9" id="fq-q9"><span class="fq-n">10</span><span class="fq-t">Maktab litsenziyasi bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a9" role="region" aria-labelledby="fq-q9" hidden><p>Ha — 2024-yil 21-avgustda berilgan № 363657 litsenziya («ULUGBEK PERFECT EDU» nodavlat ta’lim muassasasi).</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a10" id="fq-q10"><span class="fq-n">11</span><span class="fq-t">Maktabda xavfsizlik qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a10" role="region" aria-labelledby="fq-q10" hidden><p>Hudud böylab 64 ta videokuzatuv kamerasi, yotoqxonada komendant va nazoratçilar, kirişlarda 4 ta Face ID apparati. Botga ulangan ota-ona farzandi maktabga kirgani, keçikkani yoki uydan qaytgani haqida darhol Telegram xabarini oladi (@nazoratchiroobot, bepul).</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a11" id="fq-q11"><span class="fq-n">12</span><span class="fq-t">Tibbiyot yönalişiga tayyorlaysizmi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a11" role="region" aria-labelledby="fq-q11" hidden><p>Ha — Kimyo–biologiya yönalişi: çuqurlaştirilgan kimyo va biologiya, laboratoriya amaliyoti, milliy sertifikatga yönaltirilgan dastur.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a12" id="fq-q12"><span class="fq-n">13</span><span class="fq-t">Ingliz tili darajasi qanday?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a12" role="region" aria-labelledby="fq-q12" hidden><p>Darajalarga bölingan guruhlar, CEFR va IELTS imtihonlariga tayyorlov. Ingliz tilidan natijalar — CEFR B2–C1; öqituvçimizning şaxsiy natijasi — IELTS 8.0.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a13" id="fq-q13"><span class="fq-n">14</span><span class="fq-t">5–7-sinflarga qabul bormi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a13" role="region" aria-labelledby="fq-q13" hidden><p>Hozirça yöq. 5–7-sinflar uçun yangi bino qurilmoqda; 2027–2028 öquv yilidan qabul oçiş rejalaştirilgan — yangiliklarni <a href="https://t.me/ulugbek_rm" target="_blank" rel="noopener">Telegram kanalimizda</a> kuzatib boring.</p></div></li>
+      <li class="fq-item"><h3><button class="fq-q" type="button" aria-expanded="false" aria-controls="fq-a14" id="fq-q14"><span class="fq-n">15</span><span class="fq-t">Rasmiylaştiriş qanday keçadi?</span><i class="fq-ico" aria-hidden="true"></i></button></h3><div class="fq-a" id="fq-a14" role="region" aria-labelledby="fq-q14" hidden><p>Ariza → admin yoki menejer bilan aloqa → suhbat yoki sinov (8–9-sinflar: ariza asosida; 10–11-sinflar: kuçaytirilgan suhbat va sinov) → şartnoma va hujjatlar. 11-sinf va bitiruvçilar uçun yönaliş böyiça sertifikat talab etiladi. Kerakli hujjatlar röyxatini qabul bölimi xodimlari tuşuntiradi.</p></div></li>
+    </ol>
   </div>
 </section>
 
@@ -3191,7 +3259,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       </div>
       <div class="kn-ai__copy">
         <h2 class="kn-ai__title" data-split="words">Savolingiz bormi?</h2>
-        <p data-reveal="blur" data-delay=".15">Rasmiy botimizdagi sun’iy intellekt yordamçisi qabul, yönalişlar va natijalar böyiça savollaringizga darhol javob beradi.</p>
+        <p data-reveal="blur" data-delay=".15">Rasmiy botimizdagi sun’iy intellekt yordamçisi qabul, yönalişlar va natijalar haqida ma’lumot beradi. Zarur bölsa, menejerimiz bilan boğlanişingiz mumkin.</p>
       </div>
       <a class="btn kn-ai__btn btn--lg" data-magnetic href="https://t.me/mirzorasmiybot?start=web" target="_blank" rel="noopener noreferrer"><svg class="kn-ai__bot" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4v4M9 14h.01M15 14h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="3.5" r="1.5"/></svg><span class="btn__label" data-text="Botda savol beriş"><span>Botda savol beriş</span></span></a>
     </div>
@@ -3248,10 +3316,10 @@ section[id], footer[id] { scroll-margin-top: 96px; }
       <figure class="kn-visit__img"><img src="https://mirzoulugbek.app/media/bino/yangi-bino-fasad-keng.webp" alt="«Mirzo Uluğbek» xususiy maktabining yangi binosi — köçadan köriniş" width="1920" height="1080" loading="lazy" decoding="async"><figcaption>Maktabning yangi binosi</figcaption></figure>
       <div class="kn-visit__body">
         <h3 class="h3">Maktabga taşrif buyuring</h3>
-        <p>Kelişilgan vaqtda adminlar kutib oladi — oldindan qönğiroq qiling.</p>
+        <p>Taşrif vaqtini oldindan qönğiroq qilib kelişib oling. Sizni maktabimizda kutamiz.</p>
         <dl>
           <div><dt>Manzil</dt><dd>Farğona viloyati, Uçköprik tumani, Nihol MFY, Qayroğoç qişloği, 45-uy</dd></div>
-          <div><dt>Iş vaqti</dt><dd>Duşanba — Yakşanba, 06:00 — 21:30</dd></div>
+          <div><dt>Iş vaqti</dt><dd>Har kuni, 06:00 — 21:30</dd></div>
           <div><dt>Yöl</dt><dd>Poyezd vokzaliga ~300 metr</dd></div>
         </dl>
         <div class="kn-visit__btns">
@@ -3273,7 +3341,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
   <div class="ch-panel" id="ch-panel" role="dialog" aria-modal="true" aria-label="Mirzo Uluğbek yordamçisi" hidden>
     <div class="ch-head">
       <span class="ch-ava"><img src="https://mirzoulugbek.app/logo.png" alt="" width="24" height="24" loading="lazy" decoding="async"></span>
-      <div class="ch-head__txt"><b>Mirzo Uluğbek yordamçisi</b><small><i class="ch-online"></i>Odatda darhol javob beradi</small></div>
+      <div class="ch-head__txt"><b>Mirzo Uluğbek yordamçisi</b><small><i class="ch-online"></i>Qabul va maktab haqida ma’lumot</small></div>
       <button class="ch-close" type="button" aria-label="Yopiş"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
     </div>
     <div class="ch-log" aria-live="polite"></div>
@@ -3311,7 +3379,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
     <div class="ft-grid" data-reveal-children data-reveal="up" data-stagger="0.07">
       <div class="ft-col ft-brand">
         <a class="ft-logo" href="/" aria-label="«Mirzo Uluğbek» xususiy maktabi — boş sahifa"><img src="https://mirzoulugbek.app/logo.png" alt="" width="48" height="48" loading="lazy" decoding="async"><span>MIRZO ULUĞBEK<small>xususiy maktabi</small></span></a>
-        <p>Uçköprik tumanida sifatli ta’lim — tajribali jamoa va bitta maqsad: farzandingizning kelajagi.</p>
+        <p>Uçköprik tumanida sifatli ta’lim — tajribali jamoa va umumiy maqsad: farzandingizning kelajagi.</p>
         <ul class="ft-icons">
           <li><a href="https://t.me/ulugbek_rm" target="_blank" rel="noopener noreferrer" aria-label="Telegram kanalimiz"><svg viewBox="0 0 24 24"><path d="M21.9 4.4L2.9 11.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3 1 1.6 1.2 2.2.4l2.6-3.1 4.8 3.5c.8.6 2 .2 2.2-.8l3-14.6c.2-1.1-.8-2-1.9-1.6z"/></svg></a></li>
           <li><a href="https://www.instagram.com/mirzoulugbekmaktabi" target="_blank" rel="noopener noreferrer" aria-label="Instagram sahifamiz"><svg viewBox="0 0 24 24"><path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5zm4 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm5.5-2.3a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/></svg></a></li>
@@ -3327,13 +3395,13 @@ section[id], footer[id] { scroll-margin-top: 96px; }
           <li><a href="/qabul">Qabul</a></li>
           <li><a href="/yutuqlar">Yutuqlar</a></li>
           <li><a href="/yangiliklar">Yangiliklar</a></li>
-          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/faq">Savollar</a></li>
           <li><a href="/aloqa">Aloqa</a></li>
         </ul>
       </div>
       <div class="ft-col">
         <h3>Iş vaqti</h3>
-        <p><b>Duşanba — Yakşanba</b><br>06:00 — 21:30</p>
+        <p><b>Har kuni</b><br>06:00 — 21:30</p>
         <p class="ft-dim">«Mirzo Uluğbek» xususiy maktabida 2 haftada bir marta (şanba–yakşanba) uyga ruxsat beriladi.</p>
       </div>
       <div class="ft-col">
@@ -3357,7 +3425,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 
   <div class="ft-sticky" aria-label="Tezkor aloqa">
     <a class="ft-sticky__call" href="tel:+998974173777"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Qönğiroq</a>
-    <a class="ft-sticky__apply" href="#ariza">Hujjat topşiriş</a>
+    <a class="ft-sticky__apply" href="#ariza">Ariza qoldiriş</a>
   </div>
 </footer>
 <script>
@@ -7704,18 +7772,19 @@ void main() {
   const RE_O = new RegExp('([Oo])' + AP, 'g');
   const RE_G = new RegExp('([Gg])' + AP, 'g');
   const PROTECT = /(https?:\/\/[^\s<>"«»]+|www\.[^\s<>"«»]+|[\w.+-]+@[\w-]+\.[\w.]+|@[A-Za-z0-9_]{3,}|#[A-Za-z0-9_]+|\b[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.(?:app|com|uz|org|me|net|io)\b(?:\/[^\s<>"«»]*)?)/g;
-  const NEED_NEW = /[OoGg]['’‘\u02BB\u02BC`´]|[Ss][Hh]|[Cc][Hh]/;
-  const NEED_OLD = /[ÖöĞğŞşÇç]/;
+  const NEED_NEW = /[OoGg]['’‘\u02BB\u02BC`´]|[Ss][Hh]|[Cc][Hh]|['‘\u02BB\u02BC`´]/;
+  const NEED_OLD = /[ÖöĞğŞşÇç]|['‘\u02BB\u02BC`´]/;
+  const apostrophe = s => s.replace(/['‘\u02BB\u02BC`´]/g, '’');
   const up = (s, i) => { const n = s.charAt(i); return n && n === n.toUpperCase() && n !== n.toLowerCase(); };
 
   function segNew(s) {
-    return s.replace(RE_O, (m, o) => (o === 'O' ? 'Ö' : 'ö'))
+    return apostrophe(s).replace(RE_O, (m, o) => (o === 'O' ? 'Ö' : 'ö'))
       .replace(RE_G, (m, g) => (g === 'G' ? 'Ğ' : 'ğ'))
       .replace(/S[Hh]/g, 'Ş').replace(/s[Hh]/g, 'ş')
       .replace(/C[Hh]/g, 'Ç').replace(/c[Hh]/g, 'ç');
   }
   function segOld(s) {
-    return s.replace(/[ÖöĞğŞşÇç]/g, (ch, i, str) => {
+    return apostrophe(s).replace(/[ÖöĞğŞşÇç]/g, (ch, i, str) => {
       const U = up(str, i + 1) || (up(str, i - 1) && !/[a-zа-я]/.test(str.charAt(i + 1)));
       switch (ch) {
         case 'Ö': return 'O’';
@@ -8282,7 +8351,7 @@ MU.part('core', {
         menu.hidden = false;
         gsap.killTweensOf([menu, links]);
         gsap.fromTo(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)' }, { clipPath: 'circle(150% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.9, ease: 'mu.inOut' });
-        gsap.fromTo(links, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
+        gsap.fromTo(links, { y: MU.reduced ? 0 : 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: MU.reduced ? 0 : 0.8, stagger: MU.reduced ? 0 : 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
         setTimeout(() => { const f = menu.querySelector('a, button'); if (f) f.focus({ preventScroll: true }); }, MU.reduced ? 0 : 300);
       } else {
         burger.focus({ preventScroll: true });
@@ -9139,8 +9208,24 @@ MU.part('yonalishlar', {
     /* qiziqish bo’yicha filtr: kartalar Flip bilan silliq qayta joylashadi */
     const btns = Array.from(root.querySelectorAll('[data-filter]')), cards = Array.from(root.querySelectorAll('.yn-card[data-goals]'));
     const status = root.querySelector('.yn-status');
+    const filters = root.querySelector('.yn-filters'), marker = root.querySelector('.yn-selection');
+    let selected = btns[0];
+    const positionMarker = (animate = false) => {
+      const target = { x: selected.offsetLeft, y: selected.offsetTop, width: selected.offsetWidth, height: selected.offsetHeight };
+      if (animate && !MU.reduced) gsap.to(marker, { ...target, duration: 0.45, ease: 'mu.out', overwrite: true });
+      else { gsap.killTweensOf(marker); gsap.set(marker, target); }
+      filters.classList.add('is-ready');
+    };
+    const observer = new ResizeObserver(() => positionMarker());
+    btns.forEach(b => observer.observe(b));
+    positionMarker();
     btns.forEach(b => b.addEventListener('click', () => {
+      if (selected === b) return;
+      selected = b; positionMarker(true);
       const f = b.dataset.filter;
+      // Complete a previous layout change before measuring a rapid next selection.
+      if (window.Flip) Flip.killFlipsOf(cards, true);
+      gsap.killTweensOf(cards);
       const state = window.Flip && !MU.reduced ? Flip.getState(cards) : null;
       btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
       let n = 0;
@@ -9343,9 +9428,9 @@ MU.part('ariza', {
     const fieldOf = k => root.querySelector(`[data-field="${k}"]`);
     const rules = {
       fullName: () => { const v = nameI.value.trim(); return v.length >= 3 && v.length <= 120 ? '' : 'Ism-familiyani to’liq kiriting.'; },
-      region: () => (regionS.value ? '' : 'Viloyatni tanlang.'),
+      region: () => (regionS.value ? '' : 'Hududni tanlang.'),
       grade: () => (form.querySelector('input[name="grade"]:checked') ? '' : 'Sinfni tanlang.'),
-      phone: () => (/^\d{9}$/.test(digits()) ? '' : 'Telefon raqamni to’liq kiriting: +998 90 123 45 67')
+      phone: () => (/^\d{9}$/.test(digits()) ? '' : 'Telefon raqamingizni to’liq kiriting: +998 90 123 45 67')
     };
     const check = k => {
       const msg = rules[k](), f = fieldOf(k);
@@ -9373,7 +9458,7 @@ MU.part('ariza', {
       try {
         const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tashkent', day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
           .formatToParts(d).map(x => [x.type, x.value]));
-        return `${+p.day}-${OY[+p.month - 1]}, ${p.year}, ${p.hour}:${p.minute}`;
+        return `${p.year}-yil ${+p.day}-${OY[+p.month - 1]}, soat ${p.hour}:${p.minute}`;
       } catch (e) { return ''; }
     };
     /* 60 soniyalik mijoz tomoni cheklovi — jonli saytdagi kabi localStorage["ariza_last_submit"] */
@@ -9409,10 +9494,10 @@ MU.part('ariza', {
       if (res.ok && data.ok && data.duplicate) {
         setBtn('ok'); stamp();
         const when = fmtDate(data.createdAt);
-        say('is-info', `<b class="az-st__title">Siz allaqachon ro’yxatdan o’tgansiz</b><p>${when ? `Arizangiz avval, ${when}da qabul qilingan.` : 'Arizangiz avval qabul qilingan.'} Qayta yuborish shart emas — menejerlarimiz bilan bog’lanasiz.</p><p class="az-st__sub">Ma’lumotlaringizni to’g’rilash kerak bo’lsa yoki xabarnomalarni kuzatib borish uchun rasmiy botimizga o’ting 👇</p>${BOT}<p class="az-st__sub">Savol bo’lsa: <a href="tel:+998974173777">+998 97 417 37 77</a></p>`);
+        say('is-info', `<b class="az-st__title">Siz allaqachon ro’yxatdan o’tgansiz</b><p>${when ? `Arizangiz ${when}da qabul qilingan.` : 'Arizangiz avval qabul qilingan.'} Qayta yuborish shart emas. Savolingiz bo’lsa, menejerlarimiz bilan bog’laning.</p><p class="az-st__sub">Ma’lumotlaringizni to’g’rilash kerak bo’lsa yoki xabarnomalarni kuzatib borish uchun rasmiy botimizga o’ting 👇</p>${BOT}<p class="az-st__sub">Savol bo’lsa: <a href="tel:+998974173777">+998 97 417 37 77</a></p>`);
       } else if (res.ok && data.ok) {
         setBtn('ok'); stamp(); confetti();
-        say('is-ok', `<b class="az-st__title">Arizangiz qabul qilindi ✅</b><p>Tez orada menejerlarimiz siz bilan bog’lanadi.</p><p class="az-st__sub">So’nggi yangiliklar, natijalar va savollaringizga javob olish uchun rasmiy botimizga o’ting 👇</p>${BOT}`);
+        say('is-ok', `<b class="az-st__title">Arizangiz qabul qilindi ✅</b><p>Tez orada menejerlarimiz Siz bilan bog’lanadi.</p><p class="az-st__sub">So’nggi yangiliklar, natijalar va savollaringizga javob olish uchun rasmiy botimizga o’ting 👇</p>${BOT}`);
       } else if (res.status === 429 || data.error === 'rate_limited') {
         setBtn('idle');
         say('is-warn', 'Iltimos, bir daqiqadan so’ng qayta urinib ko’ring.');
@@ -9472,16 +9557,47 @@ MU.part('hayot', {
     const countB = root.querySelector('.hy-count b');
     const prog = root.querySelector('.hy-prog b');
     const n = slides.length;
+    const prev = root.querySelector('.hy-prev'), next = root.querySelector('.hy-next');
+    const announcement = root.querySelector('.hy-announcement');
+    let activeIndex = 0, pin = null;
+    const offset = i => slides[i].offsetLeft - parseFloat(getComputedStyle(track).paddingLeft);
+    const nearest = (x, max) => slides.reduce((best, _, i) =>
+      Math.abs(Math.min(max, offset(i)) - x) < Math.abs(Math.min(max, offset(best)) - x) ? i : best, 0);
     const setIdx = (i, p) => {
+      activeIndex = i;
       countB.textContent = String(i + 1).padStart(2, '0');
       gsap.set(prog, { scaleX: p });
+      prev.setAttribute('aria-disabled', String(i === 0));
+      next.setAttribute('aria-disabled', String(i === n - 1));
     };
     setIdx(0, 1 / n);
+    const go = i => {
+      i = Math.max(0, Math.min(n - 1, i));
+      if (pin) {
+        const max = pin.end - pin.start;
+        MU.scrollTo(pin.start + Math.min(max, offset(i)), { duration: 0.85 });
+      } else track.scrollTo({ left: offset(i), behavior: MU.reduced ? 'instant' : 'smooth' });
+      const caption = slides[i].querySelector('figcaption b');
+      announcement.textContent = (i + 1) + ' / ' + n + '. ' + caption.textContent.trim();
+    };
+    prev.addEventListener('click', () => { if (activeIndex > 0) go(activeIndex - 1); });
+    next.addEventListener('click', () => { if (activeIndex < n - 1) go(activeIndex + 1); });
+    reel.addEventListener('keydown', e => {
+      if (e.altKey || e.ctrlKey || e.metaKey || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      e.preventDefault();
+      const i = e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : Math.max(0, Math.min(n - 1, activeIndex + (e.key === 'ArrowRight' ? 1 : -1)));
+      go(i);
+      if (e.target.closest('.hy-slide')) slides[i].focus({ preventScroll: true });
+    });
 
     /* suratni bosib kattalashtirish (lenta va «ikkinchi uy» suratlari) */
     root.querySelectorAll('.hy-slide, .hy-shot').forEach(f => {
       const img = f.querySelector('img'), cap = f.querySelector('figcaption b, figcaption');
       if (!img) return;
+      const frame = f.querySelector('.hy-frame') || f;
+      const zoom = document.createElement('span'); zoom.className = 'hy-zoom'; zoom.setAttribute('aria-hidden', 'true');
+      zoom.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>';
+      frame.append(zoom);
       f.tabIndex = 0; f.setAttribute('role', 'button'); f.setAttribute('aria-label', (img.alt || 'Surat') + ' — kattalashtirish');
       const open = () => MU.lightbox && MU.lightbox({ src: img.currentSrc || img.src, alt: img.alt, caption: cap ? cap.textContent.trim() : img.alt });
       f.addEventListener('click', open);
@@ -9490,9 +9606,10 @@ MU.part('hayot', {
 
     /* mobil: surishni kuzatish */
     const onNativeScroll = () => {
+      if (pin) return;
       const max = track.scrollWidth - track.clientWidth;
       const p = max > 0 ? track.scrollLeft / max : 0;
-      setIdx(Math.round(p * (n - 1)), Math.max(1 / n, p));
+      setIdx(nearest(track.scrollLeft, max), Math.max(1 / n, p));
     };
     track.addEventListener('scroll', onNativeScroll, { passive: true });
 
@@ -9506,9 +9623,10 @@ MU.part('hayot', {
         x: () => -dist(), ease: 'none',
         scrollTrigger: {
           trigger: reel, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true, anticipatePin: 1,
-          onUpdate(self) { setIdx(Math.min(n - 1, Math.round(self.progress * (n - 1))), Math.max(1 / n, self.progress)); }
+          onUpdate(self) { setIdx(nearest(self.progress * dist(), dist()), Math.max(1 / n, self.progress)); }
         }
       });
+      pin = tween.scrollTrigger;
       slides.forEach((s, i) => {
         const img = s.querySelector('img'), frame = s.querySelector('.hy-frame'), cap = s.querySelector('figcaption');
         /* surat ichida parallaks: ramka ichida rasm qarama-qarshi siljiydi */
@@ -9518,7 +9636,7 @@ MU.part('hayot', {
         gsap.fromTo(frame, { clipPath: 'inset(0 0 0 36% round 28px)' }, { clipPath: 'inset(0 0 0 0% round 28px)', ease: 'none', scrollTrigger: { trigger: s, containerAnimation: tween, start: 'left 105%', end: 'left 45%', scrub: true } });
         gsap.fromTo(cap, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, ease: 'none', scrollTrigger: { trigger: s, containerAnimation: tween, start: 'left 75%', end: 'left 40%', scrub: true } });
       });
-      return () => { root.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); };
+      return () => { pin = null; root.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); onNativeScroll(); };
     });
 
     /* kichik ekranda: kartalar ketma-ket paydo bo‘ladi */
@@ -9541,11 +9659,13 @@ MU.part('dron', {
     const { gsap } = MU;
     const items = Array.from(root.querySelectorAll('.dr-item'));
     const n = items.length;
+    const chapters = Array.from(root.querySelectorAll('.dr-chapters button'));
+    items.forEach((item, i) => { item.id = 'dr-kadr-' + (i + 1); });
     const countB = root.querySelector('.dr-count b'), prog = root.querySelector('.dr-prog b');
     MU.mm.add('(prefers-reduced-motion: no-preference)', () => {
       root.classList.add('is-live');
       /* sahnaga yaqinlashganda hamma kadrlar yuklansin */
-      MU.onVisible(root, v => { if (v) items.forEach(it => { const im = it.querySelector('img'); if (im) im.loading = 'eager'; }); }, '600px');
+      const disconnect = MU.onVisible(root, v => { if (v) items.forEach(it => { const im = it.querySelector('img'); if (im) im.loading = 'eager'; }); }, '600px');
       const imgs = items.map(it => it.querySelector('.dr-ph'));
       const caps = items.map(it => it.querySelector('.dr-cap'));
       gsap.set(items, { autoAlpha: 0 }); gsap.set(items[0], { autoAlpha: 1 });
@@ -9571,23 +9691,46 @@ MU.part('dron', {
       let active = -1, inView = false;
       const sync = () => vids.forEach((v, j) => {
         if (!v) return;
-        if (j === active && inView && videoOk()) {
+        if (j === active && inView && !document.hidden && videoOk()) {
           if (!v.getAttribute('src')) { v.addEventListener('playing', () => v.classList.add('is-on'), { once: true }); v.src = v.dataset.src; }
           const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
         } else if (!v.paused) v.pause();
       });
       const st = MU.ScrollTrigger.create({
         trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, animation: tl,
-        onToggle(self) { inView = self.isActive; sync(); },
-        onUpdate(self) {
-          const i = Math.min(n - 1, Math.floor(self.progress * n * 0.999));
-          countB.textContent = String(i + 1).padStart(2, '0');
-          gsap.set(prog, { scaleX: self.progress });
-          if (i !== active) { active = i; sync(); }
-        }
+        onToggle(self) { inView = self.isActive; sync(); }
       });
+      // Use rendered timeline time: the counter and clip follow the visible scene during scrub.
+      const updateChapter = () => {
+          const i = Math.min(n - 1, Math.floor((tl.time() + 0.225) / 1.45));
+          countB.textContent = String(i + 1).padStart(2, '0');
+          gsap.set(prog, { scaleX: tl.progress() });
+          if (i !== active) {
+            active = i;
+            chapters.forEach((b, j) => { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+            sync();
+          }
+      };
+      tl.eventCallback('onUpdate', updateChapter);
+      updateChapter();
+      const selectChapter = e => {
+        const i = chapters.indexOf(e.currentTarget);
+        const p = (i * 1.45 + 0.4) / tl.duration();
+        MU.scrollTo(st.start + (st.end - st.start) * p, { duration: 0.9 });
+      };
+      chapters.forEach(b => b.addEventListener('click', selectChapter));
+      document.addEventListener('visibilitychange', sync);
+      window.addEventListener('resize', sync, { passive: true });
+      if (conn.addEventListener) conn.addEventListener('change', sync);
       MU.ScrollTrigger.refresh();
-      return () => { vids.forEach(v => v && v.pause()); st.kill(); tl.kill(); root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' }); };
+      return () => {
+        chapters.forEach(b => b.removeEventListener('click', selectChapter));
+        document.removeEventListener('visibilitychange', sync);
+        window.removeEventListener('resize', sync);
+        if (conn.removeEventListener) conn.removeEventListener('change', sync);
+        disconnect(); vids.forEach(v => v && v.pause()); st.kill(); tl.kill();
+        root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' });
+      };
     });
   }
 });
@@ -9867,7 +10010,7 @@ MU.part('geografiya', {
 /* ===== 65-yangiliklar/a-news.js ===== */
 try {
 /* Telegram kanalidan bosh sahifa snapshot’i (5 post). gen-news.mjs yaratadi — qo‘lda tahrirlamang. */
-window.muNews = {"posts":[{"id":"ulugbek_rm/4848","text":"👍O’quvchilarni sog’-salomat qabul qilib oldik.🤖BOTGA ULANING:⏺@nazoratchiroobot ✅📞Batafsil ma’lumot uchun:🌐 Biz haqimizda to’liqroq bilish uchun rasmiy veb-sayt:👉  mirzoulugbek.app🖥Bizning IJTIMOIY tarmoqlarimiz va 📍MANZILIMIZ:👉 mirzolink.com","photo":"https://cdn4.telesco.pe/file/su18ABa9FSz5iu7Q1-qa3ZbZY2ZqtRKh-VpVsJt_9qZCunkXVE4CjBBAfv4qLx0Uoa_NaFBF3VAeg7kwbYR64VVA_ZPF9O7LDIQ4fV9g2MkD-uYM2Zsr0AAvRNUFAp7bSWYxTDKeSFKacjcDB-6gHDnthS7_ZtjYT08DBb_xw2K7EU6NYo5R-22Xd3JQW2t0UU501rlyPEKBTeKbpbxCb_lkIL3FvaXXhgUdXNs2q_nsxohdvlNmKjBtrduaymnLdGOLx7fvJr-WsLlqFZB84AvcCE0mCVYKqDctXB8lK1euAnBtdkeQdrpMs5Jyxzk8nYibUOAXU-6f9ggJlzOLTg","date":null,"link":"https://t.me/ulugbek_rm/4848"},{"id":"ulugbek_rm/4847","text":"👍MIRZO ULUG’BEK xususiy maktabida o’quvchilarga👍👍👍👍👍  #BERILDI⚡️ Tele...","photo":"https://cdn4.telesco.pe/file/az34_mM-p6PAsAQ2esENFkA9Qo-toWHIuDFX3Uwy1b8qlWY_x-UN9vMIGZ460xkVIAtya_jePWbq912out9cK9EzhqGtmPCXiiRSMbPy3WqR0Uj-0C4GBiwvCw5FQbpW8Gvfpvu4f1W1XTeW0EU_178-_2GmUVbA867_u2H9l59g6zwnB67JWuX-UKtN0jrOvzWIjDQBVRYQ7YzlXP7FB7Qc5SZXlUN3FNSkSKwD45UMZUPv1mTNMgWw9N5Pkab19wnlLmOLiD4Le3DzRQWeKzlnL2D8E7m3iMEbkGPRYaVWFdy_6Nm2Q7Sayz8U_e8Tl4txcM4-jR4wkBsvterDjg","date":null,"link":"https://t.me/ulugbek_rm/4847"},{"id":"ulugbek_rm/4846","text":"📢 MAKTAB MA’MURIYATIDAN🏠 Ertaga — 26-sentabr, shanba — farzandingizga...","photo":null,"date":"2026-09-25T17:44:47+00:00","link":"https://t.me/ulugbek_rm/4846"},{"id":"ulugbek_rm/4845","text":"O’quvchilarni iloji boricha sog’-salomat qabul qilamiz! Batafsil ma’l...","photo":"https://cdn4.telesco.pe/file/RIvoo37GisDrvQR-jp9yt5Adv4wE9KcD5UgATw5mgmCUSKx1irRzmVVYehrKikf2RmWsU3icsdDnm-_ajNdhOEmmXNE9Bc6RVJ9nslW8EFYPd9qHESf-hOfKhun4RLtphZWsTqhZdXQM74UtBkwJcWWdvNm1BIyghzi7XbwjInli4Ams5ixODgOfwysaQ8NeszownPGbVOpi3dVOgmglZ3JaclAtPWpK0M8Ksgj9GGu1Slyts-F6G-SG20wlw6Qp9Pr0lhos1CMZldWrMABva2XOI4VFhDlHlA1ID4Jksgg4klA5PkxwGpk-mDBIZ_FHotWU6YM2jdjaaFuU1PMR1w","date":null,"link":"https://t.me/ulugbek_rm/4845"},{"id":"ulugbek_rm/4844","text":"📹 Yuqorida aytib o’tilgan mavzular bo’yicha ovozli xabar video format...","photo":"https://cdn4.telesco.pe/file/c6yKUTlq-z7oqZubZXFb8VLTItlwptzYG7-dTxNBz2vF7iJHhRgJlO6JvvSaE5q-dOFsg5RW2SmkNpkM6MpPtacyxRBXReHC6HyadDTNtxz59mU2RJq6mFs69oiiSGao458UYK_YuIDY-F1ATrOVR_WwKU7yQD6xD4wwDNKagenueTpnvw96q5YrP9wIZeN9mbiAzidD3H8d-p32TpebFlCcYKkWNCnHJgvMRhbFsuW2t8ZtbJll8taetykplUkTtw9vZvfWObOmrYn3qS7EkpLdpMmPFlVq8b4w8bvKDGgANRkoSqBTSZ_Fenuwb_rpMVsJcq-67DCBcLq_HFJokg","date":null,"link":"https://t.me/ulugbek_rm/4844"}]};
+window.muNews = {"posts":[{"id":"ulugbek_rm/4848","text":"👍O’quvchilarni sog’-salomat qabul qilib oldik.🤖BOTGA ULANING:⏺@nazoratchiroobot ✅📞Batafsil ma’lumot uchun:🌐 Biz haqimizda to’liqroq bilish uchun rasmiy veb-sayt:👉  mirzoulugbek.app🖥Bizning IJTIMOIY tarmoqlarimiz va 📍MANZILIMIZ:👉 mirzolink.com","photo":"https://cdn4.telesco.pe/file/YNryh3yTYgW4cM5GxXbJTWgjSPjOhiHoUTh0UY9FMG-AL4IuA7TeagAfNyHuy8gUNU-TVEjiX0famMJtgb1ydIXxTTEIcwftWFr9ppZHKNhBDDQ1MeBEnSlH6O1aUklxzcgxqxdEC8deOHkg0z4xuOlnQBW18j3guLiOQu1lXBTigc9n-YoBpBw3iTyPTtX_KRhV2fQZ0lPIiX3SkPG-Qqg-fWED2CH-R5bDrME61LgMnJG5dKKP1Qe3axH5ZjfXzlSxmur88hwHrzSMqLXc0Qg6SCqDnUcXWn3jgUkOkk0NH9YfsrSRTasMVmo7qCgf-btyi5rRWTUfO-ENXQCGyQ","date":null,"link":"https://t.me/ulugbek_rm/4848"},{"id":"ulugbek_rm/4847","text":"👍MIRZO ULUG’BEK xususiy maktabida o’quvchilarga👍👍👍👍👍  #BERILDI⚡️ Tele...","photo":"https://cdn4.telesco.pe/file/e0Ugz6cqxCDx_wO7fset-cbUYPO9h43loWCmr8TZlpw-TL0Iin1h5ZPydbNsf0F6J1cvuaKbiYwqk9_SOu5bw5QmNpFd587ZyVwqzoC3oPd1xyNYUL4WdDpUrWNudz1qGQIfA8GyqMiipydKzSEOUSaR1W3OZPqz_mVxQGkJ5wyKfsQglmwDQodqgX4Fs1eeGm5Zxtgyu6TY25gSON9OwIwdTRF-Xdaz85h8chcjS057wb_OOeWEQHE10tIYvgNgsnAmyhvBwTE4hkFhZFfIT7g-QYpDoK4Yq3sEyALyBZV7PrEgjQV2Mx3eLPz9qVBEWbuCkE_6scCdR6nWZ5DD2A","date":null,"link":"https://t.me/ulugbek_rm/4847"},{"id":"ulugbek_rm/4846","text":"📢 MAKTAB MA’MURIYATIDAN🏠 Ertaga — 26-sentabr, shanba — farzandingizga...","photo":null,"date":"2026-09-25T17:44:47+00:00","link":"https://t.me/ulugbek_rm/4846"},{"id":"ulugbek_rm/4845","text":"O’quvchilarni iloji boricha sog’-salomat qabul qilamiz! Batafsil ma’l...","photo":"https://cdn4.telesco.pe/file/RIvoo37GisDrvQR-jp9yt5Adv4wE9KcD5UgATw5mgmCUSKx1irRzmVVYehrKikf2RmWsU3icsdDnm-_ajNdhOEmmXNE9Bc6RVJ9nslW8EFYPd9qHESf-hOfKhun4RLtphZWsTqhZdXQM74UtBkwJcWWdvNm1BIyghzi7XbwjInli4Ams5ixODgOfwysaQ8NeszownPGbVOpi3dVOgmglZ3JaclAtPWpK0M8Ksgj9GGu1Slyts-F6G-SG20wlw6Qp9Pr0lhos1CMZldWrMABva2XOI4VFhDlHlA1ID4Jksgg4klA5PkxwGpk-mDBIZ_FHotWU6YM2jdjaaFuU1PMR1w","date":null,"link":"https://t.me/ulugbek_rm/4845"},{"id":"ulugbek_rm/4844","text":"📹 Yuqorida aytib o’tilgan mavzular bo’yicha ovozli xabar video format...","photo":"https://cdn4.telesco.pe/file/c6yKUTlq-z7oqZubZXFb8VLTItlwptzYG7-dTxNBz2vF7iJHhRgJlO6JvvSaE5q-dOFsg5RW2SmkNpkM6MpPtacyxRBXReHC6HyadDTNtxz59mU2RJq6mFs69oiiSGao458UYK_YuIDY-F1ATrOVR_WwKU7yQD6xD4wwDNKagenueTpnvw96q5YrP9wIZeN9mbiAzidD3H8d-p32TpebFlCcYKkWNCnHJgvMRhbFsuW2t8ZtbJll8taetykplUkTtw9vZvfWObOmrYn3qS7EkpLdpMmPFlVq8b4w8bvKDGgANRkoSqBTSZ_Fenuwb_rpMVsJcq-67DCBcLq_HFJokg","date":null,"link":"https://t.me/ulugbek_rm/4844"}]};
 
 } catch (e) { console.error('[MU] script 65-yangiliklar/a-news.js failed:', e); }
 
@@ -9882,6 +10025,15 @@ MU.part('yangiliklar', {
     const rowsEl = root.querySelector('.ny-rows');
     const empty = root.querySelector('.ny-empty');
     const OY = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+    /* Approved snapshot excerpts contain truncated sentences and promotional emoji.
+       These short labels add no facts; the original posts remain available via their links. */
+    const SNAPSHOT_COPY = {
+      'ulugbek_rm/4848': { title: 'O’quvchilarni sog’-salomat qabul qilib oldik.', rest: 'Nazoratchi botga ulaning. Maktabning rasmiy kanalida e’lon va aloqa ma’lumotlari bilan tanishing.' },
+      'ulugbek_rm/4847': { title: 'Maktabdan xabar' },
+      'ulugbek_rm/4846': { title: 'Maktab ma’muriyatidan e’lon' },
+      'ulugbek_rm/4845': { title: 'O’quvchilarni kutib olish haqida' },
+      'ulugbek_rm/4844': { title: 'Video xabar' }
+    };
 
     /* xom Telegram matni: unicode qalin harflar → oddiy, apostroflar → ’, tinish belgisidan keyin emoji yopishmasin */
     const clean = t => String(t || '').normalize('NFKC').replace(/[\u02BB\u02BC'\u2018`\u00B4]/g, '’')
@@ -9894,8 +10046,8 @@ MU.part('yangiliklar', {
       try {
         const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tashkent', day: 'numeric', month: 'numeric', year: 'numeric' })
           .formatToParts(d).map(x => [x.type, x.value]));
-        return `${+p.day}-${OY[+p.month - 1]}, ${p.year}`;
-      } catch (e) { return `${d.getDate()}-${OY[d.getMonth()]}, ${d.getFullYear()}`; }
+        return `${p.year}-yil ${+p.day}-${OY[+p.month - 1]}`;
+      } catch (e) { return `${d.getFullYear()}-yil ${d.getDate()}-${OY[d.getMonth()]}`; }
     };
     /* sarlavha — birinchi qator yoki birinchi gap (≤ max belgi), qolgani — matn */
     const split = (text, max) => {
@@ -9933,7 +10085,7 @@ MU.part('yangiliklar', {
       shownTop = num(posts[0].id);
 
       const [a, ...rest] = posts;
-      const s = split(a.text, 80), link = safeLink(a.link);
+      const s = { ...split(a.text, 80), ...SNAPSHOT_COPY[a.id] }, link = safeLink(a.link);
       const media = big.querySelector('.ny-big__media');
       media.href = link;
       media.textContent = '';
@@ -9949,7 +10101,7 @@ MU.part('yangiliklar', {
 
       rowsEl.textContent = '';
       rest.slice(0, 4).forEach(p => {
-        const r = split(p.text, 70);
+        const r = { ...split(p.text, 70), ...SNAPSHOT_COPY[p.id] };
         const li = document.createElement('li');
         li.className = 'ny-row';
         const aEl = document.createElement('a');
@@ -9962,7 +10114,7 @@ MU.part('yangiliklar', {
         body.className = 'ny-row__body';
         const tt = document.createElement('span');
         tt.className = 'ny-row__title';
-        tt.textContent = r.title || 'Telegram post';
+        tt.textContent = r.title || 'Telegram xabari';
         body.appendChild(tt);
         const d = fmtDate(p.date);
         if (d) { const dt = document.createElement('time'); dt.className = 'ny-date'; dt.dateTime = p.date; dt.textContent = d; body.appendChild(dt); }

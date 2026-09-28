@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "name": "Empty form stays local and identifies missing fields",
+      "ok": true
+    },
+    {
+      "name": "Mock ariza success: response shown, original API payload preserved",
+      "ok": true
+    },
+    {
+      "name": "Mock ariza duplicate: response shown, original API payload preserved",
+      "ok": true
+    },
+    {
+      "name": "Mock ariza invalid: response shown, original API payload preserved",
+      "ok": true
+    },
+    {
+      "name": "Mock ariza rate: response shown, original API payload preserved",
+      "ok": true
+    },
+    {
+      "name": "Local 60-second throttle prevents another request",
+      "ok": true
+    },
+    {
+      "name": "Chat contract and deferred response; user text remains raw",
+      "ok": true
+    },
+    {
+      "name": "Visit POST/GET and call tracking use isolated mocks",
+      "ok": true
+    },
+    {
+      "name": "Stale news API does not replace the newer local snapshot",
+      "ok": true
+    },
+    {
+      "name": "No unexpected console or runtime errors",
+      "ok": true
+    }
+  ],
+  "statuses": [
+    200,
+    200,
+    400,
+    429
+  ],
+  "expectedInjectedHttpErrors": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    }
+  ],
+  "liveApiRequests": 0
+}

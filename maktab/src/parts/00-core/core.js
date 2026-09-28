@@ -82,7 +82,7 @@ MU.part('core', {
         menu.hidden = false;
         gsap.killTweensOf([menu, links]);
         gsap.fromTo(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)' }, { clipPath: 'circle(150% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.9, ease: 'mu.inOut' });
-        gsap.fromTo(links, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
+        gsap.fromTo(links, { y: MU.reduced ? 0 : 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: MU.reduced ? 0 : 0.8, stagger: MU.reduced ? 0 : 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
         setTimeout(() => { const f = menu.querySelector('a, button'); if (f) f.focus({ preventScroll: true }); }, MU.reduced ? 0 : 300);
       } else {
         burger.focus({ preventScroll: true });

@@ -1,0 +1,73 @@
+{
+  "desktop": {
+    "shots": [
+      "qa\\news-copy\\desktop-yangiliklar.png"
+    ],
+    "docHeight": 39450,
+    "scrollWidth": 1440,
+    "vw": 1440,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 73,
+    "pins": 1,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "nazorat",
+      "meros",
+      "rasadxona",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "dron",
+      "geografiya",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "logs": [],
+    "cancelledMedia": []
+  },
+  "mobile": {
+    "shots": [
+      "qa\\news-copy\\mobile-yangiliklar.png"
+    ],
+    "docHeight": 38484,
+    "scrollWidth": 390,
+    "vw": 390,
+    "overflowX": false,
+    "overflowOffenders": [],
+    "scrollTriggers": 41,
+    "pins": 0,
+    "parts": [
+      "core",
+      "hero",
+      "qabulholati",
+      "stats",
+      "nazorat",
+      "meros",
+      "rasadxona",
+      "yutuqlar",
+      "yonalishlar",
+      "process",
+      "ariza",
+      "hayot",
+      "dron",
+      "geografiya",
+      "yangiliklar",
+      "faq",
+      "kanallar",
+      "chat",
+      "footer"
+    ],
+    "smallText": [],
+    "logs": [],
+    "cancelledMedia": []
+  }
+}
