@@ -1649,6 +1649,64 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 #hayot .hy-slide, #hayot .hy-shot { cursor: zoom-in; }
 #hayot .hy-slide:focus-visible .hy-frame, #hayot .hy-shot:focus-visible { outline: 3px solid var(--mu-primary-2); outline-offset: 4px; }
 
+/* ---- 52-dron/dron.css ---- */
+/* ===== Dron lentasi: sticky sahna, kadrlar «uchib kirish» bilan almashadi (JS: .is-live). Statik holatda — 2×2 galereya. ===== */
+#dron { position: relative; background: #0b1224; color: #fff; padding: clamp(64px, 8vw, 110px) 0; }
+#dron .dr-head { display: grid; gap: 14px; margin-bottom: 28px; }
+#dron .dr-eyebrow { color: #93c5fd; }
+#dron .dr-title { color: #fff; }
+#dron .dr-accent { background: linear-gradient(90deg, #93c5fd, #fca5a5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#dron .dr-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; width: min(1240px, calc(100% - 32px)); margin: 0 auto; }
+#dron .dr-item { position: relative; margin: 0; overflow: hidden; border-radius: 22px; background: #111a33; }
+#dron .dr-ph { aspect-ratio: 16 / 9; overflow: hidden; }
+#dron .dr-ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#dron .dr-cap { display: grid; gap: 4px; padding: 14px 18px 18px; }
+#dron .dr-cap b { font-family: var(--font-display); font-size: 1.25rem; }
+#dron .dr-cap span:not(.dr-no) { color: rgba(255, 255, 255, .78); }
+#dron .dr-no { font-family: var(--font-mono); font-size: .9375rem; color: #93c5fd; letter-spacing: .1em; }
+#dron .dr-hud, #dron .dr-corner { display: none; }
+#dron .dr-src { width: min(1240px, calc(100% - 32px)); margin: 14px auto 0; font-size: .9375rem; color: rgba(255, 255, 255, .6); }
+@media (max-width: 700px) { #dron .dr-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---- jonli rejim: sahna ekranga yopishadi, kadrlar ustma-ust */
+#dron.is-live { padding: 0; height: 380vh; }
+#dron.is-live .dr-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+#dron.is-live .dr-head { position: absolute; z-index: 3; left: 0; right: 0; top: clamp(92px, 12vh, 132px); margin: 0 auto; pointer-events: none; }
+#dron.is-live .dr-title { text-shadow: 0 4px 30px rgba(0, 0, 0, .45); }
+#dron.is-live .dr-list { position: absolute; inset: 0; width: auto; margin: 0; display: block; }
+#dron.is-live .dr-item { position: absolute; inset: 0; border-radius: 0; background: #0b1224; opacity: 0; visibility: hidden; }
+#dron.is-live .dr-item:first-child { opacity: 1; visibility: visible; }
+#dron.is-live .dr-ph { position: absolute; inset: 0; aspect-ratio: auto; }
+#dron.is-live .dr-ph img { will-change: transform; transform-origin: 50% 55%; }
+#dron.is-live .dr-item::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8, 13, 30, .72) 0%, rgba(8, 13, 30, .08) 34%, rgba(8, 13, 30, .1) 58%, rgba(8, 13, 30, .82) 100%); }
+#dron.is-live .dr-cap { position: absolute; z-index: 2; left: max(16px, calc((100% - 1240px) / 2)); right: 16px; bottom: clamp(84px, 13vh, 130px); padding: 0; max-width: 620px; }
+#dron.is-live .dr-cap b { font-size: clamp(1.6rem, 3.4vw, 2.8rem); line-height: 1.05; letter-spacing: -.02em; }
+#dron.is-live .dr-cap span:not(.dr-no) { font-size: clamp(1rem, 1.4vw, 1.2rem); }
+#dron.is-live .dr-hud { display: flex; align-items: center; gap: 16px; position: absolute; z-index: 3; left: max(16px, calc((100% - 1240px) / 2)); right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(36px, 6vh, 60px);
+  font-family: var(--font-mono); font-size: .9375rem; letter-spacing: .08em; color: rgba(255, 255, 255, .85); }
+#dron.is-live .dr-rec { display: inline-flex; align-items: center; gap: 8px; }
+#dron.is-live .dr-rec i { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 0 4px rgba(239, 68, 68, .25); animation: dr-blink 1.4s steps(2, jump-none) infinite; }
+@keyframes dr-blink { 50% { opacity: .25; } }
+#dron.is-live .dr-count b { color: #fff; }
+#dron.is-live .dr-prog { position: relative; flex: 1; height: 2px; background: rgba(255, 255, 255, .2); border-radius: 2px; overflow: hidden; }
+#dron.is-live .dr-prog b { position: absolute; inset: 0; background: linear-gradient(90deg, #93c5fd, #ef4444); transform-origin: 0 50%; transform: scaleX(0); }
+#dron.is-live .dr-corner { display: block; position: absolute; z-index: 3; width: 34px; height: 34px; border: 2px solid rgba(255, 255, 255, .55); pointer-events: none; }
+#dron.is-live .dr-corner--tl { top: 84px; left: 18px; border-right: 0; border-bottom: 0; }
+#dron.is-live .dr-corner--tr { top: 84px; right: 18px; border-left: 0; border-bottom: 0; }
+#dron.is-live .dr-corner--bl { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
+#dron.is-live .dr-corner--br { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
+#dron.is-live .dr-src { position: absolute; z-index: 3; right: max(16px, calc((100% - 1240px) / 2)); bottom: clamp(62px, 9vh, 92px); width: auto; margin: 0; }
+@media (max-width: 700px) {
+  #dron.is-live { height: 330vh; }
+  #dron.is-live .dr-cap { bottom: 196px; right: 16px; }
+  #dron.is-live .dr-hud { bottom: 150px; right: 88px; }
+  #dron.is-live .dr-src { display: none; }
+  #dron.is-live .dr-corner--bl, #dron.is-live .dr-corner--br { bottom: 108px; }
+  #dron.is-live .dr-corner { width: 24px; height: 24px; }
+  #dron.is-live .dr-corner--tl, #dron.is-live .dr-corner--tr { top: 88px; }
+}
+
 /* ---- 55-geografiya/geografiya.css ---- */
 /* ===== Geografiya: rangli hududlar + chiziqcha bilan ulangan yorliqlar (leader lines) ===== */
 #geografiya .gg-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 24px clamp(28px, 5vw, 72px); align-items: end; margin-bottom: clamp(24px, 3vw, 40px); }
@@ -2954,6 +3012,42 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <ul><li>Kuniga ikki mahal issiq ovqat, non va çoy — maktabning öz oşxonasi</li><li>Poyezd vokzaliga ~300 metr — boşqa viloyatlardan qatnaş qulay</li></ul>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ===== 52-dron ===== -->
+<section id="dron" class="dr" data-part="dron" aria-labelledby="dr-title">
+  <div class="dr-sticky">
+    <div class="container dr-head">
+      <span class="eyebrow dr-eyebrow" data-scramble>Tepadan köriniş · dron</span>
+      <h2 id="dr-title" class="h2 dr-title" data-split="lines">Maktabimiz — <span class="dr-accent">osmondan</span></h2>
+    </div>
+    <ol class="dr-list">
+      <li class="dr-item">
+        <div class="dr-ph"><img src="https://mirzoulugbek.app/media/bino/hudud-panorama-dron-2.webp" alt="Uçköprik tumani — dron panoramasi" width="1920" height="1080" loading="lazy" decoding="async"></div>
+        <div class="dr-cap"><span class="dr-no">01</span><b>Uçköprik tumani</b><span>Farğona vodiysi — maktabimiz joylaşgan hudud</span></div>
+      </li>
+      <li class="dr-item">
+        <div class="dr-ph"><picture><source media="(max-width: 700px) and (orientation: portrait)" srcset="https://mirzoulugbek.app/media/qulayliklar/bino-dron-1.webp"><img src="https://mirzoulugbek.app/media/bino/hudud-panorama-dron.webp" alt="Qayroğoç qişloği va maktab hududi — dron kadri" width="1920" height="1080" loading="lazy" decoding="async"></picture></div>
+        <div class="dr-cap"><span class="dr-no">02</span><b>Qayroğoç qişloği</b><span>Boğlar va dalalar orasida — maktabimiz hududi</span></div>
+      </li>
+      <li class="dr-item">
+        <div class="dr-ph"><picture><source media="(max-width: 700px) and (orientation: portrait)" srcset="https://mirzoulugbek.app/media/qulayliklar/bino-dron-2.webp"><img src="https://mirzoulugbek.app/media/bino/yangi-bino-dron.webp" alt="«Mirzo Uluğbek» xususiy maktabining yangi binosi va hovlisi — dron kadri" width="1920" height="1080" loading="lazy" decoding="async"></picture></div>
+        <div class="dr-cap"><span class="dr-no">03</span><b>Yangi bino va hovli</b><span>«Mirzo Uluğbek» xususiy maktabi — tepadan</span></div>
+      </li>
+      <li class="dr-item">
+        <div class="dr-ph"><img src="https://mirzoulugbek.app/media/qulayliklar/vokzal-temir-yol-dron.webp" alt="Temir yöl — dron kadri" width="1920" height="1080" loading="lazy" decoding="async"></div>
+        <div class="dr-cap"><span class="dr-no">04</span><b>Poyezd vokzaliga ~300 metr</b><span>Boşqa viloyatlardan kelgan öquvçilar uçun qulay</span></div>
+      </li>
+    </ol>
+    <div class="dr-hud" aria-hidden="true">
+      <span class="dr-rec"><i></i>DRON</span>
+      <span class="dr-count"><b>01</b> / 04</span>
+      <i class="dr-prog"><b></b></i>
+    </div>
+    <span class="dr-corner dr-corner--tl" aria-hidden="true"></span><span class="dr-corner dr-corner--tr" aria-hidden="true"></span>
+    <span class="dr-corner dr-corner--bl" aria-hidden="true"></span><span class="dr-corner dr-corner--br" aria-hidden="true"></span>
+    <p class="dr-src">Kadrlar — maktabning rasmiy videosidan</p>
   </div>
 </section>
 
@@ -9410,6 +9504,54 @@ MU.part('hayot', {
 });
 
 } catch (e) { console.error('[MU] script 50-hayot/hayot.js failed:', e); }
+
+/* ===== 52-dron/dron.js ===== */
+try {
+/* Dron lentasi: bo’lim sticky sahnaga aylanadi; skroll bilan kadrlar «oldinga uchib» almashadi —
+   joriy kadr kattalashib so’nadi, keyingisi uzoqdan yaqinlashib chiqadi (Ken Burns). Reduced-motion’da — statik galereya. */
+MU.part('dron', {
+  init(root) {
+    const { gsap } = MU;
+    const items = Array.from(root.querySelectorAll('.dr-item'));
+    const n = items.length;
+    const countB = root.querySelector('.dr-count b'), prog = root.querySelector('.dr-prog b');
+    MU.mm.add('(prefers-reduced-motion: no-preference)', () => {
+      root.classList.add('is-live');
+      /* sahnaga yaqinlashganda hamma kadrlar yuklansin */
+      MU.onVisible(root, v => { if (v) items.forEach(it => { const im = it.querySelector('img'); if (im) im.loading = 'eager'; }); }, '600px');
+      const imgs = items.map(it => it.querySelector('.dr-ph'));
+      const caps = items.map(it => it.querySelector('.dr-cap'));
+      gsap.set(items, { autoAlpha: 0 }); gsap.set(items[0], { autoAlpha: 1 });
+      gsap.set(caps.slice(1), { autoAlpha: 0, y: 30 });
+      const tl = gsap.timeline({ defaults: { ease: 'none' } });
+      /* har kadr: 1 birlik «uchish» (sekin yaqinlashish) + 0.45 birlik o’tish */
+      items.forEach((it, i) => {
+        const at = i * 1.45;
+        tl.fromTo(imgs[i], { scale: 1.16, yPercent: 2 }, { scale: 1.0, yPercent: -2, duration: 1.45 + (i < n - 1 ? 0.45 : 0) }, at);
+        if (i === n - 1) return;
+        const t = at + 1.0;
+        /* eski kadr to’liq ko’rinib turadi va oldinga «uchadi», yangisi ustidan chiqadi (qorong’i o’tish yo’q) */
+        tl.to(imgs[i], { scale: 1.32, duration: 0.45, ease: 'power1.in' }, t)
+          .to(caps[i], { autoAlpha: 0, y: -24, duration: 0.3 }, t)
+          .fromTo(items[i + 1], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, ease: 'power1.inOut' }, t)
+          .set(items[i], { autoAlpha: 0 }, t + 0.45)
+          .to(caps[i + 1], { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, t + 0.25);
+      });
+      const st = MU.ScrollTrigger.create({
+        trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, animation: tl,
+        onUpdate(self) {
+          const i = Math.min(n - 1, Math.floor(self.progress * n * 0.999));
+          countB.textContent = String(i + 1).padStart(2, '0');
+          gsap.set(prog, { scaleX: self.progress });
+        }
+      });
+      MU.ScrollTrigger.refresh();
+      return () => { st.kill(); tl.kill(); root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' }); };
+    });
+  }
+});
+
+} catch (e) { console.error('[MU] script 52-dron/dron.js failed:', e); }
 
 /* ===== 55-geografiya/a-hudud.js ===== */
 try {

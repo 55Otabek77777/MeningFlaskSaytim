@@ -2,52 +2,46 @@
 
 | Qadam | Kimga | Qachon | Keyin |
 |---|---|---|---|
-| 1 | DIGITAL — yangi bino suratlari | hozir | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude suratlarni qo’yadi va «ChatGPT’ga berishga tayyor» deydi |
+| 1 | DIGITAL — dron videolari va kadrlari (fleshka, lokal disklar) | hozir | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude kadrlarni pastki bo’limlarga qo’yadi va «ChatGPT’ga berishga tayyor» deydi |
 | 2 | ChatGPT — o’zbekcha tekshiruv + chiroyli takliflar | Claude «ChatGPT’ga berishga tayyor» degach | ChatGPT hisobotini Claude chatiga tashlaysiz → Claude yaxshilarini qo’shadi, oxirgi commit xabarida «DEPLOYGA TAYYOR» |
 | 3 | DIGITAL — deploy | Claude «DEPLOYGA TAYYOR» degach | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude tekshiradi |
 
 ---
 
-## 1-PROMPT — DIGITAL (yangi bino suratlari)
+## 1-PROMPT — DIGITAL (dron videolari va kadrlari)
 
 ```
 Salom, DIGITAL. Bu — Claude Code cloud chatidan (maktab bosh sahifasi). Repo: 55Otabek77777/MeningFlaskSaytim,
 branch: claude/logistics-site-animation-comparison-r4scvk, papka: maktab/. Hozircha HECH NARSANI DEPLOY QILMANG.
 
-VAZIYAT
-- photos/history-1994.webp — maktabning ESKI (birinchi) binosi: oq, ikki qavatli, peshtoqida «MIRZO ULUG’BEK».
-- Egasi aytdi: YANGI maktab binosi bor va uning suratlari bor. Saytda yangi bino 2 joyda turadi:
-  «Tarix» bo’limida 2025-yil «Kengayish — yangi bino» va «Maktabga tashrif buyuring» kartasi.
-- Hozir u yerda siz yuklagan qulayliklar/bino-dron-2.webp turibdi (kanal 4623 videosidan kadr): tepadan olingan,
-  uch qavatli oq bino, peshtoqida «XUSUSIY MIRZO ULUG’BEK MAKTABI». Kadr vertikal (1080×1920), sifati o’rtacha —
-  oldidan olingan yaxshi surat kerak.
+Rahmat — MEDIA/bino/ dagi yangi bino kadrlari saytga qo’yildi («Tarix» 2025-yil, «Tashrif» kartasi, «Maktab hayoti»
+va yangi «Maktabimiz — osmondan» dron lentasi). Egasi aytdi: dron kadrlari — eng kuchli kadrlar, pastdagi bo’limlarga
+ko’proq qo’yilsin. Bosh sahifadagi hero videoga TEGMANG.
 
-VAZIFALAR
-1. Tasdiqlang: bino-dron-1 va bino-dron-2 dagi uch qavatli bino — 2025-yilda qo’shilgan YANGI binomi? (ha/yo’q + izoh)
-2. Yangi bino suratlarini qidiring:
-   - lokal: D:\DIGITAL, D:\ulugbek_maktab, D:\MyProjects, D:\agent, Pictures, Downloads, Telegram Desktop;
-     kalit so’zlar: bino, yangi, maktab, fasad, mirzo, ulugbek, dron, drone, DJI_, IMG_, 2025, 2026;
-   - rasmiy kanal @ulugbek_rm (2025–2026), jonli sayt, maktab Instagram/YouTube.
-   Kerak: yangi binoning oldingi FASADI (gorizontal, ≥1600 px), kirish, hovli, kechki ko’rinish, tiniq dron kadrlari.
-3. Topilmasa — router orqali «Javas loyihasi» chatiga shu xabarni yuboring:
-   «Salom. DIGITAL chatidan (maktab sayti uchun). Egasining eski Surface kompyuterida, ekran stolida (Desktop)
-   qaysidir papkalar ichida «Mirzo Ulug’bek» xususiy maktabining YANGI binosi suratlari bor. Iltimos, Desktop va
-   uning ichki papkalarida (hamda Pictures, Downloads, Telegram Desktop) .jpg .jpeg .png .heic .webp .mp4 .mov
-   fayllarni qidiring (nomida yoki papka nomida: bino, yangi, maktab, fasad, mirzo, ulugbek, dron, drone, DJI_, IMG_;
-   sanasi 2024–2026). Eski bino (oq, ikki qavatli, oldida archalar) kerak EMAS — kerak yangi, uch qavatli bino.
-   Ro’yxat bering (yo’l, o’lcham, sana, nima tasvirlangan) va eng yaxshi 5–10 tasini ASL holida router orqali
-   DIGITAL chatiga yuboring. O’quvchi yuzi yaqin plandagi suratlar, shaxsiy fayllar, hujjatlar, parollar — kerak emas.
-   Rahmat!»
-4. Suratlarni maktab/JONLI-SAYT/MEDIA/bino/ ga webp (sifat 82–85, uzun tomoni ≤1920 px) qilib qo’ying:
-   yangi-bino-fasad.webp (asosiy, gorizontal), yangi-bino-kirish.webp, yangi-bino-hovli.webp, yangi-bino-dron.webp …
-   MEDIA.md ga har biri uchun 1 qator: fayl — o’lcham — nima tasvirlangan — manba — qaysi bino (yangi/birinchi).
-5. Yanada zo’r suratlar («Maktab hayoti» uchun): kanal videolarining ASL fayllari (4631, 4617, 4633 — dron;
-   4612 — zal; 4680 — kirish zinasi; 4826, 4847 — vokzal) dan tiniq kadrlar; sinfxona, tadbir, bitiruv, sayohat
-   suratlarining ≥1600 px asl nusxalari → maktab/JONLI-SAYT/MEDIA/qulayliklar/ (MEDIA.md ga izoh bilan).
-   O’quvchi yuzi yaqin planda — yo’q.
-6. Bitta commit bilan shu branch’ga push qiling (faqat maktab/JONLI-SAYT ichiga). .env, token, kalit — hech qachon.
-OXIRIDA egasiga qisqa hisobot yozing (egasi uni Claude chatiga olib boradi): nima topildi va qayerdan, qaysi fayllar
-yuklandi, commit raqami, nima topilmadi, Javas chatiga yozildimi va u nima dedi.
+VAZIFA — DRON VIDEOLARI VA KADRLARI
+1. Qidiring va ro’yxat bering (yo’l, hajm, davomiylik, o’lcham/fps, sana, qisqa mazmun):
+   - egasi kompyuterga FLESHKA qo’ydi — undagi barcha video va rasmlar (E:, F:, G: … qaysi harf bo’lsa);
+   - D:\DIGITAL\SAYT UCHUN KERAKLI RASM VA VIDEO\ va boshqa lokal papkalar;
+   - nomlar: DJI_*, *.MP4, *.MOV, «dron», «drone», «maktab», «rolik», «video»; ayniqsa 4K / 2.7K ASL fayllar;
+   - ROUTER orqali Surface so’rovining natijasi bo’lsa — uni ham qo’shing.
+2. Har bir dron videosidan eng TINIQ kadrlarni oling (ffmpeg; keskinlik bo’yicha tanlang, harakatdan xiralashganini emas).
+   Eksport: webp, sifat 85, 1920×1080 (manba 4K bo’lsa — 2560×1440 ham). Kerakli syujetlar:
+   a) maktab hududi panoramasi — ayniqsa tong yoki quyosh botishi (oltin soat);
+   b) yangi bino — turli burchaklardan (old, yon, tepadan, hovli bilan);
+   c) birinchi (eski) bino — tepadan;
+   d) hovli, sport maydoni, saf tortgan o’quvchilar yoki tadbir — tepadan (yuzlar tanilmaydigan balandlikdan);
+   e) vokzal, temir yo’l, maktabgacha yo’l;
+   f) Qo’qon O’rdasi va boshqa sayohatlar — dron;
+   g) telefon uchun VERTIKAL (1080×1920) variantlar — eng kuchli 4–5 syujetdan.
+3. Ixtiyoriy: 3–4 ta qisqa DRON KLIP — ovozsiz, 6–8 soniya, 1280×720, H.264 mp4, har biri ≤ 4 MB
+   (sekin, bir tekis uchish, keskin burilishsiz) — dron lentasini video bilan jonlantirish uchun.
+4. Joylash: maktab/JONLI-SAYT/MEDIA/dron/ (kadrlar) va maktab/JONLI-SAYT/MEDIA/dron/klip/ (kliplar).
+   Nom: syujet-joy-raqam.webp (masalan hudud-oltin-soat-1.webp, yangi-bino-yon-1.webp, vokzal-1.webp).
+   MEDIA.md ga yangi bo’lim: fayl — o’lcham — nima tasvirlangan — manba video (yo’l + vaqt kodi) — qaysi bo’limga mos.
+5. Qoidalar: o’quvchi yuzi yaqin planda — yo’q; shaxsiy fayl va hujjatlar — yo’q; hero.mp4 va jonli saytga tegmang;
+   .env, token, kalit — hech qachon. Shu branch’ga push qiling (faqat maktab/JONLI-SAYT ichiga).
+OXIRIDA egasiga qisqa hisobot yozing (egasi uni Claude chatiga olib boradi): qaysi videolar topildi va qayerda,
+nechta kadr va klip yuklandi, commit raqami, nima topilmadi.
 ```
 
 ---

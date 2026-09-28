@@ -1,5 +1,13 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.3 (egasi: «dron kadrlari — eng kuchli kadr, pastdagi bo’limlarga»; hero videoga tegilmadi)
+| Qism | Nima |
+|---|---|
+| **52-dron** (yangi) | «Maktabimiz — osmondan»: «Maktab hayoti» va «Geografiya» orasida to’liq ekranli dron lentasi. Skroll bilan kadrlar «oldinga uchib» almashadi (Ken Burns: joriy kadr yaqinlashib ketadi, keyingisi ustidan chiqadi — qorong’i o’tishsiz): **Uchko’prik tumani → Qayrog’och qishlog’i → yangi bino va hovli → temir yo’l (vokzalga ~300 m)**, so’ng sahifa «qayerdan keladi?» xaritasiga o’tadi. Kamera ramkasi, «● DRON» belgisi, 01/04 hisoblagich va progress. Telefonda (portret) 2- va 3-kadrlar **vertikal** dron kadrlari (`bino-dron-1/2`). Reduced-motion’da — 2×2 statik galereya. Kadrlar: `MEDIA/bino/hudud-panorama-dron{,-2}`, `yangi-bino-dron`, `qulayliklar/vokzal-temir-yol-dron`. |
+| DEPLOY.md | Media ro’yxati 13 faylga yangilandi — `index.html` dagi har bir `mirzoulugbek.app/media/…` havolasi ro’yxatda bor (skript bilan tekshirildi). |
+
+QA: desktop + mobil to’liq sahifa, 19 bo’lim — konsol xatosi 0, overflow yo’q, kichik matn yo’q; reduced-motion mobil — statik galereya.
+
 ## 2026-09-28 — v3.2 (DIGITAL’ning yangi bino suratlari)
 | Qism | Nima |
 |---|---|
