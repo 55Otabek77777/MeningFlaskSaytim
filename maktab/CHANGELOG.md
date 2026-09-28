@@ -1,5 +1,14 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy A1: aniq va ishonchli matn
+- Hero matni bilim, tarbiya va ota-ona bilan maslahatga yo’naltirildi; hero video elementi, CSS va JS o’zgarmadi.
+- SEO description’da ta’lim tajribasi xususiy maktab maqomi bilan aralashtirilmaydi. Head joriy alifboda.
+- Face ID doimiy joylashuv kuzatuvi kabi tasvirlanmaydi; botga ulanish sharti nazorat va tibbiy xabarnomada ochiq aytildi.
+- IELTS natijasidagi umumiy sifat kafolati, barcha yo’nalishlar va darhol AI javobi kabi haddan tashqari da’volar aniq ifodaga almashtirildi.
+- Sertifikatlar snapshot bo’lgani uchun ushbu sahifada avtomatik jonli uzatish va’da qilinmaydi.
+- 12 aniq o’zgarish (9 fayl): oldingi/yangi matn va sabablar `review/yakuniy/matn-tuzatishlari.json` A1 guruhida.
+- QA: desktop/mobil hero, nazorat, yo’nalishlar; konsol, gorizontal overflow va kichik matn xatosi 0. Ikki alifbo tugmasi, SEO, xom region qiymatlari tekshirildi.
+
 ## 2026-09-28 — yakuniy tekshiruv: Q0 (QA tayyorgarligi)
 - Asos: `d32ec9b` (v3.4), yangi branch: `chatgpt/maktab-yakuniy`; agent/subagentsiz.
 - `qa.mjs`: barcha jonli API va ruxsat berilmagan tarmoq so’rovlari bloklanadi; API mocklari saqlandi. `--live-media` faqat tasdiqlangan rasm GET’lariga ruxsat beradi.
