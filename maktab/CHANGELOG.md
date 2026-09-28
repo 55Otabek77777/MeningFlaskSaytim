@@ -1,5 +1,12 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy tekshiruv: Q0 (QA tayyorgarligi)
+- Asos: `d32ec9b` (v3.4), yangi branch: `chatgpt/maktab-yakuniy`; agent/subagentsiz.
+- `qa.mjs`: barcha jonli API va ruxsat berilmagan tarmoq so’rovlari bloklanadi; API mocklari saqlandi. `--live-media` faqat tasdiqlangan rasm GET’lariga ruxsat beradi.
+- `--alifbo yangi|joriy`, o’rnatilgan Edge uchun `MU_QA_BROWSER_CHANNEL`, qat’iy 15 px, ichki scroll bilan hujjat overflow’ini farqlash, oxirgi ekran skrinshoti va QA xatosida exit code 1 qo’shildi.
+- Bazaviy ko’rinish: Edge, 1440×900 va 390×844, 20 skrinshot — konsol/overflow/kichik matn xatosi 0. Animatsiyalar, video va media o’zgarmadi.
+- Eski changelog’dagi jonli ariza sinovi ko’rsatmalari joriy topshiriqda qo’llanmaydi: barcha sinovlar mock bilan.
+
 ## 2026-09-28 — v3.4 (DIGITAL: fleshkadagi 24.06.2026 dron s’yomkasi — `MEDIA/dron/`, 4K; hero videoga tegilmadi)
 | Qism | Nima |
 |---|---|
