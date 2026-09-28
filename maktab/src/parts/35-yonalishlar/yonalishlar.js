@@ -5,8 +5,24 @@ MU.part('yonalishlar', {
     /* qiziqish bo’yicha filtr: kartalar Flip bilan silliq qayta joylashadi */
     const btns = Array.from(root.querySelectorAll('[data-filter]')), cards = Array.from(root.querySelectorAll('.yn-card[data-goals]'));
     const status = root.querySelector('.yn-status');
+    const filters = root.querySelector('.yn-filters'), marker = root.querySelector('.yn-selection');
+    let selected = btns[0];
+    const positionMarker = (animate = false) => {
+      const target = { x: selected.offsetLeft, y: selected.offsetTop, width: selected.offsetWidth, height: selected.offsetHeight };
+      if (animate && !MU.reduced) gsap.to(marker, { ...target, duration: 0.45, ease: 'mu.out', overwrite: true });
+      else { gsap.killTweensOf(marker); gsap.set(marker, target); }
+      filters.classList.add('is-ready');
+    };
+    const observer = new ResizeObserver(() => positionMarker());
+    btns.forEach(b => observer.observe(b));
+    positionMarker();
     btns.forEach(b => b.addEventListener('click', () => {
+      if (selected === b) return;
+      selected = b; positionMarker(true);
       const f = b.dataset.filter;
+      // Complete a previous layout change before measuring a rapid next selection.
+      if (window.Flip) Flip.killFlipsOf(cards, true);
+      gsap.killTweensOf(cards);
       const state = window.Flip && !MU.reduced ? Flip.getState(cards) : null;
       btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
       let n = 0;

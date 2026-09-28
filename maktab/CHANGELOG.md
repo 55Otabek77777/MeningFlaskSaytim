@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy B1: yo’nalishlarni tanlash
+- Bir butun filtr paneli, GSAP bilan siljiydigan ko’rsatkich va ko’rinadigan natija soni. Mobil: 2×2 tartib, kamida 46 px tugmalar, 15 px yozuv, klaviatura fokusi.
+- Mavjud Flip, tilt, ikonka, glow va kirish animatsiyalari saqlandi. Tez ketma-ket tanlov oldingi Flip’ni yakunlab, yangi joylashuvni to’g’ri hisoblaydi.
+- Alifbo yoki ekran o’lchami o’zgarsa ko’rsatkich qayta joylashadi; reduced-motion’da darhol o’tadi.
+- QA desktop/390 px: 4 filtr, tezkor almashtirish, kartalar ko’rinishi — o’tdi; konsol/overflow/15 px xatosi 0. Skrinshotlar: qa/b1/.
+
 ## 2026-09-28 — yakuniy A3: ikkala alifboda tutuq belgisi
 - Dinamik matnlardagi turli apostroflar ham U+2019 (`’`) ga keltiriladi: `taʼlim` → `ta’lim`. O’/G’ harflarining mavjud konvertatsiyasi saqlandi.
 - `data-raw`, tashqi bot tugmalari, URL/handle/email, foydalanuvchi matni va API qiymatlari o’zgarmaydi.

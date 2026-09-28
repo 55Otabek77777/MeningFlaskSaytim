@@ -6,9 +6,12 @@
       <p class="lead" data-reveal="blur">Farzandingizning qiziqishi va maqsadiga mos yo’nalishni tanlang. Quyida maktabimizdagi fanlar va tayyorlov yo’nalishlari bilan tanishishingiz mumkin.</p>
     </div>
 
-    <div class="yn-filters" role="group" aria-label="Qiziqish bo’yicha yo’nalishlar" data-reveal="up">
+    <div class="yn-tools" data-reveal="up">
+    <div class="yn-filters" role="group" aria-label="Qiziqish bo’yicha yo’nalishlar">
+      <span class="yn-selection" aria-hidden="true"></span>
       <button type="button" data-filter="all" aria-pressed="true">Barchasi</button><button type="button" data-filter="science" aria-pressed="false">Tibbiyot</button><button type="button" data-filter="tech" aria-pressed="false">Texnika va IT</button><button type="button" data-filter="languages" aria-pressed="false">Tillar</button>
-      <p class="sr-only yn-status" aria-live="polite"></p>
+    </div>
+      <p class="yn-status" aria-live="polite" aria-atomic="true">6 ta yo’nalish ko’rsatilmoqda.</p>
     </div>
     <div class="yn-grid" data-reveal-children data-reveal="flip" data-stagger="0.08">
       <a class="yn-card" data-goals="science" href="/yonalishlar/kimyo-biologiya" data-tilt="6">
