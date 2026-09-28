@@ -420,6 +420,13 @@ html { scrollbar-color: var(--ink-600) var(--ink-950); scrollbar-width: thin; }
 .nv-menu__tel { font-weight: 800; font-size: 1.15rem; }
 .nv-menu__foot p { color: rgba(255, 255, 255, .75); font-size: .9375rem; }
 body.nv-locked { overflow: hidden; }
+body.nv-locked .nv { z-index: calc(var(--z-menu) + 1); translate: 0 0; background: #f8faff; border-color: #fff; box-shadow: 0 10px 32px -20px #06153f; }
+.nv-menu .nv-menu__abc { color: #fff; }
+.nv-menu .nv-abc { background: #ffffff12; border-color: #ffffff45; }
+.nv-menu .nv-abc button { color: #edf4ff; }
+.nv-menu .nv-abc button:hover { background: #ffffff20; color: #fff; }
+.nv-menu .nv-abc button[aria-pressed="true"] { background: #fff; color: #1e3a8a; box-shadow: 0 5px 16px -8px #07143c; }
+.nv-menu a:focus-visible, .nv-menu button:focus-visible, body.nv-locked .nv-burger:focus-visible { outline: 3px solid #f4c871; outline-offset: 4px; }
 @media (max-width: 560px) { .nv-actions > .nv-abc { display: none; } }
 
 /* ---- «Asosiy mazmunga o’tish» (klaviatura) */
@@ -8344,7 +8351,7 @@ MU.part('core', {
         menu.hidden = false;
         gsap.killTweensOf([menu, links]);
         gsap.fromTo(menu, { clipPath: 'circle(0% at calc(100% - 44px) 44px)' }, { clipPath: 'circle(150% at calc(100% - 44px) 44px)', duration: MU.reduced ? 0 : 0.9, ease: 'mu.inOut' });
-        gsap.fromTo(links, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
+        gsap.fromTo(links, { y: MU.reduced ? 0 : 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: MU.reduced ? 0 : 0.8, stagger: MU.reduced ? 0 : 0.05, delay: MU.reduced ? 0 : 0.25, ease: 'mu.out' });
         setTimeout(() => { const f = menu.querySelector('a, button'); if (f) f.focus({ preventScroll: true }); }, MU.reduced ? 0 : 300);
       } else {
         burger.focus({ preventScroll: true });

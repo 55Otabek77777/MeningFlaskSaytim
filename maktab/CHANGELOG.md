@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy B5: mobil menyuning yopish tugmasi va kontrasti
+- Vizual QA’da topildi: menyu z-index 900, header 800 bo’lgani uchun yopish tugmasi menyu ortida qolgan. Menyu ochiq paytda header tepaga ko’tariladi va oq fon bilan aniq ko’rinadi.
+- Menyu ichidagi Alifbo yozuvi va tanlanmagan tugma kontrasti oshirildi; faol rejim oq tugma bilan ajratildi, fokus halqasi qo’shildi.
+- Oddiy rejimdagi doira ochilishi va havolalar animatsiyasi saqlandi. Reduced-motion’da havolalar ham darhol ko’rinadi.
+- 390 px: yangi/joriy alifbo, yopish tugmasini haqiqiy bosish (elementFromPoint bilan), Escape/fokus va FAQ qidiruvi — oddiy hamda reduced-motion rejimlarida 6 ssenariy guruhi o’tdi. Konsol/overflow xatosi 0.
+
 ## 2026-09-28 — yakuniy A4: Telegram parchalarining tabiiy sarlavhalari
 - Tasdiqlangan 5 snapshot posti uchun ixcham sarlavhalar berildi. «#BERILDI ...», kontekstsiz «yuqorida» va eski postdagi «ertaga» bosh sahifada yarim jumla bo’lib chiqmaydi.
 - «Iloji boricha sog’-salomat» iborasi xabar mavzusini bildiradigan xolis sarlavhaga almashtirildi. Birinchi kartadagi reklama belgilariga to’la parcha ikki tabiiy jumlaga keltirildi.

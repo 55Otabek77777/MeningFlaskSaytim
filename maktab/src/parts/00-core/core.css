@@ -71,6 +71,13 @@
 .nv-menu__tel { font-weight: 800; font-size: 1.15rem; }
 .nv-menu__foot p { color: rgba(255, 255, 255, .75); font-size: .9375rem; }
 body.nv-locked { overflow: hidden; }
+body.nv-locked .nv { z-index: calc(var(--z-menu) + 1); translate: 0 0; background: #f8faff; border-color: #fff; box-shadow: 0 10px 32px -20px #06153f; }
+.nv-menu .nv-menu__abc { color: #fff; }
+.nv-menu .nv-abc { background: #ffffff12; border-color: #ffffff45; }
+.nv-menu .nv-abc button { color: #edf4ff; }
+.nv-menu .nv-abc button:hover { background: #ffffff20; color: #fff; }
+.nv-menu .nv-abc button[aria-pressed="true"] { background: #fff; color: #1e3a8a; box-shadow: 0 5px 16px -8px #07143c; }
+.nv-menu a:focus-visible, .nv-menu button:focus-visible, body.nv-locked .nv-burger:focus-visible { outline: 3px solid #f4c871; outline-offset: 4px; }
 @media (max-width: 560px) { .nv-actions > .nv-abc { display: none; } }
 
 /* ---- «Asosiy mazmunga o’tish» (klaviatura) */
