@@ -10,11 +10,14 @@
    - `/photos/founder.webp`, `/photos/director.webp`, `/photos/history-1994.webp`,
      `/photos/grads-2324-a.webp`, `/photos/grads-2324-b.webp`, `/photos/students-2425-a.webp`, `/photos/students-2425-b.webp`,
      `/photos/students-2425-c.webp`, `/photos/trip-orda.webp`, `/photos/trip-a.webp`, `/photos/trip-b.webp`
-   - **v3 da yangi** — shu fayllarni saytning `public/media/` ichiga ko’chiring (URL `https://mirzoulugbek.app/media/...`):
-     `JONLI-SAYT/MEDIA/qulayliklar/{sinfxona-1,sinfxona-2,bino-dron-1,bino-dron-2,sayohat-orda-dron-2,tadbir-bayroqlar,vokzal-temir-yol-dron}.webp` → `public/media/qulayliklar/`,
-     `JONLI-SAYT/MEDIA/bino/{yangi-bino-fasad,yangi-bino-fasad-keng,yangi-bino-dron,hudud-panorama-dron,hudud-panorama-dron-2}.webp` → `public/media/bino/`,
-     `JONLI-SAYT/MEDIA/bot/namuna-c-odatiy-kun.webp` → `public/media/bot/`
-     (bu ro’yxat `index.html` dagi `mirzoulugbek.app/media/…` havolalari bilan aynan mos — deploy’dan keyin birortasi ham 404 bermasin)
+   - **v3 da yangi — 26 ta fayl** (rasm + 3 ta dron klipi). Qoida: `index.html` dagi har bir `https://mirzoulugbek.app/media/X` →
+     saytning `public/media/X` (manba: `maktab/JONLI-SAYT/MEDIA/X`). Deploy’dan keyin birortasi ham 404 bermasin:
+     - `JONLI-SAYT/MEDIA/bino/` → `public/media/bino/`: `yangi-bino-fasad-keng.webp`, `yangi-bino-fasad.webp`
+     - `JONLI-SAYT/MEDIA/bot/` → `public/media/bot/`: `namuna-c-odatiy-kun.webp`
+     - `JONLI-SAYT/MEDIA/dron/` → `public/media/dron/`: `bitiruv-zal-tashqi-1.webp`, `hovli-tadbir-2.webp`, `hovli-tadbir-2@2k.webp`, `hudud-panorama-1.webp`, `hudud-panorama-1@2k.webp`, `hudud-panorama-2.webp`, `hudud-panorama-2@2k.webp`, `hudud-panorama-vert-1.webp`, `hudud-panorama-vert-2.webp`, `orda-foto-1.webp`, `vokzal-1.webp`, `vokzal-1@2k.webp`, `yangi-bino-uzoqdan-1.webp`, `yangi-bino-uzoqdan-1@2k.webp`, `yangi-bino-vert-2.webp`, `yangi-bino-vert-3.webp`, `yangi-bino-yon-1.webp`
+     - `JONLI-SAYT/MEDIA/dron/klip/` → `public/media/dron/klip/`: `hudud-panorama.mp4`, `vokzal-temir-yol.mp4`, `yangi-bino-orbit.mp4`
+     - `JONLI-SAYT/MEDIA/qulayliklar/` → `public/media/qulayliklar/`: `sinfxona-1.webp`, `sinfxona-2.webp`, `tadbir-bayroqlar.webp`
+     Klip (`.mp4`) — faqat kompyuterda, faol kadrda o’ynaydi; `public/` dan oddiy statik fayl sifatida beriladi (Range so’rovlari — Vercel’da o’zi ishlaydi).
    - tashqi rasm hostlari (jonli saytdagidek): `storage.googleapis.com/ulugbek-perfect-edu-7b4fa-certs/…` (sertifikatlar), `*.telesco.pe` (Telegram)
    - API: `POST /api/ariza`, `GET|POST /api/visit`, `POST /api/track-call`, `POST /api/chat`, `GET /api/telegram-news`
 4. Deploy’dan keyin tekshiruv:

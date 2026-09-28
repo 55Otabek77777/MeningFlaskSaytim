@@ -5,6 +5,13 @@ MU.part('footer', {
     root.querySelector('.ft-yrs').textContent = MU.years();
     MU.onVisible(root, v => root.classList.toggle('is-inview', v));
 
+    /* dron panoramasi: sekin parallaks va yozuvning ko’tarilishi */
+    const sky = root.querySelector('.ft-sky');
+    if (sky && !MU.reduced) {
+      gsap.fromTo(sky.querySelector('img'), { yPercent: -6, scale: 1.08 }, { yPercent: 6, scale: 1, ease: 'none', scrollTrigger: { trigger: sky, start: 'top bottom', end: 'bottom top', scrub: true } });
+      gsap.from(sky.querySelectorAll('figcaption > *'), { y: 26, autoAlpha: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: sky, start: 'top 70%', once: true } });
+    }
+
     /* meteorlar (magicui) */
     const box = root.querySelector('.ft-meteors');
     if (!MU.reduced) for (let i = 0; i < 14; i++) {

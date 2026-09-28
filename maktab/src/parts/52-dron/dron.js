@@ -1,5 +1,7 @@
 /* Dron lentasi: bo’lim sticky sahnaga aylanadi; skroll bilan kadrlar «oldinga uchib» almashadi —
-   joriy kadr kattalashib so’nadi, keyingisi uzoqdan yaqinlashib chiqadi (Ken Burns). Reduced-motion’da — statik galereya. */
+   joriy kadr kattalashib ketadi, keyingisi ustidan chiqadi (Ken Burns). Ba’zi kadrlarda qisqa dron klipi bor:
+   faqat faol kadrda, bo’lim ekranda bo’lganda, gorizontal ekranda va Save-Data/sekin tarmoq bo’lmasa o’ynaydi.
+   Reduced-motion’da — statik galereya (videolarsiz). */
 MU.part('dron', {
   init(root) {
     const { gsap } = MU;
@@ -28,16 +30,30 @@ MU.part('dron', {
           .set(items[i], { autoAlpha: 0 }, t + 0.45)
           .to(caps[i + 1], { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, t + 0.25);
       });
+      /* dron kliplari */
+      const conn = navigator.connection || {};
+      const videoOk = () => !(conn.saveData || /(^|slow-)2g|3g/.test(conn.effectiveType || '')) && matchMedia('(min-aspect-ratio: 1/1)').matches;
+      const vids = items.map(it => it.querySelector('.dr-vid'));
+      let active = -1, inView = false;
+      const sync = () => vids.forEach((v, j) => {
+        if (!v) return;
+        if (j === active && inView && videoOk()) {
+          if (!v.getAttribute('src')) { v.addEventListener('playing', () => v.classList.add('is-on'), { once: true }); v.src = v.dataset.src; }
+          const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+        } else if (!v.paused) v.pause();
+      });
       const st = MU.ScrollTrigger.create({
         trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, animation: tl,
+        onToggle(self) { inView = self.isActive; sync(); },
         onUpdate(self) {
           const i = Math.min(n - 1, Math.floor(self.progress * n * 0.999));
           countB.textContent = String(i + 1).padStart(2, '0');
           gsap.set(prog, { scaleX: self.progress });
+          if (i !== active) { active = i; sync(); }
         }
       });
       MU.ScrollTrigger.refresh();
-      return () => { st.kill(); tl.kill(); root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' }); };
+      return () => { vids.forEach(v => v && v.pause()); st.kill(); tl.kill(); root.classList.remove('is-live'); gsap.set([items, imgs, caps], { clearProps: 'all' }); };
     });
   }
 });

@@ -1,5 +1,17 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — v3.4 (DIGITAL: fleshkadagi 24.06.2026 dron s’yomkasi — `MEDIA/dron/`, 4K; hero videoga tegilmadi)
+| Qism | Nima |
+|---|---|
+| **52-dron** | 5 kadr, 4K manbadan (katta ekranda `@2k` 2560 px — `srcset`): **Uchko’prik tumani** (panorama) → **Qayrog’och** (mahalla ichida maktab) → **Yangi bino** → **Maktab hovlisi** (saf, to’g’ridan tepadan) → **Vokzalga ~300 m** (temir yo’l). 1-, 3- va 5-kadrda **jonli dron klipi** (7 s, 1280×720, ovozsiz): faqat faol kadrda, bo’lim ekranda, gorizontal ekranda va Save-Data/sekin tarmoq bo’lmasa o’ynaydi; o’ynay boshlaganda kadr ustiga silliq chiqadi. Telefonda (portret) — 4K **vertikal** kadrlar. |
+| 50-hayot | 01: **Qo’qon O’rdasi — DJI dron FOTOSI** (4096 px manba); yangi 06: **Bitiruv marosimi — zal oldida, tepadan**; «ikkinchi uy»dagi bino — 4K vertikal kadr (`yangi-bino-vert-2`). Lenta — 11 surat. |
+| 99-footer | Footer tepasida **dron panoramasi** (Qayrog’och · Uchko’prik — «Sizni maktabimizda kutamiz»), sekin parallaks, telefonda vertikal kadr. |
+| DEPLOY.md | Media ro’yxati `index.html` dan avtomatik: **26 fayl** (rasmlar + 3 klip), qoida: `/media/X` → `public/media/X`. |
+| make-preview | Preview’da `@2k` nusxalar inline qilinmaydi (hajm). |
+Ishlatilmadi (ataylab): `qurilish-*` va `eski-bino-*` — egasining tasdig’i kutilmoqda; yuzlari yaqinroq kadrlar.
+
+QA: desktop + mobil, 19 bo’lim — konsol xatosi 0 (headless’da faqat H.264 video yuklanmaydi — hero va kliplar), overflow yo’q, kichik matn yo’q.
+
 ## 2026-09-28 — v3.3 (egasi: «dron kadrlari — eng kuchli kadr, pastdagi bo’limlarga»; hero videoga tegilmadi)
 | Qism | Nima |
 |---|---|

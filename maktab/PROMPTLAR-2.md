@@ -2,7 +2,7 @@
 
 | Qadam | Kimga | Qachon | Keyin |
 |---|---|---|---|
-| 1 | DIGITAL — dron videolari va kadrlari (fleshka, lokal disklar) | hozir | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude kadrlarni pastki bo’limlarga qo’yadi va «ChatGPT’ga berishga tayyor» deydi |
+| 1 | DIGITAL — dron videolari va kadrlari (fleshka, lokal disklar) | ✅ bajarildi (232d83e) → v3.4 | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude kadrlarni pastki bo’limlarga qo’yadi va «ChatGPT’ga berishga tayyor» deydi |
 | 2 | ChatGPT — o’zbekcha tekshiruv + chiroyli takliflar | Claude «ChatGPT’ga berishga tayyor» degach | ChatGPT hisobotini Claude chatiga tashlaysiz → Claude yaxshilarini qo’shadi, oxirgi commit xabarida «DEPLOYGA TAYYOR» |
 | 3 | DIGITAL — deploy | Claude «DEPLOYGA TAYYOR» degach | DIGITAL hisobotini Claude chatiga tashlaysiz → Claude tekshiradi |
 
@@ -120,9 +120,9 @@ Vazifa: uni mirzoulugbek.app ga deploy qilish (Next.js 15 sayt, Vercel — mirzo
 1. O’qing: shu commit’dagi maktab/DEPLOY.md — undagi ro’yxat (fayllar, resurslar, tekshiruvlar) asosiy qo’llanma.
 2. ZAXIRA: deploy’dan oldin jonli saytning hozirgi production deployment’ini va mirzo-digital-sayt repo’sidagi
    oxirgi commit’ni yozib qo’ying (orqaga qaytarish uchun). Alohida branch’da ishlang.
-3. MEDIA: DEPLOY.md da sanalgan yangi fayllarni saytning public/ ichiga ko’chiring (URL bir xil qolsin):
-   maktab/JONLI-SAYT/MEDIA/qulayliklar/… → public/media/qulayliklar/, MEDIA/bot/… → public/media/bot/,
-   MEDIA/bino/… → public/media/bino/.
+3. MEDIA: DEPLOY.md da sanalgan yangi fayllarni (26 ta: rasmlar + 3 ta dron klipi) saytning public/ ichiga
+   ko’chiring, URL bir xil qolsin. Qoida: index.html dagi har bir https://mirzoulugbek.app/media/X →
+   public/media/X (manba: maktab/JONLI-SAYT/MEDIA/X) — papkalar: bino/, bot/, dron/, dron/klip/, qulayliklar/.
 4. BOSH SAHIFA: maktab/index.html (bitta fayl, ~1,4 MB) ni public/ ga qo’ying (masalan public/bosh.html) va
    faqat «/» ni shu faylga yo’naltiring — next.config.ts da rewrites → beforeFiles:
    { source: '/', destination: '/bosh.html' } (yoki v2 da ishlatgan usulingiz). app/page.tsx ni o’chirmang
@@ -130,7 +130,7 @@ Vazifa: uni mirzoulugbek.app ga deploy qilish (Next.js 15 sayt, Vercel — mirzo
    index.html ichini qo’lda o’zgartirmang.
 5. Avval PREVIEW deploy. Preview URL’da tekshiring (kompyuter + telefon):
    - bosh sahifa ochiladi, konsolda xato yo’q; hero video o’ynaydi, «Ovozni yoqish» ishlaydi;
-   - barcha suratlar chiqadi (yangi bino, qulayliklar, bot namunasi) — 404 yo’q;
+   - barcha suratlar va dron kliplari chiqadi (yangi bino, «Maktabimiz — osmondan», footer panoramasi) — 404 yo’q;
    - sertifikatlar karuseli, «So’nggi yangiliklar» (/api/telegram-news), footerdagi tashriflar (/api/visit),
      chat vidjeti (/api/chat) ishlaydi; «Ö / O’» alifbo tugmasi ishlaydi;
    - boshqa sahifalar va menyu havolalari ishlaydi.
