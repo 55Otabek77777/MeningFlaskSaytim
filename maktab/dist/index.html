@@ -1658,6 +1658,15 @@ section[id], footer[id] { scroll-margin-top: 96px; }
 @media (max-width: 560px) { #hayot .hy-shots { grid-template-columns: minmax(0, 1fr); } #hayot .hy-shot--tall { aspect-ratio: 3 / 4; } }
 #hayot .hy-slide, #hayot .hy-shot { cursor: zoom-in; }
 #hayot .hy-slide:focus-visible .hy-frame, #hayot .hy-shot:focus-visible { outline: 3px solid var(--mu-primary-2); outline-offset: 4px; }
+#hayot .hy-controls { display: flex; flex: none; gap: 8px; }
+#hayot .hy-controls button { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--line-2); border-radius: 50%; background: #fff; color: var(--mu-primary); box-shadow: 0 6px 18px -12px #1e3a8a90; transition: background .25s, color .25s, transform .25s; }
+#hayot .hy-controls button:hover:not([aria-disabled="true"]) { background: var(--mu-primary); color: #fff; transform: translateY(-2px); }
+#hayot .hy-controls button[aria-disabled="true"] { opacity: .4; cursor: default; }
+#hayot .hy-controls button:focus-visible { outline: 3px solid var(--mu-gold); outline-offset: 3px; }
+#hayot .hy-controls svg, #hayot .hy-zoom svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#hayot .hy-zoom { position: absolute; z-index: 3; top: 16px; right: 16px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ffffff65; border-radius: 50%; color: #fff; background: #101c3890; backdrop-filter: blur(10px); pointer-events: none; transition: background .35s, transform .35s; }
+#hayot .hy-slide:hover .hy-zoom, #hayot .hy-shot:hover .hy-zoom { background: #193d80; transform: scale(1.08); }
+@media (max-width: 640px) { #hayot .hy-hud { gap: 10px; } #hayot .hy-controls { gap: 6px; } }
 
 /* ---- 52-dron/dron.css ---- */
 /* ===== Dron lentasi: sticky sahna, kadrlar «uchib kirish» bilan almashadi (JS: .is-live). Statik holatda — 2×2 galereya. ===== */
@@ -2952,7 +2961,7 @@ section[id], footer[id] { scroll-margin-top: 96px; }
   </div>
 
   <div class="hy-reel" aria-roledescription="galereya" aria-label="Maktab hayotidan suratlar">
-    <div class="hy-track">
+    <div class="hy-track" id="hayot-suratlar">
       <figure class="hy-slide">
         <div class="hy-frame"><img src="https://mirzoulugbek.app/media/dron/orda-foto-1.webp" alt="Qöqon Ördasi — öquvçilarimiz saroy oldida, dron fotosi" width="1920" height="1080" loading="lazy" decoding="async"></div>
         <figcaption><span class="hy-no">01</span><span class="hy-tag">Bilim sayohati</span><b>Qöqon Ördasi — öquvçilarimiz saroy oldida</b></figcaption>
@@ -2998,10 +3007,15 @@ section[id], footer[id] { scroll-margin-top: 96px; }
         <figcaption><span class="hy-no">11</span><span class="hy-tag">Sayohat</span><b>Unutilmas sayohat kunlari</b></figcaption>
       </figure>
     </div>
-    <div class="hy-hud container" aria-hidden="true">
-      <span class="hy-count"><b>01</b> / 11</span>
-      <i class="hy-prog"><b></b></i>
-      <span class="hy-hint"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <div class="hy-hud container">
+      <span class="hy-count" aria-hidden="true"><b>01</b> / 11</span>
+      <i class="hy-prog" aria-hidden="true"><b></b></i>
+      <span class="hy-hint" aria-hidden="true"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <div class="hy-controls" role="group" aria-label="Suratlarni köriş">
+        <button class="hy-prev" type="button" aria-label="Oldingi surat" aria-controls="hayot-suratlar" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></button>
+        <button class="hy-next" type="button" aria-label="Keyingi surat" aria-controls="hayot-suratlar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+      </div>
+      <p class="sr-only hy-announcement" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
@@ -9518,16 +9532,47 @@ MU.part('hayot', {
     const countB = root.querySelector('.hy-count b');
     const prog = root.querySelector('.hy-prog b');
     const n = slides.length;
+    const prev = root.querySelector('.hy-prev'), next = root.querySelector('.hy-next');
+    const announcement = root.querySelector('.hy-announcement');
+    let activeIndex = 0, pin = null;
+    const offset = i => slides[i].offsetLeft - parseFloat(getComputedStyle(track).paddingLeft);
+    const nearest = (x, max) => slides.reduce((best, _, i) =>
+      Math.abs(Math.min(max, offset(i)) - x) < Math.abs(Math.min(max, offset(best)) - x) ? i : best, 0);
     const setIdx = (i, p) => {
+      activeIndex = i;
       countB.textContent = String(i + 1).padStart(2, '0');
       gsap.set(prog, { scaleX: p });
+      prev.setAttribute('aria-disabled', String(i === 0));
+      next.setAttribute('aria-disabled', String(i === n - 1));
     };
     setIdx(0, 1 / n);
+    const go = i => {
+      i = Math.max(0, Math.min(n - 1, i));
+      if (pin) {
+        const max = pin.end - pin.start;
+        MU.scrollTo(pin.start + Math.min(max, offset(i)), { duration: 0.85 });
+      } else track.scrollTo({ left: offset(i), behavior: MU.reduced ? 'instant' : 'smooth' });
+      const caption = slides[i].querySelector('figcaption b');
+      announcement.textContent = (i + 1) + ' / ' + n + '. ' + caption.textContent.trim();
+    };
+    prev.addEventListener('click', () => { if (activeIndex > 0) go(activeIndex - 1); });
+    next.addEventListener('click', () => { if (activeIndex < n - 1) go(activeIndex + 1); });
+    reel.addEventListener('keydown', e => {
+      if (e.altKey || e.ctrlKey || e.metaKey || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      e.preventDefault();
+      const i = e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : Math.max(0, Math.min(n - 1, activeIndex + (e.key === 'ArrowRight' ? 1 : -1)));
+      go(i);
+      if (e.target.closest('.hy-slide')) slides[i].focus({ preventScroll: true });
+    });
 
     /* suratni bosib kattalashtirish (lenta va «ikkinchi uy» suratlari) */
     root.querySelectorAll('.hy-slide, .hy-shot').forEach(f => {
       const img = f.querySelector('img'), cap = f.querySelector('figcaption b, figcaption');
       if (!img) return;
+      const frame = f.querySelector('.hy-frame') || f;
+      const zoom = document.createElement('span'); zoom.className = 'hy-zoom'; zoom.setAttribute('aria-hidden', 'true');
+      zoom.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>';
+      frame.append(zoom);
       f.tabIndex = 0; f.setAttribute('role', 'button'); f.setAttribute('aria-label', (img.alt || 'Surat') + ' — kattalashtirish');
       const open = () => MU.lightbox && MU.lightbox({ src: img.currentSrc || img.src, alt: img.alt, caption: cap ? cap.textContent.trim() : img.alt });
       f.addEventListener('click', open);
@@ -9536,9 +9581,10 @@ MU.part('hayot', {
 
     /* mobil: surishni kuzatish */
     const onNativeScroll = () => {
+      if (pin) return;
       const max = track.scrollWidth - track.clientWidth;
       const p = max > 0 ? track.scrollLeft / max : 0;
-      setIdx(Math.round(p * (n - 1)), Math.max(1 / n, p));
+      setIdx(nearest(track.scrollLeft, max), Math.max(1 / n, p));
     };
     track.addEventListener('scroll', onNativeScroll, { passive: true });
 
@@ -9552,9 +9598,10 @@ MU.part('hayot', {
         x: () => -dist(), ease: 'none',
         scrollTrigger: {
           trigger: reel, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true, anticipatePin: 1,
-          onUpdate(self) { setIdx(Math.min(n - 1, Math.round(self.progress * (n - 1))), Math.max(1 / n, self.progress)); }
+          onUpdate(self) { setIdx(nearest(self.progress * dist(), dist()), Math.max(1 / n, self.progress)); }
         }
       });
+      pin = tween.scrollTrigger;
       slides.forEach((s, i) => {
         const img = s.querySelector('img'), frame = s.querySelector('.hy-frame'), cap = s.querySelector('figcaption');
         /* surat ichida parallaks: ramka ichida rasm qarama-qarshi siljiydi */
@@ -9564,7 +9611,7 @@ MU.part('hayot', {
         gsap.fromTo(frame, { clipPath: 'inset(0 0 0 36% round 28px)' }, { clipPath: 'inset(0 0 0 0% round 28px)', ease: 'none', scrollTrigger: { trigger: s, containerAnimation: tween, start: 'left 105%', end: 'left 45%', scrub: true } });
         gsap.fromTo(cap, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, ease: 'none', scrollTrigger: { trigger: s, containerAnimation: tween, start: 'left 75%', end: 'left 40%', scrub: true } });
       });
-      return () => { root.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); };
+      return () => { pin = null; root.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); onNativeScroll(); };
     });
 
     /* kichik ekranda: kartalar ketma-ket paydo bo‘ladi */

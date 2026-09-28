@@ -1,5 +1,11 @@
 # CHANGELOG — «Mirzo Ulug’bek» bosh sahifasi
 
+## 2026-09-28 — yakuniy B2: haqiqiy suratlar galereyasi
+- Oldingi/keyingi surat tugmalari, ArrowLeft/ArrowRight/Home/End boshqaruvi, chekka holat belgilari va foydalanuvchi tanlovini o’qiydigan yashirin status qo’shildi.
+- Kattalashtirish belgisi suratlarning bosilishini tushunarli qiladi; mavjud lightbox saqlandi. Hisoblagich suratning haqiqiy o’rniga qarab yangilanadi.
+- Desktop pin, ichki parallaks, parda ochilishi, mobil scroll-snap va ishora animatsiyasi saqlandi. Reduced-motion’da tugmalar animatsiyasiz suradi.
+- QA: desktop, 390 px mobil, reduced-motion — keyingi/oxirgi/birinchi surat, klaviatura, lightbox va Escape o’tdi; konsol/overflow/15 px xatosi 0. Skrinshotlar: qa/b2/.
+
 ## 2026-09-28 — yakuniy B1: yo’nalishlarni tanlash
 - Bir butun filtr paneli, GSAP bilan siljiydigan ko’rsatkich va ko’rinadigan natija soni. Mobil: 2×2 tartib, kamida 46 px tugmalar, 15 px yozuv, klaviatura fokusi.
 - Mavjud Flip, tilt, ikonka, glow va kirish animatsiyalari saqlandi. Tez ketma-ket tanlov oldingi Flip’ni yakunlab, yangi joylashuvni to’g’ri hisoblaydi.

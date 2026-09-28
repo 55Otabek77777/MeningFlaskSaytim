@@ -6,7 +6,7 @@
   </div>
 
   <div class="hy-reel" aria-roledescription="galereya" aria-label="Maktab hayotidan suratlar">
-    <div class="hy-track">
+    <div class="hy-track" id="hayot-suratlar">
       <figure class="hy-slide">
         <div class="hy-frame"><img src="https://mirzoulugbek.app/media/dron/orda-foto-1.webp" alt="Qo’qon O’rdasi — o’quvchilarimiz saroy oldida, dron fotosi" width="1920" height="1080" loading="lazy" decoding="async"></div>
         <figcaption><span class="hy-no">01</span><span class="hy-tag">Bilim sayohati</span><b>Qo’qon O’rdasi — o’quvchilarimiz saroy oldida</b></figcaption>
@@ -52,10 +52,15 @@
         <figcaption><span class="hy-no">11</span><span class="hy-tag">Sayohat</span><b>Unutilmas sayohat kunlari</b></figcaption>
       </figure>
     </div>
-    <div class="hy-hud container" aria-hidden="true">
-      <span class="hy-count"><b>01</b> / 11</span>
-      <i class="hy-prog"><b></b></i>
-      <span class="hy-hint"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <div class="hy-hud container">
+      <span class="hy-count" aria-hidden="true"><b>01</b> / 11</span>
+      <i class="hy-prog" aria-hidden="true"><b></b></i>
+      <span class="hy-hint" aria-hidden="true"><span class="hy-hint__d">Pastga aylantiring</span><span class="hy-hint__m">Suring</span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <div class="hy-controls" role="group" aria-label="Suratlarni ko’rish">
+        <button class="hy-prev" type="button" aria-label="Oldingi surat" aria-controls="hayot-suratlar" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></button>
+        <button class="hy-next" type="button" aria-label="Keyingi surat" aria-controls="hayot-suratlar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+      </div>
+      <p class="sr-only hy-announcement" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
