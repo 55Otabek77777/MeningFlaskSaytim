@@ -8,7 +8,7 @@
 {{fonts}}
 :root {
   --bg: #0b1224; --panel: #111a33; --line: #ffffff1f; --ink: #f4f7ff; --mute: #b8c4dc;
-  --blue: #1e3a8a; --blue2: #3b5bdb; --sky: #93c5fd; --gold: #f4c871; --gold2: #d9a441; --red: #dc2626;
+  --blue: #1e3a8a; --blue2: #3b5bdb; --sky: #93c5fd; --gold: #f4c871; --gold2: #d9a441; --red: #dc2626; --pink: #f9a8d4;
   --display: 'Unbounded', system-ui, sans-serif; --body: 'Manrope', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,13 +18,21 @@ body { background: var(--bg); color: var(--ink); font-family: var(--body); font-
 .top h1 { font-family: var(--display); font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -.01em; margin-top: 10px; }
 .top p { color: var(--mute); }
 .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; background: #f4c87122; color: var(--gold); font: 600 .85rem var(--mono); letter-spacing: .06em; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 /* ---------- sahna (video kadri 16:9) ---------- */
 .stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 18px; background: #000; box-shadow: 0 30px 80px -40px #000; user-select: none; container-type: inline-size; }
 .stage > * { font-size: 1cqw; } /* 1em = sahna kengligining 1% i — matn video kadriga mos kattalashadi */
 .stage video, .stage .bgimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.layer { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+.layer, .bg { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+.bg { overflow: hidden; }
+.bg video, .bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bg.class1 img { filter: blur(.08em) brightness(.85) saturate(1.1); }
+.bg.class2 img { filter: blur(.16em) brightness(.72) saturate(1.15); }
 .shade { position: absolute; inset: 0; }
+.w { display: inline-block; }
+.rays { position: absolute; left: 50%; top: 42%; width: 150em; height: 150em; margin: -75em 0 0 -75em; background: repeating-conic-gradient(from 0deg, #f4c87130 0 5deg, transparent 5deg 15deg); -webkit-mask-image: radial-gradient(circle, #000 0 12%, transparent 55%); mask-image: radial-gradient(circle, #000 0 12%, transparent 55%); mix-blend-mode: screen; }
+.av { display: block; }
 
 /* hook — asl videoning ustida (ovoz o’chirilmaydi) */
 #s-hook .shade { background: radial-gradient(85% 95% at 50% 40%, #0000 35%, #0009 100%), linear-gradient(180deg, #0000 45%, #000b); }
@@ -43,85 +51,122 @@ body { background: var(--bg); color: var(--ink); font-family: var(--body); font-
 #s-clip .lower span { display: block; font: 600 1.4em var(--body); color: var(--mute); }
 #s-clip .src { position: absolute; right: 2.4cqw; top: 2cqw; font: 500 1.1em var(--mono); color: #ffffffb0; background: #0006; padding: .3em .7em; border-radius: .4em; }
 
-/* shaxmat taxtasi o’tishi */
+/* o’tishlar: shaxmat taxtasi (asl klipdan keyin) va brend «wipe» polosasi (sahnalar orasida) */
 #board { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(9, 1fr); pointer-events: none; z-index: 30; }
 #board i { display: block; transform: scale(0); }
+#wipe { position: absolute; top: -20%; left: 0; width: 180%; height: 140%; z-index: 35; display: grid; place-items: center; pointer-events: none;
+  background: linear-gradient(90deg, var(--sky) 0 1.2%, var(--blue2) 1.2% 3.2%, transparent 3.2% 96.4%, var(--gold2) 96.4% 97.6%, var(--gold) 97.6%), repeating-conic-gradient(#ffffff0a 0 25%, transparent 0 50%) 0 0 / 7em 7em, linear-gradient(90deg, #0b1224, #12245a 50%, #0b1224); }
+#wipe .wl { display: grid; place-items: center; width: 16em; height: 16em; border-radius: 50%; background: #fff; box-shadow: 0 0 0 .8em #ffffff22, 0 0 6em #f4c87155; transform: skewX(16deg); }
+#wipe .wl img { width: 13em; height: 13em; }
+.cutflash { position: absolute; inset: 0; z-index: 37; background: #fff; opacity: 0; pointer-events: none; }
+#fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 25; pointer-events: none; }
+
+/* doimiy belgilar: maktab va sana */
+#bug { position: absolute; left: 2.2em; top: 2em; z-index: 36; display: flex; align-items: center; gap: .9em; padding: .5em 1.4em .5em .5em; border-radius: 99em; background: #ffffffee; color: var(--blue); box-shadow: 0 1em 2em -1em #0009; opacity: 0; visibility: hidden; }
+#bug img { width: 3.6em; height: 3.6em; }
+#bug b { display: block; font: 800 1.45em/1 var(--display); }
+#bug small { display: block; font: 700 1.05em/1.2 var(--body); color: #334; }
+#datebug { position: absolute; right: 2.2cqw; top: 2.45cqw; z-index: 36; display: flex; align-items: center; gap: .8em; padding: .7em 1.3em; border-radius: 99em; background: linear-gradient(90deg, var(--gold), var(--gold2)); color: #2a1d04; font: 800 1.5em/1 var(--display); box-shadow: 0 1em 2em -1em #0009; opacity: 0; visibility: hidden; }
+#datebug i { width: .55em; height: .55em; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 .2em #dc262633; }
 
 /* navbat — o’quvchilarimizda */
-#s-turn .shade { background: linear-gradient(180deg, #0b1224cc, #0b122455 45%, #0b1224dd); }
+#s-turn .shade { background: radial-gradient(80% 70% at 50% 50%, #0b122466, #0b1224cc), linear-gradient(180deg, #0b1224aa, #0b122422 45%, #0b1224ee); }
 #s-turn .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1.6em; padding: 0 6em; }
-#s-turn .t1 { font: 800 5.8em/1.05 var(--display); letter-spacing: -.02em; }
+#s-turn .t1 { font: 800 6.4em/1.05 var(--display); letter-spacing: -.02em; text-shadow: 0 .05em .35em #000a; }
 #s-turn .t1 em { font-style: normal; color: var(--gold); }
-#s-turn .t2 { font: 700 2.4em/1.3 var(--body); color: #e6edf9; max-width: 34em; }
-#s-turn .brand { display: flex; align-items: center; gap: 1.2em; padding: .8em 1.6em .8em .9em; border-radius: 99em; background: #ffffffee; color: var(--blue); }
+#s-turn .t2 { font: 700 2.5em/1.3 var(--body); color: #eef3fc; max-width: 34em; text-shadow: 0 .1em .5em #000c; }
+#s-turn .t2 b { color: var(--gold); }
+#s-turn .brand { display: flex; align-items: center; gap: 1.2em; padding: .8em 1.8em .8em .9em; border-radius: 99em; background: #ffffffee; color: var(--blue); box-shadow: 0 1.5em 3em -1.5em #000; }
 #s-turn .brand img { width: 5em; height: 5em; }
 #s-turn .brand b { display: block; font: 800 2.3em/1 var(--display); }
 #s-turn .brand small { display: block; font: 700 1.5em var(--body); color: #334; }
 
 /* tadbir */
-#s-event .shade { background: linear-gradient(90deg, #0b1224f2 0%, #0b1224cc 48%, #0b122455 100%); }
-#s-event .grid { position: absolute; inset: 0; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4em; padding: 0 7em; }
-#s-event .cal { width: 20em; border-radius: 1.6em; overflow: hidden; background: #fff; color: var(--blue); text-align: center; box-shadow: 0 2em 4em -1.5em #000; transform-origin: 50% 0; }
-#s-event .cal .m { background: var(--red); color: #fff; font: 800 2.6em/1 var(--display); padding: .45em 0; letter-spacing: .06em; }
-#s-event .cal .d { font: 800 11em/1 var(--display); padding: .05em 0 .1em; }
-#s-event .kick { font: 800 2.4em var(--display); color: var(--gold); }
-#s-event h2 { font: 800 6em/1 var(--display); letter-spacing: -.02em; margin: .25em 0 .35em; }
+#s-event .shade { background: linear-gradient(90deg, #0b1224f2 0%, #0b1224cc 50%, #0b122433 100%); }
+#s-event .grid { position: absolute; inset: 0; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4.4em; padding: 0 7em; }
+#s-event .cal { width: 21em; border-radius: 1.6em; overflow: hidden; background: #fff; color: var(--blue); text-align: center; box-shadow: 0 2em 4em -1.5em #000, 0 0 0 .5em #ffffff1f; transform-origin: 50% 0; }
+#s-event .cal .m { background: var(--red); color: #fff; font: 800 2.7em/1 var(--display); padding: .45em 0; letter-spacing: .06em; }
+#s-event .cal .d { font: 800 11.5em/1 var(--display); padding: .05em 0 .02em; }
+#s-event .cal .wd { font: 700 1.6em/1 var(--body); color: #475569; padding-bottom: 1em; }
+#s-event .kick { font: 800 2.6em var(--display); color: var(--gold); }
+#s-event h2 { font: 800 6.2em/1 var(--display); letter-spacing: -.02em; margin: .25em 0 .35em; }
 #s-event h2 span { color: var(--sky); }
 #s-event p { font: 600 2.1em/1.4 var(--body); color: #dfe7f7; max-width: 32em; }
 #s-event p b { color: #fff; }
-#s-event .pieces { position: absolute; right: 5cqw; bottom: 2cqw; font-size: 9em; line-height: 1; color: #ffffff22; letter-spacing: .05em; }
+#s-event .tags { display: flex; gap: .9em; margin-top: 1.4em; }
+#s-event .tags span { padding: .45em 1em; border-radius: 99em; background: #ffffff14; border: .1em solid #ffffff30; font: 700 1.7em var(--body); color: #fff; }
+#s-event .tags span b { color: var(--gold); }
 
-/* format: qizlar / o’g’il bolalar */
-#s-format { background: radial-gradient(90% 90% at 50% 40%, #16295e, #0b1224); }
-#s-format .cols { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 3em; padding: 0 9em 6em; }
-#s-format .col { border-radius: 2em; padding: 3em 2.4em; text-align: center; background: #ffffff0f; border: .15em solid #ffffff24; }
-#s-format .col .ic { font-size: 8em; line-height: 1; }
-#s-format .col b { display: block; font: 800 4em/1.1 var(--display); margin: .3em 0 .2em; }
-#s-format .col span { font: 600 2em var(--body); color: var(--mute); }
-#s-format .col.g { box-shadow: inset 0 0 0 .15em #f9a8d455; } #s-format .col.g b { color: #fbcfe8; }
-#s-format .col.b { box-shadow: inset 0 0 0 .15em #93c5fd55; } #s-format .col.b b { color: var(--sky); }
-#s-format .vs { font: 800 3em var(--display); color: var(--gold); }
-#s-format .fnote { position: absolute; left: 0; right: 0; bottom: 5cqw; text-align: center; font: 700 2.3em var(--body); color: #e6edf9; }
+/* format: qizlar / o’g’il bolalar (sinfxona fonida) */
+#s-format .shade { background: radial-gradient(70% 80% at 50% 50%, #0b122422, #0b1224aa), linear-gradient(180deg, #0b122499, #0b122400 35%, #0b122400 70%, #0b1224aa); }
+#s-format .center { position: absolute; inset: 0; display: grid; place-content: center; gap: 3.2em; padding-top: 3em; }
+#s-format .head { text-align: center; font: 800 3.2em/1.2 var(--display); letter-spacing: -.01em; text-shadow: 0 .1em .4em #000a; }
+#s-format .head em { font-style: normal; color: var(--gold); }
+#s-format .cols { display: grid; grid-template-columns: 34em auto 34em; justify-content: center; align-items: center; gap: 3em; }
+#s-format .col { border-radius: 2.2em; padding: 2.6em 1.6em 2.8em; text-align: center; background: #0b1224c4; border: .15em solid #ffffff26; display: grid; justify-items: center; box-shadow: 0 2em 4em -2em #000; }
+#s-format .col .av { width: 15em; height: 15em; filter: drop-shadow(0 .8em 1.2em #0008); }
+#s-format .col b { display: block; font: 800 2.9em/1.1 var(--display); margin: .4em 0 .25em; white-space: nowrap; }
+#s-format .col span { font: 700 2em var(--body); color: var(--mute); }
+#s-format .col.g { box-shadow: inset 0 0 0 .18em #f9a8d466, 0 2em 4em -2em #000; } #s-format .col.g b { color: #fbcfe8; }
+#s-format .col.b { box-shadow: inset 0 0 0 .18em #93c5fd66, 0 2em 4em -2em #000; } #s-format .col.b b { color: var(--sky); }
+#s-format .vs { display: grid; place-items: center; padding: 1.1em 1.3em; border-radius: 1.2em; background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #2a1d04; font: 800 1.9em/1.15 var(--display); text-align: center; box-shadow: 0 0 0 .35em #f4c87133, 0 1em 2em -1em #000; }
 
 /* sovrinlar — podium */
-#s-prize { background: radial-gradient(70% 80% at 50% 20%, #2a3f86, #0b1224 70%); }
-#s-prize h3 { position: absolute; top: 3.6cqw; left: 0; right: 0; text-align: center; font: 800 4.6em var(--display); letter-spacing: -.01em; }
-#s-prize h3 span { color: var(--gold); }
-#s-prize .sub { position: absolute; top: 9.6cqw; left: 0; right: 0; text-align: center; font: 700 2em var(--body); color: var(--mute); }
+#s-prize .shade { background: radial-gradient(60% 70% at 50% 35%, #1e3a8a66, #0b1224c8 80%); }
+#s-prize h3 { position: absolute; top: 7.2cqw; left: 0; right: 0; text-align: center; font: 800 5.4em var(--display); letter-spacing: -.01em; text-shadow: 0 .06em .3em #0008; }
+#s-prize h3 span, #s-total .num { background: linear-gradient(100deg, var(--gold) 38%, #fffbe8 50%, var(--gold) 62%) 120% 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+#s-prize .sub { position: absolute; top: 14.2cqw; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: .8em; font: 700 2.1em var(--body); color: #dfe7f7; }
+#s-prize .sub .av { width: 2.4em; height: 2.4em; }
 #s-prize .pod { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; align-items: flex-end; gap: 2.2em; }
 #s-prize .p { width: 24em; display: grid; justify-items: center; }
-#s-prize .amt { font: 800 2.9em/1 var(--display); color: #fff; white-space: nowrap; }
+#s-prize .amt { font: 800 3em/1 var(--display); color: #fff; white-space: nowrap; text-shadow: 0 .06em .3em #0009; }
 #s-prize .amt small { font-size: .5em; color: var(--mute); margin-left: .25em; }
-#s-prize .blk { width: 100%; margin-top: .8em; border-radius: 1.2em 1.2em 0 0; display: grid; place-items: start center; padding-top: 1.2em; transform-origin: 50% 100%; }
-#s-prize .blk b { font: 800 4.4em var(--display); }
-#s-prize .p1 .blk { height: 24em; background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #3b2a05; }
-#s-prize .p2 .blk { height: 17em; background: linear-gradient(180deg, #e5e7eb, #9ca3af); color: #1f2937; }
-#s-prize .p3 .blk { height: 12em; background: linear-gradient(180deg, #e7a46b, #b86b34); color: #3a1d06; }
-#s-prize .p1 .amt { font-size: 3.5em; color: var(--gold); }
+#s-prize .blk { position: relative; width: 100%; margin-top: .8em; border-radius: 1.2em 1.2em 0 0; display: grid; place-items: start center; padding-top: 1.2em; transform-origin: 50% 100%; overflow: hidden; }
+#s-prize .blk::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, #ffffff66 50%, transparent 65%) var(--sx, -120%) 0 / 200% 100% no-repeat; }
+#s-prize .blk b { font: 800 4.6em var(--display); }
+#s-prize .p1 .blk { height: 23em; background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #3b2a05; box-shadow: 0 0 5em #f4c87155; }
+#s-prize .p2 .blk { height: 16em; background: linear-gradient(180deg, #e5e7eb, #9ca3af); color: #1f2937; }
+#s-prize .p3 .blk { height: 11em; background: linear-gradient(180deg, #e7a46b, #b86b34); color: #3a1d06; }
+#s-prize .p1 .amt { font-size: 3.7em; color: var(--gold); }
 
 /* jami */
-#s-total { background: radial-gradient(60% 70% at 50% 45%, #3a2c07, #0b1224 75%); }
-#s-total .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1em; }
-#s-total .k { font: 600 2em var(--mono); letter-spacing: .14em; color: var(--sky); text-transform: uppercase; }
-#s-total .num { font: 800 9em/1 var(--display); letter-spacing: -.03em; background: linear-gradient(180deg, #fff6d6, var(--gold) 55%, var(--gold2)); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 .03em .2em #0008); }
-#s-total .cur { font: 800 3.6em var(--display); color: #fff; }
+#s-total .shade { background: radial-gradient(55% 65% at 50% 48%, #3a2c07bb, #0b1224d0 80%); }
+#s-total .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1.1em; }
+#s-total .k { font: 700 2em var(--mono); letter-spacing: .14em; color: var(--sky); text-transform: uppercase; }
 #s-total .split { display: flex; align-items: center; gap: 1.6em; }
-#s-total .split span { display: grid; gap: .2em; padding: .8em 1.6em; border-radius: 1em; background: #ffffff10; border: .12em solid #ffffff26; font: 800 2.6em/1.1 var(--display); color: #fff; }
-#s-total .split span b { font: 700 .55em var(--body); color: var(--mute); }
+#s-total .split > span { display: flex; align-items: center; gap: .6em; padding: .5em 1.3em .5em .5em; border-radius: 1em; background: #0b1224c0; border: .12em solid #ffffff26; font: 800 2.7em/1.1 var(--display); color: #fff; text-align: left; }
+#s-total .split .av { width: 2.3em; height: 2.3em; flex: none; }
+#s-total .split span b { display: block; font: 700 .55em var(--body); color: var(--mute); }
 #s-total .split .g { box-shadow: inset 0 0 0 .08em #f9a8d466; } #s-total .split .bo { box-shadow: inset 0 0 0 .08em #93c5fd66; }
 #s-total .split i { font: 800 3em var(--display); font-style: normal; color: var(--gold); }
-#s-total .num { margin-top: .1em; }
+#s-total .num { font: 800 10em/1 var(--display); letter-spacing: -.03em; margin-top: .1em; filter: drop-shadow(0 .03em .2em #0009); }
+#s-total .cur { font: 800 3.8em var(--display); color: #fff; margin-top: -.2em; }
+
+/* ijtimoiy tarmoqlar */
+#s-social .shade { background: linear-gradient(180deg, #0b1224cc, #0b122466 40%, #0b1224ee); }
+#s-social .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1.2em; padding: 0 6em; }
+#s-social .kick { font: 700 1.9em var(--mono); letter-spacing: .12em; color: var(--gold); text-transform: uppercase; }
+#s-social h2 { font: 800 4em/1.12 var(--display); letter-spacing: -.02em; max-width: 21em; text-shadow: 0 .06em .3em #0009; }
+#s-social h2 em { font-style: normal; color: var(--sky); }
+#s-social .cards { display: flex; gap: 2.4em; margin-top: 1.4em; }
+#s-social .card { width: 25em; padding: 2em 1.4em 2.2em; border-radius: 1.8em; background: #0b1224e0; border: .12em solid #ffffff2e; display: grid; justify-items: center; gap: .6em; box-shadow: 0 2em 4em -2em #000; }
+#s-social .card svg { width: 7.5em; height: 7.5em; }
+#s-social .card b { font: 800 2.4em var(--display); }
+#s-social .card span { font: 700 1.5em var(--mono); color: var(--sky); }
 
 /* yakun */
-#s-outro .shade { background: linear-gradient(180deg, #0b1224aa, #0b1224ee 70%); }
-#s-outro .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1.6em; padding: 0 8em; }
-#s-outro img.logo { width: 11em; height: 11em; border-radius: 50%; background: #fff; padding: .6em; box-shadow: 0 0 0 .5em #ffffff22; }
-#s-outro .t1 { font: 800 4.2em/1.12 var(--display); letter-spacing: -.02em; }
+#s-outro .shade { background: linear-gradient(180deg, #0b122488, #0b1224e6 68%); }
+#s-outro .center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 1.5em; padding: 0 8em; }
+#s-outro img.logo { width: 11em; height: 11em; border-radius: 50%; background: #fff; padding: .6em; box-shadow: 0 0 0 .5em #ffffff22, 0 0 5em #f4c87166; }
+#s-outro .t1 { font: 800 4.3em/1.12 var(--display); letter-spacing: -.02em; text-shadow: 0 .06em .3em #0009; }
 #s-outro .t1 em { font-style: normal; color: var(--gold); white-space: nowrap; }
-#s-outro .meta { font: 700 2.2em var(--body); color: #dfe7f7; }
+#s-outro .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: .8em 1.8em; font: 700 2em var(--body); color: #dfe7f7; }
+#s-outro .meta span { display: inline-flex; align-items: center; gap: .45em; }
+#s-outro .meta svg { width: 1.4em; height: 1.4em; }
 #s-outro .meta b { color: var(--sky); }
+#s-outro .fade { position: absolute; inset: 0; background: #000; opacity: 0; }
 
-.timecode { position: absolute; left: 1.4cqw; top: 1.2cqw; z-index: 41; font: 600 clamp(10px, 1.2cqw, 14px) var(--mono); color: #fff; background: #0008; padding: .25em .6em; border-radius: .4em; }
+.timecode { position: absolute; left: 1.4cqw; bottom: 1.2cqw; z-index: 41; font: 600 clamp(10px, 1.2cqw, 14px) var(--mono); color: #fff; background: #0008; padding: .25em .6em; border-radius: .4em; }
 .bigplay { position: absolute; inset: 0; z-index: 50; display: grid; place-items: center; background: #0006; border: 0; color: #fff; cursor: pointer; }
 .bigplay[hidden] { display: none; }
 .bigplay span { display: grid; place-items: center; width: 8em; height: 8em; border-radius: 50%; background: var(--gold); color: #1a1405; font-size: 1cqw; }
@@ -175,17 +220,75 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
 </style>
 </head>
 <body>
+<!-- ikonkalar: qiz, o’g’il bola, Instagram, YouTube, Telegram (gradientlar ko’rinishi uchun display:none emas) -->
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="gGirl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbcfe8"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+    <linearGradient id="gBoy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfdbfe"/><stop offset="1" stop-color="#3b5bdb"/></linearGradient>
+    <linearGradient id="gIg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".3" stop-color="#fa7e1e"/><stop offset=".55" stop-color="#d62976"/><stop offset=".8" stop-color="#962fbf"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient>
+    <clipPath id="cAv"><circle cx="60" cy="60" r="58"/></clipPath>
+  </defs>
+  <symbol id="ic-girl" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="58" fill="url(#gGirl)"/>
+    <g clip-path="url(#cAv)">
+      <path d="M33 62C29 32 45 19 60 19s31 13 27 43c-1 13-3 24-7 32H40c-4-8-6-19-7-32z" fill="#3a2215"/>
+      <path d="M16 124c2-22 19-34 44-34s42 12 44 34z" fill="#fff"/>
+      <rect x="53" y="71" width="14" height="20" rx="6" fill="#e9b28c"/>
+      <circle cx="60" cy="55" r="22" fill="#f6cdb0"/>
+      <path d="M37 53c1-17 11-26 23-26s23 9 23 26c-6-7-12-11-19-11-4 5-15 9-27 11z" fill="#3a2215"/>
+      <circle cx="52" cy="58" r="2.7" fill="#2a170d"/><circle cx="68" cy="58" r="2.7" fill="#2a170d"/>
+      <circle cx="46.5" cy="65" r="3.8" fill="#f28b8b" opacity=".5"/><circle cx="73.5" cy="65" r="3.8" fill="#f28b8b" opacity=".5"/>
+      <path d="M54 67q6 5 12 0" fill="none" stroke="#b5553a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M81 30l-10-7v14zM81 30l10-7v14z" fill="#ec4899"/><circle cx="81" cy="30" r="3.4" fill="#be185d"/>
+      <path d="M60 96l-10-7v14zM60 96l10-7v14z" fill="#ec4899"/><circle cx="60" cy="96" r="3" fill="#be185d"/>
+    </g>
+  </symbol>
+  <symbol id="ic-boy" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="58" fill="url(#gBoy)"/>
+    <g clip-path="url(#cAv)">
+      <path d="M16 124c2-22 19-34 44-34s42 12 44 34z" fill="#fff"/>
+      <path d="M47 89l13 11-5 7zM73 89l-13 11 5 7z" fill="#e2e8f0"/>
+      <path d="M57 100h6l-1.5 5 4 15-5.5 6-5.5-6 4-15z" fill="#1d4ed8"/>
+      <rect x="53" y="71" width="14" height="20" rx="6" fill="#e9b28c"/>
+      <circle cx="38" cy="58" r="5" fill="#eab897"/><circle cx="82" cy="58" r="5" fill="#eab897"/>
+      <circle cx="60" cy="55" r="22" fill="#f6cdb0"/>
+      <path d="M37 55c-3-19 8-31 24-31 15 0 25 10 22 29-3-6-7-10-12-11-7 5-20 6-30 5-2 2-3 5-4 8z" fill="#2a1a10"/>
+      <circle cx="52" cy="58" r="2.7" fill="#2a170d"/><circle cx="68" cy="58" r="2.7" fill="#2a170d"/>
+      <path d="M53.5 67q6.5 5 13 0" fill="none" stroke="#b5553a" stroke-width="2.6" stroke-linecap="round"/>
+    </g>
+  </symbol>
+  <symbol id="ic-ig" viewBox="0 0 120 120">
+    <rect x="4" y="4" width="112" height="112" rx="30" fill="url(#gIg)"/>
+    <rect x="28" y="28" width="64" height="64" rx="19" fill="none" stroke="#fff" stroke-width="8"/>
+    <circle cx="60" cy="60" r="15" fill="none" stroke="#fff" stroke-width="8"/><circle cx="80" cy="40" r="5" fill="#fff"/>
+  </symbol>
+  <symbol id="ic-yt" viewBox="0 0 120 120">
+    <rect x="4" y="20" width="112" height="80" rx="24" fill="#ff0000"/><path d="M49 40v40l33-20z" fill="#fff"/>
+  </symbol>
+  <symbol id="ic-tg" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="56" fill="#229ed9"/>
+    <path d="M27 58.5l60-23.2c2.8-1 5.2.7 4.3 4.9L81 88.4c-.8 3.4-2.8 4.2-5.7 2.6L60 79.8l-7.4 7.1c-.8.8-1.5 1.5-3.1 1.5l1.1-15.6 28.4-25.7c1.2-1.1-.3-1.7-1.9-.6L42 68.6l-15.1-4.7c-3.3-1-3.3-3.3.1-4.4z" fill="#fff"/>
+  </symbol>
+</svg>
 <div class="wrap">
   <div class="top">
-    <span class="badge">KO’RIB CHIQISH UCHUN · 2-VARIANT · VIDEO EMAS</span>
+    <span class="badge">KO’RIB CHIQISH UCHUN · 3-VARIANT · VIDEO EMAS</span>
     <h1>1-oktabr · Shaxmat musobaqasi — ota-onalar uchun Telegram video ssenariysi</h1>
-    <p>≈ 68 soniya · 16:9 · asl video (30 s, asl ovozi bilan, tiniqlashtirilgan) + hook yozuvlari → maktab e’loni (diktor uzluksiz gapiradi)</p>
+    <p>≈ 1:30 · 16:9 · asl video (30 s, asl ovozi bilan, tiniqlashtirilgan) + hook → maktab e’loni (energik diktor, ovoz effektlari, maktab kadrlari takrorlanmaydi)</p>
   </div>
 
   <div class="stage" id="stage">
     <video id="vclip" playsinline preload="auto" src="{{klip30}}"></video>
-    <div class="layer" id="L-orbit"><video id="vorbit" muted loop playsinline preload="auto" src="{{orbit}}"></video></div>
-    <div class="layer" id="L-pano"><video id="vpano" muted loop playsinline preload="auto" src="{{pano}}"></video></div>
+    <!-- fon kadrlari (har biri faqat bir marta) -->
+    <div class="bg" id="L-cheer"><video id="vcheer" muted playsinline preload="auto" src="{{cheer}}"></video></div>
+    <div class="bg" id="L-orbit"><video id="vorbit" muted playsinline preload="auto" src="{{orbit}}"></video></div>
+    <div class="bg" id="L-pano"><video id="vpano" muted playsinline preload="auto" src="{{pano}}"></video></div>
+    <div class="bg" id="L-tepa"><video id="vtepa" muted playsinline preload="auto" src="{{tepa}}"></video></div>
+    <div class="bg class1" id="L-sinf2"><img src="{{sinf2}}" alt=""></div>
+    <div class="bg class2" id="L-sinf1"><img src="{{sinf1}}" alt=""></div>
+    <div class="bg class2" id="L-sinf3"><img src="{{sinf3}}" alt=""></div>
+    <div class="bg" id="L-social"><video id="vsocial" muted playsinline preload="auto" src="{{social}}"></video></div>
+    <div class="bg" id="L-fasad"><img src="{{fasad}}" alt=""></div>
 
     <!-- 1) HOOK: asl video ustida, asl ovoz eshitiladi -->
     <div class="layer" id="s-hook">
@@ -210,44 +313,49 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
       <div class="src">Kadrlar: 46-Shaxmat olimpiadasi yopilish marosimi</div>
     </div>
 
-    <!-- 3) NAVBAT — O’QUVCHILARIMIZDA -->
+    <!-- 3) NAVBAT — O’QUVCHILARIMIZDA (fon: o’quvchilarimiz → yangi bino) -->
     <div class="layer" id="s-turn">
       <div class="shade"></div>
       <div class="center">
         <div class="t1">Endi navbat — <em>o’quvchilarimizda!</em></div>
-        <div class="t2">Olimpiada darajasida bo’lmasa ham — o’quvchilarimiz ham mukofot yutib olish imkoniyatiga ega</div>
+        <div class="t2">Olimpiada darajasida bo’lmasa ham — o’quvchilarimiz ham <b>mukofot yutib olish</b> imkoniyatiga ega!</div>
         <div class="brand"><img src="{{logo}}" alt=""><div><b>MIRZO ULUG’BEK</b><small>xususiy maktabi</small></div></div>
       </div>
     </div>
 
-    <!-- 4) TADBIR -->
+    <!-- 4) TADBIR (fon: hudud panoramasi → yangi bino tepadan) -->
     <div class="layer" id="s-event">
       <div class="shade"></div>
       <div class="grid">
-        <div class="cal"><div class="m">OKTABR</div><div class="d">1</div></div>
+        <div class="cal"><div class="m">OKTABR</div><div class="d">1</div><div class="wd">musobaqa kuni</div></div>
         <div>
           <div class="kick">Hurmatli ota-onalar!</div>
           <h2>SHAXMAT <span>MUSOBAQASI</span></h2>
-          <p>1-oktabr — O’qituvchi va murabbiylar kuni tadbirimizning bir qismi · <b>o’quvchilarimiz uchun aql mashqi</b></p>
+          <p>1-oktabr — O’qituvchi va murabbiylar kuni tadbirimizning bir qismi</p>
+          <div class="tags"><span>♞ <b>aql mashqi</b></span><span>♟ o’quvchilarimiz uchun</span></div>
         </div>
       </div>
-      <div class="pieces" aria-hidden="true">♚ ♛ ♞</div>
     </div>
 
-    <!-- 5) FORMAT -->
+    <!-- 5) FORMAT (fon: sinfxonada dars) -->
     <div class="layer" id="s-format">
+      <div class="shade"></div>
+      <div class="center">
+      <div class="head">Shaxmatga <em>qiziqadigan</em> o’quvchilarimiz ishtirokida</div>
       <div class="cols">
-        <div class="col g"><div class="ic">♛</div><b>QIZLAR</b><span>1 · 2 · 3-o’rinlar</span></div>
-        <div class="vs">alohida</div>
-        <div class="col b"><div class="ic">♚</div><b>O’G’IL BOLALAR</b><span>1 · 2 · 3-o’rinlar</span></div>
+        <div class="col g"><svg class="av"><use href="#ic-girl"/></svg><b>QIZLAR</b><span>1 · 2 · 3-o’rinlar</span></div>
+        <div class="vs">alohida<br>bellashadi</div>
+        <div class="col b"><svg class="av"><use href="#ic-boy"/></svg><b>O’G’IL BOLALAR</b><span>1 · 2 · 3-o’rinlar</span></div>
       </div>
-      <div class="fnote">Shaxmatga qiziqadigan o’quvchilarimiz ishtirokida</div>
+      </div>
     </div>
 
     <!-- 6) SOVRINLAR -->
     <div class="layer" id="s-prize">
+      <div class="shade"></div>
+      <div class="rays"></div>
       <h3>PUL <span>MUKOFOTLARI</span></h3>
-      <div class="sub">har bir guruhda — qizlar va o’g’il bolalar uchun alohida</div>
+      <div class="sub">har bir guruhda <svg class="av"><use href="#ic-girl"/></svg> qizlar va <svg class="av"><use href="#ic-boy"/></svg> o’g’il bolalar uchun alohida</div>
       <div class="pod">
         <div class="p p2"><div class="amt"><span data-sum="300000">0</span><small>so’m</small></div><div class="blk"><b>2</b></div></div>
         <div class="p p1"><div class="amt"><span data-sum="500000">0</span><small>so’m</small></div><div class="blk"><b>1</b></div></div>
@@ -257,26 +365,50 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
 
     <!-- 7) JAMI -->
     <div class="layer" id="s-total">
+      <div class="shade"></div>
+      <div class="rays"></div>
       <div class="center">
         <div class="k">Umumiy mukofot jamg’armasi</div>
-        <div class="split"><span class="g"><b>Qizlarga jami</b>1 000 000 so’m</span><i>+</i><span class="bo"><b>O’g’il bolalarga jami</b>1 000 000 so’m</span></div>
+        <div class="split">
+          <span class="g"><svg class="av"><use href="#ic-girl"/></svg><span><b>Qizlarga jami</b>1 000 000 so’m</span></span><i>+</i>
+          <span class="bo"><svg class="av"><use href="#ic-boy"/></svg><span><b>O’g’il bolalarga jami</b>1 000 000 so’m</span></span>
+        </div>
         <div class="num" data-sum="2000000">0</div>
         <div class="cur">so’m</div>
       </div>
     </div>
 
-    <!-- 8) YAKUN -->
+    <!-- 8) IJTIMOIY TARMOQLAR (fon: o’quvchilarimiz yurishi) -->
+    <div class="layer" id="s-social">
+      <div class="shade"></div>
+      <div class="center">
+        <div class="kick">1-oktabr · shaxmat musobaqasi</div>
+        <h2>Jarayonlarni <em>ijtimoiy tarmoqlarimizda</em> yoritib boramiz</h2>
+        <div class="cards">
+          <div class="card ig"><svg><use href="#ic-ig"/></svg><b>Instagram</b><span>@mirzoulugbekmaktabi</span></div>
+          <div class="card yt"><svg><use href="#ic-yt"/></svg><b>YouTube</b><span>@ulugbek_xm</span></div>
+          <div class="card tg"><svg><use href="#ic-tg"/></svg><b>Telegram</b><span>@ulugbek_rm</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9) YAKUN (fon: yangi bino va o’quvchilar safi) -->
     <div class="layer" id="s-outro">
-      <img class="bgimg" src="{{bino}}" alt="">
       <div class="shade"></div>
       <div class="center">
         <img class="logo" src="{{logo}}" alt="">
         <div class="t1">Shaxmatga qiziqadigan barcha o’quvchilarimizni <em>qo’llab-quvvatlaymiz!</em></div>
-        <div class="meta">«Mirzo Ulug’bek» xususiy maktabi · <b>@ulugbek_rm</b> · mirzoulugbek.app</div>
+        <div class="meta"><span><svg><use href="#ic-ig"/></svg><b>@mirzoulugbekmaktabi</b></span><span><svg><use href="#ic-yt"/></svg><b>@ulugbek_xm</b></span><span><svg><use href="#ic-tg"/></svg><b>@ulugbek_rm</b></span><span>mirzoulugbek.app</span></div>
       </div>
+      <div class="fade"></div>
     </div>
 
+    <canvas id="fx" width="1920" height="1080"></canvas>
     <div id="board" aria-hidden="true"></div>
+    <div id="wipe" aria-hidden="true"><div class="wl"><img src="{{logo}}" alt=""></div></div>
+    <div id="bug"><img src="{{logo}}" alt=""><div><b>MIRZO ULUG’BEK</b><small>xususiy maktabi</small></div></div>
+    <div id="datebug"><i></i>1-OKTABR · SHAXMAT</div>
+    <div class="cutflash" id="cutflash"></div>
     <div class="timecode" id="tc">00:00.0</div>
     <button class="bigplay" id="bigplay" aria-label="Ko’rishni boshlash"><span><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg></span></button>
   </div>
@@ -285,34 +417,27 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
   <div class="ctrl">
     <button class="main" id="play">▶ Ko’rish</button>
     <button id="restart">↺ Boshidan</button>
-    <input type="range" id="seek" min="0" max="68" step="0.05" value="0" aria-label="Vaqt">
-    <span class="tt" id="tt">0:00 / 1:08</span>
+    <input type="range" id="seek" min="0" max="90" step="0.05" value="0" aria-label="Vaqt">
+    <span class="tt" id="tt">0:00 / 1:30</span>
     <button id="mute">🔊 Asl ovoz: yoqiq</button>
   </div>
   <div class="chips" id="chips"></div>
 
   <section class="doc">
     <h2>Ssenariy — diktor matni</h2>
-    <p class="lead">So’zlarni shu yerda tekshiring. 0:00–0:30 da faqat asl video o’z ovozi bilan (marosim boshlovchisi) — diktor gapirmaydi. 0:30 dan oxirigacha diktor uzluksiz gapiradi, jimlik yo’q.</p>
-    <table class="tbl" id="tbl"><thead><tr><th>Vaqt</th><th>Ekranda</th><th>Diktor ovozi</th><th>Izoh</th></tr></thead><tbody></tbody></table>
+    <p class="lead">0:00–0:30 — faqat asl video o’z ovozi bilan (marosim boshlovchisi). 0:30 dan oxirigacha diktor energik, uzluksiz gapiradi. Pul summalari alohida gaplar — har biri aytilgan lahzada podium ko’tariladi va «ting-ting-ting — DING» + tangalar ovozi chiqadi.</p>
+    <table class="tbl" id="tbl"><thead><tr><th>Vaqt</th><th>Ekranda</th><th>Diktor ovozi</th><th>Effekt / izoh</th></tr></thead><tbody></tbody></table>
   </section>
 
   <section class="doc">
     <h2>Javoblaringiz bo’yicha</h2>
     <ul class="qs">
-      <li class="ok"><b>Kimga:</b> ota-onalarga xabar. O’quvchilarni taklif qilmaymiz — ular maktabda; «ishtirok eting», «omad» kabi chaqiriqlar olib tashlandi. Yakun: «Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz!»</li>
-      <li class="ok"><b>Sana:</b> 1-oktabr kuni. <b>Joy</b> va <b>ro’yxatdan o’tish</b> — aytilmaydi.</li>
-      <li class="ok"><b>Kimlar:</b> shaxmatga qiziqadigan o’quvchilarimiz; qizlar va o’g’il bolalar alohida.</li>
-      <li class="ok"><b>Boshi:</b> asl video 0:00 dan asl ovozi bilan (boshlovchi «O’zbekiston Respublikasi…»), kesilmagan, asl 16:9 formatda, tiniqlashtirilgan (832×472 → 1280×720; yakuniy videoda 1920×1080).</li>
-      <li class="ok"><b>Sovrinlar (tasdiqlandi):</b> har guruhda 500 000 · 300 000 · 200 000 so’m. Qizlarga jami 1 000 000, o’g’il bolalarga jami 1 000 000 — umumiy 2 000 000 so’m.</li>
+      <li class="ok"><b>Ovoz effektlari:</b> har o’tishda «shuv» (swoosh), sarlavhalarda zarba, kartochkalarda «pop», pul mukofotlarida «ting-ting-ting-ting — DING» + tangalar sochilishi, «PUL MUKOFOTLARI» va 2 000 000 da kassa apparati «ka-ching», hisoblagich «chiq-chiq», katta raqam oldidan ko’tariluvchi effekt.</li>
+      <li class="ok"><b>Ikonkalar:</b> shaxmat donalari (♛/♚) olib tashlandi — qizlar va o’g’il bolalar uchun alohida ikonka (qizcha va o’g’il bola).</li>
+      <li class="ok"><b>Kadrlar takrorlanmaydi:</b> o’quvchilarimiz safi → yangi bino (dron, aylanib) → hudud panoramasi → yangi bino tepadan → sinfxonada dars (fon) → o’quvchilar yurishi → yangi bino va o’quvchilar safi.</li>
+      <li class="ok"><b>Yangi gap:</b> «Musobaqa 1-oktabr kuni bo’lib o’tkaziladi» va «Jarayonlarni ijtimoiy tarmoqlarimizda — Instagram, YouTube va Telegram’da yoritib boramiz!»</li>
+      <li class="ok"><b>Sovrinlar:</b> har guruhda 500 000 · 300 000 · 200 000 so’m. Qizlarga jami 1 000 000, o’g’il bolalarga jami 1 000 000 — umumiy 2 000 000 so’m.</li>
     </ul>
-  </section>
-
-  <section class="doc">
-    <h2>Ovoz va materiallar haqida</h2>
-    <div class="note"><b>Diktor ovozi.</b> 0:30 dan keyin — boshlovchining ovozi nusxasi emas, <b>shu uslubdagi</b> tantanali, ishonchli boshqa erkak ovozi (yoki maktab xodimi o’qib yozib beradi). Boshlovchining o’z ovozi asl klipda (0:00–0:30) o’zgarmasdan eshitiladi.</div>
-    <div class="note"><b>Musiqa.</b> Maktab qismi ostiga tantanali, energiyali fon musiqasi (mualliflik huquqisiz) — videoga aylantirishda qo’shiladi; diktor ovozidan past.</div>
-    <div class="note"><b>Kadrlar.</b> Olimpiada — marosim efiridan (yuqori o’ng burchakda manba yozuvi). Maktab qismi — maktabning 2026-yil iyundagi dron s’yomkasi va yangi bino fasadi.</div>
   </section>
 </div>
 
@@ -320,53 +445,72 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
 <script>
 (() => {
   const CLIP = 30;
-  /* diktor gaplari — vaqt shu gaplar uzunligidan hisoblanadi (window.VO_DUR — haqiqiy ovoz fayllari, yo’q bo’lsa taxmin) */
+  /* diktor gaplari — alohida fayllar (01…15); vaqt shu gaplar uzunligidan hisoblanadi (window.VO_DUR — haqiqiy ovoz, yo’q bo’lsa taxmin) */
   const TXT = [
     'Endi navbat — o’quvchilarimizda!',
     'Olimpiada darajasida bo’lmasa ham, «Mirzo Ulug’bek» xususiy maktabi o’quvchilari ham mukofot yutib olish imkoniyatiga ega!',
-    'Hurmatli ota-onalar! Maktabimiz 1-oktabr kuni shaxmat musobaqasini tashkil etmoqda.',
-    'Bu — 1-oktabr tadbirimizning bir qismi va o’quvchilarimiz uchun haqiqiy aql mashqi.',
-    'Shaxmatga qiziqadigan o’quvchilarimiz qatnashadi: qizlar va o’g’il bolalar alohida bellashadi.',
-    'Har bir guruhda: birinchi o’ringa — besh yuz ming so’m, ikkinchi o’ringa — uch yuz ming so’m, uchinchi o’ringa — ikki yuz ming so’m pul mukofoti!',
-    'Qizlarga jami — bir million so’m, o’g’il bolalarga jami — bir million so’m. Umumiy mukofot jamg’armasi — ikki million so’m!',
-    'Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz! «Mirzo Ulug’bek» xususiy maktabi.'
+    'Hurmatli ota-onalar! Maktabimiz shaxmat musobaqasini tashkil etmoqda!',
+    'Musobaqa 1-oktabr kuni bo’lib o’tkaziladi — bu o’quvchilarimiz uchun haqiqiy aql mashqi!',
+    'Shaxmatga qiziqadigan o’quvchilarimiz qatnashadi: qizlar va o’g’il bolalar alohida bellashadi!',
+    'Har bir guruhda — pul mukofotlari!',
+    'Birinchi o’ringa — besh yuz ming so’m!',
+    'Ikkinchi o’ringa — uch yuz ming so’m!',
+    'Uchinchi o’ringa — ikki yuz ming so’m!',
+    'Qizlarga jami — bir million so’m!',
+    'O’g’il bolalarga jami — bir million so’m!',
+    'Umumiy mukofot jamg’armasi —',
+    'ikki million so’m!',
+    'Musobaqa jarayonlarini ijtimoiy tarmoqlarimizda — Instagram, YouTube va Telegram’da yoritib boramiz!',
+    'Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz! «Mirzo Ulug’bek» xususiy maktabi!'
   ];
-  const EST = TXT.map(x => x.replace(/1-oktabr/g, 'birinchi oktabr').replace(/[«»—:,.!’]/g, '').length / 14.5);
-  const VD = Array.isArray(window.VO_DUR) && window.VO_DUR.length === 8 ? window.VO_DUR : EST;
+  const EST = TXT.map(x => x.replace(/1-oktabr/g, 'birinchi oktabr').replace(/[«»—:,.!’]/g, '').length / 15 + .2);
+  const VD = Array.isArray(window.VO_DUR) && window.VO_DUR.length === TXT.length ? window.VO_DUR : EST;
   const V = [], S = { turn: CLIP };
   let x = 30.3;
-  V[0] = x; x += VD[0] + 0.25; V[1] = x; x += VD[1];
-  S.event = x + 0.35; V[2] = S.event + 0.35; x = V[2] + VD[2] + 0.3; V[3] = x; x += VD[3];
-  S.format = x + 0.35; V[4] = S.format + 0.35; x = V[4] + VD[4];
-  S.prize = x + 0.35; V[5] = S.prize + 0.6; x = V[5] + VD[5];
-  S.total = x + 0.35; V[6] = S.total + 0.35; x = V[6] + VD[6];
-  S.outro = x + 0.35; V[7] = S.outro + 0.35; x = V[7] + VD[7];
-  const D = Math.ceil((x + 1.4) * 10) / 10;
-  window.TIMING = { V, VD, S, D, estimated: VD === EST };
+  V[0] = x; x += VD[0] + .3; V[1] = x; x += VD[1];
+  S.event = x + .4; V[2] = S.event + .4; x = V[2] + VD[2] + .3; V[3] = x; x += VD[3];
+  S.format = x + .4; V[4] = S.format + .4; x = V[4] + VD[4];
+  S.prize = x + .4; V[5] = S.prize + .5; x = V[5] + VD[5] + .3;
+  V[6] = x; x += VD[6] + .25; V[7] = x; x += VD[7] + .25; V[8] = x; x += VD[8];
+  S.total = x + .45; V[9] = S.total + .35; x = V[9] + VD[9] + .25;
+  V[10] = x; x += VD[10] + .35; V[11] = x; x += VD[11] + .3; V[12] = x; x += VD[12];
+  S.social = x + .9; V[13] = S.social + .4; x = V[13] + VD[13];
+  S.outro = x + .4; V[14] = S.outro + .4; x = V[14] + VD[14];
+  const D = Math.ceil((x + 1.8) * 10) / 10;
+  const SFX = [];   /* [vaqt, fayl, balandlik] — yig.py shu ro’yxat bo’yicha effektlarni joylaydi */
+  const sfx = (at, name, vol = 1) => SFX.push([+at.toFixed(3), name, vol]);
   const SCENES = [
-    { t: 0, n: 'Asl video + hook' }, { t: S.turn, n: 'Navbat o’quvchilarimizda' }, { t: S.event, n: 'Tadbir' },
-    { t: S.format, n: 'Qizlar / o’g’il bolalar' }, { t: S.prize, n: 'Sovrinlar' }, { t: S.total, n: 'Jami' }, { t: S.outro, n: 'Yakun' }
+    { t: 0, n: 'Asl video + hook' }, { t: S.turn, n: 'Navbat o’quvchilarimizda' }, { t: S.event, n: 'Tadbir · 1-oktabr' },
+    { t: S.format, n: 'Qizlar / o’g’il bolalar' }, { t: S.prize, n: 'Pul mukofotlari' }, { t: S.total, n: 'Jami' },
+    { t: S.social, n: 'Ijtimoiy tarmoqlar' }, { t: S.outro, n: 'Yakun' }
   ];
   const SCR = [
-    ['«Endi navbat — o’quvchilarimizda!»', 'Shaxmat taxtasi bilan o’tish → yangi bino atrofida aylanib uchgan dron (sekinlashtirilgan)'],
-    ['«Olimpiada darajasida bo’lmasa ham — o’quvchilarimiz ham mukofot yutib olish imkoniyatiga ega» + logotip', ''],
-    ['«Hurmatli ota-onalar!» · kalendar «1 OKTABR» · «SHAXMAT MUSOBAQASI»', 'Fon: maktab hududi — dron panoramasi'],
-    ['«O’qituvchi va murabbiylar kuni tadbirimizning bir qismi · o’quvchilarimiz uchun aql mashqi»', ''],
-    ['«QIZLAR» · «alohida» · «O’G’IL BOLALAR» · «Shaxmatga qiziqadigan o’quvchilarimiz ishtirokida»', ''],
-    ['Podium: 500 000 · 300 000 · 200 000 so’m', '1-, 2-, 3-o’rin diktor aytgan lahzada ko’tariladi'],
-    ['«Qizlarga jami 1 000 000 so’m» + «O’g’il bolalarga jami 1 000 000 so’m» → «2 000 000 so’m»', 'Har guruhda 500 000 + 300 000 + 200 000 = 1 000 000'],
-    ['Logotip · «Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz!» · @ulugbek_rm · mirzoulugbek.app', 'Fon: yangi bino fasadi']
+    ['«Endi navbat — o’quvchilarimizda!» (so’zma-so’z)', 'Fon: o’quvchilarimiz safi (maktab videosi) · zarba'],
+    ['Matn + «Mirzo Ulug’bek» belgisi', 'Fon: yangi bino atrofida dron · oq chaqnash bilan kesish · pop'],
+    ['«Hurmatli ota-onalar!» · «SHAXMAT MUSOBAQASI» · kalendar', 'Fon: hudud panoramasi · brend polosa · muhr zarbasi'],
+    ['Kalendar «1 OKTABR» yonadi · «aql mashqi»', 'Fon: yangi bino tepadan · ding'],
+    ['«Shaxmatga qiziqadigan o’quvchilarimiz ishtirokida» · QIZLAR / alohida / O’G’IL BOLALAR', 'Fon: sinfxonada dars · pop, pop, ding'],
+    ['«PUL MUKOFOTLARI» (oltin yaltirash) + nurlar', 'Kassa «ka-ching»'],
+    ['1-o’rin: 500 000 so’m', 'ting-ting-ting-ting — DING + hisoblagich + tangalar'],
+    ['2-o’rin: 300 000 so’m', 'ting-ting-ting-ting — DING + tangalar'],
+    ['3-o’rin: 200 000 so’m', 'ting-ting-ting-ting — DING + tangalar'],
+    ['«Qizlarga jami 1 000 000 so’m»', 'ding + tangalar'],
+    ['«O’g’il bolalarga jami 1 000 000 so’m»', 'ding + tangalar'],
+    ['«Umumiy mukofot jamg’armasi»', 'ko’tariluvchi effekt'],
+    ['2 000 000 so’m', 'zarba + «ka-ching» + yaltirash + pul yomg’iri'],
+    ['Instagram · YouTube · Telegram kartochkalari', 'Fon: o’quvchilarimiz yurishi · pop ×3'],
+    ['Logotip · «…qo’llab-quvvatlaymiz!» · manzillar', 'Fon: yangi bino va o’quvchilar safi · yaltirash']
   ];
-  /* [boshlanish, tugash, diktor matni | null (asl ovoz), ekranda, izoh] */
-  const VO = [[0, CLIP, null, 'Asl video 0:00–0:30 (tiniqlashtirilgan). 0:00: «46-Shaxmat olimpiadasi · Samarqand 2026» · 0:10–0:15 (O’zbekiston jamoasi kadrda): «O’ZBEKISTON — OLIMPIADA CHEMPIONI!» + oltin medal · 0:17–0:23: pastki yozuv', 'ASL OVOZ: marosim boshlovchisi («O’zbekiston Respublikasi…») va zal. Hook yozuvlari asl kadr ustida, ovoz o’chirilmaydi']]
+  const VO = [[0, CLIP, null, 'Asl video 0:00–0:30 (tiniqlashtirilgan) · 0:10: «O’ZBEKISTON — OLIMPIADA CHEMPIONI!» + medal · 0:17: pastki yozuv', 'ASL OVOZ: marosim boshlovchisi va zal · hook zarbasi, yaltirash']]
     .concat(TXT.map((txt, i) => [V[i], V[i] + VD[i], txt, SCR[i][0], SCR[i][1]]));
   const $ = s => document.querySelector(s);
-  const R = window.RENDER || null; /* {fps, clip, orbit, pano} — kadrlar papkalari (make.mjs --render) */
+  const R = window.RENDER || null; /* {fps, dfps, clip, clipN, cheer, cheerN, …} — kadrlar papkalari (make.mjs --render) */
+  const VIDS = ['vclip', 'vcheer', 'vorbit', 'vpano', 'vtepa', 'vsocial'];
   if (R) {
     document.body.classList.add('render');
-    ['vclip', 'vorbit', 'vpano'].forEach(id => { const v = document.getElementById(id), im = document.createElement('img'); im.id = id; im.className = 'vframe'; im.alt = ''; v.replaceWith(im); });
+    VIDS.forEach(id => { const v = document.getElementById(id), im = document.createElement('img'); im.id = id; im.className = 'vframe'; im.alt = ''; v.replaceWith(im); });
   }
-  const vclip = $('#vclip'), vorbit = $('#vorbit'), vpano = $('#vpano');
+  const vclip = $('#vclip');
   const cap = $('#cap'), tc = $('#tc'), seek = $('#seek'), tt = $('#tt'), playB = $('#play'), muteB = $('#mute'), bigplay = $('#bigplay');
   let t = 0, playing = false, last = 0, userMute = false;
 
@@ -374,17 +518,40 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
   for (let i = 0; i < 16 * 9; i++) { const c = document.createElement('i'); c.style.background = (Math.floor(i / 16) + i) % 2 ? '#f3ead2' : '#0e1f4f'; board.appendChild(c); }
   const cells = board.children;
   const money = v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  /* so’zma-so’z animatsiya uchun matnni <span class="w"> larga bo’lish */
+  const words = el => {
+    const walk = n => [...n.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const f = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(p => { if (!p) return; if (/^\s+$/.test(p)) f.appendChild(document.createTextNode(p)); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = p; f.appendChild(s); } });
+        c.replaceWith(f);
+      } else if (c.nodeType === 1) walk(c);
+    });
+    walk(el); return el.querySelectorAll('.w');
+  };
 
   /* ---------- master timeline ---------- */
   gsap.defaults({ ease: 'power3.out' });
   const tl = gsap.timeline({ paused: true });
   const show = (sel, at) => tl.set(sel, { autoAlpha: 1 }, at);
   const hide = (sel, at) => tl.set(sel, { autoAlpha: 0 }, at);
-  const count = (el, to, at, dur = 1.1) => { const o = { v: 0 }; tl.fromTo(o, { v: 0 }, { v: to, duration: dur, ease: 'power2.out', onUpdate: () => { el.textContent = money(Math.round(o.v / 1000) * 1000); } }, at); };
+  const count = (el, to, at, dur = 1.1) => { const o = { v: 0 }; tl.fromTo(o, { v: 0 }, { v: to, duration: dur, ease: 'power2.out', immediateRender: false, onUpdate: () => { el.textContent = money(Math.round(o.v / 1000) * 1000); } }, at); };
+  const wipe = at => {   /* brend polosasi: at vaqtida ekranni to’liq yopadi — sahna shu lahzada almashadi */
+    tl.fromTo('#wipe', { xPercent: -118, skewX: -16 }, { xPercent: -22, duration: .42, ease: 'power3.in', immediateRender: false }, at - .44)
+      .to('#wipe', { xPercent: 72, duration: .5, ease: 'power3.out' }, at + .06);
+    sfx(at - .38, 'swoosh', .75);
+  };
+  const cut = (at, bgIn) => {   /* sahna ichida fon almashishi: oq chaqnash + zarb */
+    tl.fromTo('#cutflash', { opacity: .75 }, { opacity: 0, duration: .3, ease: 'power2.out', immediateRender: false }, at)
+      .fromTo(bgIn, { scale: 1.12 }, { scale: 1, duration: .6, ease: 'power3.out', immediateRender: false }, at);
+    sfx(at - .12, 'swoosh', .5);
+  };
+  const kb = (sel, a, b, from, to) => tl.fromTo(sel, from, { ...to, duration: b - a + .6, ease: 'none', immediateRender: false }, a - .1);  /* Ken Burns */
+  gsap.set('#wipe', { xPercent: -118, skewX: -16 });
   tl.set({}, {}, D);
+
   /* asl video 0–30 + hook yozuvlari (ovoz o’chmaydi) */
   show('#s-hook', 0); show('#s-clip', 0);
-  /* 0:00 — faqat neytral yozuv (kadrda hali Hindiston jamoasi); 0:10 — O’zbekiston jamoasi kadrga kirganda katta sarlavha */
   tl.from('#s-hook .kick', { y: 30, autoAlpha: 0, duration: .45 }, .4)
     .from('#s-hook .shade', { autoAlpha: 0, duration: .6 }, 9.6)
     .from('#s-hook .t1', { xPercent: -30, autoAlpha: 0, duration: .5 }, 10.0)
@@ -396,71 +563,188 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     .from('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .7 }, 17)
     .to('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .5, ease: 'power2.in' }, 23.5)
     .from('#s-clip .src', { autoAlpha: 0, duration: .5 }, 0.5);
+  sfx(.35, 'swoosh', .3); sfx(9.95, 'swoosh', .45); sfx(10.45, 'hit', .5); sfx(10.8, 'sparkle', .45); sfx(16.95, 'swoosh', .3);
   hide('#s-clip', CLIP);
   /* shaxmat taxtasi o’tishi 29.4–31 */
   tl.fromTo(cells, { scale: 0 }, { scale: 1.02, duration: .35, ease: 'power2.out', stagger: { grid: [9, 16], from: 'center', amount: .5 } }, 29.4)
     .set('#vclip', { autoAlpha: 0 }, CLIP)
     .to(cells, { scale: 0, duration: .35, ease: 'power2.in', stagger: { grid: [9, 16], from: 'edges', amount: .5 } }, 30.1);
-  /* navbat (fon: yangi bino atrofida dron) */
-  show('#L-orbit', S.turn); show('#s-turn', S.turn);
-  tl.fromTo('#vorbit', { scale: 1.15 }, { scale: 1, duration: S.event - S.turn + .5, ease: 'none' }, S.turn)
-    .from('#s-turn .t1', { y: 60, autoAlpha: 0, duration: .6 }, V[0])
-    .from('#s-turn .t2', { y: 30, autoAlpha: 0, duration: .6 }, V[1])
-    .from('#s-turn .brand', { scale: .6, autoAlpha: 0, duration: .6, ease: 'back.out(2)' }, V[1] + VD[1] * .45)
-    .to('#s-turn', { autoAlpha: 0, duration: .35 }, S.event - .3);
-  /* tadbir (fon: hudud panoramasi) */
-  tl.fromTo('#L-pano', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4 }, S.event - .3)
-    .fromTo('#vpano', { scale: 1.12 }, { scale: 1, duration: S.format - S.event + .6, ease: 'none' }, S.event - .3);
-  hide('#L-orbit', S.event + .15); show('#s-event', S.event);
-  tl.from('#s-event .kick', { y: -30, autoAlpha: 0, duration: .5 }, S.event + .1)
-    .from('#s-event .cal', { rotationX: -95, autoAlpha: 0, duration: .8, ease: 'back.out(1.6)' }, S.event + .7)
-    .from('#s-event h2', { x: 80, autoAlpha: 0, duration: .6 }, V[2] + VD[2] * .55)
-    .from('#s-event .pieces', { y: 40, autoAlpha: 0, duration: .8 }, S.event + 2.2)
-    .from('#s-event p', { y: 20, autoAlpha: 0, duration: .5 }, V[3])
-    .to(['#s-event', '#L-pano'], { autoAlpha: 0, duration: .35 }, S.format - .3);
-  /* format */
-  show('#s-format', S.format);
-  tl.from('#s-format .g', { xPercent: -60, autoAlpha: 0, duration: .6 }, S.format + .1)
-    .from('#s-format .b', { xPercent: 60, autoAlpha: 0, duration: .6 }, S.format + .1)
-    .from('#s-format .vs', { scale: 0, autoAlpha: 0, duration: .5, ease: 'back.out(2.5)' }, V[4] + VD[4] * .6)
-    .from('#s-format .fnote', { y: 30, autoAlpha: 0, duration: .5 }, V[4] + .2)
-    .to('#s-format', { autoAlpha: 0, duration: .3 }, S.prize - .3);
-  /* sovrinlar — diktor «birinchi / ikkinchi / uchinchi» deganda */
-  show('#s-prize', S.prize);
-  tl.from('#s-prize h3', { y: -40, autoAlpha: 0, duration: .5 }, S.prize + .1)
-    .from('#s-prize .sub', { autoAlpha: 0, duration: .5 }, S.prize + .5);
-  [['.p1', .12], ['.p2', .42], ['.p3', .68]].forEach(([p, f]) => {
-    const at = V[5] + VD[5] * f, el = document.querySelector('#s-prize ' + p + ' [data-sum]');
-    tl.from('#s-prize ' + p + ' .blk', { scaleY: 0, duration: .7 }, at - .1);
-    count(el, +el.dataset.sum, at);
-    tl.from('#s-prize ' + p + ' .amt', { y: 20, autoAlpha: 0, duration: .4 }, at);
+  sfx(28.95, 'whoosh', .7);
+
+  /* doimiy belgilar */
+  tl.fromTo('#bug', { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: .5, immediateRender: false }, S.turn + 1.2)
+    .to('#bug', { autoAlpha: 0, duration: .3 }, S.outro - .1)
+    .fromTo('#datebug', { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: .5, immediateRender: false }, S.format + .2)
+    .to('#datebug', { autoAlpha: 0, duration: .3 }, S.outro - .1);
+
+  /* 3) navbat: o’quvchilarimiz → (kesish) → yangi bino atrofida dron */
+  const BG = {
+    cheer: ['#L-cheer', S.turn - .2, V[1] - .25], orbit: ['#L-orbit', V[1] - .25, S.event], pano: ['#L-pano', S.event, V[3] - .25],
+    tepa: ['#L-tepa', V[3] - .25, S.format], sinf2: ['#L-sinf2', S.format, S.prize], sinf1: ['#L-sinf1', S.prize, S.total],
+    sinf3: ['#L-sinf3', S.total, S.social], social: ['#L-social', S.social, S.outro], fasad: ['#L-fasad', S.outro, D + 1]
+  };
+  Object.values(BG).forEach(([sel, a, b]) => { show(sel, a); hide(sel, b); });
+  show('#s-turn', S.turn);
+  const w1 = words($('#s-turn .t1')), w2 = words($('#s-turn .t2'));
+  tl.fromTo(w1, { y: 90, scale: 1.6, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: .45, ease: 'back.out(2)', stagger: VD[0] * .7 / w1.length }, V[0] - .05)
+    .to('#s-turn .t1', { scale: .8, y: -10, duration: .5, ease: 'power2.inOut' }, V[1] - .2)
+    .fromTo(w2, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .4, stagger: VD[1] * .75 / w2.length }, V[1])
+    .from('#s-turn .brand', { scale: .6, autoAlpha: 0, duration: .6, ease: 'back.out(2)' }, V[1] + VD[1] * .3)
+    .to('#s-turn', { autoAlpha: 0, duration: .01 }, S.event);
+  sfx(V[0] - .08, 'hit', .55); cut(V[1] - .25, '#vorbit'); sfx(V[1] + VD[1] * .3, 'pop2', .6);
+  kb('#vcheer', BG.cheer[1], BG.cheer[2], { scale: 1.02 }, { scale: 1.1 });
+
+  /* 4) tadbir: hudud panoramasi → (kesish) → yangi bino tepadan */
+  wipe(S.event); show('#s-event', S.event);
+  tl.fromTo('#vpano', { scale: 1.12 }, { scale: 1, duration: V[3] - S.event, ease: 'none', immediateRender: false }, S.event)
+    .from('#s-event .cal', { rotationX: -95, autoAlpha: 0, duration: .8, ease: 'back.out(1.6)' }, S.event + .25)
+    .from('#s-event .kick', { y: -30, autoAlpha: 0, duration: .5 }, V[2] - .05)
+    .from('#s-event h2', { x: 80, autoAlpha: 0, duration: .6 }, V[2] + VD[2] * .5)
+    .fromTo('#s-event .cal', { scale: 1 }, { scale: 1.12, duration: .25, ease: 'power2.out', yoyo: true, repeat: 1, immediateRender: false }, V[3] + VD[3] * .08)
+    .fromTo('#s-event .cal .d', { color: '#1e3a8a' }, { color: '#dc2626', duration: .3, immediateRender: false }, V[3] + VD[3] * .08)
+    .from('#s-event p', { y: 20, autoAlpha: 0, duration: .5 }, V[3] + VD[3] * .3)
+    .from('#s-event .tags span', { y: 20, autoAlpha: 0, duration: .4, stagger: .2 }, V[3] + VD[3] * .62)
+    .to('#s-event', { autoAlpha: 0, duration: .01 }, S.format);
+  sfx(S.event + .6, 'stamp', .7); sfx(V[2] + VD[2] * .5 - .1, 'swoosh', .4); cut(V[3] - .25, '#vtepa');
+  sfx(V[3] + VD[3] * .08, 'ding', .55); sfx(V[3] + VD[3] * .62, 'pop1', .45); sfx(V[3] + VD[3] * .62 + .2, 'pop2', .45);
+
+  /* 5) format — sinfxonada dars fonida */
+  wipe(S.format); show('#s-format', S.format);
+  kb('#L-sinf2 img', S.format, S.prize, { scale: 1.08, xPercent: -2 }, { scale: 1.2, xPercent: 2 });
+  const fg = V[4] + VD[4] * .48, fb = V[4] + VD[4] * .62, fv = V[4] + VD[4] * .8;
+  tl.from('#s-format .head', { y: -30, autoAlpha: 0, duration: .5 }, V[4])
+    .from('#s-format .g', { xPercent: -60, autoAlpha: 0, duration: .55, ease: 'back.out(1.6)' }, fg)
+    .from('#s-format .g .av', { scale: 0, rotation: -25, duration: .6, ease: 'back.out(2.2)' }, fg + .1)
+    .from('#s-format .b', { xPercent: 60, autoAlpha: 0, duration: .55, ease: 'back.out(1.6)' }, fb)
+    .from('#s-format .b .av', { scale: 0, rotation: 25, duration: .6, ease: 'back.out(2.2)' }, fb + .1)
+    .from('#s-format .vs', { scale: 0, rotation: -180, autoAlpha: 0, duration: .55, ease: 'back.out(2.2)' }, fv)
+    .to('#s-format', { autoAlpha: 0, duration: .01 }, S.prize);
+  sfx(V[4], 'swoosh', .35); sfx(fg, 'pop1', .7); sfx(fb, 'pop3', .7); sfx(fv, 'ding', .5);
+
+  /* 6) pul mukofotlari — har o’rin diktor aytgan lahzada */
+  wipe(S.prize); show('#s-prize', S.prize);
+  kb('#L-sinf1 img', S.prize, S.total, { scale: 1.15 }, { scale: 1.05 });
+  tl.fromTo('#s-prize .rays', { rotation: 0 }, { rotation: 40, duration: S.total - S.prize, ease: 'none', immediateRender: false }, S.prize)
+    .from('#s-prize .rays', { autoAlpha: 0, duration: .8 }, S.prize)
+    .from('#s-prize h3', { scale: 1.8, autoAlpha: 0, duration: .5, ease: 'back.out(1.8)' }, V[5] - .05)
+    .fromTo('#s-prize h3 span', { backgroundPosition: '120% 0' }, { backgroundPosition: '-30% 0', duration: 1.1, ease: 'power2.inOut', immediateRender: false }, V[5] + .3)
+    .from('#s-prize .sub', { y: 16, autoAlpha: 0, duration: .5 }, V[5] + VD[5] * .6);
+  sfx(V[5] - .05, 'kaching', .75); sfx(V[5] + VD[5] * .6, 'swoosh', .3);
+  const BURST = [];   /* tanga sochilishlari: [vaqt, x, y, soni] — kanvasda */
+  [['.p1', 6, 960, 628], ['.p2', 7, 457, 760], ['.p3', 8, 1463, 856]].forEach(([p, k, bx, by]) => {
+    const at = V[k] + VD[k] * .15, el = document.querySelector('#s-prize ' + p + ' [data-sum]');
+    tl.from('#s-prize ' + p + ' .blk', { scaleY: 0, duration: .6, ease: 'back.out(1.3)' }, at - .15)
+      .from('#s-prize ' + p + ' .amt', { y: 30, scale: .6, autoAlpha: 0, duration: .45, ease: 'back.out(2)' }, at)
+      .fromTo('#s-prize ' + p + ' .blk', { '--sx': '-120%' }, { '--sx': '120%', duration: .8, ease: 'power2.inOut', immediateRender: false }, at + .5);
+    count(el, +el.dataset.sum, at, .9);
+    sfx(at - .15, 'tings', .8); sfx(at, 'ticks', .45); sfx(at + .85, 'coins', .7);
+    BURST.push([at + .85, bx, by, k === 6 ? 34 : 24]);
   });
-  tl.to('#s-prize', { autoAlpha: 0, duration: .3 }, S.total - .3);
-  /* jami — qizlarga / o’g’il bolalarga / umumiy */
-  show('#s-total', S.total);
-  const nAt = V[6] + VD[6] * .64;
-  tl.from('#s-total .k', { y: -20, autoAlpha: 0, duration: .4 }, S.total + .05)
-    .from('#s-total .split .g', { x: -60, autoAlpha: 0, duration: .5 }, V[6])
-    .from('#s-total .split i', { scale: 0, autoAlpha: 0, duration: .4, ease: 'back.out(2.5)' }, V[6] + VD[6] * .34)
-    .from('#s-total .split .bo', { x: 60, autoAlpha: 0, duration: .5 }, V[6] + VD[6] * .36)
-    .from('#s-total .num', { scale: .6, autoAlpha: 0, duration: .5, ease: 'back.out(1.8)' }, nAt)
-    .from('#s-total .cur', { autoAlpha: 0, duration: .4 }, nAt + .4);
-  count($('#s-total .num'), 2000000, nAt, 1.0);
-  tl.to('#s-total', { autoAlpha: 0, duration: .3 }, S.outro - .3);
-  /* yakun */
-  show('#s-outro', S.outro);
-  tl.fromTo('#s-outro .bgimg', { scale: 1.12 }, { scale: 1, duration: D - S.outro, ease: 'none' }, S.outro)
-    .from('#s-outro .logo', { scale: 0, rotation: -90, duration: .7, ease: 'back.out(1.8)' }, S.outro + .1)
-    .from('#s-outro .t1', { y: 40, autoAlpha: 0, duration: .6 }, S.outro + .4)
-    .from('#s-outro .meta', { autoAlpha: 0, duration: .5 }, V[7] + VD[7] * .6);
+  tl.to('#s-prize', { autoAlpha: 0, duration: .01 }, S.total);
 
-  /* dron kliplari: sahna uzunligiga sekinlashtirib moslanadi (takrorlanmaydi) */
-  const CL = 6.9;
-  const orbitPos = tt => Math.max(0, tt - (S.turn - .2)) * Math.min(1, CL / (S.event + .5 - S.turn));
-  const panoPos = tt => Math.max(0, tt - (S.event - .4)) * Math.min(1, CL / (S.format + .4 - S.event));
-  const orbitOn = tt => tt >= S.turn - .2 && tt < S.event + .3, panoOn = tt => tt >= S.event - .4 && tt < S.format + .2;
+  /* 7) jami — qizlarga / o’g’il bolalarga / umumiy */
+  wipe(S.total); show('#s-total', S.total);
+  kb('#L-sinf3 img', S.total, S.social, { scale: 1.06, xPercent: 2 }, { scale: 1.18, xPercent: -2 });
+  const nAt = V[12];
+  tl.fromTo('#s-total .rays', { rotation: 0 }, { rotation: -45, duration: S.social - S.total, ease: 'none', immediateRender: false }, S.total)
+    .from('#s-total .rays', { autoAlpha: 0, duration: .6 }, nAt - .2)
+    .from('#s-total .k', { y: -20, autoAlpha: 0, duration: .4 }, S.total + .05)
+    .from('#s-total .split .g', { x: -80, autoAlpha: 0, duration: .5, ease: 'back.out(1.6)' }, V[9])
+    .from('#s-total .split i', { scale: 0, autoAlpha: 0, duration: .4, ease: 'back.out(2.5)' }, V[10] - .2)
+    .from('#s-total .split .bo', { x: 80, autoAlpha: 0, duration: .5, ease: 'back.out(1.6)' }, V[10])
+    .fromTo('#s-total .k', { scale: 1 }, { scale: 1.15, duration: .3, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, V[11])
+    .from('#s-total .num', { scale: .4, autoAlpha: 0, duration: .5, ease: 'back.out(2)' }, nAt - .05)
+    .fromTo('#s-total .num', { backgroundPosition: '120% 0' }, { backgroundPosition: '-30% 0', duration: 1.2, ease: 'power2.inOut', immediateRender: false }, nAt + .8)
+    .from('#s-total .cur', { autoAlpha: 0, y: 20, duration: .4 }, nAt + .5)
+    .to('#s-total', { autoAlpha: 0, duration: .01 }, S.social);
+  count($('#s-total .num'), 2000000, nAt, .8);
+  sfx(V[9], 'ding', .55); sfx(V[9] + .3, 'coins', .45); sfx(V[10] - .2, 'pop2', .5); sfx(V[10], 'ding', .55); sfx(V[10] + .3, 'coins', .45);
+  sfx(nAt - 2.2, 'riser', .7); sfx(nAt - .05, 'hit', .75); sfx(nAt, 'kaching', .8); sfx(nAt + .05, 'ticks', .4); sfx(nAt + .8, 'coins', .8); sfx(nAt + .8, 'sparkle', .55);
+  BURST.push([V[9] + .3, 520, 560, 12, .45], [V[10] + .3, 1400, 560, 12, .45], [nAt + .1, 960, 620, 46]);
+  const RAIN = [nAt + .2, nAt + 3.2];   /* pul yomg’iri */
 
-  /* ---------- video sinxronlash ---------- */
+  /* 8) ijtimoiy tarmoqlar — o’quvchilarimiz yurishi fonida */
+  wipe(S.social); show('#s-social', S.social);
+  const ww = words($('#s-social h2'));
+  tl.from('#s-social .kick', { y: -20, autoAlpha: 0, duration: .4 }, S.social + .1)
+    .fromTo(ww, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .4, stagger: .07 }, V[13])
+    .to('#s-social', { autoAlpha: 0, duration: .01 }, S.outro);
+  [['.ig', .5, 'pop1'], ['.yt', .64, 'pop2'], ['.tg', .76, 'pop3']].forEach(([c, f, s]) => {
+    const at = V[13] + VD[13] * f;
+    tl.from('#s-social ' + c, { y: 60, scale: .5, autoAlpha: 0, duration: .5, ease: 'back.out(2)' }, at)
+      .from('#s-social ' + c + ' svg', { rotation: -20, scale: .3, duration: .6, ease: 'back.out(2.5)' }, at + .05);
+    sfx(at, s, .7);
+  });
+
+  /* 9) yakun — yangi bino va o’quvchilar safi */
+  wipe(S.outro); show('#s-outro', S.outro);
+  kb('#L-fasad img', S.outro, D, { scale: 1.14 }, { scale: 1.02 });
+  tl.from('#s-outro .logo', { scale: 0, rotation: -90, duration: .7, ease: 'back.out(1.8)' }, S.outro + .1)
+    .from('#s-outro .t1', { y: 40, autoAlpha: 0, duration: .6 }, V[14])
+    .from('#s-outro .meta span', { y: 20, autoAlpha: 0, duration: .4, stagger: .12 }, V[14] + VD[14] * .55)
+    .to('#s-outro .fade', { opacity: 1, duration: .5, ease: 'none' }, D - .5);
+  sfx(S.outro + .1, 'hit', .45); sfx(S.outro + .3, 'sparkle', .6); sfx(V[14] + VD[14] * .55, 'ding', .5);
+
+  window.TIMING = { V, VD, S, D, estimated: VD === EST, sfx: SFX.sort((a, b) => a[0] - b[0]) };
+
+  /* ---------- kanvas: oltin zarralar, tangalar, pul yomg’iri (vaqtdan aniq funksiya — render bilan mos) ---------- */
+  const cv = $('#fx'), g = cv.getContext('2d');
+  let seed = 20261001; const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let q = Math.imul(seed ^ seed >>> 15, 1 | seed); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+  const DUST = Array.from({ length: 70 }, () => ({ x: rnd(), y: rnd(), v: .02 + rnd() * .05, r: 1 + rnd() * 2.6, ph: rnd() * 6.28, dx: (rnd() - .5) * .02 }));
+  const COINS = BURST.map(([t0, bx, by, n, k = 1]) => ({ t0, bx, by, c: Array.from({ length: n }, () => ({ vx: (rnd() - .5) * 900, vy: (-700 - rnd() * 700) * k, r: 14 + rnd() * 12, sp: 6 + rnd() * 14, ph: rnd() * 6.28 })) }));
+  const BILLS = Array.from({ length: 34 }, () => ({ x: rnd() * 1920, d: rnd() * 1.6, v: 260 + rnd() * 220, sw: 30 + rnd() * 50, sp: 1 + rnd() * 2, rot: (rnd() - .5) * 1.2, fl: 2 + rnd() * 4, s: .8 + rnd() * .5 }));
+  const coin = (x, y, r, ph) => {
+    const k = Math.abs(Math.cos(ph)) * .9 + .1;
+    g.save(); g.translate(x, y); g.scale(k, 1);
+    const gr = g.createRadialGradient(-r * .3, -r * .3, r * .1, 0, 0, r);
+    gr.addColorStop(0, '#fff6cf'); gr.addColorStop(.5, '#f4c871'); gr.addColorStop(1, '#b07c1f');
+    g.fillStyle = gr; g.beginPath(); g.arc(0, 0, r, 0, 6.2832); g.fill();
+    g.strokeStyle = '#8a5d10'; g.lineWidth = 2; g.stroke();
+    g.strokeStyle = '#fff3c480'; g.lineWidth = 1.5; g.beginPath(); g.arc(0, 0, r * .68, 0, 6.2832); g.stroke();
+    g.restore();
+  };
+  const bill = (x, y, s, rot, fl) => {
+    g.save(); g.translate(x, y); g.rotate(rot); g.scale(s, s * (Math.abs(Math.cos(fl)) * .85 + .15));
+    const gr = g.createLinearGradient(-60, 0, 60, 0); gr.addColorStop(0, '#2f7d57'); gr.addColorStop(.5, '#58b384'); gr.addColorStop(1, '#2f7d57');
+    g.fillStyle = gr; g.beginPath(); g.roundRect(-60, -28, 120, 56, 6); g.fill();
+    g.strokeStyle = '#c9f0da'; g.lineWidth = 2; g.beginPath(); g.roundRect(-53, -21, 106, 42, 4); g.stroke();
+    g.fillStyle = '#c9f0da'; g.beginPath(); g.arc(0, 0, 11, 0, 6.2832); g.fill();
+    g.fillStyle = '#1f5a3d'; g.font = '800 11px Unbounded, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('so’m', 0, 1);
+    g.restore();
+  };
+  const fx = tt => {
+    g.clearRect(0, 0, 1920, 1080);
+    if (tt >= S.turn + .8) {                      /* oltin chang */
+      const a = Math.min(1, (tt - S.turn - .8) / 1.2) * (tt > D - .5 ? Math.max(0, (D - tt) / .5) : 1);
+      DUST.forEach(p => {
+        const y = ((p.y - tt * p.v) % 1 + 1) % 1, x = ((p.x + Math.sin(tt * .6 + p.ph) * .01 + tt * p.dx) % 1 + 1) % 1;
+        const tw = .45 + .55 * Math.sin(tt * 2.2 + p.ph * 3) ** 2;
+        g.globalAlpha = a * tw * .75; g.fillStyle = '#ffe7a8'; g.shadowColor = '#f4c871'; g.shadowBlur = 8;
+        g.beginPath(); g.arc(x * 1920, y * 1080, p.r, 0, 6.2832); g.fill();
+      });
+      g.shadowBlur = 0; g.globalAlpha = 1;
+    }
+    if (tt >= RAIN[0] && tt < S.social + .1) {    /* pul yomg’iri */
+      BILLS.forEach(b => {
+        const u = tt - RAIN[0] - b.d; if (u < 0) return;
+        const y = -80 + u * b.v; if (y > 1160) return;
+        bill(b.x + Math.sin(u * b.sp) * b.sw, y, b.s, b.rot + Math.sin(u * b.sp * .8) * .4, u * b.fl);
+      });
+    }
+    COINS.forEach(B => {                          /* tanga sochilishi */
+      const u = tt - B.t0; if (u < 0 || u > 2.2) return;
+      if (B.t0 < S.total ? tt >= S.total : tt >= S.social) return;
+      B.c.forEach(c => { const x = B.bx + c.vx * u, y = B.by + c.vy * u + 1100 * u * u; if (y < 1140) coin(x, y, c.r, c.ph + u * c.sp); });
+    });
+  };
+
+  /* dron/maktab kliplari: sahna uzunligiga sekinlashtirib moslanadi (takrorlanmaydi) */
+  const CLD = { cheer: 2.8, orbit: 6.9, pano: 6.9, tepa: 6.9, social: 6.3 };
+  if (R) Object.keys(CLD).forEach(k => { if (R[k + 'N']) CLD[k] = R[k + 'N'] / R.dfps; });
+  const vpos = (k, tt) => { const [, a, b] = BG[k]; return Math.min(CLD[k] - .02, Math.max(0, tt - a) * Math.min(1, CLD[k] / (b - a + .2))); };
+  const von = (k, tt) => tt >= BG[k][1] - .05 && tt < BG[k][2] + .05;
+
+  /* ---------- video sinxronlash (ko’rib chiqish rejimi) ---------- */
   const want = (v, pos, on) => {
     if (!on) { if (!v.paused) v.pause(); return; }
     if (Math.abs(v.currentTime - pos) > 0.35) { try { v.currentTime = pos; } catch (e) {} }
@@ -471,12 +755,11 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     if (R) return;
     if (t < CLIP) { vclip.muted = userMute; vclip.style.visibility = 'visible'; want(vclip, t, true); }
     else { want(vclip, 0, false); vclip.style.visibility = 'hidden'; }
-    want(vorbit, orbitPos(t), orbitOn(t));
-    want(vpano, panoPos(t), panoOn(t));
+    Object.keys(CLD).forEach(k => { const v = document.getElementById('v' + k); if (v) { if (von(k, t)) v.playbackRate = Math.min(1, CLD[k] / (BG[k][2] - BG[k][1] + .2)); want(v, vpos(k, t), von(k, t)); } });
   };
   const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + String(Math.floor(r)).padStart(2, '0'); };
   const draw = () => {
-    tl.seek(Math.min(t, D - 0.001), false);
+    tl.seek(Math.min(t, D - 0.001), false); fx(t);
     const line = VO.find(v => t >= v[0] && t < v[1]);
     const key = line && line[2] ? 'vo' + line[0] : (t < CLIP ? 'orig' : 'idle');
     if (cap.dataset.k !== key) {
@@ -489,6 +772,22 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     seek.value = t; tt.textContent = fmt(t) + ' / ' + fmt(D);
     document.querySelectorAll('#chips button').forEach((b, i) => b.classList.toggle('on', t >= SCENES[i].t && t < (SCENES[i + 1] ? SCENES[i + 1].t : D)));
   };
+  if (R) {
+    /* render: t vaqtdagi kadr — timeline + kanvas + mos video kadri rasmi (hammasi yuklangach qaytadi) */
+    const pad = n => String(n).padStart(5, '0');
+    const frame = (el, dir, sec, n, fps) => { const i = Math.max(0, Math.min(n - 1, Math.floor(sec * fps + 1e-6))); const src = dir + '/' + pad(i + 1) + '.jpg'; if (el.getAttribute('src') !== src) el.src = src; return el.decode ? el.decode().catch(() => {}) : null; };
+    window.renderAt = async tt => {
+      t = tt; tl.seek(Math.min(t, D - 0.001), false); fx(t);
+      const w = [];
+      if (t < CLIP + 0.001) w.push(frame(vclip, R.clip, t, R.clipN, R.fps));
+      Object.keys(CLD).forEach(k => { if (von(k, t)) w.push(frame(document.getElementById('v' + k), R[k], vpos(k, t), R[k + 'N'], R.dfps)); });
+      await Promise.all(w);
+      await Promise.all(Array.from(document.images).filter(i => !i.complete).map(i => i.decode().catch(() => {})));
+      return true;
+    };
+    window.RENDER_D = D;
+    return;
+  }
   const loop = now => {
     if (playing) { t += (now - last) / 1000; if (t >= D) { t = D; playing = false; playB.textContent = '▶ Ko’rish'; } }
     last = now; draw(); sync(); requestAnimationFrame(loop);
@@ -512,23 +811,6 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     tr.children[3].textContent = v[4];
     tb.appendChild(tr);
   });
-  if (R) {
-    /* render: t vaqtdagi kadr — timeline + mos video kadri rasmi (hammasi yuklangach qaytadi) */
-    const pad = n => String(n).padStart(5, '0');
-    const frame = (el, dir, sec, count, fps = R.fps) => { const i = Math.max(0, Math.min(count - 1, Math.floor(sec * fps + 1e-6))); const src = dir + '/' + pad(i + 1) + '.jpg'; if (el.getAttribute('src') !== src) el.src = src; return el.decode ? el.decode().catch(() => {}) : null; };
-    window.renderAt = async tt => {
-      t = tt; tl.seek(Math.min(t, D - 0.001), false);
-      const w = [];
-      if (t < CLIP + 0.001) w.push(frame(vclip, R.clip, t, R.clipN));
-      if (orbitOn(t)) w.push(frame(vorbit, R.orbit, orbitPos(t), R.orbitN, R.dfps));
-      if (panoOn(t)) w.push(frame(vpano, R.pano, panoPos(t), R.panoN, R.dfps));
-      await Promise.all(w);
-      await Promise.all(Array.from(document.images).filter(i => !i.complete).map(i => i.decode().catch(() => {})));
-      return true;
-    };
-    window.RENDER_D = D;
-    return;
-  }
   draw(); requestAnimationFrame(n => { last = n; loop(n); });
 })();
 </script>
