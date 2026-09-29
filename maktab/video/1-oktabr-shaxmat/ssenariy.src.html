@@ -29,7 +29,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--body); font-
 /* hook — asl videoning ustida (ovoz o’chirilmaydi) */
 #s-hook .shade { background: radial-gradient(85% 95% at 50% 40%, #0000 35%, #0009 100%), linear-gradient(180deg, #0000 45%, #000b); }
 #s-hook .txt { position: absolute; left: 5em; right: 5em; bottom: 7em; }
-#s-hook .kick { font: 600 1.6em var(--mono); letter-spacing: .14em; color: var(--sky); text-transform: uppercase; }
+#s-hook .kick { font: 600 1.6em var(--mono); letter-spacing: .14em; color: #fff; text-transform: uppercase; text-shadow: 0 .1em .5em #000, 0 0 .2em #000; }
 #s-hook .t1 { font: 800 5.6em/1 var(--display); letter-spacing: -.02em; color: #fff; text-shadow: 0 .06em .4em #000c; margin-top: .25em; }
 #s-hook .t2 { font: 800 4.2em/1.05 var(--display); letter-spacing: -.02em; background: linear-gradient(92deg, #fff3c4, var(--gold) 40%, var(--gold2)); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 .05em .3em #000a); }
 #s-hook .medal { position: absolute; right: 6em; top: 6em; width: 12em; height: 12em; }
@@ -126,6 +126,13 @@ body { background: var(--bg); color: var(--ink); font-family: var(--body); font-
 .bigplay[hidden] { display: none; }
 .bigplay span { display: grid; place-items: center; width: 8em; height: 8em; border-radius: 50%; background: var(--gold); color: #1a1405; font-size: 1cqw; }
 .bigplay svg { width: 3.4em; height: 3.4em; }
+
+/* render rejimi: faqat 1920×1080 sahna, video o’rnida kadr rasmlari */
+body.render { background: #000; overflow: hidden; }
+body.render .wrap { width: 1920px; padding: 0; margin: 0; }
+body.render .top, body.render .cap, body.render .ctrl, body.render .chips, body.render section.doc, body.render .timecode, body.render .bigplay { display: none !important; }
+body.render .stage { width: 1920px; height: 1080px; border-radius: 0; box-shadow: none; }
+.stage img.vframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* diktor matni — kadr ostida (kadr toza qoladi) */
 .cap { display: grid; gap: 4px; min-height: 92px; margin-top: 12px; padding: 14px 18px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); }
@@ -234,7 +241,7 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
         <div class="vs">alohida</div>
         <div class="col b"><div class="ic">♚</div><b>O’G’IL BOLALAR</b><span>1 · 2 · 3-o’rinlar</span></div>
       </div>
-      <div class="fnote">Shaxmatni biladigan o’quvchilarimiz ishtirokida</div>
+      <div class="fnote">Shaxmatga qiziqadigan o’quvchilarimiz ishtirokida</div>
     </div>
 
     <!-- 6) SOVRINLAR -->
@@ -264,7 +271,7 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
       <div class="shade"></div>
       <div class="center">
         <img class="logo" src="{{logo}}" alt="">
-        <div class="t1">Shaxmatni biladigan barcha o’quvchilarimizni <em>qo’llab-quvvatlaymiz!</em></div>
+        <div class="t1">Shaxmatga qiziqadigan barcha o’quvchilarimizni <em>qo’llab-quvvatlaymiz!</em></div>
         <div class="meta">«Mirzo Ulug’bek» xususiy maktabi · <b>@ulugbek_rm</b> · mirzoulugbek.app</div>
       </div>
     </div>
@@ -293,9 +300,9 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
   <section class="doc">
     <h2>Javoblaringiz bo’yicha</h2>
     <ul class="qs">
-      <li class="ok"><b>Kimga:</b> ota-onalarga xabar. O’quvchilarni taklif qilmaymiz — ular maktabda; «ishtirok eting», «omad» kabi chaqiriqlar olib tashlandi.</li>
+      <li class="ok"><b>Kimga:</b> ota-onalarga xabar. O’quvchilarni taklif qilmaymiz — ular maktabda; «ishtirok eting», «omad» kabi chaqiriqlar olib tashlandi. Yakun: «Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz!»</li>
       <li class="ok"><b>Sana:</b> 1-oktabr kuni. <b>Joy</b> va <b>ro’yxatdan o’tish</b> — aytilmaydi.</li>
-      <li class="ok"><b>Kimlar:</b> shaxmatni biladigan o’quvchilarimiz; qizlar va o’g’il bolalar alohida.</li>
+      <li class="ok"><b>Kimlar:</b> shaxmatga qiziqadigan o’quvchilarimiz; qizlar va o’g’il bolalar alohida.</li>
       <li class="ok"><b>Boshi:</b> asl video 0:00 dan asl ovozi bilan (boshlovchi «O’zbekiston Respublikasi…»), kesilmagan, asl 16:9 formatda, tiniqlashtirilgan (832×472 → 1280×720; yakuniy videoda 1920×1080).</li>
       <li class="ok"><b>Sovrinlar (tasdiqlandi):</b> har guruhda 500 000 · 300 000 · 200 000 so’m. Qizlarga jami 1 000 000, o’g’il bolalarga jami 1 000 000 — umumiy 2 000 000 so’m.</li>
     </ul>
@@ -312,24 +319,53 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
 <script>{{gsap}}</script>
 <script>
 (() => {
-  const D = 68, CLIP = 30;
+  const CLIP = 30;
+  /* diktor gaplari — vaqt shu gaplar uzunligidan hisoblanadi (window.VO_DUR — haqiqiy ovoz fayllari, yo’q bo’lsa taxmin) */
+  const TXT = [
+    'Endi navbat — o’quvchilarimizda!',
+    'Olimpiada darajasida bo’lmasa ham, «Mirzo Ulug’bek» xususiy maktabi o’quvchilari ham mukofot yutib olish imkoniyatiga ega!',
+    'Hurmatli ota-onalar! Maktabimiz 1-oktabr kuni shaxmat musobaqasini tashkil etmoqda.',
+    'Bu — 1-oktabr tadbirimizning bir qismi va o’quvchilarimiz uchun haqiqiy aql mashqi.',
+    'Shaxmatga qiziqadigan o’quvchilarimiz qatnashadi: qizlar va o’g’il bolalar alohida bellashadi.',
+    'Har bir guruhda: birinchi o’ringa — besh yuz ming so’m, ikkinchi o’ringa — uch yuz ming so’m, uchinchi o’ringa — ikki yuz ming so’m pul mukofoti!',
+    'Qizlarga jami — bir million so’m, o’g’il bolalarga jami — bir million so’m. Umumiy mukofot jamg’armasi — ikki million so’m!',
+    'Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz! «Mirzo Ulug’bek» xususiy maktabi.'
+  ];
+  const EST = TXT.map(x => x.replace(/1-oktabr/g, 'birinchi oktabr').replace(/[«»—:,.!’]/g, '').length / 14.5);
+  const VD = Array.isArray(window.VO_DUR) && window.VO_DUR.length === 8 ? window.VO_DUR : EST;
+  const V = [], S = { turn: CLIP };
+  let x = 30.3;
+  V[0] = x; x += VD[0] + 0.25; V[1] = x; x += VD[1];
+  S.event = x + 0.35; V[2] = S.event + 0.35; x = V[2] + VD[2] + 0.3; V[3] = x; x += VD[3];
+  S.format = x + 0.35; V[4] = S.format + 0.35; x = V[4] + VD[4];
+  S.prize = x + 0.35; V[5] = S.prize + 0.6; x = V[5] + VD[5];
+  S.total = x + 0.35; V[6] = S.total + 0.35; x = V[6] + VD[6];
+  S.outro = x + 0.35; V[7] = S.outro + 0.35; x = V[7] + VD[7];
+  const D = Math.ceil((x + 1.4) * 10) / 10;
+  window.TIMING = { V, VD, S, D, estimated: VD === EST };
   const SCENES = [
-    { t: 0, n: 'Asl video + hook' }, { t: 30, n: 'Navbat o’quvchilarimizda' }, { t: 37.6, n: 'Tadbir' },
-    { t: 46.6, n: 'Qizlar / o’g’il bolalar' }, { t: 51.2, n: 'Sovrinlar' }, { t: 59, n: 'Jami' }, { t: 64.4, n: 'Yakun' }
+    { t: 0, n: 'Asl video + hook' }, { t: S.turn, n: 'Navbat o’quvchilarimizda' }, { t: S.event, n: 'Tadbir' },
+    { t: S.format, n: 'Qizlar / o’g’il bolalar' }, { t: S.prize, n: 'Sovrinlar' }, { t: S.total, n: 'Jami' }, { t: S.outro, n: 'Yakun' }
+  ];
+  const SCR = [
+    ['«Endi navbat — o’quvchilarimizda!»', 'Shaxmat taxtasi bilan o’tish → yangi bino atrofida aylanib uchgan dron (sekinlashtirilgan)'],
+    ['«Olimpiada darajasida bo’lmasa ham — o’quvchilarimiz ham mukofot yutib olish imkoniyatiga ega» + logotip', ''],
+    ['«Hurmatli ota-onalar!» · kalendar «1 OKTABR» · «SHAXMAT MUSOBAQASI»', 'Fon: maktab hududi — dron panoramasi'],
+    ['«O’qituvchi va murabbiylar kuni tadbirimizning bir qismi · o’quvchilarimiz uchun aql mashqi»', ''],
+    ['«QIZLAR» · «alohida» · «O’G’IL BOLALAR» · «Shaxmatga qiziqadigan o’quvchilarimiz ishtirokida»', ''],
+    ['Podium: 500 000 · 300 000 · 200 000 so’m', '1-, 2-, 3-o’rin diktor aytgan lahzada ko’tariladi'],
+    ['«Qizlarga jami 1 000 000 so’m» + «O’g’il bolalarga jami 1 000 000 so’m» → «2 000 000 so’m»', 'Har guruhda 500 000 + 300 000 + 200 000 = 1 000 000'],
+    ['Logotip · «Shaxmatga qiziqadigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz!» · @ulugbek_rm · mirzoulugbek.app', 'Fon: yangi bino fasadi']
   ];
   /* [boshlanish, tugash, diktor matni | null (asl ovoz), ekranda, izoh] */
-  const VO = [
-    [0, 30, null, 'Asl video 0:00–0:30 (tiniqlashtirilgan). 0:00–0:05: «O’ZBEKISTON — OLIMPIADA CHEMPIONI!» + oltin medal · 0:09–0:16: «46-Shaxmat olimpiadasi · Samarqand, 2026»', 'ASL OVOZ: marosim boshlovchisi («O’zbekiston Respublikasi…») va zal. Hook yozuvlari asl kadr ustida, ovoz o’chirilmaydi'],
-    [30.2, 32.6, 'Endi navbat — o’quvchilarimizda!', '«Endi navbat — o’quvchilarimizda!»', 'Shaxmat taxtasi bilan o’tish → yangi bino atrofida aylanib uchgan dron'],
-    [32.6, 37.6, 'Olimpiada darajasida bo’lmasa ham, «Mirzo Ulug’bek» xususiy maktabi o’quvchilari ham mukofot yutib olish imkoniyatiga ega!', '«Olimpiada darajasida bo’lmasa ham — o’quvchilarimiz ham mukofot yutib olish imkoniyatiga ega» + logotip', ''],
-    [37.6, 42.0, 'Hurmatli ota-onalar! Maktabimiz 1-oktabr kuni shaxmat musobaqasini tashkil etmoqda.', '«Hurmatli ota-onalar!» · kalendar «1 OKTABR» · «SHAXMAT MUSOBAQASI»', 'Fon: maktab hududi — dron panoramasi'],
-    [42.0, 46.6, 'Bu — 1-oktabr tadbirimizning bir qismi va o’quvchilarimiz uchun haqiqiy aql mashqi.', '«O’qituvchi va murabbiylar kuni tadbirimizning bir qismi · o’quvchilarimiz uchun aql mashqi»', ''],
-    [46.6, 51.2, 'Shaxmatni biladigan o’quvchilarimiz qatnashadi: qizlar va o’g’il bolalar alohida bellashadi.', '«QIZLAR» · «alohida» · «O’G’IL BOLALAR» · «Shaxmatni biladigan o’quvchilarimiz ishtirokida»', ''],
-    [51.2, 59.0, 'Har bir guruhda: birinchi o’ringa — besh yuz ming so’m, ikkinchi o’ringa — uch yuz ming so’m, uchinchi o’ringa — ikki yuz ming so’m pul mukofoti!', 'Podium: 500 000 · 300 000 · 200 000 so’m', 'Tasdiqlangan'],
-    [59.0, 64.4, 'Qizlarga jami — bir million so’m, o’g’il bolalarga jami — bir million so’m. Umumiy mukofot jamg’armasi — ikki million so’m!', '«Qizlarga jami 1 000 000 so’m» + «O’g’il bolalarga jami 1 000 000 so’m» → «2 000 000 so’m»', 'Har guruhda 500 000 + 300 000 + 200 000 = 1 000 000'],
-    [64.4, 68.0, 'Shaxmatni biladigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz! «Mirzo Ulug’bek» xususiy maktabi.', 'Logotip · «Shaxmatni biladigan barcha o’quvchilarimizni qo’llab-quvvatlaymiz!» · @ulugbek_rm · mirzoulugbek.app', 'Fon: yangi bino fasadi']
-  ];
+  const VO = [[0, CLIP, null, 'Asl video 0:00–0:30 (tiniqlashtirilgan). 0:00: «46-Shaxmat olimpiadasi · Samarqand 2026» · 0:10–0:15 (O’zbekiston jamoasi kadrda): «O’ZBEKISTON — OLIMPIADA CHEMPIONI!» + oltin medal · 0:17–0:23: pastki yozuv', 'ASL OVOZ: marosim boshlovchisi («O’zbekiston Respublikasi…») va zal. Hook yozuvlari asl kadr ustida, ovoz o’chirilmaydi']]
+    .concat(TXT.map((txt, i) => [V[i], V[i] + VD[i], txt, SCR[i][0], SCR[i][1]]));
   const $ = s => document.querySelector(s);
+  const R = window.RENDER || null; /* {fps, clip, orbit, pano} — kadrlar papkalari (make.mjs --render) */
+  if (R) {
+    document.body.classList.add('render');
+    ['vclip', 'vorbit', 'vpano'].forEach(id => { const v = document.getElementById(id), im = document.createElement('img'); im.id = id; im.className = 'vframe'; im.alt = ''; v.replaceWith(im); });
+  }
   const vclip = $('#vclip'), vorbit = $('#vorbit'), vpano = $('#vpano');
   const cap = $('#cap'), tc = $('#tc'), seek = $('#seek'), tt = $('#tt'), playB = $('#play'), muteB = $('#mute'), bigplay = $('#bigplay');
   let t = 0, playing = false, last = 0, userMute = false;
@@ -348,75 +384,81 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
   tl.set({}, {}, D);
   /* asl video 0–30 + hook yozuvlari (ovoz o’chmaydi) */
   show('#s-hook', 0); show('#s-clip', 0);
-  tl.from('#s-hook .shade', { autoAlpha: 0, duration: .6 }, 0.2)
-    .from('#s-hook .kick', { y: 30, autoAlpha: 0, duration: .45 }, .4)
-    .from('#s-hook .t1', { xPercent: -30, autoAlpha: 0, duration: .5 }, .7)
-    .fromTo('#s-hook .t2', { scale: 1.9, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: .45, ease: 'back.out(2)' }, 1.2)
-    .fromTo('#s-hook .flash', { opacity: .6 }, { opacity: 0, duration: .35 }, 1.22)
-    .fromTo('#s-hook .txt', { x: -12 }, { x: 0, duration: .5, ease: 'elastic.out(1, .3)' }, 1.22)
-    .fromTo('#s-hook .medal', { rotation: -30, scale: 0, autoAlpha: 0 }, { rotation: 0, scale: 1, autoAlpha: 1, duration: .8, ease: 'back.out(1.8)' }, 1.5)
-    .to('#s-hook', { autoAlpha: 0, duration: .5 }, 5.0)
-    .from('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .7 }, 9)
-    .to('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .5, ease: 'power2.in' }, 16)
+  /* 0:00 — faqat neytral yozuv (kadrda hali Hindiston jamoasi); 0:10 — O’zbekiston jamoasi kadrga kirganda katta sarlavha */
+  tl.from('#s-hook .kick', { y: 30, autoAlpha: 0, duration: .45 }, .4)
+    .from('#s-hook .shade', { autoAlpha: 0, duration: .6 }, 9.6)
+    .from('#s-hook .t1', { xPercent: -30, autoAlpha: 0, duration: .5 }, 10.0)
+    .fromTo('#s-hook .t2', { scale: 1.9, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: .45, ease: 'back.out(2)' }, 10.5)
+    .fromTo('#s-hook .flash', { opacity: .6 }, { opacity: 0, duration: .35, immediateRender: false }, 10.52)
+    .fromTo('#s-hook .txt', { x: -12 }, { x: 0, duration: .5, ease: 'elastic.out(1, .3)' }, 10.52)
+    .fromTo('#s-hook .medal', { rotation: -30, scale: 0, autoAlpha: 0 }, { rotation: 0, scale: 1, autoAlpha: 1, duration: .8, ease: 'back.out(1.8)' }, 10.8)
+    .to('#s-hook', { autoAlpha: 0, duration: .5 }, 15.5)
+    .from('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .7 }, 17)
+    .to('#s-clip .lower', { xPercent: -30, autoAlpha: 0, duration: .5, ease: 'power2.in' }, 23.5)
     .from('#s-clip .src', { autoAlpha: 0, duration: .5 }, 0.5);
   hide('#s-clip', CLIP);
   /* shaxmat taxtasi o’tishi 29.4–31 */
   tl.fromTo(cells, { scale: 0 }, { scale: 1.02, duration: .35, ease: 'power2.out', stagger: { grid: [9, 16], from: 'center', amount: .5 } }, 29.4)
     .set('#vclip', { autoAlpha: 0 }, CLIP)
     .to(cells, { scale: 0, duration: .35, ease: 'power2.in', stagger: { grid: [9, 16], from: 'edges', amount: .5 } }, 30.1);
-  /* navbat 30–37.6 (fon: yangi bino orbit) */
-  show('#L-orbit', 30); show('#s-turn', 30);
-  tl.fromTo('#vorbit', { scale: 1.15 }, { scale: 1, duration: 8, ease: 'none' }, 30)
-    .from('#s-turn .t1', { y: 60, autoAlpha: 0, duration: .6 }, 30.3)
-    .from('#s-turn .t2', { y: 30, autoAlpha: 0, duration: .6 }, 32.6)
-    .from('#s-turn .brand', { scale: .6, autoAlpha: 0, duration: .6, ease: 'back.out(2)' }, 34.2)
-    .to('#s-turn', { autoAlpha: 0, duration: .35 }, 37.3);
-  /* tadbir 37.6–46.6 (fon: hudud panoramasi) */
-  tl.fromTo('#L-pano', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4 }, 37.3)
-    .fromTo('#vpano', { scale: 1.12 }, { scale: 1, duration: 9.5, ease: 'none' }, 37.3);
-  hide('#L-orbit', 37.75); show('#s-event', 37.6);
-  tl.from('#s-event .kick', { y: -30, autoAlpha: 0, duration: .5 }, 37.7)
-    .from('#s-event .cal', { rotationX: -95, autoAlpha: 0, duration: .8, ease: 'back.out(1.6)' }, 38.3)
-    .from('#s-event h2', { x: 80, autoAlpha: 0, duration: .6 }, 39.4)
-    .from('#s-event p', { y: 20, autoAlpha: 0, duration: .5 }, 42.0)
-    .from('#s-event .pieces', { y: 40, autoAlpha: 0, duration: .8 }, 40)
-    .to(['#s-event', '#L-pano'], { autoAlpha: 0, duration: .35 }, 46.3);
-  /* format 46.6–51.2 */
-  show('#s-format', 46.6);
-  tl.from('#s-format .g', { xPercent: -60, autoAlpha: 0, duration: .6 }, 46.7)
-    .from('#s-format .b', { xPercent: 60, autoAlpha: 0, duration: .6 }, 46.7)
-    .from('#s-format .vs', { scale: 0, autoAlpha: 0, duration: .5, ease: 'back.out(2.5)' }, 47.2)
-    .from('#s-format .fnote', { y: 30, autoAlpha: 0, duration: .5 }, 47.8)
-    .to('#s-format', { autoAlpha: 0, duration: .3 }, 50.9);
-  /* sovrinlar 51.2–59 */
-  show('#s-prize', 51.2);
-  tl.from('#s-prize h3', { y: -40, autoAlpha: 0, duration: .5 }, 51.3)
-    .from('#s-prize .sub', { autoAlpha: 0, duration: .5 }, 51.7)
-    .from('#s-prize .p1 .blk', { scaleY: 0, duration: .7 }, 52.4)
-    .from('#s-prize .p2 .blk', { scaleY: 0, duration: .7 }, 54.4)
-    .from('#s-prize .p3 .blk', { scaleY: 0, duration: .7 }, 56.4);
-  [['.p1', 52.5], ['.p2', 54.5], ['.p3', 56.5]].forEach(([p, at]) => {
-    const el = document.querySelector('#s-prize ' + p + ' [data-sum]');
+  /* navbat (fon: yangi bino atrofida dron) */
+  show('#L-orbit', S.turn); show('#s-turn', S.turn);
+  tl.fromTo('#vorbit', { scale: 1.15 }, { scale: 1, duration: S.event - S.turn + .5, ease: 'none' }, S.turn)
+    .from('#s-turn .t1', { y: 60, autoAlpha: 0, duration: .6 }, V[0])
+    .from('#s-turn .t2', { y: 30, autoAlpha: 0, duration: .6 }, V[1])
+    .from('#s-turn .brand', { scale: .6, autoAlpha: 0, duration: .6, ease: 'back.out(2)' }, V[1] + VD[1] * .45)
+    .to('#s-turn', { autoAlpha: 0, duration: .35 }, S.event - .3);
+  /* tadbir (fon: hudud panoramasi) */
+  tl.fromTo('#L-pano', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4 }, S.event - .3)
+    .fromTo('#vpano', { scale: 1.12 }, { scale: 1, duration: S.format - S.event + .6, ease: 'none' }, S.event - .3);
+  hide('#L-orbit', S.event + .15); show('#s-event', S.event);
+  tl.from('#s-event .kick', { y: -30, autoAlpha: 0, duration: .5 }, S.event + .1)
+    .from('#s-event .cal', { rotationX: -95, autoAlpha: 0, duration: .8, ease: 'back.out(1.6)' }, S.event + .7)
+    .from('#s-event h2', { x: 80, autoAlpha: 0, duration: .6 }, V[2] + VD[2] * .55)
+    .from('#s-event .pieces', { y: 40, autoAlpha: 0, duration: .8 }, S.event + 2.2)
+    .from('#s-event p', { y: 20, autoAlpha: 0, duration: .5 }, V[3])
+    .to(['#s-event', '#L-pano'], { autoAlpha: 0, duration: .35 }, S.format - .3);
+  /* format */
+  show('#s-format', S.format);
+  tl.from('#s-format .g', { xPercent: -60, autoAlpha: 0, duration: .6 }, S.format + .1)
+    .from('#s-format .b', { xPercent: 60, autoAlpha: 0, duration: .6 }, S.format + .1)
+    .from('#s-format .vs', { scale: 0, autoAlpha: 0, duration: .5, ease: 'back.out(2.5)' }, V[4] + VD[4] * .6)
+    .from('#s-format .fnote', { y: 30, autoAlpha: 0, duration: .5 }, V[4] + .2)
+    .to('#s-format', { autoAlpha: 0, duration: .3 }, S.prize - .3);
+  /* sovrinlar — diktor «birinchi / ikkinchi / uchinchi» deganda */
+  show('#s-prize', S.prize);
+  tl.from('#s-prize h3', { y: -40, autoAlpha: 0, duration: .5 }, S.prize + .1)
+    .from('#s-prize .sub', { autoAlpha: 0, duration: .5 }, S.prize + .5);
+  [['.p1', .12], ['.p2', .42], ['.p3', .68]].forEach(([p, f]) => {
+    const at = V[5] + VD[5] * f, el = document.querySelector('#s-prize ' + p + ' [data-sum]');
+    tl.from('#s-prize ' + p + ' .blk', { scaleY: 0, duration: .7 }, at - .1);
     count(el, +el.dataset.sum, at);
     tl.from('#s-prize ' + p + ' .amt', { y: 20, autoAlpha: 0, duration: .4 }, at);
   });
-  tl.to('#s-prize', { autoAlpha: 0, duration: .3 }, 58.7);
-  /* jami 59–61.6 */
-  show('#s-total', 59);
-  tl.from('#s-total .k', { y: -20, autoAlpha: 0, duration: .4 }, 59.05)
-    .from('#s-total .split .g', { x: -60, autoAlpha: 0, duration: .5 }, 59.3)
-    .from('#s-total .split i', { scale: 0, autoAlpha: 0, duration: .4, ease: 'back.out(2.5)' }, 60.6)
-    .from('#s-total .split .bo', { x: 60, autoAlpha: 0, duration: .5 }, 60.8)
-    .from('#s-total .num', { scale: .6, autoAlpha: 0, duration: .5, ease: 'back.out(1.8)' }, 62.2)
-    .from('#s-total .cur', { autoAlpha: 0, duration: .4 }, 62.6);
-  count($('#s-total .num'), 2000000, 62.2, 1.4);
-  tl.to('#s-total', { autoAlpha: 0, duration: .3 }, 64.1);
-  /* yakun 64.4–68 */
-  show('#s-outro', 64.4);
-  tl.fromTo('#s-outro .bgimg', { scale: 1.12 }, { scale: 1, duration: 3.6, ease: 'none' }, 64.4)
-    .from('#s-outro .logo', { scale: 0, rotation: -90, duration: .7, ease: 'back.out(1.8)' }, 64.5)
-    .from('#s-outro .t1', { y: 40, autoAlpha: 0, duration: .6 }, 64.8)
-    .from('#s-outro .meta', { autoAlpha: 0, duration: .5 }, 65.9);
+  tl.to('#s-prize', { autoAlpha: 0, duration: .3 }, S.total - .3);
+  /* jami — qizlarga / o’g’il bolalarga / umumiy */
+  show('#s-total', S.total);
+  const nAt = V[6] + VD[6] * .64;
+  tl.from('#s-total .k', { y: -20, autoAlpha: 0, duration: .4 }, S.total + .05)
+    .from('#s-total .split .g', { x: -60, autoAlpha: 0, duration: .5 }, V[6])
+    .from('#s-total .split i', { scale: 0, autoAlpha: 0, duration: .4, ease: 'back.out(2.5)' }, V[6] + VD[6] * .34)
+    .from('#s-total .split .bo', { x: 60, autoAlpha: 0, duration: .5 }, V[6] + VD[6] * .36)
+    .from('#s-total .num', { scale: .6, autoAlpha: 0, duration: .5, ease: 'back.out(1.8)' }, nAt)
+    .from('#s-total .cur', { autoAlpha: 0, duration: .4 }, nAt + .4);
+  count($('#s-total .num'), 2000000, nAt, 1.0);
+  tl.to('#s-total', { autoAlpha: 0, duration: .3 }, S.outro - .3);
+  /* yakun */
+  show('#s-outro', S.outro);
+  tl.fromTo('#s-outro .bgimg', { scale: 1.12 }, { scale: 1, duration: D - S.outro, ease: 'none' }, S.outro)
+    .from('#s-outro .logo', { scale: 0, rotation: -90, duration: .7, ease: 'back.out(1.8)' }, S.outro + .1)
+    .from('#s-outro .t1', { y: 40, autoAlpha: 0, duration: .6 }, S.outro + .4)
+    .from('#s-outro .meta', { autoAlpha: 0, duration: .5 }, V[7] + VD[7] * .6);
+
+  /* dron kliplari: sahna uzunligiga sekinlashtirib moslanadi (takrorlanmaydi) */
+  const CL = 6.9;
+  const orbitPos = tt => Math.max(0, tt - (S.turn - .2)) * Math.min(1, CL / (S.event + .5 - S.turn));
+  const panoPos = tt => Math.max(0, tt - (S.event - .4)) * Math.min(1, CL / (S.format + .4 - S.event));
+  const orbitOn = tt => tt >= S.turn - .2 && tt < S.event + .3, panoOn = tt => tt >= S.event - .4 && tt < S.format + .2;
 
   /* ---------- video sinxronlash ---------- */
   const want = (v, pos, on) => {
@@ -426,10 +468,11 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     if (!playing && !v.paused) v.pause();
   };
   const sync = () => {
+    if (R) return;
     if (t < CLIP) { vclip.muted = userMute; vclip.style.visibility = 'visible'; want(vclip, t, true); }
     else { want(vclip, 0, false); vclip.style.visibility = 'hidden'; }
-    want(vorbit, ((t - 30) % 7 + 7) % 7, t >= 29.8 && t < 37.9);
-    want(vpano, ((t - 37.3) % 7 + 7) % 7, t >= 37.2 && t < 46.8);
+    want(vorbit, orbitPos(t), orbitOn(t));
+    want(vpano, panoPos(t), panoOn(t));
   };
   const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + String(Math.floor(r)).padStart(2, '0'); };
   const draw = () => {
@@ -455,6 +498,7 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
   bigplay.onclick = () => setPlay(true);
   $('#stage').addEventListener('click', e => { if (e.target === bigplay || bigplay.contains(e.target)) return; setPlay(!playing); });
   $('#restart').onclick = () => { t = 0; setPlay(true); };
+  seek.max = D; tt.textContent = '0:00 / ' + fmt(D);
   seek.oninput = () => { t = +seek.value; bigplay.hidden = true; draw(); sync(); };
   muteB.onclick = () => { userMute = !userMute; muteB.textContent = userMute ? '🔇 Asl ovoz: o’chiq' : '🔊 Asl ovoz: yoqiq'; sync(); };
   const chips = $('#chips');
@@ -468,6 +512,23 @@ section.doc p.lead { color: var(--mute); margin-bottom: 14px; }
     tr.children[3].textContent = v[4];
     tb.appendChild(tr);
   });
+  if (R) {
+    /* render: t vaqtdagi kadr — timeline + mos video kadri rasmi (hammasi yuklangach qaytadi) */
+    const pad = n => String(n).padStart(5, '0');
+    const frame = (el, dir, sec, count, fps = R.fps) => { const i = Math.max(0, Math.min(count - 1, Math.floor(sec * fps + 1e-6))); const src = dir + '/' + pad(i + 1) + '.jpg'; if (el.getAttribute('src') !== src) el.src = src; return el.decode ? el.decode().catch(() => {}) : null; };
+    window.renderAt = async tt => {
+      t = tt; tl.seek(Math.min(t, D - 0.001), false);
+      const w = [];
+      if (t < CLIP + 0.001) w.push(frame(vclip, R.clip, t, R.clipN));
+      if (orbitOn(t)) w.push(frame(vorbit, R.orbit, orbitPos(t), R.orbitN, R.dfps));
+      if (panoOn(t)) w.push(frame(vpano, R.pano, panoPos(t), R.panoN, R.dfps));
+      await Promise.all(w);
+      await Promise.all(Array.from(document.images).filter(i => !i.complete).map(i => i.decode().catch(() => {})));
+      return true;
+    };
+    window.RENDER_D = D;
+    return;
+  }
   draw(); requestAnimationFrame(n => { last = n; loop(n); });
 })();
 </script>
