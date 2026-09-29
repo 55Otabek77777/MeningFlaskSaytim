@@ -59,12 +59,15 @@ MU.part('yangiliklar', {
       return i;
     };
 
-    let shownTop = 0, firstPaint = true;
+    let shownTop = 0, shownSig = '', firstPaint = true;
+    const usable = ps => (ps || []).filter(p => p && (p.text || p.photo)).slice(0, 5);
+    /* postlar «imzosi»: raqam + rasm manzili + matn — bir xil postlarda ham Telegram rasm manzili eskirgan bo’lishi mumkin */
+    const sig = ps => ps.map(p => `${p.id}|${p.photo || ''}|${(p.text || '').length}`).join(',');
     const render = posts => {
-      posts = (posts || []).filter(p => p && (p.text || p.photo)).slice(0, 5);
+      posts = usable(posts);
       if (!posts.length) { big.hidden = true; rowsEl.hidden = true; empty.hidden = false; return; }
       big.hidden = false; rowsEl.hidden = false; empty.hidden = true;
-      shownTop = num(posts[0].id);
+      shownTop = num(posts[0].id); shownSig = sig(posts);
 
       const [a, ...rest] = posts;
       const s = { ...split(a.text, 80), ...SNAPSHOT_COPY[a.id] }, link = safeLink(a.link);
@@ -123,7 +126,9 @@ MU.part('yangiliklar', {
       .then(r => (r.ok ? r.json() : null))
       .then(d => {
         const posts = d && Array.isArray(d.posts) ? d.posts : null;
-        if (posts && posts.length && num(posts[0].id) > shownTop) render(posts);
+        /* yangiroq post bo’lsa yoki o’sha postlarning rasm manzili/matni yangilangan bo’lsa — jonli ma’lumot qo’llanadi */
+        const live = usable(posts);
+        if (live.length && (num(live[0].id) > shownTop || (num(live[0].id) === shownTop && sig(live) !== shownSig))) render(posts);
       })
       .catch(() => {});
     const stop = MU.onVisible(root, v => { if (v) { stop(); load(); } }, '600px');

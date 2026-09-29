@@ -75,6 +75,15 @@
 - Bazaviy ko’rinish: Edge, 1440×900 va 390×844, 20 skrinshot — konsol/overflow/kichik matn xatosi 0. Animatsiyalar, video va media o’zgarmadi.
 - Eski changelog’dagi jonli ariza sinovi ko’rsatmalari joriy topshiriqda qo’llanmaydi: barcha sinovlar mock bilan.
 
+## 2026-09-29 — v3.5.1 — DEPLOYGA TAYYOR (jonli saytdagi 1 ta muammo tuzatildi)
+**v3.5 jonli** (DIGITAL, 2026-09-29 00:05): `ab919cd` → mirzoulugbek.app (`public/bosh.html` + 26 media, rewrite `/` → `/bosh.html`);
+40 tekshiruv o’tdi; rollback nishoni — oldingi production `dpl_3uApsUKiKetVHsAsPLwK1kbnb3Eg`.
+| Qism | Nima |
+|---|---|
+| 65-yangiliklar | Jonli `/api/telegram-news` endi **o’sha postlar uchun ham** qo’llanadi, agar rasm manzili yoki matni yangilangan bo’lsa (ilgari faqat yangiroq post chiqsa). Sabab: snapshot’dagi `telesco.pe` rasm manzillari eskiradi — jonli saytda 2 ta rasm o’rnida belgi chiqqan edi. Hammasi bir xil bo’lsa — qayta chizilmaydi. |
+Test: `qa/newsfix.mjs` — yangi rasm manzili qo’llandi, bir xil holatda o’zgarmadi; to’liq QA desktop+mobil — xato 0; `qa-language.mjs` 8/8.
+Deploy: faqat `public/bosh.html` almashadi (yangi media yo’q).
+
 ## 2026-09-28 — v3.5 — DEPLOYGA TAYYOR (ChatGPT yakuniy tekshiruvi birlashtirildi)
 Manba: `chatgpt/maktab-yakuniy` (`7805d05`, 11 commit; hisobot — `YAKUNIY-HISOBOT.md`, skrinshotlar — `review/yakuniy/`). Claude har bir commit’ni ko’rib chiqdi va birlashtirdi.
 
