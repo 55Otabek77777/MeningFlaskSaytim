@@ -11,13 +11,13 @@ const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.arg
 const out = path.join(dir, arg('--times') ? 'test' : 'out');
 fs.mkdirSync(out, { recursive: true });
 const b = await chromium.launch();
-const p = await b.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+const p = await b.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: +(arg('--scale') ?? 1) });  /* --scale 0.4445 → 854×480 oldindan ko’rish */
 const errs = []; p.on('pageerror', e => errs.push(e.message));
 await p.goto('file://' + path.join(dir, 'index.html'));
 await p.evaluate(() => document.fonts.ready);
 const D = await p.evaluate(() => window.RENDER_D);
-fs.writeFileSync(path.join(dir, 'timing.json'), JSON.stringify(await p.evaluate(() => window.TIMING)));
-const FPS = 30;
+const FPS = +(arg('--fps') ?? 30);
+fs.writeFileSync(path.join(dir, 'timing.json'), JSON.stringify({ ...(await p.evaluate(() => window.TIMING)), fps: FPS }));
 const list = arg('--times') ? arg('--times').split(',').map(Number).map(t => Math.round(t * FPS))
   : Array.from({ length: (+(arg('--to') ?? Math.round(D * FPS))) - (+(arg('--from') ?? 0)) }, (_, k) => k + +(arg('--from') ?? 0));
 const t0 = Date.now();

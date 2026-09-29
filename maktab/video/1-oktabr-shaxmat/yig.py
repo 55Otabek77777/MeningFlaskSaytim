@@ -46,6 +46,6 @@ else:
 fc.append(f'{mixin}amix=inputs={n}:normalize=0,apad,atrim=0:{D},alimiter=limit=0.84:attack=3:release=60:level=disabled[aout]')
 wav = os.path.join(tmp, 'audio.wav')
 run([*inputs, '-filter_complex', ';'.join(fc), '-map', '[aout]', '-ar', '48000', '-ac', '2', wav])
-run(['-framerate', '30', '-i', os.path.join(render, 'out', '%05d.jpg'), '-i', wav, '-c:v', 'libx264', '-preset', 'slow', '-crf', '19',
+run(['-framerate', str(T.get('fps', 30)), '-i', os.path.join(render, 'out', '%05d.jpg'), '-i', wav, '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '19',
      '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out])
 print('✔', out, round(os.path.getsize(out) / 1048576, 1), 'MB')
