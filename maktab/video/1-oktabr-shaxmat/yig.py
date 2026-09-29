@@ -29,7 +29,7 @@ wr(os.path.join(tmp, 'sfx.wav'), bed * .9)
 # 2) aralashtirish (ffmpeg): asl ovoz 0–30.3 s, musiqa 29.6 s dan (diktor gapirganda pasayadi), effektlar, diktor
 inputs = ['-i', src, '-i', f'{audio}/musiqa.wav', '-i', os.path.join(tmp, 'sfx.wav')]
 fc = ['[0:a]atrim=0:30.3,asetpts=N/SR/TB,aresample=48000,loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=out:st=29.2:d=1.1[o]',
-      '[1:a]adelay=29600|29600,volume=%s[m0]' % ('0.5' if vo else '0.72'), '[2:a]anull[fx]']
+      '[1:a]adelay=29600|29600,volume=%s[m0]' % ('0.34' if vo else '0.72'), '[2:a]anull[fx0]']
 mixin = '[o][fx]'
 if vo:
     parts = []
@@ -37,12 +37,13 @@ if vo:
         f = os.path.join(vo, f'{i:02d}.wav'); inputs += ['-i', f]; parts.append((len(inputs) // 2 - 1, a))
     for k, (idx, a) in enumerate(parts):
         fc.append(f'[{idx}:a]adelay={int(a * 1000)}|{int(a * 1000)}[v{k}]')
-    fc.append(''.join(f'[v{k}]' for k in range(len(parts))) + f'amix=inputs={len(parts)}:normalize=0,asplit=2[vo][vosc]')
+    fc.append(''.join(f'[v{k}]' for k in range(len(parts))) + f'amix=inputs={len(parts)}:normalize=0,asplit=3[vo][vosc][vosc2]')
     fc.append('[m0][vosc]sidechaincompress=threshold=0.03:ratio=5:attack=30:release=380:makeup=1[m]')  # diktor gapirganda musiqa pasayadi
+    fc.append('[fx0][vosc2]sidechaincompress=threshold=0.06:ratio=2.5:attack=10:release=250:makeup=1[fx]')  # effektlar so'zlarni bosib ketmaydi
     mixin += '[m][vo]'; n = 4
 else:
-    fc.append('[m0]anull[m]'); mixin += '[m]'; n = 3
-fc.append(f'{mixin}amix=inputs={n}:normalize=0,apad,atrim=0:{D},alimiter=limit=0.9:attack=3:release=60[aout]')
+    fc.append('[m0]anull[m]'); fc.append('[fx0]anull[fx]'); mixin += '[m]'; n = 3
+fc.append(f'{mixin}amix=inputs={n}:normalize=0,apad,atrim=0:{D},alimiter=limit=0.84:attack=3:release=60:level=disabled[aout]')
 wav = os.path.join(tmp, 'audio.wav')
 run([*inputs, '-filter_complex', ';'.join(fc), '-map', '[aout]', '-ar', '48000', '-ac', '2', wav])
 run(['-framerate', '30', '-i', os.path.join(render, 'out', '%05d.jpg'), '-i', wav, '-c:v', 'libx264', '-preset', 'slow', '-crf', '19',
