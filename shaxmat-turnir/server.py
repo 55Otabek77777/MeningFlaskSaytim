@@ -253,11 +253,10 @@ def schedule():
         start_game(m, b)
 
 
-def pick_match():
+def queue_order(limit=12):
+    """Navbatdagi juftliklar — dastur ularni aynan shu tartibda taxtalarga beradi."""
     reserved = {b.get('replay') for b in S['boards'] if b.get('replay')}   # durangdan keyin o'sha taxtada qayta o'ynaydi
     ready = [m for m in S['matches'].values() if m['status'] == 'ready' and m['id'] not in reserved]
-    if not ready:
-        return None
     busy = {'B': 0, 'G': 0}
     for b in S['boards']:
         if b['game'] and S['games'][b['game']]['status'] in ('pending', 'playing'):
@@ -266,7 +265,18 @@ def pick_match():
     def key(m):
         is_final = (not m['bronze']) and m['r'] == len(S['rounds'][m['g']]) - 1
         return (0 if m['games'] else 1, m['r'], is_final, busy[m['g']], 0 if m['g'] == 'G' else 1, m['s'])
-    return min(ready, key=key)
+    out = []
+    while ready and len(out) < limit:
+        m = min(ready, key=key)
+        out.append(m)
+        ready.remove(m)
+        busy[m['g']] += 1
+    return out
+
+
+def pick_match():
+    q = queue_order(1)
+    return q[0] if q else None
 
 
 def start_game(m, board, white=None):
@@ -415,6 +425,7 @@ def public_state():
     return {
         'rev': S['rev'], 'now': now_ms(), 'phase': S['phase'], 'paused': S['paused'], 'config': S['config'],
         'players': S['players'], 'matches': matches, 'rounds': S['rounds'], 'bronze': S['bronze'], 'games': games,
+        'queue': [m['id'] for m in queue_order(12)],
         'boards': boards, 'standings': {g: standings(g) for g in ('B', 'G')}, 'groups': GROUP_NAMES, 'prizes': PRIZES,
         'drawn_at': S['drawn_at'], 'started_at': S['started_at'], 'finished_at': S['finished_at'], 'log': S['log'][-40:]
     }
@@ -426,7 +437,7 @@ def board_view(bid):
         return None
     gm = S['games'].get(b['game']) if b['game'] else None
     upcoming = []
-    for m in sorted([m for m in S['matches'].values() if m['status'] == 'ready'], key=lambda m: (m['r'], m['s'])):
+    for m in queue_order(6):
         upcoming.append({'title': '3-oʻrin uchun' if m['bronze'] else round_title(m['g'], m['r']), 'group': GROUP_NAMES[m['g']],
                          'a': pname(m['p'][0]), 'b': pname(m['p'][1])})
     return {'rev': S['rev'], 'now': now_ms(), 'phase': S['phase'], 'paused': S['paused'], 'board': bid, 'on': b['on'],

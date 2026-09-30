@@ -20,28 +20,50 @@ header h1 span { color: var(--gold); }
 header .sub { text-align: center; color: var(--mute); font-weight: 700; margin-top: 6px; }
 header .right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 header .now { font: 700 28px var(--mono); }
-main { display: grid; grid-template-columns: minmax(520px, 40%) 1fr; gap: 20px; padding: 0 28px 20px; height: calc(100vh - 104px); }
+main { display: grid; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); gap: 20px; padding: 0 28px 20px; height: calc(100vh - 104px); }
+@media (max-width: 1400px) { header { padding: 12px 18px 8px; } header .brand { font-size: 15px; } header h1 { font-size: 24px; } header .now { font-size: 22px; } main { gap: 12px; padding: 0 14px 12px; height: calc(100vh - 84px); } section.box { padding: 12px; border-radius: 16px; } }
+@media (max-width: 1150px) { header .sub, .brand small { display: none; } main { grid-template-columns: minmax(0, 44%) minmax(0, 1fr); height: calc(100vh - 66px); } }
 section.box { background: #0e1731cc; border: 1px solid var(--line); border-radius: 22px; padding: 16px 18px; min-height: 0; display: flex; flex-direction: column; }
 section.box h3 { display: flex; align-items: center; gap: 10px; font: 800 20px var(--display); margin-bottom: 12px; }
-.boards { flex: 1; min-height: 0; display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); align-content: start; overflow: hidden; }
-.bcard { display: grid; gap: 8px; padding: 12px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
-.bcard .t { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-weight: 800; }
+.boards { flex: 0 0 auto; display: grid; gap: 12px; grid-template-columns: repeat(var(--cols, 2), var(--cw, 1fr)); justify-content: center; align-content: start; overflow: hidden; }
+.bcard { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 10px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
+.bcard .t { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-weight: 800; white-space: nowrap; }
+.bcard .t .tag { min-width: 0; overflow: hidden; }
+.bcard .t .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: block; }
 .bcard .mini { width: 100%; aspect-ratio: 1; }
 .bcard .pl { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 800; font-size: 16px; }
 .bcard .pl span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bcard .pl .c { font: 700 17px var(--mono); padding: 2px 8px; border-radius: 6px; background: #0b1224; }
 .bcard .pl.turn .c { background: #fff; color: #0b1224; }
 .bcard .empty { display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; background: #ffffff08; color: var(--mute); font-weight: 700; text-align: center; padding: 10px; }
+.upnext { flex: 1; min-height: 0; overflow: hidden; margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.upnext h4 { font: 800 16px var(--display); color: var(--sky); margin-bottom: 2px; }
+.upnext .u { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 10px; background: #ffffff08; font-weight: 800; }
+.upnext .u i { font-style: normal; color: var(--gold); font: 800 13px var(--mono); }
+.upnext .u span { flex: 1; min-width: 0; }
+.upnext .u small { color: var(--mute); font-weight: 700; white-space: nowrap; font-size: 13px; }
 .bcard .res { text-align: center; font: 800 16px var(--display); color: var(--gold); }
 .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
 .tabs b { padding: 6px 14px; border-radius: 99px; background: #ffffff0d; color: var(--mute); font-weight: 800; }
 .tabs b.on { background: var(--gold); color: #2a1d04; }
 .pane { flex: 1; min-height: 0; overflow: hidden; }
-.bracket { height: 100%; display: flex; gap: 12px; }
+.bracket { flex: 1; min-height: 0; display: flex; gap: 12px; }
+.bview { height: 100%; display: flex; flex-direction: column; gap: 10px; }
+.steps2 { display: flex; flex-wrap: wrap; gap: 6px; }
+.steps2 b { padding: 3px 10px; border-radius: 99px; font-size: 13px; font-weight: 800; background: #ffffff0a; color: #6f7c9c; border: 1px solid transparent; }
+.steps2 b.done { color: #86efac; } .steps2 b.done::before { content: '✓ '; }
+.steps2 b.cur { color: var(--gold); border-color: #f4c87166; background: #f4c87114; }
+.gview { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.gview h4 { font: 800 16px var(--display); color: var(--sky); }
+.gview h4 small { font: 700 14px var(--body); color: var(--mute); margin-left: 8px; }
+.mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; align-content: start; }
+.gview .next { color: var(--mute); font-weight: 700; font-size: 14px; }
+.bracket .col.wrap .m div span, .mgrid .m div span { white-space: normal; }
 .bracket .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .bracket .col h4 { font: 800 14px var(--display); color: var(--sky); text-align: center; white-space: nowrap; }
 .bracket .col .note { font-size: 13px; color: var(--mute); text-align: center; font-weight: 600; }
 .bracket .cards { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 5px; }
+.bracket .col.bronze .cards { justify-content: center; }
 .m { border-radius: 9px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; font-size: 14.5px; font-weight: 700; }
 .m.playing { border-color: var(--gold); box-shadow: 0 0 0 1px #f4c87155; }
 .m.ready { border-color: #93c5fd66; }
@@ -76,7 +98,10 @@ section.box h3 { display: flex; align-items: center; gap: 10px; font: 800 20px v
 .pair.in { opacity: 1; transform: none; }
 .pair i { font-style: normal; color: var(--mute); font-size: 14px; }
 .pair em { font-style: normal; color: var(--gold); }
-.pair span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pair span { overflow: hidden; line-height: 1.15; }
+@media (max-width: 1500px) { .draw .cols { grid-template-columns: 1fr; gap: 14px; } .pairs { grid-template-columns: repeat(3, 1fr); } .pairs.one { grid-template-columns: repeat(3, 1fr); } .pair { font-size: 15px; padding: 6px 10px; } .draw h1 { font-size: 32px; } .draw h2 { font-size: 18px; margin-bottom: 6px; } .byes { font-size: 13px; line-height: 1.45; } }
+@media (max-width: 1100px) { .pairs, .pairs.one { grid-template-columns: repeat(2, 1fr); } }
+.full > * { transform-origin: center; }
 .pair span:last-child { text-align: right; }
 .byes { margin-top: 10px; color: var(--mute); font-weight: 700; font-size: 15px; line-height: 1.6; opacity: 0; transition: .6s; }
 .byes.in { opacity: 1; }
@@ -105,7 +130,7 @@ canvas.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; 
   <div class="right"><div class="now" id="now">--:--</div><div id="chips"></div></div>
 </header>
 <main>
-  <section class="box"><h3>Jonli taxtalar <span class="chip live">Jonli</span></h3><div class="boards" id="boards"></div></section>
+  <section class="box"><h3>Jonli taxtalar <span class="chip live">Jonli</span></h3><div class="boards" id="boards"></div><div class="upnext" id="upnext"></div></section>
   <section class="box"><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></section>
 </main>
 <div class="full hidden" id="full"></div>
@@ -124,7 +149,6 @@ setInterval(() => { const d = new Date(); $('#now').textContent = d.toTimeString
 function boardsHtml() {
   const box = $('#boards');
   const n = st.boards.length;
-  box.style.gridTemplateColumns = `repeat(${n <= 2 ? 2 : n <= 4 ? 2 : 3}, 1fr)`;
   st.boards.forEach(b => {
     let card = box.querySelector(`[data-b="${b.id}"]`);
     if (!card) {
@@ -148,7 +172,27 @@ function boardsHtml() {
     else res.classList.add('hidden');
   });
   box.querySelectorAll('.bcard').forEach(c => { if (!st.boards.some(b => b.id === +c.dataset.b)) { minis.delete(+c.dataset.b); c.remove(); } });
+  layoutBoards();
+  const up = (st.queue || []).map(id => st.matches[id]).slice(0, 8);
+  $('#upnext').innerHTML = st.phase === 'running' && up.length ? `<h4>Navbatdagi oʻyinlar</h4>${up.map((m, i) => `<div class="u"><i>${i + 1}</i><span>${esc(name(m.p[0]))} — ${esc(name(m.p[1]))}</span><small>${esc(st.groups[m.g])} · ${esc(m.title)}</small></div>`).join('')}` : '';
 }
+let lay = '';
+function layoutBoards() {
+  const box = $('#boards'), n = Math.max(1, st ? st.boards.length : 1), W = box.clientWidth, gap = 12, extra = 150;
+  const H = box.parentElement.getBoundingClientRect().bottom - box.getBoundingClientRect().top - 14;
+  let best = { s: 0, c: Math.min(2, n) };
+  for (let c = 1; c <= n; c++) {                    // taxta eng katta ko'rinadigan ustunlar sonini tanlaymiz
+    const rows = Math.ceil(n / c), s = Math.min((W - (c - 1) * gap) / c - 22, (H - (rows - 1) * gap) / rows - extra);
+    if (s > best.s) best = { s, c };
+  }
+  const key = best.c + ':' + Math.floor(Math.max(140, best.s));
+  if (key === lay) return;
+  lay = key;
+  box.style.setProperty('--cols', best.c);
+  box.style.setProperty('--cw', Math.floor(Math.max(140, best.s) + 22) + 'px');
+  requestAnimationFrame(() => minis.forEach(cg => cg.redrawAll()));
+}
+addEventListener('resize', () => { if (st) { layoutBoards(); pane(); } });
 
 function matchCard(m) {
   const g = m.games.length ? st.games[m.games[m.games.length - 1]] : null;
@@ -161,31 +205,52 @@ function matchCard(m) {
   if (m.status === 'playing' && g) tag = `<div class="tag">${g.board}-taxtada oʻynalmoqda${m.games.length > 1 ? (g.armageddon ? ' · armageddon' : ' · qayta oʻyin') : ''}</div>`;
   return `<div class="m ${m.status}">${row(m.p[0])}${row(m.p[1])}${tag}</div>`;
 }
+const SHORT = t => t.replace(' bosqichi', '').replace(' final', '').replace(' uchun', '');
 function bracketHtml(g) {
   const rounds = st.rounds[g];
   if (!rounds || !rounds.length) return '<p class="row">Qur’a hali tashlanmagan</p>';
-  const cols = rounds.map((ids, r) => {
-    let ms = ids.map(id => st.matches[id]);
-    const title = ms[0].title;
-    let note = '';
-    if (r === 0) { const byes = ms.filter(m => m.bye).length; ms = ms.filter(m => !m.bye); if (byes) note = `<div class="note">${byes} nafari toʻgʻridan-toʻgʻri keyingi bosqichda</div>`; }
-    return `<div class="col"><h4>${esc(title)}</h4>${note}<div class="cards">${ms.map(matchCard).join('')}</div></div>`;
+  const R = rounds.map((ids, r) => {
+    const all = ids.map(id => st.matches[id]);
+    return { r, title: all[0].title, ms: all.filter(m => !m.bye), byes: all.filter(m => m.bye).length };
   });
-  const b = st.bronze[g];
-  if (b) cols.push(`<div class="col"><h4>3-oʻrin uchun</h4><div class="cards">${matchCard(st.matches[b])}</div></div>`);
-  return `<div class="bracket">${cols.join('')}</div>`;
+  const over = x => x.ms.every(m => m.status === 'done');
+  let cur = R.findIndex(x => !over(x)); if (cur < 0) cur = R.length - 1;
+  const B = st.bronze[g] ? { title: '3-oʻrin uchun', ms: [st.matches[st.bronze[g]]], bronze: true } : null;
+  const steps = `<div class="steps2">${R.concat(B ? [B] : []).map((x, k) => `<b class="${over(x) ? 'done' : (k === cur || (x.bronze && cur === R.length - 1)) ? 'cur' : ''}">${esc(SHORT(x.title))}</b>`).join('')}</div>`;
+  const first = R[cur];
+  if (first.ms.length > 8) {                          // katta bosqich: juftliklar kartalar to'rida
+    const done = first.ms.filter(m => m.status === 'done').length, nx = R[cur + 1];
+    return `<div class="bview">${steps}<div class="gview"><h4>${esc(first.title)}<small>${done} / ${first.ms.length} tugadi</small></h4>
+      <div class="mgrid">${first.ms.map(matchCard).join('')}</div>
+      ${first.byes ? `<div class="next">${first.byes} nafari bu bosqichni oʻtkazib, toʻgʻridan-toʻgʻri «${esc(nx ? nx.title : '')}»da</div>` : ''}
+      ${nx ? `<div class="next">Keyingi bosqich: <b>${esc(nx.title)}</b> — ${nx.ms.length} juftlik</div>` : ''}</div></div>`;
+  }
+  const win = R.slice(cur, cur + 3);                  // daraxt: joriy bosqich + keyingi ikkitasi
+  const cols = win.map(x => {
+    const note = x.r === 0 && x.byes ? `<div class="note">${x.byes} nafari toʻgʻridan-toʻgʻri keyingi bosqichda</div>` : '';
+    return `<div class="col${x.ms.length <= 4 ? ' wrap' : ''}"><h4>${esc(x.title)}</h4>${note}<div class="cards">${x.ms.map(matchCard).join('')}</div></div>`;
+  });
+  if (B && win[win.length - 1] === R[R.length - 1]) cols.push(`<div class="col wrap bronze"><h4>3-oʻrin uchun</h4><div class="cards">${matchCard(B.ms[0])}</div></div>`);
+  return `<div class="bview">${steps}<div class="bracket">${cols.join('')}</div></div>`;
 }
 function listsHtml() {
-  const ready = Object.values(st.matches).filter(m => m.status === 'ready').sort((a, b) => a.r - b.r || a.s - b.s);
+  const ready = (st.queue || []).map(id => st.matches[id]);
   const recent = Object.values(st.games).filter(g => g.status === 'done').slice(-12).reverse();
   const res = g => g.result === '1/2-1/2' ? 'durang' : g.result;
-  return `<div class="lists"><div><h4>Navbatdagi oʻyinlar</h4>${ready.slice(0, 12).map(m => `<div class="row">${esc(name(m.p[0]))} — ${esc(name(m.p[1]))}<span>${esc(st.groups[m.g])} · ${esc(m.title)}</span></div>`).join('') || '<div class="row">—</div>'}</div>
+  return `<div class="lists"><div><h4>Navbatdagi oʻyinlar</h4>${ready.slice(0, 10).map(m => `<div class="row">${esc(name(m.p[0]))} — ${esc(name(m.p[1]))}<span>${esc(st.groups[m.g])} · ${esc(m.title)}</span></div>`).join('') || '<div class="row">—</div>'}</div>
     <div><h4>Soʻnggi natijalar</h4>${recent.map(g => `<div class="row">${esc(name(g.white))} ${res(g)} ${esc(name(g.black))}<span>${esc(st.groups[g.g])}</span></div>`).join('') || '<div class="row">—</div>'}</div></div>`;
 }
 const TABS = [['Oʻgʻil bolalar', () => bracketHtml('B')], ['Qizlar', () => bracketHtml('G')], ['Navbat va natijalar', listsHtml]];
 function pane() {
   $('#tabs').innerHTML = TABS.map((t, i) => `<b class="${i === tab ? 'on' : ''}">${t[0]}</b>`).join('') + `<span style="flex:1"></span><div class="dots">${TABS.map((t, i) => `<i class="${i === tab ? 'on' : ''}"></i>`).join('')}</div>`;
-  $('#pane').innerHTML = TABS[tab][1]();
+  const p = $('#pane'); p.innerHTML = TABS[tab][1]();
+  if (tab < 2) fitIn(p.firstElementChild, p);
+}
+function fitIn(el, box) {                           // mazmun joyga sig'masa, butunligicha kichraytiriladi (o'qiladigan chegaragacha)
+  if (!el) return;
+  el.style.zoom = 1;
+  const k = Math.min(1, box.clientHeight / el.scrollHeight, box.clientWidth / el.scrollWidth);
+  if (k < 1) el.style.zoom = Math.max(.62, k * .98);
 }
 setInterval(() => { tab = (tab + 1) % TABS.length; if (st) pane(); }, 16000);
 
@@ -215,6 +280,9 @@ function drawReveal() {
       ${byes.length ? `<div class="byes">Keyingi bosqichga toʻgʻridan-toʻgʻri: ${byes.map(m => `<b>${esc(name(m.p[0]))}</b>`).join(', ')}</div>` : ''}</div>`;
   };
   f.innerHTML = `<div class="draw"><h1>QUR’A NATIJALARI</h1><div class="cols">${grp('B')}${grp('G')}</div></div>`;
+  const fitFull = () => { const el = f.firstElementChild; if (!el) return; el.style.zoom = 1; const k = Math.min(1, (innerHeight - 40) / el.scrollHeight, (innerWidth - 40) / el.scrollWidth); el.style.zoom = k < 1 ? k : 1; };
+  f.querySelectorAll('.pair').forEach(el => { el.querySelectorAll('span')[0].textContent = el.dataset.a; el.querySelectorAll('span')[1].textContent = el.dataset.b; });
+  fitFull();
   const all = Object.values(st.players).map(p => p.name);
   const pairs = [...f.querySelectorAll('.pair')];
   pairs.forEach((el, i) => setTimeout(() => {
@@ -238,6 +306,7 @@ function podium() {
     return `<div class="pod"><h2>${esc(st.groups[g])}</h2><div class="steps">${step(2)}${step(1)}${step(3)}</div></div>`;
   };
   f.innerHTML = `<div class="hero" style="width:100%"><div class="k">«Mirzo Ulugʻbek» xususiy maktabi · shaxmat musobaqasi</div><h1>GʻOLIBLARNI <span>TABRIKLAYMIZ!</span></h1><div class="podiums">${pod('B')}${pod('G')}</div></div>`;
+  { const el = f.firstElementChild; const k = Math.min(1, (innerHeight - 40) / el.scrollHeight); if (k < 1) el.style.zoom = k; }
   confetti();
 }
 function confetti() {
