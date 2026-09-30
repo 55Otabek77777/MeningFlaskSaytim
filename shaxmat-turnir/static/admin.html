@@ -120,7 +120,7 @@ function boardsHtml() {
         ${g.status === 'pending' ? ` (oq ${g.ready.w ? '✓' : '…'}, qora ${g.ready.b ? '✓' : '…'})` : ''} · <span class="mono">${fmtClock(g.clock.w)} / ${fmtClock(g.clock.b)}</span></div>`;
       if (g.status === 'pending' || g.status === 'playing') body += `<div class="btns">
         ${g.status === 'pending' ? `<button class="btn green" onclick="A('force_start',{game:'${g.id}'})">Boshlash</button>` : ''}
-        <button class="btn" onclick="A('abort',{game:'${g.id}'},'Oʻyin bekor qilinib, qaytadan boshlansinmi?')">Qayta boshlash</button>
+        <button class="btn" onclick="A('abort',{game:'${g.id}'},'Oʻyin bekor qilinib, oʻsha taxtada oʻsha ranglar bilan qaytadan boshlansinmi?')">Qayta boshlash</button>
         <button class="btn" onclick="A('winner',{match:'${g.match}',player:'${g.white}'},${J('Gʻolib: ' + g.names.w + '?')})">Gʻolib: oq</button>
         <button class="btn" onclick="A('winner',{match:'${g.match}',player:'${g.black}'},${J('Gʻolib: ' + g.names.b + '?')})">Gʻolib: qora</button></div>`;
     }

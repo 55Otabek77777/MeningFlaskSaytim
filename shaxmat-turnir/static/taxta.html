@@ -67,7 +67,8 @@ body { overflow: hidden; }
 .banner { position: fixed; top: 0; left: 0; right: 0; z-index: 60; padding: 10px; text-align: center; font-weight: 800; background: #7f1d1d; }
 .confirm { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: #000a; }
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 80; }
-@media (max-width: 1100px) { .wrap { flex-direction: column; padding: 10px; gap: 10px; } #board-box { width: min(96vw, 62vh); } .side { width: min(96vw, 620px); height: auto; } .clock { font-size: 34px; min-width: 120px; } .moves { max-height: 18vh; } }
+@media (max-width: 1100px) { .wrap { padding: 1.6vh; gap: 1.6vh; } #board-box { width: min(96vh, calc(100vw - 330px)); } .side { width: 290px; height: 96vh; gap: 8px; } .player { padding: 10px 12px; } .player .nm { font-size: 17px; } .clock { font-size: 34px; min-width: 120px; padding: 8px 10px; } .actions .btn { min-height: 44px; font-size: 15px; } }
+@media (max-width: 700px) { body { overflow: auto; } .wrap { height: auto; flex-direction: column; } #board-box { width: 96vw; } .side { width: 96vw; height: auto; } .moves { max-height: 18vh; } }
 </style>
 </head>
 <body>
@@ -124,8 +125,11 @@ const cg = Chessground($('#board'), {
 
 const other = c => (c === 'w' ? 'b' : 'w');
 const canMove = g => g && g.status === 'playing' && (MODE === 'both' || g.turn === MODE);
-const actor = g => (MODE === 'both' ? g.turn : MODE);
-function rebuild(g) { chess = new Chess(); for (const san of g.moves) chess.move(san); }
+// takrorlanish (FIDE 9.2.3): donalar + navbat + rokirovka huquqi + faqat QONUNIY en passant (chess.fen() shuni beradi)
+let reps = new Map();
+const posKey = () => chess.fen().split(' ').slice(0, 4).join(' ');
+const seen = () => reps.set(posKey(), (reps.get(posKey()) || 0) + 1);
+function rebuild(g) { chess = new Chess(); reps = new Map(); seen(); for (const san of g.moves) { chess.move(san); seen(); } }
 function dests() {
   const d = new Map();
   for (const mv of chess.moves({ verbose: true })) { if (!d.has(mv.from)) d.set(mv.from, []); d.get(mv.from).push(mv.to); }
@@ -143,23 +147,28 @@ function syncBoard(g) {
 function gameOver() {
   if (chess.isCheckmate()) return { result: chess.turn() === 'w' ? '0-1' : '1-0', reason: 'mate' };
   if (chess.isStalemate()) return { result: '1/2-1/2', reason: 'stalemate' };
-  if (chess.isThreefoldRepetition()) return { result: '1/2-1/2', reason: 'repetition' };
+  if ((reps.get(posKey()) || 0) >= 3) return { result: '1/2-1/2', reason: 'repetition' };
   if (chess.isInsufficientMaterial()) return { result: '1/2-1/2', reason: 'material' };
-  if (chess.isDraw()) return { result: '1/2-1/2', reason: 'fifty' };
+  if (chess.isDrawByFiftyMoves()) return { result: '1/2-1/2', reason: 'fifty' };
   return null;
 }
 
 function onMove(orig, dest) {
   const pc = chess.get(orig);
-  if (pc && pc.type === 'p' && (dest[1] === '8' || dest[1] === '1')) return choosePromo(pc.color).then(p => commit(orig, dest, p));
+  if (pc && pc.type === 'p' && (dest[1] === '8' || dest[1] === '1')) return choosePromo(pc.color).then(p => p && commit(orig, dest, p));
   commit(orig, dest);
 }
+let promoCancel = null;                      // oʻyin tugasa yoki yangi oʻyin boshlansa, tanlov oynasi yopiladi
 function choosePromo(color) {
   const box = $('#promo'), cls = color === 'w' ? 'white' : 'black';
   box.innerHTML = '<div class="row">' + [['q', 'queen'], ['r', 'rook'], ['b', 'bishop'], ['n', 'knight']]
     .map(([k, n]) => `<button data-p="${k}" aria-label="${n}"><span class="cg-wrap"><piece class="${n} ${cls}"></piece></span></button>`).join('') + '</div>';
   box.classList.remove('hidden');
-  return new Promise(res => box.querySelectorAll('button').forEach(b => b.onclick = () => { box.classList.add('hidden'); res(b.dataset.p); }));
+  return new Promise(res => {
+    const done = p => { box.classList.add('hidden'); promoCancel = null; res(p); };
+    promoCancel = () => done(null);
+    box.querySelectorAll('button').forEach(b => b.onclick = () => done(b.dataset.p));
+  });
 }
 async function commit(from, to, promotion) {
   const g = view && view.game;
@@ -168,6 +177,7 @@ async function commit(from, to, promotion) {
   let mv = null;
   try { mv = chess.move({ from, to, promotion: promotion || 'q' }); } catch (e) { mv = null; }
   if (!mv) { syncBoard(g); return; }
+  seen();
   const over = gameOver();
   (mv.captured ? sound.capture : sound.move)();
   if (chess.inCheck()) setTimeout(sound.check, 90);
@@ -192,12 +202,24 @@ function ask(text, yes) {
   $('#c-no').onclick = () => c.classList.add('hidden');
   $('#c-yes').onclick = () => { c.classList.add('hidden'); yes(); };
 }
+function who(text, cls, yes) {                // bitta kompyuterda: kim ekanini oʻyinchi oʻzi tanlaydi (navbatdan qatʼi nazar)
+  const c = $('#confirm'), g = view.game;
+  c.innerHTML = `<div class="panel"><h2>${esc(text)}</h2><div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <button class="btn big ${cls}" data-c="w">♔ ${esc(g.names.w)}</button><button class="btn big ${cls}" data-c="b">♚ ${esc(g.names.b)}</button><button class="btn big" id="c-no">Yoʻq</button></div></div>`;
+  c.classList.remove('hidden');
+  $('#c-no').onclick = () => c.classList.add('hidden');
+  c.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { c.classList.add('hidden'); yes(b.dataset.c); });
+}
 $('#b-resign').onclick = () => {
   const g = view && view.game; if (!g || g.status !== 'playing') return;
-  const c = actor(g);
-  ask(MODE === 'both' ? `${RANG[c]} donalar taslim boʻladimi?` : 'Rostdan ham taslim boʻlasizmi?', () => act('resign', { color: c }));
+  if (MODE === 'both') return who('Kim taslim boʻladi?', 'red', c => act('resign', { color: c }));
+  ask('Rostdan ham taslim boʻlasizmi?', () => act('resign', { color: MODE }));
 };
-$('#b-draw').onclick = () => { const g = view && view.game; if (g && g.status === 'playing') act('draw', { color: actor(g), action: 'offer' }); };
+$('#b-draw').onclick = () => {
+  const g = view && view.game; if (!g || g.status !== 'playing') return;
+  if (MODE === 'both') return who('Kim durang taklif qiladi?', '', c => act('draw', { color: c, action: 'offer' }));
+  act('draw', { color: MODE, action: 'offer' });
+};
 
 function playerCard(el, c, g) {
   const nm = g ? g.names[c] : '—', cls = g ? g.sinf[c] : '';
@@ -239,7 +261,7 @@ function pendingHtml(g) {
   const card = c => `<div class="side-card${MODE === c ? ' me' : ''}"><span class="chip">${c === 'w' ? '♔ OQ' : '♚ QORA'}</span><b>${esc(g.names[c])}</b>
     ${g.sinf[c] ? `<span class="wait">${esc(/^\d+$/.test(g.sinf[c]) ? g.sinf[c] + '-sinf' : g.sinf[c])}</span>` : ''}<span class="${g.ready[c] ? 'ok' : 'wait'}">${g.ready[c] ? '✓ Tayyor' : 'kutilmoqda…'}</span></div>`;
   const mine = MODE === 'both' ? (g.ready.w && g.ready.b) : g.ready[MODE];
-  const tc = g.armageddon ? 'Armageddon: oq 5 daqiqa, qora 4 daqiqa. Durang boʻlsa — qora gʻolib' : `Vaqt: har biriga ${Math.round(g.clock.w / 60000)} daqiqa${g.inc ? ` + har yurishga ${g.inc / 1000} soniya` : ''}`;
+  const tc = g.armageddon ? `Armageddon: oq ${Math.round(g.clock.w / 60000)} daqiqa, qora ${Math.round(g.clock.b / 60000)} daqiqa, qoʻshimcha soniyasiz. Durang boʻlsa — qora gʻolib` : `Vaqt: har biriga ${Math.round(g.clock.w / 60000)} daqiqa${g.inc ? ` + har yurishga ${g.inc / 1000} soniya` : ''}`;
   return `<div class="panel"><div class="kick">${esc(g.group)} · ${esc(g.round)}${g.no > 1 ? (g.armageddon ? ' · ARMAGEDDON' : ' · qayta oʻyin') : ''}</div>
     <h1>Navbatdagi oʻyin</h1><div class="vs">${card('w')}<div class="x">vs</div>${card('b')}</div>
     ${MODE === 'both' ? '' : `<p>Siz <b>${MODE === 'w' ? 'OQ' : 'QORA'}</b> donalar bilan oʻynaysiz. Ismingizni tekshiring.</p>`}
@@ -264,6 +286,7 @@ function render(v) {
   view = v;
   $('#link').classList.add('hidden');
   const g = v.game;
+  if (promoCancel && !(g && g.id === gid && canMove(g))) promoCancel();
   if (!g || g.status === 'aborted') {
     gid = null; shownPly = -1; clockBase = null;
     chess = new Chess(); cg.set({ fen: START, lastMove: undefined, check: false, movable: { color: undefined, dests: new Map() } });

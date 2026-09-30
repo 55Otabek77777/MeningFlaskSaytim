@@ -80,6 +80,7 @@ def new_state():
 
 
 def save():
+    S['saved_at'] = now_ms()
     os.makedirs(DATA, exist_ok=True)
     tmp = STATE_FILE + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as f:
@@ -92,6 +93,7 @@ def load():
     if os.path.exists(STATE_FILE):
         with open(STATE_FILE, encoding='utf-8') as f:
             S = json.load(f)
+        pause_clocks(now_ms() - S.get('saved_at', now_ms()))     # server oʻchiq turgan vaqt soatlardan ayirilmaydi
     else:
         S = new_state()
         save()
@@ -153,7 +155,7 @@ def build_bracket(g):
                                  'status': 'wait', 'games': [], 'bye': False, 'bronze': False, 'note': ''}
             col.append(mid)
         S['rounds'][g].append(col)
-    if R >= 2:
+    if n >= 4:                                  # 3 nafarda yarim finalda bitta yutqazgan boʻladi — 3-oʻrin oʻyini yoʻq
         mid = f'{g}-3orin'
         S['matches'][mid] = {'id': mid, 'g': g, 'r': R - 1, 's': 1, 'p': [None, None], 'winner': None, 'loser': None,
                              'status': 'wait', 'games': [], 'bye': False, 'bronze': True, 'note': ''}
@@ -228,6 +230,10 @@ def standings(g):
     b = S['bronze'].get(g)
     if b and S['matches'][b]['status'] == 'done':
         out.append({'place': 3, 'id': S['matches'][b]['winner']})
+    elif not b and final['status'] == 'done' and len(S['rounds'][g]) == 2:
+        semi = [S['matches'][x]['loser'] for x in S['rounds'][g][0] if S['matches'][x]['loser']]
+        if len(semi) == 1:                      # 3 nafar: yarim finalda yutqazgan oʻquvchi — 3-oʻrin
+            out.append({'place': 3, 'id': semi[0]})
     for o in out:
         o['name'] = pname(o['id'])
         o['prize'] = PRIZES[o['place']]
@@ -261,6 +267,8 @@ def queue_order(limit=12):
     for b in S['boards']:
         if b['game'] and S['games'][b['game']]['status'] in ('pending', 'playing'):
             busy[S['games'][b['game']]['g']] += 1
+        elif b.get('replay') and b['on'] and S['matches'][b['replay']]['status'] == 'ready':
+            busy[S['matches'][b['replay']]['g']] += 1       # durangdan keyingi qayta oʻyin shu taxtada boshlanadi
 
     def key(m):
         is_final = (not m['bronze']) and m['r'] == len(S['rounds'][m['g']]) - 1
@@ -311,6 +319,13 @@ def begin(gm):
     gm['started'] = gm['turn_at'] = now_ms()
 
 
+def pause_clocks(ms):
+    """Server ishlamagan vaqt (oʻchib qolgan, kompyuter uxlagan, soati surilgan) oʻyinchi soatidan ketmaydi."""
+    for gm in S['games'].values():
+        if gm['status'] == 'playing' and gm['turn_at']:
+            gm['turn_at'] += ms
+
+
 def remaining(gm, color):
     left = gm['clock'][color]
     if gm['status'] == 'playing' and gm['turn'] == color and gm['turn_at']:
@@ -318,11 +333,29 @@ def remaining(gm, color):
     return left
 
 
-def lone_king(fen, color):
-    board = fen.split()[0]
-    pieces = [ch for ch in board if ch.isalpha()]
-    mine = [ch for ch in pieces if (ch.isupper() if color == 'w' else ch.islower())]
-    return len(mine) == 1
+def can_mate(fen, color):
+    """FIDE 6.9: color tomoni biror qonuniy yurishlar ketma-ketligida mat qila oladimi (qila olmasa — durang).
+    Mat yoʻq: yolgʻiz shoh; shoh+ot, raqibda faqat shoh (yoki farzin); faqat fil(lar), raqibda ot/piyoda yoʻq
+    va taxtadagi barcha fillar bir xil rangda. Qolgan hamma holatda mat mumkin."""
+    mine, theirs, sq = [], [], set()
+    for r, row in enumerate(fen.split()[0].split('/')):
+        f = 0
+        for ch in row:
+            if ch.isdigit():
+                f += int(ch)
+                continue
+            if ch in 'bB':
+                sq.add((r + f) % 2)
+            if ch not in 'kK':
+                (mine if ch.isupper() == (color == 'w') else theirs).append(ch.lower())
+            f += 1
+    if not mine:
+        return False
+    if mine == ['n']:
+        return any(p != 'q' for p in theirs)
+    if set(mine) == {'b'}:
+        return 'n' in theirs or 'p' in theirs or len(sq) > 1
+    return True
 
 
 REASONS = {'mate': 'mat', 'resign': 'taslim boʻldi', 'time': 'vaqt tugadi', 'stalemate': 'pat', 'repetition': 'uch marta takrorlanish',
@@ -360,15 +393,24 @@ def finish(gm, result, reason):
                 b['replay'] = m['id']
 
 
+LAST_TICK = [0]
+
+
 def tick():
     """Vaqt nazorati: soat tugagan o'yinlarni yakunlaydi; bo'sh taxtalarga navbatdagi o'yinni beradi."""
     with LOCK:
         dirty = False
+        t0 = now_ms()
+        gap = t0 - LAST_TICK[0] if LAST_TICK[0] else 0
+        LAST_TICK[0] = t0
+        if gap > 5000 or gap < 0:               # kompyuter uxlagan yoki soati oʻzgargan — bu vaqt oʻyinchilarga yozilmaydi
+            pause_clocks(gap)
+            dirty = True
         for gm in S['games'].values():
             if gm['status'] == 'playing' and remaining(gm, gm['turn']) <= 0:
                 loser = gm['turn']
                 other = 'b' if loser == 'w' else 'w'
-                if lone_king(gm['fen'], other):
+                if not can_mate(gm['fen'], other):
                     finish(gm, '1/2-1/2', 'material')
                 else:
                     finish(gm, '0-1' if loser == 'w' else '1-0', 'time')
@@ -380,12 +422,14 @@ def tick():
             if rid and t >= b['hold_until'] and S['phase'] == 'running' and not S['paused']:
                 m = S['matches'][rid]
                 b['replay'] = None
-                if m['status'] == 'ready':
+                if m['status'] == 'ready' and b['on']:     # taxta oʻchirilgan boʻlsa — juftlik navbatga qaytadi
                     start_game(m, b)
                     dirty = True
         schedule()
         if dirty or before != [b['game'] for b in S['boards']]:
             changed()
+        elif t0 - S.get('saved_at', 0) > 5000 and any(g['status'] == 'playing' for g in S['games'].values()):
+            save()                              # soatlar 5 soniyada bir saqlanadi: server oʻchsa, shu joydan davom etadi
 
 
 # ---------------- ekranlar uchun ma'lumot ----------------
@@ -483,12 +527,12 @@ def admin_action(act, body):
         S['phase'] = 'setup'
         return 'Roʻyxat saqlandi'
     if act == 'config':
-        c = S['config']
-        for k in ('tc_min', 'tc_inc', 'arm_w', 'arm_b'):
-            if k in body:
-                c[k] = max(0, min(90, int(body[k])))
+        new = {k: min(90, int(body[k])) for k in ('tc_min', 'tc_inc', 'arm_w', 'arm_b') if k in body}
+        if min(new.get('tc_min', 1), new.get('arm_w', 1), new.get('arm_b', 1)) < 1 or new.get('tc_inc', 0) < 0:
+            raise ValueError('Vaqt notoʻgʻri: kamida 1 daqiqa boʻlishi kerak (qoʻshimcha soniya 0 boʻlishi mumkin)')
         if 'boards' in body:
-            resize_boards(body['boards'])
+            resize_boards(body['boards'])       # rad etilsa, boshqa sozlamalar ham oʻzgarmaydi
+        S['config'].update(new)
         return 'Sozlamalar saqlandi'
     if act == 'draw':
         if ph not in ('setup', 'drawn'):
@@ -532,17 +576,24 @@ def admin_action(act, body):
         for b in S['boards']:
             if b['game'] == gm['id']:
                 b['game'] = None
+                if b['on']:
+                    start_game(m, b, white=gm['white'])     # oʻsha taxtada, oʻsha ranglar bilan
         return 'Oʻyin bekor qilindi — juftlik qayta oʻynaydi'
     if act == 'winner':                             # hakam qarori (kelmadi, texnik nosozlik va h.k.)
         m = S['matches'][body['match']]
         w = body['player']
-        if w not in m['p']:
+        if not w or w not in m['p']:
             raise ValueError('Bu oʻquvchi juftlikda yoʻq')
-        if m['status'] == 'done':
+        if m['status'] in ('done', 'bye'):
             raise ValueError('Juftlik natijasi allaqachon bor')
+        if not (m['p'][0] and m['p'][1]):
+            raise ValueError('Juftlikda hali ikkala oʻquvchi yoʻq')
         for gid in m['games']:
             gm = S['games'][gid]
             if gm['status'] in ('pending', 'playing'):
+                if gm['status'] == 'playing':
+                    gm['clock'][gm['turn']] = max(0, remaining(gm, gm['turn']))
+                gm['draw_offer'] = None
                 gm['status'] = 'done'
                 gm['result'] = '1-0' if gm['white'] == w else '0-1'
                 gm['reason'] = 'admin'
@@ -584,16 +635,23 @@ def player_action(gid, act, body):
         return
     if gm['status'] != 'playing':
         raise ValueError('Oʻyin davom etmayapti')
+    if remaining(gm, gm['turn']) <= 0:          # bayroq tushgan, ticker hali ulgurmagan — avval vaqt natijasi
+        tick()
+        raise ValueError('Vaqt tugagan')
     if act == 'move':
         if gm['turn'] != color:
             raise ValueError('Hozir sizning navbatingiz emas')
         if int(body.get('ply', -1)) != len(gm['moves']):
             raise ValueError('Yurish tartibi mos emas — sahifa yangilanadi')
         left = remaining(gm, color)
-        if left <= 0:
-            tick()
-            raise ValueError('Vaqt tugagan')
         san, fen = str(body['san'])[:12], str(body['fen'])[:100]
+        over = body.get('over') or None
+        if over is not None:                    # oʻyin tugashi faqat yuruvchi tomon uchun va sababga mos natija bilan
+            why = over.get('reason') if isinstance(over, dict) else None
+            need = {'mate': '1-0' if color == 'w' else '0-1', 'stalemate': '1/2-1/2', 'repetition': '1/2-1/2',
+                    'fifty': '1/2-1/2', 'material': '1/2-1/2'}
+            if why not in need or over.get('result') != need[why] or (why == 'mate') != san.endswith('#'):
+                raise ValueError('Oʻyin natijasi notoʻgʻri — sahifa yangilanadi')
         gm['clock'][color] = left + gm['inc']
         gm['moves'].append(san)
         gm['fen'] = fen
@@ -602,11 +660,8 @@ def player_action(gid, act, body):
         gm['turn_at'] = now_ms()
         if gm['draw_offer'] and gm['draw_offer'] != color:
             gm['draw_offer'] = None             # raqib taklifiga javoban yurish — rad etilgan hisoblanadi
-        over = body.get('over')
-        if over:
-            res, why = over.get('result'), over.get('reason')
-            if res in ('1-0', '0-1', '1/2-1/2') and why in REASONS:
-                finish(gm, res, why)
+        if over is not None:
+            finish(gm, over['result'], why)
         return
     if act == 'resign':
         finish(gm, '0-1' if color == 'w' else '1-0', 'resign')
@@ -615,6 +670,12 @@ def player_action(gid, act, body):
         a = body.get('action')
         other = 'b' if color == 'w' else 'w'
         if a == 'offer':
+            if gm['draw_offer'] == other:
+                finish(gm, '1/2-1/2', 'agreement')      # ikkala tomon ham durang taklif qildi — kelishuv
+                return
+            if gm.setdefault('offered', {}).get(color) == len(gm['moves']):
+                raise ValueError('Durangni har yurishda bir marta taklif qilish mumkin')
+            gm['offered'][color] = len(gm['moves'])
             gm['draw_offer'] = color
         elif a == 'accept' and gm['draw_offer'] == other:
             finish(gm, '1/2-1/2', 'agreement')
@@ -736,6 +797,8 @@ class H(BaseHTTPRequestHandler):
                     msg = admin_action(m.group(1), body)
                 except (ValueError, KeyError, StopIteration) as e:
                     return self.send_json({'error': str(e) or 'Xato'}, 400)
+                except TypeError:                       # formadan boʻsh/NaN qiymat (null) keldi
+                    return self.send_json({'error': 'Maʼlumot notoʻgʻri'}, 400)
                 changed(msg)
             return self.send_json({'ok': True, 'message': msg})
         m = re.fullmatch(r'/api/game/([\w-]+)/(\w+)', p)
@@ -745,6 +808,8 @@ class H(BaseHTTPRequestHandler):
                     player_action(m.group(1), m.group(2), body)
                 except (ValueError, KeyError) as e:
                     return self.send_json({'error': str(e) or 'Xato'}, 409)
+                except TypeError:
+                    return self.send_json({'error': 'Maʼlumot notoʻgʻri'}, 409)
                 changed()
                 tick()
             return self.send_json({'ok': True})

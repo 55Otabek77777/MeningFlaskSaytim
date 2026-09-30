@@ -302,7 +302,7 @@ function podium() {
   f.dataset.k = 'f' + st.finished_at; full(true);
   const pod = g => {
     const s = st.standings[g]; const by = p => s.find(x => x.place === p) || { name: '—', prize: st.prizes[p] };
-    const step = p => `<div class="step p${p}"><b>${esc(by(p).name)}</b><span class="money">${money(by(p).prize)} soʻm</span><div class="blk">${p}</div></div>`;
+    const step = p => `<div class="step p${p}"><b>${esc(by(p).name)}</b><span class="money">${by(p).id ? money(by(p).prize) + ' soʻm' : ''}</span><div class="blk">${p}</div></div>`;
     return `<div class="pod"><h2>${esc(st.groups[g])}</h2><div class="steps">${step(2)}${step(1)}${step(3)}</div></div>`;
   };
   f.innerHTML = `<div class="hero" style="width:100%"><div class="k">«Mirzo Ulugʻbek» xususiy maktabi · shaxmat musobaqasi</div><h1>GʻOLIBLARNI <span>TABRIKLAYMIZ!</span></h1><div class="podiums">${pod('B')}${pod('G')}</div></div>`;

@@ -5,7 +5,8 @@ Oʻgʻil bolalar va qizlar alohida oʻynaydi. Qurʼani dastur tashlaydi. Oʻyinl
 
 * **Internet shart emas.** Bitta kompyuter server boʻladi, qolganlari shu tarmoqdan (Wi-Fi yoki kabel) brauzer orqali ulanadi.
 * **Hech narsa oʻrnatilmaydi.** Faqat server kompyuterida Python 3.8 yoki undan yangisi boʻlishi kerak.
-* Har yurishdan keyin holat `data/turnir.json` ga saqlanadi. Kompyuter oʻchib qolsa, qayta ishga tushirganda turnir oʻsha joyidan davom etadi.
+* Har yurishdan keyin holat `data/turnir.json` ga saqlanadi. Kompyuter oʻchib qolsa, qayta ishga tushirganda turnir oʻsha joyidan davom etadi. Server ishlamagan vaqt oʻyinchilar soatidan ayirilmaydi.
+* **Server kompyuterida uyqu rejimini oʻchiring** (Windows: Sozlamalar → Tizim → Quvvat → «Uyqu: hech qachon»). Server uxlab qolsa, barcha taxtalar toʻxtab turadi.
 
 ## 1. Tayyorlash (bir marta)
 
@@ -49,20 +50,20 @@ Brauzerda **F11** bosing (toʻliq ekran). Chrome yoki Edge tavsiya etiladi.
 
 1. **Hakam → «Qurʼa tashlash».** Katta ekranda juftliklar animatsiya bilan chiqadi. Ishtirokchilar soni 2 ning darajasiga (8, 16, 32, 64) teng boʻlmasa, qurʼa bilan bir nechta oʻquvchi birinchi bosqichni oʻtkazib, toʻgʻridan-toʻgʻri keyingi bosqichga chiqadi. Qurʼani qayta tashlash mumkin (turnir boshlanguncha).
 2. **«Turnirni boshlash».** Dastur boʻsh taxtaga navbatdagi juftlikni beradi. Ikkala oʻquvchi ekranda ismini koʻradi va **TAYYORMAN** tugmasini bosadi, shunda soat yuradi.
-3. Oʻyin **mat, taslim, vaqt tugashi, pat, uch marta takrorlanish, 50 yurish qoidasi** yoki **kelishilgan durang** bilan tugaydi. Natijani dastur oʻzi yozadi.
-4. **Durang boʻlsa**, oʻsha juftlik ranglarni almashtirib yana oʻynaydi. Yana durang boʻlsa, **armageddon**: oqda 5 daqiqa, qorada 4 daqiqa, durang boʻlsa qora gʻolib. Vaqtlarni sozlamalarda oʻzgartirish mumkin.
-5. Yarim finalda yutqazganlar **3-oʻrin** uchun oʻynaydi.
+3. Oʻyin **mat, taslim, vaqt tugashi, pat, uch marta takrorlanish, 50 yurish qoidasi, mat qilish uchun kuch yetarli emasligi** yoki **kelishilgan durang** bilan tugaydi. Natijani dastur oʻzi yozadi. Uch marta takrorlanish va 50 yurish qoidasida dastur oʻyinni **avtomatik** durang deb yakunlaydi (daʼvo qilish shart emas). Vaqti tugagan oʻyinchi yutqazadi; lekin raqibi hech qanday yurishlar bilan mat qila olmasa (masalan, faqat shoh yoki shoh+ot qolgan boʻlsa), durang (FIDE 6.9).
+4. **Durang boʻlsa**, oʻsha juftlik oʻsha taxtada ranglarni almashtirib yana oʻynaydi. Yana durang boʻlsa, **armageddon** (qoʻshimcha soniyasiz): oqda 5 daqiqa, qorada 4 daqiqa, durang boʻlsa qora gʻolib. Armageddonda birinchi oʻyinda oq bilan oʻynagan oʻquvchi yana oq bilan oʻynaydi. Vaqtlarni sozlamalarda oʻzgartirish mumkin.
+5. Yarim finalda yutqazganlar **3-oʻrin** uchun oʻynaydi. Guruhda 3 nafar oʻquvchi boʻlsa, 3-oʻrin oʻyini boʻlmaydi: yarim finalda yutqazgan oʻquvchi 3-oʻrinni oladi. Guruhda 1 nafar oʻquvchi boʻlsa, u jadvalga kirmaydi.
 6. Oxirida katta ekranda shohsupa chiqadi: 1-oʻrin 500 000, 2-oʻrin 300 000, 3-oʻrin 200 000 soʻm (oʻgʻil bolalar va qizlar alohida).
 
 ## 5. Hakam imkoniyatlari (`/admin`)
 
-* **Tanaffus**: yangi oʻyinlar berilmaydi, boshlangan oʻyinlar davom etadi.
-* **Taxtalar soni**: istalgan payt qoʻshish yoki kamaytirish mumkin. Har taxta = 2 kompyuter. Taxta qancha koʻp boʻlsa, turnir shuncha tez tugaydi (sahifada taxminiy vaqt koʻrsatiladi).
+* **Tanaffus**: yangi oʻyinlar berilmaydi, boshlangan oʻyinlar (soatlari ham) davom etadi. Taxtaga chiqib boʻlgan oʻyin ikkala oʻquvchi «Tayyorman»ni bossa boshlanadi.
+* **Taxtalar soni**: istalgan payt qoʻshish mumkin; kamaytirish — olib tashlanadigan taxtalarda oʻyin ketmayotgan paytda. Har taxta = 2 kompyuter. Taxta qancha koʻp boʻlsa, turnir shuncha tez tugaydi (sahifada taxminiy vaqt koʻrsatiladi).
 * **Vaqt nazorati**: daqiqa va har yurishga qoʻshimcha soniya (standart 5 + 3).
 * Taxta kartochkasida:
   * **Boshlash**: oʻquvchi «Tayyorman»ni bosa olmasa, oʻyinni hakam boshlaydi.
-  * **Qayta boshlash**: oʻyin notoʻgʻri boshlangan boʻlsa (masalan, oʻquvchilar joyini adashtirgan).
-  * **Gʻolib: oq / qora**: hakam qarori.
+  * **Qayta boshlash**: oʻyin notoʻgʻri boshlangan boʻlsa (masalan, oʻquvchilar joyini adashtirgan). Oʻyin oʻsha taxtada, oʻsha ranglar bilan 1-yurishdan qaytadan boshlanadi.
+  * **Gʻolib: oq / qora**: hakam qarori. Uni bekor qilib boʻlmaydi — tasdiqlashdan oldin ismni tekshiring.
 * Oʻyinlar jadvalida istalgan juftlik uchun hakam qarori.
 * **Natijalar (CSV)**: barcha oʻyinlar Excelda ochiladigan jadvalda.
 * Qurʼagacha oʻquvchilar roʻyxatini shu sahifada tahrirlash mumkin.
