@@ -778,10 +778,20 @@ def ticker():
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):          # Windows konsolida oʻzbekcha harflar xato bermasin
+        try:
+            stream.reconfigure(errors='replace')
+        except Exception:
+            pass
     load()
     pin = admin_pin()
+    try:
+        srv = ThreadingHTTPServer(('0.0.0.0', PORT), H)
+    except OSError as e:
+        print(f'{PORT}-port band yoki ochilmadi ({e}). Server allaqachon ishlayotgan boʻlishi mumkin — oynalarni tekshiring.')
+        print('Boshqa port bilan: set PORT=8080  va qayta ishga tushiring.')
+        sys.exit(1)
     threading.Thread(target=ticker, daemon=True).start()
-    srv = ThreadingHTTPServer(('0.0.0.0', PORT), H)
     srv.daemon_threads = True
     ip = lan_ips()[0]
     np = {g: sum(1 for p in S['players'].values() if p['g'] == g) for g in ('B', 'G')}
