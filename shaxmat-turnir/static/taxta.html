@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taxta · Shaxmat musobaqasi</title>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/vendor/cg-base.css">
+<link rel="stylesheet" href="/vendor/cg-theme.css">
+<link rel="stylesheet" href="/vendor/cg-pieces.css">
+<link rel="stylesheet" href="/app.css">
+<style>
+body { overflow: hidden; }
+.wrap { height: 100vh; display: flex; gap: 2.4vh; padding: 2.4vh; align-items: center; justify-content: center; }
+#board-box { width: min(95vh, calc(100vw - 470px)); aspect-ratio: 1; position: relative; flex: none; border-radius: 6px; box-shadow: 0 30px 80px -30px #000, 0 0 0 6px #ffffff10; }
+#board { width: 100%; height: 100%; }
+.side { width: 420px; height: 95vh; display: flex; flex-direction: column; gap: 12px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.top .brand { font-size: 14px; }
+.station { display: flex; flex-wrap: wrap; gap: 6px; }
+.player { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 12px; padding: 14px 16px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
+.player .nm { font: 800 21px/1.15 var(--display); letter-spacing: -.01em; }
+.player .meta { display: flex; gap: 6px; align-items: center; color: var(--mute); font-weight: 700; font-size: 15px; }
+.player .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #ffffff55; flex: none; }
+.player .dot.w { background: #fff; } .player .dot.b { background: #111; }
+.player.turn { border-color: var(--gold); box-shadow: 0 0 0 2px #f4c87144 inset; }
+.clock { grid-row: 1 / span 2; grid-column: 2; font: 700 50px/1 var(--mono); padding: 10px 16px; border-radius: 12px; background: #0b1224; color: #cbd5e1; min-width: 170px; text-align: center; }
+.player.turn .clock { background: #fff; color: #0b1224; }
+.player.turn .clock.low { background: var(--red); color: #fff; }
+.mid { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 16px; background: #0e1731cc; border: 1px solid var(--line); }
+.mid .head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mid .status { font: 700 19px/1.3 var(--body); color: #e2e8f0; }
+.moves { flex: 1; min-height: 0; overflow: auto; display: grid; grid-template-columns: 2.4em 1fr 1fr; align-content: start; gap: 2px 8px; font: 600 17px/1.5 var(--mono); }
+.moves .n { color: var(--mute); }
+.moves .cur { background: #f4c87133; border-radius: 4px; padding: 0 4px; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.actions .btn { min-height: 52px; font-size: 17px; }
+.offer { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 14px; background: #1e3a8a55; border: 1px solid var(--sky); font-weight: 700; }
+.offer div { display: flex; gap: 8px; }
+.overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: radial-gradient(90% 80% at 50% 40%, #13245aee, #0b1224f7); padding: 24px; }
+.panel { width: min(760px, 100%); display: grid; justify-items: center; text-align: center; gap: 18px; padding: 36px 40px; border-radius: 28px; background: #0e1731ee; border: 1px solid var(--line); box-shadow: 0 40px 80px -40px #000; }
+.panel .logo { width: 92px; height: 92px; border-radius: 50%; background: #fff; padding: 6px; }
+.panel .kick { font: 700 15px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.panel h1 { font: 800 38px/1.1 var(--display); letter-spacing: -.02em; }
+.panel h2 { font: 800 28px/1.15 var(--display); }
+.panel p { font-size: 19px; color: #dbe4f5; }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; width: 100%; }
+.vs .side-card { display: grid; gap: 6px; justify-items: center; padding: 16px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); }
+.vs .side-card.me { border-color: var(--gold); box-shadow: 0 0 0 2px #f4c87133 inset; }
+.vs .side-card b { font: 800 22px/1.15 var(--display); }
+.vs .x { font: 800 26px var(--display); color: var(--gold); }
+.big { min-height: 76px; padding: 0 44px; font: 800 26px var(--display); border-radius: 18px; }
+.ok { color: #86efac; font-weight: 800; }
+.wait { color: var(--mute); font-weight: 700; }
+.upcoming { width: 100%; display: grid; gap: 6px; text-align: left; }
+.upcoming div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background: #ffffff0a; font-weight: 700; }
+.upcoming span { color: var(--mute); font-weight: 600; }
+.result { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: #0b1224b3; border-radius: 6px; }
+.result .panel { width: min(88%, 620px); padding: 30px; }
+.result h1.win { color: var(--gold); } .result h1.lose { color: #cbd5e1; } .result h1.draw { color: var(--sky); }
+.promo { position: absolute; inset: 0; z-index: 25; display: grid; place-items: center; background: #0b1224c0; }
+.promo .row { display: flex; gap: 12px; padding: 16px; border-radius: 18px; background: #f8fafc; }
+.promo button { width: 96px; height: 96px; border-radius: 12px; background: #e9edf7; position: relative; }
+.promo button:hover { background: #cbd5f5; }
+.promo .cg-wrap { position: absolute; inset: 6px; }
+.promo piece { width: 100% !important; height: 100% !important; }
+.banner { position: fixed; top: 0; left: 0; right: 0; z-index: 60; padding: 10px; text-align: center; font-weight: 800; background: #7f1d1d; }
+.confirm { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: #000a; }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 80; }
+@media (max-width: 1100px) { .wrap { flex-direction: column; padding: 10px; gap: 10px; } #board-box { width: min(96vw, 62vh); } .side { width: min(96vw, 620px); height: auto; } .clock { font-size: 34px; min-width: 120px; } .moves { max-height: 18vh; } }
+</style>
+</head>
+<body>
+<div class="banner hidden" id="link">Server bilan aloqa uzildi — qayta ulanmoqda…</div>
+<div class="wrap">
+  <div id="board-box">
+    <div id="board" class="cg-wrap"></div>
+    <div class="result hidden" id="result"></div>
+    <div class="promo hidden" id="promo"></div>
+  </div>
+  <div class="side">
+    <div class="top">
+      <div class="brand"><img src="/logo.png" alt=""><div><b>MIRZO ULUGʻBEK</b><small>Shaxmat musobaqasi</small></div></div>
+      <div class="station" id="station"></div>
+    </div>
+    <div class="player" id="p-top"></div>
+    <div class="mid">
+      <div class="head" id="head"></div>
+      <div class="status" id="status"></div>
+      <div class="offer hidden" id="offer"></div>
+      <div class="moves" id="moves"></div>
+    </div>
+    <div class="player" id="p-bot"></div>
+    <div class="actions">
+      <button class="btn" id="b-draw">½ Durang taklif</button>
+      <button class="btn red" id="b-resign">⚑ Taslim boʻlish</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<div class="confirm hidden" id="confirm"></div>
+<canvas class="confetti hidden" id="confetti"></canvas>
+
+<script type="module">
+import { Chessground } from '/vendor/chessground.min.js';
+import { Chess } from '/vendor/chess.js';
+import { $, api, live, fmtClock, sound, esc, toast, RANG } from '/common.js';
+
+const mm = location.pathname.match(/\/taxta\/(\d+)(?:\/(oq|qora))?/) || [];
+const BOARD = +(mm[1] || new URLSearchParams(location.search).get('taxta') || 1);
+const MODE = mm[2] === 'oq' ? 'w' : mm[2] === 'qora' ? 'b' : 'both';      // both — bitta kompyuterda ikkala o'yinchi
+const BOTTOM = MODE === 'b' ? 'b' : 'w';
+const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+document.title = `${BOARD}-taxta${MODE === 'both' ? '' : ' · ' + RANG[MODE]} · Shaxmat musobaqasi`;
+$('#station').innerHTML = `<span class="chip gold">${BOARD}-taxta</span>` + (MODE === 'both' ? '<span class="chip">Oq va qora</span>' : `<span class="chip">${MODE === 'w' ? '♔ OQ donalar' : '♚ QORA donalar'}</span>`);
+
+let view = null, chess = new Chess(), gid = null, shownPly = -1, clockBase = null, lastBeep = 0, doneShown = null;
+const cg = Chessground($('#board'), {
+  orientation: BOTTOM === 'b' ? 'black' : 'white', coordinates: true,
+  animation: { enabled: true, duration: 220 }, highlight: { lastMove: true, check: true },
+  movable: { free: false, color: undefined, showDests: true, events: { after: onMove } },
+  draggable: { showGhost: true }, premovable: { enabled: false }, drawable: { enabled: false }
+});
+
+const other = c => (c === 'w' ? 'b' : 'w');
+const canMove = g => g && g.status === 'playing' && (MODE === 'both' || g.turn === MODE);
+const actor = g => (MODE === 'both' ? g.turn : MODE);
+function rebuild(g) { chess = new Chess(); for (const san of g.moves) chess.move(san); }
+function dests() {
+  const d = new Map();
+  for (const mv of chess.moves({ verbose: true })) { if (!d.has(mv.from)) d.set(mv.from, []); d.get(mv.from).push(mv.to); }
+  return d;
+}
+function syncBoard(g) {
+  const tc = chess.turn() === 'w' ? 'white' : 'black';
+  cg.set({
+    fen: chess.fen(), turnColor: tc, lastMove: g && g.last && g.last[0] ? g.last : undefined,
+    check: chess.inCheck() ? tc : false,
+    movable: { color: canMove(g) ? tc : undefined, dests: canMove(g) ? dests() : new Map() }
+  });
+}
+
+function gameOver() {
+  if (chess.isCheckmate()) return { result: chess.turn() === 'w' ? '0-1' : '1-0', reason: 'mate' };
+  if (chess.isStalemate()) return { result: '1/2-1/2', reason: 'stalemate' };
+  if (chess.isThreefoldRepetition()) return { result: '1/2-1/2', reason: 'repetition' };
+  if (chess.isInsufficientMaterial()) return { result: '1/2-1/2', reason: 'material' };
+  if (chess.isDraw()) return { result: '1/2-1/2', reason: 'fifty' };
+  return null;
+}
+
+function onMove(orig, dest) {
+  const pc = chess.get(orig);
+  if (pc && pc.type === 'p' && (dest[1] === '8' || dest[1] === '1')) return choosePromo(pc.color).then(p => commit(orig, dest, p));
+  commit(orig, dest);
+}
+function choosePromo(color) {
+  const box = $('#promo'), cls = color === 'w' ? 'white' : 'black';
+  box.innerHTML = '<div class="row">' + [['q', 'queen'], ['r', 'rook'], ['b', 'bishop'], ['n', 'knight']]
+    .map(([k, n]) => `<button data-p="${k}" aria-label="${n}"><span class="cg-wrap"><piece class="${n} ${cls}"></piece></span></button>`).join('') + '</div>';
+  box.classList.remove('hidden');
+  return new Promise(res => box.querySelectorAll('button').forEach(b => b.onclick = () => { box.classList.add('hidden'); res(b.dataset.p); }));
+}
+async function commit(from, to, promotion) {
+  const g = view && view.game;
+  if (!canMove(g)) { syncBoard(g); return; }
+  const color = chess.turn();
+  let mv = null;
+  try { mv = chess.move({ from, to, promotion: promotion || 'q' }); } catch (e) { mv = null; }
+  if (!mv) { syncBoard(g); return; }
+  const over = gameOver();
+  (mv.captured ? sound.capture : sound.move)();
+  if (chess.inCheck()) setTimeout(sound.check, 90);
+  shownPly = g.ply + 1;
+  cg.set({ fen: chess.fen(), lastMove: [from, to], turnColor: chess.turn() === 'w' ? 'white' : 'black', check: chess.inCheck() ? (chess.turn() === 'w' ? 'white' : 'black') : false, movable: { color: undefined, dests: new Map() } });
+  try {
+    await api(`/api/game/${g.id}/move`, { color, ply: g.ply, san: mv.san, fen: chess.fen(), from, to, over });
+  } catch (e) {
+    toast(e.message, true);
+    shownPly = -1;
+    rebuild(view.game); syncBoard(view.game);
+  }
+}
+
+async function act(path, body) {
+  try { await api(`/api/game/${view.game.id}/${path}`, body); } catch (e) { toast(e.message, true); }
+}
+function ask(text, yes) {
+  const c = $('#confirm');
+  c.innerHTML = `<div class="panel"><h2>${esc(text)}</h2><div style="display:flex;gap:12px"><button class="btn red big" id="c-yes">Ha</button><button class="btn big" id="c-no">Yoʻq</button></div></div>`;
+  c.classList.remove('hidden');
+  $('#c-no').onclick = () => c.classList.add('hidden');
+  $('#c-yes').onclick = () => { c.classList.add('hidden'); yes(); };
+}
+$('#b-resign').onclick = () => {
+  const g = view && view.game; if (!g || g.status !== 'playing') return;
+  const c = actor(g);
+  ask(MODE === 'both' ? `${RANG[c]} donalar taslim boʻladimi?` : 'Rostdan ham taslim boʻlasizmi?', () => act('resign', { color: c }));
+};
+$('#b-draw').onclick = () => { const g = view && view.game; if (g && g.status === 'playing') act('draw', { color: actor(g), action: 'offer' }); };
+
+function playerCard(el, c, g) {
+  const nm = g ? g.names[c] : '—', cls = g ? g.sinf[c] : '';
+  el.className = 'player' + (g && g.status === 'playing' && g.turn === c ? ' turn' : '');
+  el.innerHTML = `<div class="nm">${esc(nm)}</div><div class="clock mono" data-c="${c}">${g ? fmtClock(g.clock[c]) : '—'}</div>
+    <div class="meta"><span class="dot ${c}"></span>${c === 'w' ? 'Oq' : 'Qora'}${cls ? ` · ${esc(/^\d+$/.test(cls) ? cls + '-sinf' : cls)}` : ''}${MODE === c ? ' · <span style="color:var(--gold)">SIZ</span>' : ''}</div>`;
+}
+function renderMoves(g) {
+  const box = $('#moves'); let h = '';
+  for (let i = 0; i < g.moves.length; i += 2) {
+    const cur = j => (j === g.moves.length - 1 ? ' class="cur"' : '');
+    h += `<span class="n">${i / 2 + 1}.</span><span${cur(i)}>${esc(g.moves[i])}</span><span${cur(i + 1)}>${esc(g.moves[i + 1] || '')}</span>`;
+  }
+  box.innerHTML = h; box.scrollTop = box.scrollHeight;
+}
+function statusText(g) {
+  if (g.status === 'pending') return 'Oʻyinchilar tayyorligi kutilmoqda';
+  if (g.status === 'playing') {
+    const who = g.turn === 'w' ? 'Oq' : 'Qora';
+    return MODE === 'both' ? `${who} donalar yurishi` : (g.turn === MODE ? 'Sizning yurishingiz' : 'Raqib oʻylamoqda…');
+  }
+  return g.result === '1/2-1/2' ? 'Durang' : (g.result === '1-0' ? 'Oq donalar gʻalaba qozondi' : 'Qora donalar gʻalaba qozondi');
+}
+
+function overlay(html) {
+  const o = $('#overlay');
+  if (html === null) { o.classList.add('hidden'); o.innerHTML = ''; return; }
+  o.classList.remove('hidden');
+  if (o.dataset.h !== html) { o.dataset.h = html; o.innerHTML = html; }
+}
+function idleHtml(v) {
+  const up = (v.upcoming || []).map(u => `<div>${esc(u.a)} — ${esc(u.b)}<span>${esc(u.group)} · ${esc(u.title)}</span></div>`).join('');
+  const msg = v.phase === 'finished' ? 'Turnir yakunlandi. Hammaga rahmat!' : v.phase !== 'running' ? 'Turnir hali boshlanmadi' : v.paused ? 'Tanaffus' : !v.on ? 'Bu taxta hozir ishlatilmayapti' : 'Navbatdagi oʻyin kutilmoqda…';
+  return `<div class="panel"><img class="logo" src="/logo.png" alt=""><div class="kick">«Mirzo Ulugʻbek» xususiy maktabi</div>
+    <h1>SHAXMAT MUSOBAQASI</h1><p>${BOARD}-taxta${MODE === 'both' ? '' : ' · ' + (MODE === 'w' ? 'OQ' : 'QORA') + ' donalar oʻrni'}</p>
+    <h2 class="wait">${msg}</h2>${up ? `<div class="upcoming"><div style="background:none;padding:0 4px">Navbatdagi juftliklar:</div>${up}</div>` : ''}</div>`;
+}
+function pendingHtml(g) {
+  const card = c => `<div class="side-card${MODE === c ? ' me' : ''}"><span class="chip">${c === 'w' ? '♔ OQ' : '♚ QORA'}</span><b>${esc(g.names[c])}</b>
+    ${g.sinf[c] ? `<span class="wait">${esc(/^\d+$/.test(g.sinf[c]) ? g.sinf[c] + '-sinf' : g.sinf[c])}</span>` : ''}<span class="${g.ready[c] ? 'ok' : 'wait'}">${g.ready[c] ? '✓ Tayyor' : 'kutilmoqda…'}</span></div>`;
+  const mine = MODE === 'both' ? (g.ready.w && g.ready.b) : g.ready[MODE];
+  const tc = g.armageddon ? 'Armageddon: oq 5 daqiqa, qora 4 daqiqa. Durang boʻlsa — qora gʻolib' : `Vaqt: har biriga ${Math.round(g.clock.w / 60000)} daqiqa${g.inc ? ` + har yurishga ${g.inc / 1000} soniya` : ''}`;
+  return `<div class="panel"><div class="kick">${esc(g.group)} · ${esc(g.round)}${g.no > 1 ? (g.armageddon ? ' · ARMAGEDDON' : ' · qayta oʻyin') : ''}</div>
+    <h1>Navbatdagi oʻyin</h1><div class="vs">${card('w')}<div class="x">vs</div>${card('b')}</div>
+    ${MODE === 'both' ? '' : `<p>Siz <b>${MODE === 'w' ? 'OQ' : 'QORA'}</b> donalar bilan oʻynaysiz. Ismingizni tekshiring.</p>`}
+    <p class="wait">${tc}</p>
+    ${mine ? '<h2 class="ok">✓ Siz tayyorsiz — raqib kutilmoqda</h2>' : '<button class="btn gold big" id="b-ready">TAYYORMAN</button>'}</div>`;
+}
+function resultHtml(g) {
+  const dr = g.result === '1/2-1/2';
+  let title, cls;
+  if (MODE === 'both' || !g.winner) { title = dr ? (g.armageddon ? 'Durang — qora gʻolib' : 'DURANG') : `${g.result === '1-0' ? 'OQ' : 'QORA'} DONALAR GʻALABASI`; cls = dr ? 'draw' : 'win'; }
+  else { const iWon = (g.winner === (MODE === 'w' ? g.white : g.black)); title = iWon ? 'GʻALABA!' : 'MAGʻLUBIYAT'; cls = iWon ? 'win' : 'lose'; }
+  const wname = g.winner ? (g.winner === g.white ? g.names.w : g.names.b) : '';
+  let next = '';
+  if (!g.winner) next = 'Durang: qayta oʻyin boʻladi. Ranglar almashadi — <b>oʻrinlarni almashtiring</b>.';
+  else if (g.round === 'Final') next = `🏆 ${esc(wname)} — ${esc(g.group)} bahsining chempioni!`;
+  else if (g.round === '3-oʻrin uchun') next = `🥉 ${esc(wname)} — 3-oʻrin sohibi!`;
+  else next = `${esc(wname)} keyingi bosqichga chiqdi.`;
+  return `<div class="panel"><div class="kick">${esc(g.round)} · ${esc(g.reason_text)}</div><h1 class="${cls}">${title}</h1><p>${next}</p></div>`;
+}
+
+function render(v) {
+  view = v;
+  $('#link').classList.add('hidden');
+  const g = v.game;
+  if (!g || g.status === 'aborted') {
+    gid = null; shownPly = -1; clockBase = null;
+    chess = new Chess(); cg.set({ fen: START, lastMove: undefined, check: false, movable: { color: undefined, dests: new Map() } });
+    playerCard($('#p-top'), other(BOTTOM), null); playerCard($('#p-bot'), BOTTOM, null);
+    $('#moves').innerHTML = ''; $('#head').innerHTML = ''; $('#status').textContent = ''; $('#offer').classList.add('hidden'); $('#result').classList.add('hidden');
+    overlay(idleHtml(v));
+    return;
+  }
+  if (g.id !== gid) { gid = g.id; shownPly = -1; doneShown = null; $('#result').classList.add('hidden'); }
+  if (g.ply !== shownPly) {
+    const fresh = shownPly >= 0 && g.ply > shownPly;
+    rebuild(g); shownPly = g.ply;
+    if (fresh) { const last = g.moves[g.moves.length - 1] || ''; (last.includes('x') ? sound.capture : sound.move)(); if (last.includes('+') || last.includes('#')) setTimeout(sound.check, 90); }
+  }
+  syncBoard(g);
+  clockBase = { w: g.clock.w, b: g.clock.b, turn: g.turn, run: g.status === 'playing', t: v._recv };
+  playerCard($('#p-top'), other(BOTTOM), g); playerCard($('#p-bot'), BOTTOM, g);
+  $('#head').innerHTML = `<span class="chip gold">${esc(g.group)}</span><span class="chip">${esc(g.round)}</span>` +
+    (g.no > 1 ? `<span class="chip">${g.armageddon ? 'Armageddon' : g.no + '-oʻyin (qayta)'}</span>` : '') + (g.status === 'playing' ? '<span class="chip live">Jonli</span>' : '');
+  $('#status').textContent = statusText(g);
+  renderMoves(g);
+  const offer = $('#offer');
+  if (g.status === 'playing' && g.draw_offer && (MODE === 'both' || g.draw_offer !== MODE)) {
+    const who = MODE === 'both' ? other(g.draw_offer) : MODE;
+    offer.innerHTML = `${g.draw_offer === 'w' ? 'Oq' : 'Qora'} donalar durang taklif qildi<div><button class="btn green" id="d-yes">Qabul qilish</button><button class="btn" id="d-no">Rad etish</button></div>`;
+    offer.classList.remove('hidden');
+    $('#d-yes').onclick = () => act('draw', { color: who, action: 'accept' });
+    $('#d-no').onclick = () => act('draw', { color: who, action: 'decline' });
+  } else if (g.status === 'playing' && g.draw_offer && g.draw_offer === MODE) {
+    offer.innerHTML = 'Durang taklifingiz yuborildi — raqib javobi kutilmoqda'; offer.classList.remove('hidden');
+  } else offer.classList.add('hidden');
+  $('#b-draw').disabled = $('#b-resign').disabled = !(g.status === 'playing' && (MODE === 'both' || true));
+  if (g.status === 'pending') {
+    overlay(pendingHtml(g));
+    const rb = $('#b-ready');
+    if (rb) rb.onclick = async () => { sound.unlock(); sound.start(); for (const c of (MODE === 'both' ? ['w', 'b'] : [MODE])) await act('ready', { color: c }); };
+  } else overlay(null);
+  if (g.status === 'done') {
+    const r = $('#result'); r.innerHTML = resultHtml(g); r.classList.remove('hidden');
+    if (doneShown !== g.id) {
+      doneShown = g.id;
+      const iWon = MODE !== 'both' && g.winner && g.winner === (MODE === 'w' ? g.white : g.black);
+      if (MODE === 'both' || iWon) { sound.win(); confetti(); } else if (g.winner) sound.lose();
+    }
+  } else $('#result').classList.add('hidden');
+}
+
+/* soatlar — server vaqtidan hisoblanadi, 10 soniyadan kam qolsa qizil va signal */
+function clocks() {
+  if (clockBase) {
+    const el = performance.now() - clockBase.t;
+    for (const c of ['w', 'b']) {
+      const ms = clockBase[c] - (clockBase.run && clockBase.turn === c ? el : 0);
+      document.querySelectorAll(`.clock[data-c="${c}"]`).forEach(n => { n.textContent = fmtClock(ms); n.classList.toggle('low', ms < 30000); });
+      if (clockBase.run && clockBase.turn === c && (MODE === 'both' || MODE === c) && ms < 10000 && ms > 0) {
+        const s = Math.ceil(ms / 1000); if (s !== lastBeep) { lastBeep = s; sound.low(); }
+      }
+    }
+  }
+  requestAnimationFrame(clocks);
+}
+requestAnimationFrame(clocks);
+
+function confetti() {
+  const c = $('#confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight; c.classList.remove('hidden');
+  const cols = ['#f4c871', '#93c5fd', '#f9a8d4', '#86efac', '#ffffff'];
+  const P = Array.from({ length: 160 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4, r: 4 + Math.random() * 6, a: Math.random() * 6, col: cols[Math.floor(Math.random() * cols.length)] }));
+  const t0 = performance.now();
+  (function f(t) {
+    x.clearRect(0, 0, c.width, c.height);
+    for (const p of P) { p.x += p.vx; p.y += p.vy; p.vy += .05; p.a += .1; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.col; x.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); x.restore(); }
+    if (t - t0 < 4500) requestAnimationFrame(f); else c.classList.add('hidden');
+  })(t0);
+}
+
+live(`/api/taxta/${BOARD}`, render, ok => $('#link').classList.toggle('hidden', ok));
+document.addEventListener('click', () => sound.unlock(), { once: true });
+</script>
+</body>
+</html>

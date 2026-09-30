@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shaxmat musobaqasi · «Mirzo Ulugʻbek» xususiy maktabi</title>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/vendor/cg-base.css">
+<link rel="stylesheet" href="/vendor/cg-theme.css">
+<link rel="stylesheet" href="/vendor/cg-pieces.css">
+<link rel="stylesheet" href="/app.css">
+<style>
+body { overflow: hidden; }
+.bgboard { position: fixed; inset: -20%; z-index: -1; opacity: .06; background: repeating-conic-gradient(#fff 0 25%, transparent 0 50%) 0 0 / 160px 160px; transform: rotate(-12deg); animation: drift 60s linear infinite; }
+@keyframes drift { to { background-position: 320px 160px; } }
+header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 28px 12px; }
+header .brand { font-size: 18px; }
+header h1 { font: 800 30px/1 var(--display); letter-spacing: -.01em; text-align: center; }
+header h1 span { color: var(--gold); }
+header .sub { text-align: center; color: var(--mute); font-weight: 700; margin-top: 6px; }
+header .right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+header .now { font: 700 28px var(--mono); }
+main { display: grid; grid-template-columns: minmax(520px, 40%) 1fr; gap: 20px; padding: 0 28px 20px; height: calc(100vh - 104px); }
+section.box { background: #0e1731cc; border: 1px solid var(--line); border-radius: 22px; padding: 16px 18px; min-height: 0; display: flex; flex-direction: column; }
+section.box h3 { display: flex; align-items: center; gap: 10px; font: 800 20px var(--display); margin-bottom: 12px; }
+.boards { flex: 1; min-height: 0; display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); align-content: start; overflow: hidden; }
+.bcard { display: grid; gap: 8px; padding: 12px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
+.bcard .t { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-weight: 800; }
+.bcard .mini { width: 100%; aspect-ratio: 1; }
+.bcard .pl { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 800; font-size: 16px; }
+.bcard .pl span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bcard .pl .c { font: 700 17px var(--mono); padding: 2px 8px; border-radius: 6px; background: #0b1224; }
+.bcard .pl.turn .c { background: #fff; color: #0b1224; }
+.bcard .empty { display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; background: #ffffff08; color: var(--mute); font-weight: 700; text-align: center; padding: 10px; }
+.bcard .res { text-align: center; font: 800 16px var(--display); color: var(--gold); }
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.tabs b { padding: 6px 14px; border-radius: 99px; background: #ffffff0d; color: var(--mute); font-weight: 800; }
+.tabs b.on { background: var(--gold); color: #2a1d04; }
+.pane { flex: 1; min-height: 0; overflow: hidden; }
+.bracket { height: 100%; display: flex; gap: 12px; }
+.bracket .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.bracket .col h4 { font: 800 14px var(--display); color: var(--sky); text-align: center; white-space: nowrap; }
+.bracket .col .note { font-size: 13px; color: var(--mute); text-align: center; font-weight: 600; }
+.bracket .cards { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 5px; }
+.m { border-radius: 9px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; font-size: 14.5px; font-weight: 700; }
+.m.playing { border-color: var(--gold); box-shadow: 0 0 0 1px #f4c87155; }
+.m.ready { border-color: #93c5fd66; }
+.m div { display: flex; justify-content: space-between; gap: 6px; padding: 3px 8px; line-height: 1.25; }
+.m div + div { border-top: 1px solid #ffffff10; }
+.m div span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.m .w { color: #fff; background: #f4c87118; } .m .w::after { content: '✓'; color: var(--gold); }
+.m .l { color: #7c89a8; text-decoration: line-through; }
+.m .tbd { color: #5b6784; font-weight: 600; }
+.m .tag { justify-content: center; font-size: 12px; color: var(--gold); background: #f4c87112; }
+.lists { height: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.lists h4 { font: 800 16px var(--display); color: var(--sky); margin-bottom: 8px; }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; border-radius: 9px; background: #ffffff08; margin-bottom: 6px; font-weight: 700; }
+.row span { color: var(--mute); font-weight: 600; white-space: nowrap; }
+.full { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: radial-gradient(100% 80% at 50% 30%, #16296ae6, #0b1224f5); padding: 40px; }
+.hero { display: grid; justify-items: center; text-align: center; gap: 18px; }
+.hero img { width: 150px; height: 150px; border-radius: 50%; background: #fff; padding: 8px; box-shadow: 0 0 0 10px #ffffff14; }
+.hero .k { font: 700 18px var(--mono); letter-spacing: .16em; color: var(--gold); text-transform: uppercase; }
+.hero h1 { font: 800 72px/1 var(--display); letter-spacing: -.02em; }
+.hero h1 span { color: var(--gold); }
+.hero p { font-size: 26px; color: #dbe4f5; font-weight: 700; }
+.stats { display: flex; gap: 18px; }
+.stats div { padding: 16px 26px; border-radius: 18px; background: #ffffff10; border: 1px solid var(--line); }
+.stats b { display: block; font: 800 44px var(--display); color: var(--gold); }
+.draw { width: min(1700px, 100%); display: grid; gap: 18px; }
+.draw h1 { font: 800 44px var(--display); text-align: center; }
+.draw .cols { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+.draw h2 { font: 800 22px var(--display); color: var(--sky); margin-bottom: 10px; }
+.pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pairs.one { grid-template-columns: 1fr; }
+.pair { display: grid; grid-template-columns: 2em 1fr auto 1fr; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); font-weight: 800; font-size: 17px; opacity: 0; transform: translateY(14px); transition: .45s; }
+.pair.in { opacity: 1; transform: none; }
+.pair i { font-style: normal; color: var(--mute); font-size: 14px; }
+.pair em { font-style: normal; color: var(--gold); }
+.pair span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pair span:last-child { text-align: right; }
+.byes { margin-top: 10px; color: var(--mute); font-weight: 700; font-size: 15px; line-height: 1.6; opacity: 0; transition: .6s; }
+.byes.in { opacity: 1; }
+.byes b { color: #dbe4f5; }
+.podiums { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: min(1700px, 100%); }
+.pod h2 { font: 800 30px var(--display); text-align: center; margin-bottom: 18px; color: var(--sky); }
+.steps { display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: end; gap: 12px; }
+.step { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.step b { font: 800 22px/1.15 var(--display); }
+.step .money { font: 800 20px var(--display); color: var(--gold); }
+.step .blk { width: 100%; border-radius: 16px 16px 0 0; display: grid; place-items: start center; padding-top: 12px; font: 800 44px var(--display); }
+.step.p1 .blk { height: 260px; background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #3b2a05; }
+.step.p2 .blk { height: 190px; background: linear-gradient(180deg, #e5e7eb, #9ca3af); color: #1f2937; }
+.step.p3 .blk { height: 140px; background: linear-gradient(180deg, #e7a46b, #b86b34); color: #3a1d06; }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: #ffffff30; }
+.dots i.on { background: var(--gold); }
+canvas.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
+</style>
+</head>
+<body>
+<div class="bgboard"></div>
+<header>
+  <div class="brand"><img src="/logo.png" alt=""><div><b>«MIRZO ULUGʻBEK»</b><small>xususiy maktabi</small></div></div>
+  <div><h1>SHAXMAT <span>MUSOBAQASI</span></h1><div class="sub" id="sub">1-oktabr · olimpiya tizimi · qizlar va oʻgʻil bolalar alohida</div></div>
+  <div class="right"><div class="now" id="now">--:--</div><div id="chips"></div></div>
+</header>
+<main>
+  <section class="box"><h3>Jonli taxtalar <span class="chip live">Jonli</span></h3><div class="boards" id="boards"></div></section>
+  <section class="box"><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></section>
+</main>
+<div class="full hidden" id="full"></div>
+<canvas class="confetti hidden" id="confetti"></canvas>
+
+<script type="module">
+import { Chessground } from '/vendor/chessground.min.js';
+import { $, live, fmtClock, esc, money } from '/common.js';
+
+let st = null, clockT = 0, tab = 0, tabT = 0, drawnKey = null, finKey = null;
+const minis = new Map();
+const name = id => (id && st.players[id] ? st.players[id].name : '');
+
+setInterval(() => { const d = new Date(); $('#now').textContent = d.toTimeString().slice(0, 5); }, 1000);
+
+function boardsHtml() {
+  const box = $('#boards');
+  const n = st.boards.length;
+  box.style.gridTemplateColumns = `repeat(${n <= 2 ? 2 : n <= 4 ? 2 : 3}, 1fr)`;
+  st.boards.forEach(b => {
+    let card = box.querySelector(`[data-b="${b.id}"]`);
+    if (!card) {
+      card = document.createElement('div'); card.className = 'bcard'; card.dataset.b = b.id;
+      card.innerHTML = `<div class="t"><span>${b.id}-taxta</span><span class="tag"></span></div><div class="pl top"></div><div class="mini"></div><div class="empty hidden"></div><div class="pl bot"></div><div class="res hidden"></div>`;
+      box.appendChild(card);
+      minis.set(b.id, Chessground(card.querySelector('.mini'), { viewOnly: true, coordinates: false, animation: { enabled: true, duration: 250 } }));
+    }
+    const g = b.game, cg = minis.get(b.id);
+    card.querySelector('.tag').innerHTML = g ? `<span class="chip ${g.status === 'playing' ? 'live' : ''}">${esc(g.group)} · ${esc(g.round)}</span>` : (b.on ? '' : '<span class="chip">oʻchiq</span>');
+    const show = !!g;
+    card.querySelector('.mini').classList.toggle('hidden', !show);
+    const em = card.querySelector('.empty'); em.classList.toggle('hidden', show);
+    em.textContent = st.phase === 'running' ? (b.on ? 'Navbatdagi oʻyin kutilmoqda' : 'Taxta ishlatilmayapti') : st.phase === 'finished' ? 'Turnir yakunlandi' : 'Turnir boshlanishi kutilmoqda';
+    const pl = (sel, c) => { const el = card.querySelector(sel); if (!g) { el.innerHTML = ''; return; } el.className = 'pl ' + sel.slice(1) + (g.status === 'playing' && g.turn === c ? ' turn' : ''); el.innerHTML = `<span>${c === 'w' ? '♔' : '♚'} ${esc(g.names[c])}</span><span class="c mono" data-g="${g.id}" data-c="${c}">${fmtClock(g.clock[c])}</span>`; };
+    pl('.top', 'b'); pl('.bot', 'w');
+    if (g) cg.set({ fen: g.fen, lastMove: g.last && g.last[0] ? g.last : undefined, orientation: 'white' });
+    const res = card.querySelector('.res');
+    if (g && g.status === 'done') { res.classList.remove('hidden'); res.textContent = g.result === '1/2-1/2' ? (g.armageddon ? 'Durang — qora gʻolib' : 'Durang · qayta oʻyin') : `Gʻolib: ${g.result === '1-0' ? g.names.w : g.names.b} (${g.reason_text})`; }
+    else if (g && g.status === 'pending') { res.classList.remove('hidden'); res.textContent = 'Oʻyinchilar joyiga kelmoqda…'; }
+    else res.classList.add('hidden');
+  });
+  box.querySelectorAll('.bcard').forEach(c => { if (!st.boards.some(b => b.id === +c.dataset.b)) { minis.delete(+c.dataset.b); c.remove(); } });
+}
+
+function matchCard(m) {
+  const g = m.games.length ? st.games[m.games[m.games.length - 1]] : null;
+  const row = pid => {
+    if (!pid) return `<div><span class="tbd">…</span></div>`;
+    const cls = m.winner ? (m.winner === pid ? 'w' : 'l') : '';
+    return `<div class="${cls}"><span>${esc(name(pid))}</span></div>`;
+  };
+  let tag = '';
+  if (m.status === 'playing' && g) tag = `<div class="tag">${g.board}-taxtada oʻynalmoqda${m.games.length > 1 ? (g.armageddon ? ' · armageddon' : ' · qayta oʻyin') : ''}</div>`;
+  return `<div class="m ${m.status}">${row(m.p[0])}${row(m.p[1])}${tag}</div>`;
+}
+function bracketHtml(g) {
+  const rounds = st.rounds[g];
+  if (!rounds || !rounds.length) return '<p class="row">Qur’a hali tashlanmagan</p>';
+  const cols = rounds.map((ids, r) => {
+    let ms = ids.map(id => st.matches[id]);
+    const title = ms[0].title;
+    let note = '';
+    if (r === 0) { const byes = ms.filter(m => m.bye).length; ms = ms.filter(m => !m.bye); if (byes) note = `<div class="note">${byes} nafari toʻgʻridan-toʻgʻri keyingi bosqichda</div>`; }
+    return `<div class="col"><h4>${esc(title)}</h4>${note}<div class="cards">${ms.map(matchCard).join('')}</div></div>`;
+  });
+  const b = st.bronze[g];
+  if (b) cols.push(`<div class="col"><h4>3-oʻrin uchun</h4><div class="cards">${matchCard(st.matches[b])}</div></div>`);
+  return `<div class="bracket">${cols.join('')}</div>`;
+}
+function listsHtml() {
+  const ready = Object.values(st.matches).filter(m => m.status === 'ready').sort((a, b) => a.r - b.r || a.s - b.s);
+  const recent = Object.values(st.games).filter(g => g.status === 'done').slice(-12).reverse();
+  const res = g => g.result === '1/2-1/2' ? 'durang' : g.result;
+  return `<div class="lists"><div><h4>Navbatdagi oʻyinlar</h4>${ready.slice(0, 12).map(m => `<div class="row">${esc(name(m.p[0]))} — ${esc(name(m.p[1]))}<span>${esc(st.groups[m.g])} · ${esc(m.title)}</span></div>`).join('') || '<div class="row">—</div>'}</div>
+    <div><h4>Soʻnggi natijalar</h4>${recent.map(g => `<div class="row">${esc(name(g.white))} ${res(g)} ${esc(name(g.black))}<span>${esc(st.groups[g.g])}</span></div>`).join('') || '<div class="row">—</div>'}</div></div>`;
+}
+const TABS = [['Oʻgʻil bolalar', () => bracketHtml('B')], ['Qizlar', () => bracketHtml('G')], ['Navbat va natijalar', listsHtml]];
+function pane() {
+  $('#tabs').innerHTML = TABS.map((t, i) => `<b class="${i === tab ? 'on' : ''}">${t[0]}</b>`).join('') + `<span style="flex:1"></span><div class="dots">${TABS.map((t, i) => `<i class="${i === tab ? 'on' : ''}"></i>`).join('')}</div>`;
+  $('#pane').innerHTML = TABS[tab][1]();
+}
+setInterval(() => { tab = (tab + 1) % TABS.length; if (st) pane(); }, 16000);
+
+function full(html) {
+  const f = $('#full');
+  if (!html) { f.classList.add('hidden'); f.innerHTML = ''; f.dataset.k = ''; return false; }
+  f.classList.remove('hidden');
+  return true;
+}
+function welcome() {
+  const nb = Object.values(st.players).filter(p => p.g === 'B').length, ng = Object.values(st.players).filter(p => p.g === 'G').length;
+  const f = $('#full');
+  if (f.dataset.k === 'w' + nb + ng) return;
+  f.dataset.k = 'w' + nb + ng; full(true);
+  f.innerHTML = `<div class="hero"><img src="/logo.png" alt=""><div class="k">«Mirzo Ulugʻbek» xususiy maktabi</div><h1>SHAXMAT <span>MUSOBAQASI</span></h1>
+    <p>1-oktabr · Oʻqituvchi va murabbiylar kuni</p><div class="stats"><div><b>${nb}</b>oʻgʻil bola</div><div><b>${ng}</b>qiz</div><div><b>${money(2000000)}</b>soʻm mukofot</div></div>
+    <p style="color:var(--mute)">Qur’a tashlanishi kutilmoqda…</p></div>`;
+}
+function drawReveal() {
+  const f = $('#full');
+  if (f.dataset.k === 'd' + st.drawn_at) return;
+  f.dataset.k = 'd' + st.drawn_at; full(true);
+  const grp = g => {
+    const ms = (st.rounds[g][0] || []).map(id => st.matches[id]);
+    const pairs = ms.filter(m => !m.bye), byes = ms.filter(m => m.bye);
+    return `<div><h2>${esc(st.groups[g])} — ${esc(ms[0] ? ms[0].title : '')}</h2><div class="pairs${pairs.length <= 6 ? ' one' : ''}">${pairs.map((m, i) => `<div class="pair" data-a="${esc(name(m.p[0]))}" data-b="${esc(name(m.p[1]))}"><i>${i + 1}</i><span>…</span><em>vs</em><span>…</span></div>`).join('')}</div>
+      ${byes.length ? `<div class="byes">Keyingi bosqichga toʻgʻridan-toʻgʻri: ${byes.map(m => `<b>${esc(name(m.p[0]))}</b>`).join(', ')}</div>` : ''}</div>`;
+  };
+  f.innerHTML = `<div class="draw"><h1>QUR’A NATIJALARI</h1><div class="cols">${grp('B')}${grp('G')}</div></div>`;
+  const all = Object.values(st.players).map(p => p.name);
+  const pairs = [...f.querySelectorAll('.pair')];
+  pairs.forEach((el, i) => setTimeout(() => {
+    el.classList.add('in');
+    const [a, b] = el.querySelectorAll('span');
+    let k = 0;
+    const spin = setInterval(() => {
+      a.textContent = all[Math.floor(Math.random() * all.length)]; b.textContent = all[Math.floor(Math.random() * all.length)];
+      if (++k > 9) { clearInterval(spin); a.textContent = el.dataset.a; b.textContent = el.dataset.b; }
+    }, 70);
+  }, 500 + i * 900));
+  setTimeout(() => f.querySelectorAll('.byes').forEach(b => b.classList.add('in')), 900 + pairs.length * 900);
+}
+function podium() {
+  const f = $('#full');
+  if (f.dataset.k === 'f' + st.finished_at) return;
+  f.dataset.k = 'f' + st.finished_at; full(true);
+  const pod = g => {
+    const s = st.standings[g]; const by = p => s.find(x => x.place === p) || { name: '—', prize: st.prizes[p] };
+    const step = p => `<div class="step p${p}"><b>${esc(by(p).name)}</b><span class="money">${money(by(p).prize)} soʻm</span><div class="blk">${p}</div></div>`;
+    return `<div class="pod"><h2>${esc(st.groups[g])}</h2><div class="steps">${step(2)}${step(1)}${step(3)}</div></div>`;
+  };
+  f.innerHTML = `<div class="hero" style="width:100%"><div class="k">«Mirzo Ulugʻbek» xususiy maktabi · shaxmat musobaqasi</div><h1>GʻOLIBLARNI <span>TABRIKLAYMIZ!</span></h1><div class="podiums">${pod('B')}${pod('G')}</div></div>`;
+  confetti();
+}
+function confetti() {
+  const c = $('#confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight; c.classList.remove('hidden');
+  const cols = ['#f4c871', '#93c5fd', '#f9a8d4', '#86efac', '#ffffff'];
+  const P = Array.from({ length: 260 }, () => ({ x: Math.random() * c.width, y: -Math.random() * c.height, vx: (Math.random() - .5) * 3, vy: 2 + Math.random() * 3, r: 5 + Math.random() * 7, a: Math.random() * 6, col: cols[Math.floor(Math.random() * cols.length)] }));
+  const t0 = performance.now();
+  (function f(t) {
+    x.clearRect(0, 0, c.width, c.height);
+    for (const p of P) { p.x += p.vx; p.y += p.vy; p.a += .08; if (p.y > c.height) p.y = -10; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.col; x.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); x.restore(); }
+    if (t - t0 < 12000) requestAnimationFrame(f); else c.classList.add('hidden');
+  })(t0);
+}
+
+function render(s) {
+  st = s; clockT = s._recv;
+  const played = Object.values(s.games).filter(g => g.status === 'done').length;
+  const total = Object.values(s.matches).filter(m => !m.bye).length;
+  $('#chips').innerHTML = s.phase === 'running' ? `<span class="chip live">${s.paused ? 'Tanaffus' : 'Musobaqa davom etmoqda'}</span> <span class="chip">${played} ta oʻyin oʻynaldi</span>` :
+    s.phase === 'finished' ? '<span class="chip gold">Yakunlandi</span>' : s.phase === 'drawn' ? '<span class="chip gold">Qur’a tashlandi</span>' : '<span class="chip">Tayyorgarlik</span>';
+  boardsHtml(); pane();
+  if (s.phase === 'setup') welcome();
+  else if (s.phase === 'drawn') drawReveal();
+  else if (s.phase === 'finished') podium();
+  else full(false);
+}
+(function clocks() {
+  if (st) document.querySelectorAll('.bcard .c').forEach(el => {
+    const b = st.boards.find(x => x.game && x.game.id === el.dataset.g); if (!b) return;
+    const g = b.game, c = el.dataset.c;
+    el.textContent = fmtClock(g.clock[c] - (g.status === 'playing' && g.turn === c ? performance.now() - clockT : 0));
+  });
+  requestAnimationFrame(clocks);
+})();
+document.addEventListener('keydown', e => { if (e.key === 'Escape') full(false); if (e.key === 'ArrowRight') { tab = (tab + 1) % TABS.length; pane(); } });
+live('/api/state', render);
+</script>
+</body>
+</html>

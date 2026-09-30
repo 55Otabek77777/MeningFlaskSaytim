@@ -1,0 +1,46 @@
+/* «Mirzo Ulugʻbek» shaxmat turniri — umumiy uslublar */
+@font-face { font-family: 'Unbounded'; src: url(fonts/unbounded.ttf) format('truetype'); font-weight: 200 900; font-display: swap; }
+@font-face { font-family: 'Baloo 2'; src: url(fonts/baloo2.ttf) format('truetype'); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url(fonts/jbmono.ttf) format('truetype'); font-weight: 100 800; font-display: swap; }
+:root {
+  --bg: #0b1224; --bg2: #0e1731; --panel: #121c38; --panel2: #18244a; --line: #ffffff1c; --ink: #f4f7ff; --mute: #a9b6d3;
+  --blue: #1e3a8a; --blue2: #3b5bdb; --sky: #93c5fd; --gold: #f4c871; --gold2: #d9a441; --red: #ef4444; --green: #22c55e; --pink: #f9a8d4;
+  --display: 'Unbounded', system-ui, sans-serif; --body: 'Baloo 2', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: radial-gradient(120% 90% at 50% 0%, #15245a 0%, var(--bg) 60%); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.35; overflow-x: hidden; }
+button { font: inherit; cursor: pointer; border: 0; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+a { color: var(--sky); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5em; min-height: 44px; padding: .45em 1.1em; border-radius: 12px; background: var(--panel2); color: var(--ink); border: 1px solid var(--line); font-weight: 700; }
+.btn:hover:not(:disabled) { border-color: var(--sky); }
+.btn.gold { background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #2a1d04; border-color: transparent; }
+.btn.red { background: #7f1d1d; border-color: #ef444466; }
+.btn.green { background: #14532d; border-color: #22c55e66; }
+.btn.ghost { background: transparent; }
+.chip { display: inline-flex; align-items: center; gap: .4em; padding: .15em .7em; border-radius: 99px; background: #ffffff12; border: 1px solid var(--line); font-size: .85em; font-weight: 700; white-space: nowrap; }
+.chip.live { background: #dc262622; border-color: #ef444466; color: #fecaca; }
+.chip.live::before { content: ''; width: .5em; height: .5em; border-radius: 50%; background: var(--red); animation: blink 1.2s infinite; }
+.chip.gold { background: #f4c87122; border-color: #f4c87166; color: var(--gold); }
+.chip.green { background: #22c55e1f; border-color: #22c55e55; color: #86efac; }
+@keyframes blink { 50% { opacity: .25; } }
+.brand { display: flex; align-items: center; gap: .8em; }
+.brand img { width: 3.2em; height: 3.2em; border-radius: 50%; background: #fff; padding: .15em; }
+.brand b { display: block; font: 800 1.05em/1.1 var(--display); letter-spacing: .01em; }
+.brand small { display: block; color: var(--mute); font-weight: 600; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.hidden { display: none !important; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 100; padding: .7em 1.2em; border-radius: 12px; background: #0b1224f2; border: 1px solid var(--line); box-shadow: 0 20px 40px -20px #000; font-weight: 700; }
+.toast.err { border-color: #ef444488; color: #fecaca; }
+
+/* shaxmat taxtasi (chessground) — maktab ranglari */
+cg-board { background-color: #e9edf7; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect width='8' height='8' fill='%23e9edf7'/><path fill='%237d95c4' d='M1 0h1v1h-1zM3 0h1v1h-1zM5 0h1v1h-1zM7 0h1v1h-1zM0 1h1v1h-1zM2 1h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM5 2h1v1h-1zM7 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1zM5 4h1v1h-1zM7 4h1v1h-1zM0 5h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM6 5h1v1h-1zM1 6h1v1h-1zM3 6h1v1h-1zM5 6h1v1h-1zM7 6h1v1h-1zM0 7h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM6 7h1v1h-1z'/></svg>"); }
+cg-board square.last-move { background-color: rgba(244, 200, 113, .5); }
+cg-board square.selected { background-color: rgba(59, 91, 219, .45); }
+cg-board square.move-dest { background: radial-gradient(rgba(30, 58, 138, .55) 22%, transparent 0); }
+cg-board square.oc.move-dest { background: radial-gradient(transparent 0%, transparent 78%, rgba(30, 58, 138, .45) 80%); }
+cg-board square.move-dest:hover { background: rgba(59, 91, 219, .3); }
+.orientation-white .ranks :nth-child(odd), .orientation-white .files :nth-child(even), .orientation-black .ranks :nth-child(even), .orientation-black .files :nth-child(odd) { color: #e9edf7; }
+.orientation-white .ranks :nth-child(even), .orientation-white .files :nth-child(odd), .orientation-black .ranks :nth-child(odd), .orientation-black .files :nth-child(even) { color: #5a6f9c; }
+.cg-wrap coords { font-family: var(--body); font-weight: 800; }

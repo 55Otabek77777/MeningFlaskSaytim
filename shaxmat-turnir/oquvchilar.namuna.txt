@@ -1,0 +1,12 @@
+// NAMUNA. Haqiqiy ro'yxatni shu shaklda "oquvchilar.txt" nomi bilan saqlang (u repoga yuklanmaydi).
+// Har qatorda: Familiya Ism | sinf      (sinf bo'lmasa — "|" dan keyingi qism yozilmaydi)
+// "//" bilan boshlangan qatorlar hisobga olinmaydi.
+
+[OʻGʻIL BOLALAR]
+Namunaov Birinchi | 10
+Namunaov Ikkinchi | 9
+Namunaov Uchinchi
+
+[QIZLAR]
+Namunaova Birinchi | 11
+Namunaova Ikkinchi | 10
